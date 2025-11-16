@@ -1,9 +1,31 @@
+import type { LoginRequest } from "@/api/services/user-service";
 import Logo from "@/assets/logo.webp"
+import Spinner from "@/ui/spinner"
 import {useTranslation} from "react-i18next";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 import './index.css';
+import {useLogin} from "@/store/user-store.ts";
 
 export default function LoginForm() {
   const {t} = useTranslation();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const login = useLogin();
+
+  const form = useForm<LoginRequest>({});
+
+  const handleFinish = async (values: LoginRequest) => {
+    setLoading(true);
+    try {
+      await login(values);
+      navigate("/", { replace: true });
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div
       id="login-container"
@@ -11,6 +33,7 @@ export default function LoginForm() {
     >
       <div className="flex items-center justify-center min-h-screen px-4">
         <form
+          onSubmit={form.handleSubmit(handleFinish)}
           className="relative w-[min(500px,90%)] max-w-md text-center p-12 rounded-2xl border border-[#373b41] bg-[#0d1117]/60"
         >
           <img
@@ -62,11 +85,12 @@ export default function LoginForm() {
           </div>
 
           <button
-            type="button"
+            type="submit"
             id="login"
-            className="w-full py-2 rounded-xl bg-blue-600 hover:bg-blue-500 transition"
+            className="w-full py-2 rounded-xl bg-blue-600 hover:bg-blue-500 transition inline-flex items-center justify-center"
           >
             {t("authentication.login.submit")}
+            {loading && <Spinner className="ml-3"></Spinner>}
           </button>
         </form>
       </div>
