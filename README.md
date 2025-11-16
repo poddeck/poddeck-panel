@@ -1,6 +1,6 @@
 # PodDeck - Panel
 
-The Panel is the modern web-based interface of the PodDeck platform.
+The panel is the modern web-based interface of the PodDeck platform.
 
 Built with React, Vite, and Tailwind CSS, it provides a fast, responsive, and intuitive UI for managing multiple Kubernetes clusters through the control plane.
 
