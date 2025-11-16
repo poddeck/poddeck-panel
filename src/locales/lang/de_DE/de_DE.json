@@ -1,0 +1,11 @@
+{
+  "verification": {
+    "login": {
+      "email": "Email Adresse",
+      "password": "Passwort",
+      "forgot": "Passwort vergessen?",
+      "remember": "Angemeldet bleiben",
+      "submit": "ANMELDEN"
+    }
+  }
+}
