@@ -1,5 +1,5 @@
 {
-  "verification": {
+  "authentication": {
     "login": {
       "email": "Email Adresse",
       "password": "Passwort",
