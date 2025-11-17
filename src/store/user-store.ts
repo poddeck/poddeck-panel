@@ -5,8 +5,8 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import userService, { type LoginRequest } from "@/api/services/user-service";
 
 export interface UserToken {
-  accessToken?: string;
-  refreshToken?: string;
+  access_token?: string;
+  refresh_token?: string;
 }
 
 type UserStore = {
@@ -54,8 +54,8 @@ export const useLogin = () => {
 
   const login = async (data: LoginRequest) => {
     const res = await loginMutation.mutateAsync(data);
-    const { accessToken, refreshToken } = res;
-    setUserToken({ accessToken, refreshToken });
+    const { access_token, refresh_token } = res;
+    setUserToken({ access_token, refresh_token });
   };
 
   return login;

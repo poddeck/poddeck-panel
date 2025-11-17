@@ -1,18 +1,21 @@
 import client from "../client";
 
-import type { UserToken } from "@/store/user-store";
-
 export interface LoginRequest {
-  username: string;
+  email: string;
   password: string;
+  multi_factor_code: string;
 }
 
-export type LoginResponse = UserToken;
+export type LoginResponse = {
+  success: boolean;
+  access_token?: string;
+  refresh_token?: string;
+}
 
 export const UserApi = {
-  Login: "/authentication/login",
-  Refresh: "/authentication/refresh",
-  Logout: "/authentication/logout",
+  Login: "/authentication/login/",
+  Refresh: "/authentication/refresh/",
+  Logout: "/authentication/logout/",
 } as const;
 
 const login = (data: LoginRequest) => client.post<LoginResponse>({ url: UserApi.Login, data });

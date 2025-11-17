@@ -5,22 +5,8 @@ import axios, {
   type AxiosResponse
 } from "axios";
 
-export const ResultStatus = {
-  SUCCESS: 0,
-  ERROR: -1,
-  TIMEOUT: 401,
-} as const;
-
-export type ResultStatus = typeof ResultStatus[keyof typeof ResultStatus];
-
-export interface Result<T = unknown> {
-  status: ResultStatus;
-  message: string;
-  data: T;
-}
-
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8080/",
+  baseURL: "http://localhost:8080/v1/",
   timeout: 50000,
   headers: {"Content-Type": "application/json;charset=utf-8"},
 });
@@ -34,15 +20,13 @@ axiosInstance.interceptors.request.use(
 );
 
 axiosInstance.interceptors.response.use(
-  (res: AxiosResponse<Result<never>>) => {
-    if (!res.data) throw new Error("The request failed, please try again later!");
-    const {status, data, message} = res.data;
-    if (status === ResultStatus.SUCCESS) {
-      return data;
+  (response: AxiosResponse) => {
+    if (!response.data) {
+      throw new Error("The request failed, please try again later!");
     }
-    throw new Error(message || "The request failed, please try again later!");
+    return response.data;
   },
-  (error: AxiosError<Result>) => {
+  (error: AxiosError) => {
     const {response} = error || {};
     if (response?.status === 401) {
       userStore.getState().actions.clearUserToken();
