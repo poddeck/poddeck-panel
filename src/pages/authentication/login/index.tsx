@@ -41,7 +41,7 @@ export default function LoginForm() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleFinish)}
-            className="relative w-[min(500px,90%)] max-w-md text-center p-12 rounded-2xl border border-[#373b41] bg-[#0d1117]/60"
+            className="relative w-[min(500px,90%)] max-w-md p-12 text-center rounded-3xl border border-white/20 bg-[#0d1117]/40 backdrop-blur-2xl"
           >
             <img
               src={Logo}
