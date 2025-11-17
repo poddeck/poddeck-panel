@@ -2,8 +2,10 @@
   "authentication": {
     "login": {
       "email": "Email address",
+      "email.missing": "Please enter an email address",
       "password": "Password",
-      "forgot": "Forgot password?",
+      "password.missing": "Please enter a password",
+      "password.forgot": "Forgot password?",
       "remember": "Remember me",
       "submit": "LOGIN"
     }
