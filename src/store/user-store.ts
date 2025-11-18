@@ -1,11 +1,14 @@
-import { useMutation } from "@tanstack/react-query";
-import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
-
-import userService, { type LoginRequest } from "@/api/services/user-service";
+import {useMutation} from "@tanstack/react-query";
+import {create} from "zustand";
+import {createJSONStorage, persist} from "zustand/middleware";
+import userService, {type LoginRequest} from "@/api/services/user-service";
+import cookiesStorage from "@/store/cookie-store.ts";
+import type {AxiosError} from "axios";
+import { toast } from "sonner";
+import {useTranslation} from "react-i18next";
 
 export interface UserToken {
-  access_token?: string;
+  authentication_token?: string;
   refresh_token?: string;
 }
 
@@ -33,10 +36,10 @@ const useUserStore = create<UserStore>()(
       },
     }),
     {
-      name: "userStore", // name of the item in the storage (must be unique)
-      storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
+      name: "user",
+      storage: createJSONStorage(() => cookiesStorage),
       partialize: (state) => ({
-        ["userToken"]: state.userToken,
+        ["token"]: state.userToken,
       }),
     },
   ),
@@ -46,19 +49,26 @@ export const useUserToken = () => useUserStore((state) => state.userToken);
 export const useUserActions = () => useUserStore((state) => state.actions);
 
 export const useLogin = () => {
+  const {t} = useTranslation();
+
   const { setUserToken } = useUserActions();
 
   const loginMutation = useMutation({
     mutationFn: userService.login,
   });
 
-  const login = async (data: LoginRequest) => {
-    const res = await loginMutation.mutateAsync(data);
-    const { access_token, refresh_token } = res;
-    setUserToken({ access_token, refresh_token });
+  return async (data: LoginRequest) => {
+    try {
+      const response = await loginMutation.mutateAsync(data);
+      const {authentication_token, refresh_token} = response;
+      setUserToken({authentication_token, refresh_token});
+    } catch (error) {
+      if (error != null && (error as AxiosError).status === 401) {
+        toast.error(t("authentication.login.failed"));
+      }
+      throw error;
+    }
   };
-
-  return login;
 };
 
 export default useUserStore;
