@@ -8,7 +8,7 @@ export interface LoginRequest {
 
 export type LoginResponse = {
   success: boolean;
-  access_token?: string;
+  authentication_token?: string;
   refresh_token?: string;
 }
 
