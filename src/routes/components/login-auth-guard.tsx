@@ -22,13 +22,13 @@ type Props = {
 };
 export default function LoginAuthGuard({children}: Props) {
   const router = useRouter();
-  const {accessToken} = useUserToken();
+  const {access_token} = useUserToken();
 
   const check = useCallback(() => {
-    if (!accessToken) {
+    if (!access_token) {
       router.replace("/login");
     }
-  }, [router, accessToken]);
+  }, [router, access_token]);
 
   useEffect(() => {
     check();
