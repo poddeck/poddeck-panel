@@ -1,5 +1,6 @@
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {Helmet} from "react-helmet";
+import Toast from "./components/toast"
 import { MotionLazy } from "./components/animate/motion-lazy";
 import { RouteLoading } from "./components/loading";
 
@@ -22,6 +23,7 @@ function App({ children }: { children: React.ReactNode }) {
         <title>PodDeck</title>
       </Helmet>
       <RouteLoading />
+      <Toast />
       <MotionLazy>{children}</MotionLazy>
     </QueryClientProvider>
   );

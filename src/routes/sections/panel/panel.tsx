@@ -1,21 +1,27 @@
-import { Navigate, type RouteObject } from "react-router";
-import { Component } from "./component";
+import {Navigate, Outlet, type RouteObject} from "react-router";
+import {Component} from "./component";
 import LoginAuthGuard from "@/routes/components/login-auth-guard.tsx";
+import SimpleLayout from "@/layouts/simple";
+import {Suspense} from "react";
+import {LineLoading} from "@/components/loading";
 
 const getRoutes = (): RouteObject[] => {
-  const panelRoutes: RouteObject[] = [
-    { path: "test", element: Component("/pages/panel/test") },
+  return [
+    {path: "dashboard", element: Component("/pages/panel/dashboard")},
   ];
-  return panelRoutes;
 };
 
 export const panelRoutes: RouteObject[] = [
   {
     element: (
       <LoginAuthGuard>
-        <div />
+        <SimpleLayout>
+          <Suspense fallback={<LineLoading />}>
+            <Outlet />
+          </Suspense>
+        </SimpleLayout>
       </LoginAuthGuard>
     ),
-    children: [{ index: true, element: <Navigate to="/" replace /> }, ...getRoutes()],
+    children: [{ index: true, element: <Navigate to="/dashboard/" replace /> }, ...getRoutes()],
   },
 ];
