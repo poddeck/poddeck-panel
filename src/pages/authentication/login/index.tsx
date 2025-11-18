@@ -2,12 +2,13 @@ import type {LoginRequest} from "@/api/services/user-service";
 import Logo from "@/assets/logo.webp"
 import Spinner from "@/ui/spinner"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/ui/form";
+import { Navigate } from "react-router";
 import {useTranslation} from "react-i18next";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
 import {useNavigate} from "react-router";
 import './index.css';
-import {useLogin} from "@/store/user-store.ts";
+import {useLogin, useUserToken} from "@/store/user-store.ts";
 
 export default function LoginForm() {
   const {t} = useTranslation();
@@ -18,16 +19,21 @@ export default function LoginForm() {
 
   const form = useForm<LoginRequest>({});
 
+  const token = useUserToken();
+
+  if (token.authentication_token) {
+    return <Navigate to="/dashboard/" replace />;
+  }
+
   const handleFinish = async (values: LoginRequest) => {
     const payload: LoginRequest = {
       ...values,
       multi_factor_code: "",
     };
-    console.log(payload);
     setLoading(true);
     try {
       await login(payload);
-      navigate("/", {replace: true});
+      navigate("/dashboard/", {replace: true});
     } finally {
       setLoading(false);
     }
