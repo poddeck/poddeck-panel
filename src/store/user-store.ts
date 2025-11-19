@@ -14,7 +14,7 @@ export interface UserToken {
 }
 
 type UserStore = {
-  userToken: UserToken;
+  token: UserToken;
 
   actions: {
     setUserToken: (token: UserToken) => void;
@@ -25,14 +25,13 @@ type UserStore = {
 const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
-      userInfo: {},
-      userToken: {},
+      token: {},
       actions: {
-        setUserToken: (userToken) => {
-          set({userToken});
+        setUserToken: (token) => {
+          set({token});
         },
         clearUserToken() {
-          set({userToken: {}});
+          set({token: {}});
         },
       },
     }),
@@ -40,13 +39,13 @@ const useUserStore = create<UserStore>()(
       name: "user",
       storage: createJSONStorage(() => cookiesStorage),
       partialize: (state) => ({
-        ["token"]: state.userToken,
+        ["token"]: state.token,
       }),
     },
   ),
 );
 
-export const useUserToken = () => useUserStore((state) => state.userToken);
+export const useUserToken = () => useUserStore((state) => state.token);
 export const useUserActions = () => useUserStore((state) => state.actions);
 
 export const useLogin = () => {
