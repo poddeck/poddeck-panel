@@ -1,4 +1,4 @@
-import {BookA} from "lucide-react";
+import {BookA, ChevronRight} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,6 +21,7 @@ export function SidebarLanguageSelector() {
         <DropdownMenuItem>
           <BookA/>
           {t("panel.sidebar.language")}
+          <ChevronRight className="ml-auto"/>
         </DropdownMenuItem>
       </DropdownMenuTrigger>
       <DropdownMenuContent

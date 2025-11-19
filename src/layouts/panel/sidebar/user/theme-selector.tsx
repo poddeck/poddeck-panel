@@ -1,4 +1,4 @@
-import {MonitorCog, Moon, Sun, SunMoon} from "lucide-react"
+import {ChevronRight, MonitorCog, Moon, Sun, SunMoon} from "lucide-react"
 
 import {useTheme} from "next-themes"
 import {
@@ -23,6 +23,7 @@ export function SidebarThemeSelector() {
         <DropdownMenuItem>
           <SunMoon/>
           {t("panel.sidebar.theme")}
+          <ChevronRight className="ml-auto"/>
         </DropdownMenuItem>
       </DropdownMenuTrigger>
 

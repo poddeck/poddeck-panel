@@ -7,7 +7,7 @@ import {LineLoading} from "@/components/loading";
 
 const getRoutes = (): RouteObject[] => {
   return [
-    {path: "dashboard", element: Component("/pages/panel/dashboard")},
+    {path: "overview", element: Component("/pages/panel/overview")},
   ];
 };
 
@@ -24,7 +24,7 @@ export const panelRoutes: RouteObject[] = [
     ),
     children: [{
       index: true,
-      element: <Navigate to="/dashboard/" replace/>
+      element: <Navigate to="/overview/" replace/>
     }, ...getRoutes()],
   },
 ];
