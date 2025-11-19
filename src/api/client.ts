@@ -5,7 +5,6 @@ import axios, {
   type AxiosResponse
 } from "axios";
 import userService from "./services/user-service.ts";
-import client from "./client";
 
 export interface AuthenticationRequestConfig extends AxiosRequestConfig {
   _retry?: boolean;
@@ -60,7 +59,7 @@ axiosInstance.interceptors.response.use(
       return Promise.reject(error);
     }
     if (response?.status === 417 && !originalRequest._retry) {
-      await refresh(originalRequest, error);
+      return refresh(originalRequest, error);
     }
     return Promise.reject(error);
   },
@@ -88,7 +87,11 @@ async function refresh(originalRequest: AuthenticationRequestConfig, error: Axio
 function enqueueFailedRequest(originalRequest: AuthenticationRequestConfig) {
   return new Promise<string>((resolve, reject) => {
     failedQueue.push({ resolve, reject });
-  }).then((token) => retryRequestWithToken(originalRequest, token));
+  }).then((token) => retryRequestWithToken(originalRequest, token))
+    .catch(err => {
+      originalRequest._retry = false;
+      throw err;
+    });
 }
 
 async function performRefresh(refresh_token: string) {
@@ -115,7 +118,7 @@ function retryRequestWithToken(originalRequest: AuthenticationRequestConfig, tok
     originalRequest.headers = {};
   }
   originalRequest.headers["Authorization"] = `Bearer ${token}`;
-  return client.request(originalRequest);
+  return axiosInstance.request(originalRequest);
 }
 
 class APIClient {
