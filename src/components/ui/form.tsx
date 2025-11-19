@@ -1,19 +1,20 @@
-import * as React from "react"
-import { Label as LabelPrimitive, Slot as SlotPrimitive } from "radix-ui"
-import {twMerge} from "tailwind-merge";
-import {clsx} from "clsx";
+"use client"
 
+import * as React from "react"
+import * as LabelPrimitive from "@radix-ui/react-label"
+import {Slot} from "@radix-ui/react-slot"
 import {
   Controller,
-  FormProvider,
-  useFormContext,
-  useFormState,
   type ControllerProps,
   type FieldPath,
   type FieldValues,
+  FormProvider,
+  useFormContext,
+  useFormState,
 } from "react-hook-form"
 
-import { Label } from "@/ui/label"
+import {cn} from "@/lib/utils"
+import {Label} from "@/components/ui/label"
 
 const Form = FormProvider
 
@@ -35,7 +36,7 @@ const FormField = <
     ...props
   }: ControllerProps<TFieldValues, TName>) => {
   return (
-    <FormFieldContext.Provider value={{ name: props.name }}>
+    <FormFieldContext.Provider value={{name: props.name}}>
       <Controller {...props} />
     </FormFieldContext.Provider>
   )
@@ -44,15 +45,15 @@ const FormField = <
 const useFormField = () => {
   const fieldContext = React.useContext(FormFieldContext)
   const itemContext = React.useContext(FormItemContext)
-  const { getFieldState } = useFormContext()
-  const formState = useFormState({ name: fieldContext.name })
+  const {getFieldState} = useFormContext()
+  const formState = useFormState({name: fieldContext.name})
   const fieldState = getFieldState(fieldContext.name, formState)
 
   if (!fieldContext) {
     throw new Error("useFormField should be used within <FormField>")
   }
 
-  const { id } = itemContext
+  const {id} = itemContext
 
   return {
     id,
@@ -72,14 +73,14 @@ const FormItemContext = React.createContext<FormItemContextValue>(
   {} as FormItemContextValue
 )
 
-function FormItem({ className, ...props }: React.ComponentProps<"div">) {
+function FormItem({className, ...props}: React.ComponentProps<"div">) {
   const id = React.useId()
 
   return (
-    <FormItemContext.Provider value={{ id }}>
+    <FormItemContext.Provider value={{id}}>
       <div
         data-slot="form-item"
-        className={twMerge(clsx("grid gap-2", className))}
+        className={cn("grid gap-2", className)}
         {...props}
       />
     </FormItemContext.Provider>
@@ -90,30 +91,28 @@ function FormLabel({
                      className,
                      ...props
                    }: React.ComponentProps<typeof LabelPrimitive.Root>) {
-  const { error, formItemId } = useFormField()
+  const {error, formItemId} = useFormField()
 
   return (
     <Label
       data-slot="form-label"
       data-error={!!error}
-      className={twMerge(clsx("text-lg", className))}
+      className={className}
       htmlFor={formItemId}
       {...props}
     />
   )
 }
 
-function FormControl({ ...props }: React.ComponentProps<typeof SlotPrimitive.Slot>) {
-  const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
+function FormControl({...props}: React.ComponentProps<typeof Slot>) {
+  const {error, formItemId, formDescriptionId, formMessageId} = useFormField()
 
   return (
-    <SlotPrimitive.Slot
+    <Slot
       data-slot="form-control"
       id={formItemId}
-      className={twMerge(
-        clsx(
-          "data-[error=true]:border-red-400 data-[error=true]:ring-red-400 focus-visible:data-[error=true]:ring-red-400"
-        )
+      className={cn(
+        "data-[error=true]:border-red-400 data-[error=true]:ring-red-400 focus-visible:data-[error=true]:ring-red-400"
       )}
       aria-describedby={
         !error
@@ -127,21 +126,21 @@ function FormControl({ ...props }: React.ComponentProps<typeof SlotPrimitive.Slo
   )
 }
 
-function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
-  const { formDescriptionId } = useFormField()
+function FormDescription({className, ...props}: React.ComponentProps<"p">) {
+  const {formDescriptionId} = useFormField()
 
   return (
     <p
       data-slot="form-description"
       id={formDescriptionId}
-      className={twMerge(clsx("text-muted-foreground text-sm", className))}
+      className={cn("text-muted-foreground text-sm", className)}
       {...props}
     />
   )
 }
 
-function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
-  const { error, formMessageId } = useFormField()
+function FormMessage({className, ...props}: React.ComponentProps<"p">) {
+  const {error, formMessageId} = useFormField()
   const body = error ? String(error?.message ?? "") : props.children
 
   if (!body) {
@@ -152,7 +151,7 @@ function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
     <p
       data-slot="form-message"
       id={formMessageId}
-      className={twMerge(clsx("text-red-400 text-sm", className))}
+      className={cn("text-destructive text-sm", className)}
       {...props}
     >
       {body}
@@ -161,6 +160,7 @@ function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
 }
 
 export {
+  useFormField,
   Form,
   FormItem,
   FormLabel,

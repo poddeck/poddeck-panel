@@ -1,4 +1,4 @@
-import { LineLoading } from "@/components/loading";
+import {LineLoading} from "@/components/loading";
 import SimpleLayout from "@/layouts/simple";
 import {lazy, Suspense} from "react";
 import {Outlet, type RouteObject} from "react-router";
@@ -12,8 +12,8 @@ export const mainRoutes: RouteObject[] = [
     path: "/",
     element: (
       <SimpleLayout>
-        <Suspense fallback={<LineLoading />}>
-          <Outlet />
+        <Suspense fallback={<LineLoading/>}>
+          <Outlet/>
         </Suspense>
       </SimpleLayout>
     ),

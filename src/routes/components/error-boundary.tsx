@@ -36,7 +36,7 @@ function renderErrorMessage(error: unknown) {
   }
 
   if (error instanceof Error) {
-    const { filePath, functionName } = parseStackTrace(error.stack);
+    const {filePath, functionName} = parseStackTrace(error.stack);
 
     return (
       <>

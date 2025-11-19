@@ -1,12 +1,18 @@
 import type {LoginRequest} from "@/api/services/user-service";
 import Logo from "@/assets/logo.webp"
-import Spinner from "@/ui/spinner"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/ui/form";
-import { Navigate } from "react-router";
+import {Spinner} from "@/components/ui/spinner"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from "@/components/ui/form";
+import {Navigate, useNavigate} from "react-router";
 import {useTranslation} from "react-i18next";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
-import {useNavigate} from "react-router";
 import './index.css';
 import {useLogin, useUserToken} from "@/store/user-store.ts";
 
@@ -22,7 +28,7 @@ export default function LoginForm() {
   const token = useUserToken();
 
   if (token.authentication_token) {
-    return <Navigate to="/dashboard/" replace />;
+    return <Navigate to="/dashboard/" replace/>;
   }
 
   const handleFinish = async (values: LoginRequest) => {
@@ -58,8 +64,8 @@ export default function LoginForm() {
             <FormField
               control={form.control}
               name="email"
-              rules={{ required: t("authentication.login.email.missing") }}
-              render={({ field }) => (
+              rules={{required: t("authentication.login.email.missing")}}
+              render={({field}) => (
                 <FormItem className="mb-5">
                   <FormLabel>{t("authentication.login.email")}</FormLabel>
                   <FormControl>
@@ -70,7 +76,7 @@ export default function LoginForm() {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage/>
                 </FormItem>
               )}
             />
@@ -78,8 +84,8 @@ export default function LoginForm() {
             <FormField
               control={form.control}
               name="password"
-              rules={{ required: t("authentication.login.password.missing") }}
-              render={({ field }) => (
+              rules={{required: t("authentication.login.password.missing")}}
+              render={({field}) => (
                 <FormItem className="mb-5">
                   <div className="flex items-center justify-between">
                     <FormLabel>{t("authentication.login.password")}</FormLabel>
@@ -100,7 +106,7 @@ export default function LoginForm() {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage/>
                 </FormItem>
               )}
             />
