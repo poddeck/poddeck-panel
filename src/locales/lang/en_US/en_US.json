@@ -8,7 +8,17 @@
       "password.forgot": "Forgot password?",
       "remember": "Remember me",
       "submit": "LOGIN",
+      "successful": "Successfully logged in",
       "failed": "Incorrect username or password."
+    }
+  },
+  "dashboard": {
+    "sidebar": {
+      "theme": "Theme",
+      "theme.dark": "Dark",
+      "theme.light": "Light",
+      "theme.system": "System",
+      "logout": "Logout"
     }
   }
 }

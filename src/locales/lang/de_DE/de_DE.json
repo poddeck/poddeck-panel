@@ -8,7 +8,17 @@
       "password.forgot": "Passwort vergessen?",
       "remember": "Angemeldet bleiben",
       "submit": "ANMELDEN",
+      "successful": "Erfolgreich angemeldet",
       "failed": "Falscher Benutzername oder falsches Passwort."
+    }
+  },
+  "dashboard": {
+    "sidebar": {
+      "theme": "Aussehen",
+      "theme.dark": "Dunkel",
+      "theme.light": "Hell",
+      "theme.system": "System",
+      "logout": "Abmelden"
     }
   }
 }

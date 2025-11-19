@@ -16,12 +16,15 @@ export const panelRoutes: RouteObject[] = [
     element: (
       <LoginAuthGuard>
         <SimpleLayout>
-          <Suspense fallback={<LineLoading />}>
-            <Outlet />
+          <Suspense fallback={<LineLoading/>}>
+            <Outlet/>
           </Suspense>
         </SimpleLayout>
       </LoginAuthGuard>
     ),
-    children: [{ index: true, element: <Navigate to="/dashboard/" replace /> }, ...getRoutes()],
+    children: [{
+      index: true,
+      element: <Navigate to="/dashboard/" replace/>
+    }, ...getRoutes()],
   },
 ];
