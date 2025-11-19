@@ -1,7 +1,11 @@
 "use client"
 
 import * as React from "react"
-import {ChevronsUpDown, Plus} from "lucide-react"
+import {
+  ChevronsUpDown,
+  EllipsisVertical,
+  Plus
+} from "lucide-react"
 
 import {
   DropdownMenu,
@@ -18,6 +22,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import {useTranslation} from "react-i18next";
+import {Button} from "@/components/ui/button.tsx";
 
 export function SidebarClusterSwitcher({
                                          clusters,
@@ -75,6 +80,9 @@ export function SidebarClusterSwitcher({
                   <cluster.logo className="size-3.5 shrink-0"/>
                 </div>
                 {cluster.name}
+                <Button variant="ghost" size="sm" className="p-1 h-6 w-6 ml-auto">
+                  <EllipsisVertical/>
+                </Button>
               </DropdownMenuItem>
             ))}
             <DropdownMenuSeparator/>
