@@ -17,6 +17,28 @@
       "cluster": "Cluster",
       "clusters": "Clusters",
       "cluster.add": "Add cluster",
+      "overview": "Overview",
+      "nodes": "Nodes",
+      "units": "Units",
+      "pods": "Pods",
+      "deployments": "Deployments",
+      "daemon.sets": "Daemon Sets",
+      "replica.sets": "Replica Sets",
+      "stateful.sets": "Stateful Sets",
+      "jobs": "Jobs",
+      "cron.jobs": "Cron Jobs",
+      "config": "Config",
+      "config.maps": "Config maps",
+      "secrets": "Secrets",
+      "network": "Network",
+      "services": "Services",
+      "storage": "Storage",
+      "pv": "PV",
+      "pvc": "PVC",
+      "security": "Security",
+      "updates": "Updates",
+      "audits": "Audits",
+      "settings": "Settings",
       "language": "Language",
       "theme": "Theme",
       "theme.dark": "Dark",
@@ -25,8 +47,8 @@
       "logout": "Logout"
     },
     "page": {
-      "dashboard": {
-        "title": "Dashboard"
+      "overview": {
+        "title": "Overview"
       }
     }
   }

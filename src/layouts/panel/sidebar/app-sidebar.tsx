@@ -2,12 +2,22 @@
 
 import * as React from "react"
 import {
-  BookOpen,
-  Bot,
-  Rocket,
+  AlarmClock,
+  Box,
   Bug,
-  Settings2,
-  SquareTerminal,
+  CreditCard, Cylinder,
+  Database, Download,
+  House,
+  LayoutGrid,
+  Lock,
+  Network,
+  Rocket, SearchCheck,
+  Server,
+  Settings, Shield, SquareDashedMousePointer,
+  SquareStack,
+  Unplug,
+  VectorSquare,
+  Waypoints
 } from "lucide-react"
 
 import {SidebarClusterSwitcher} from "./cluster"
@@ -20,120 +30,155 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
-
-// This is sample data.
-const data = {
-  user: {
-    name: "Lukas",
-    email: "lukas@poddeck.io"
-  },
-  clusters: [
-    {
-      name: "Production",
-      logo: Rocket,
-    },
-    {
-      name: "Staging",
-      logo: Bug,
-    },
-  ],
-  navMain: [
-    {
-      title: "Playground",
-      url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: "History",
-          url: "#",
-        },
-        {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Models",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Documentation",
-      url: "#",
-      icon: BookOpen,
-      items: [
-        {
-          title: "Introduction",
-          url: "#",
-        },
-        {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
-      items: [
-        {
-          title: "General",
-          url: "#",
-        },
-        {
-          title: "Team",
-          url: "#",
-        },
-        {
-          title: "Billing",
-          url: "#",
-        },
-        {
-          title: "Limits",
-          url: "#",
-        },
-      ],
-    },
-  ]
-}
+import {useTranslation} from "react-i18next";
 
 export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
+  const {t} = useTranslation();
+  const data = {
+    user: {
+      name: "Lukas",
+      email: "lukas@poddeck.io"
+    },
+    clusters: [
+      {
+        name: "Production",
+        logo: Rocket,
+      },
+      {
+        name: "Staging",
+        logo: Bug,
+      },
+    ],
+    navigation: [
+      {
+        title: t("panel.sidebar.overview"),
+        url: "/overview/",
+        icon: House,
+        isActive: false,
+        items: [],
+      },
+      {
+        title: t("panel.sidebar.nodes"),
+        url: "/nodes/",
+        icon: Server,
+        isActive: false,
+        items: [],
+      },
+      {
+        title: t("panel.sidebar.units"),
+        icon: LayoutGrid,
+        isActive: true,
+        items: [
+          {
+            title: t("panel.sidebar.pods"),
+            url: "/pods/",
+            icon: SquareStack,
+          },
+          {
+            title: t("panel.sidebar.deployments"),
+            url: "/deployments/",
+            icon: Rocket,
+          },
+          {
+            title: t("panel.sidebar.daemon.sets"),
+            url: "/daemon-sets/",
+            icon: VectorSquare,
+          },
+          {
+            title: t("panel.sidebar.replica.sets"),
+            url: "/replica-sets/",
+            icon: Network,
+          },
+          {
+            title: t("panel.sidebar.stateful.sets"),
+            url: "/stateful-sets/",
+            icon: Database,
+          },
+          {
+            title: t("panel.sidebar.jobs"),
+            url: "/jobs/",
+            icon: Box,
+          },
+          {
+            title: t("panel.sidebar.cron.jobs"),
+            url: "/cron-jobs/",
+            icon: AlarmClock,
+          },
+        ],
+      },
+      {
+        title: t("panel.sidebar.config"),
+        icon: Settings,
+        isActive: true,
+        items: [
+          {
+            title: t("panel.sidebar.config.maps"),
+            url: "/config-maps/",
+            icon: CreditCard,
+          },
+          {
+            title: t("panel.sidebar.secrets"),
+            url: "/secrets/",
+            icon: Lock,
+          },
+        ],
+      },
+      {
+        title: t("panel.sidebar.network"),
+        icon: Waypoints,
+        isActive: true,
+        items: [
+          {
+            title: t("panel.sidebar.services"),
+            url: "/services/",
+            icon: Unplug,
+          },
+        ],
+      },
+      {
+        title: t("panel.sidebar.storage"),
+        icon: Cylinder,
+        isActive: true,
+        items: [
+          {
+            title: t("panel.sidebar.pv"),
+            url: "/pv/",
+            icon: Database,
+          },
+          {
+            title: t("panel.sidebar.pvc"),
+            url: "/pvc/",
+            icon: SquareDashedMousePointer,
+          },
+        ],
+      },
+      {
+        title: t("panel.sidebar.security"),
+        icon: Shield,
+        isActive: true,
+        items: [
+          {
+            title: t("panel.sidebar.updates"),
+            url: "/updates/",
+            icon: Download,
+            notifications: 3
+          },
+          {
+            title: t("panel.sidebar.audits"),
+            url: "/audits/",
+            icon: SearchCheck,
+          },
+        ],
+      }
+    ]
+  }
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <SidebarClusterSwitcher clusters={data.clusters}/>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarNavigation items={data.navMain}/>
+        <SidebarNavigation items={data.navigation}/>
       </SidebarContent>
       <SidebarFooter>
         <SidebarUser user={data.user}/>
