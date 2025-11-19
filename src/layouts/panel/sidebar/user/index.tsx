@@ -1,9 +1,6 @@
 import {
-  BadgeCheck,
-  Bell,
   ChevronsUpDown,
-  CreditCard,
-  LogOut,
+  LogOut, Settings,
   UserRound
 } from "lucide-react"
 
@@ -27,6 +24,7 @@ import {useLogout} from "@/store/user-store";
 import {useTranslation} from "react-i18next";
 import {SidebarThemeSelector} from "./theme-selector.tsx";
 import {SidebarLanguageSelector} from "./language-selector.tsx";
+import {Separator} from "@/components/ui/separator.tsx";
 
 export function SidebarUser({
                               user,
@@ -42,6 +40,7 @@ export function SidebarUser({
 
   return (
     <SidebarMenu>
+      <Separator className="my-2" />
       <SidebarMenuItem>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -81,23 +80,12 @@ export function SidebarUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator/>
             <DropdownMenuGroup>
+              <DropdownMenuItem>
+                <Settings/>
+                {t("panel.sidebar.settings")}
+              </DropdownMenuItem>
               <SidebarThemeSelector/>
               <SidebarLanguageSelector/>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator/>
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck/>
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard/>
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell/>
-                Notifications
-              </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator/>
             <DropdownMenuItem onClick={async () => await logout()}>
