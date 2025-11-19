@@ -12,13 +12,22 @@
       "failed": "Incorrect username or password."
     }
   },
-  "dashboard": {
+  "panel": {
     "sidebar": {
+      "cluster": "Cluster",
+      "clusters": "Clusters",
+      "cluster.add": "Add cluster",
+      "language": "Language",
       "theme": "Theme",
       "theme.dark": "Dark",
       "theme.light": "Light",
       "theme.system": "System",
       "logout": "Logout"
+    },
+    "page": {
+      "dashboard": {
+        "title": "Dashboard"
+      }
     }
   }
 }

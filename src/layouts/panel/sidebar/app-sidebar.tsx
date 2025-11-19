@@ -2,21 +2,17 @@
 
 import * as React from "react"
 import {
-  AudioWaveform,
   BookOpen,
   Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
+  Rocket,
+  Bug,
   Settings2,
   SquareTerminal,
 } from "lucide-react"
 
-import {NavMain} from "./nav-main"
-import {NavUser} from "./nav-user"
-import {TeamSwitcher} from "./team-switcher"
+import {SidebarClusterSwitcher} from "./cluster"
+import {SidebarNavigation} from "./navigation"
+import {SidebarUser} from "./user"
 import {
   Sidebar,
   SidebarContent,
@@ -28,25 +24,17 @@ import {
 // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: "Lukas",
+    email: "lukas@poddeck.io"
   },
-  teams: [
+  clusters: [
     {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
+      name: "Production",
+      logo: Rocket,
     },
     {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
+      name: "Staging",
+      logo: Bug,
     },
   ],
   navMain: [
@@ -135,37 +123,20 @@ const data = {
         },
       ],
     },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
+  ]
 }
 
 export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams}/>
+        <SidebarClusterSwitcher clusters={data.clusters}/>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain}/>
+        <SidebarNavigation items={data.navMain}/>
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user}/>
+        <SidebarUser user={data.user}/>
       </SidebarFooter>
       <SidebarRail/>
     </Sidebar>

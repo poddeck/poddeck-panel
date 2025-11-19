@@ -12,13 +12,22 @@
       "failed": "Falscher Benutzername oder falsches Passwort."
     }
   },
-  "dashboard": {
+  "panel": {
     "sidebar": {
+      "cluster": "Cluster",
+      "clusters": "Cluster",
+      "cluster.add": "Cluster hinzufügen",
+      "language": "Sprache",
       "theme": "Aussehen",
       "theme.dark": "Dunkel",
       "theme.light": "Hell",
       "theme.system": "System",
       "logout": "Abmelden"
+    },
+    "page": {
+      "dashboard": {
+        "title": "Dashboard"
+      }
     }
   }
 }

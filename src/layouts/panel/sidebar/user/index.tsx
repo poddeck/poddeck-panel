@@ -4,15 +4,10 @@ import {
   ChevronsUpDown,
   CreditCard,
   LogOut,
-  MonitorCog,
-  Moon,
-  Sun,
-  SunMoon
+  UserRound
 } from "lucide-react"
 
-import {useTheme} from "next-themes"
-
-import {Avatar, AvatarFallback, AvatarImage,} from "@/components/ui/avatar"
+import {Avatar, AvatarFallback,} from "@/components/ui/avatar"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -30,18 +25,18 @@ import {
 } from "@/components/ui/sidebar"
 import {useLogout} from "@/store/user-store";
 import {useTranslation} from "react-i18next";
+import {SidebarThemeSelector} from "./theme-selector.tsx";
+import {SidebarLanguageSelector} from "./language-selector.tsx";
 
-export function NavUser({
-                          user,
-                        }: {
+export function SidebarUser({
+                              user,
+                            }: {
   user: {
     name: string
     email: string
-    avatar: string
   }
 }) {
   const {t} = useTranslation();
-  const {setTheme} = useTheme()
   const {isMobile} = useSidebar()
   const logout = useLogout();
 
@@ -55,8 +50,8 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name}/>
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg"><UserRound
+                  className="size-5"/></AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>
@@ -75,8 +70,8 @@ export function NavUser({
               <div
                 className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name}/>
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback className="rounded-lg"><UserRound
+                    className="size-5"/></AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user.name}</span>
@@ -86,33 +81,8 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator/>
             <DropdownMenuGroup>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <DropdownMenuItem>
-                    <SunMoon/>
-                    {t("dashboard.sidebar.theme")}
-                  </DropdownMenuItem>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-                  side={isMobile ? "bottom" : "right"}
-                  align="start"
-                  sideOffset={4}
-                >
-                  <DropdownMenuItem onClick={() => setTheme("light")}>
-                    <Sun/>
-                    {t("dashboard.sidebar.theme.light")}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setTheme("dark")}>
-                    <Moon/>
-                    {t("dashboard.sidebar.theme.dark")}
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => setTheme("system")}>
-                    <MonitorCog/>
-                    {t("dashboard.sidebar.theme.system")}
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <SidebarThemeSelector/>
+              <SidebarLanguageSelector/>
             </DropdownMenuGroup>
             <DropdownMenuSeparator/>
             <DropdownMenuGroup>
@@ -132,7 +102,7 @@ export function NavUser({
             <DropdownMenuSeparator/>
             <DropdownMenuItem onClick={async () => await logout()}>
               <LogOut/>
-              {t("dashboard.sidebar.logout")}
+              {t("panel.sidebar.logout")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

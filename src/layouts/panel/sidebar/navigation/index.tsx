@@ -16,9 +16,9 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 
-export function NavMain({
-                          items,
-                        }: {
+export function SidebarNavigation({
+                                    items,
+                                  }: {
   items: {
     title: string
     url: string
