@@ -1,6 +1,6 @@
 import MotionContainer from "@/components/animate/motion-container";
 import {varBounce} from "@/components/animate/variants/bounce";
-import {Button} from "@/ui/button";
+import {Button} from "@/components/ui/button";
 import {m} from "motion/react";
 import type {ReactNode} from "react";
 import {Helmet} from "react-helmet";
@@ -47,7 +47,7 @@ export default function ErrorLayout({
             slots.footer
           ) : (
             <NavLink to={"/"} className="mt-4 w-full flex justify-center">
-              <Button size="lg" variant="contrast">
+              <Button size="lg">
                 {buttonText}
               </Button>
             </NavLink>

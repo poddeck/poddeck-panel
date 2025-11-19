@@ -18,8 +18,11 @@ export const UserApi = {
   Logout: "/authentication/logout/",
 } as const;
 
-const login = (data: LoginRequest) => client.post<LoginResponse>({ url: UserApi.Login, data });
-const logout = () => client.get({ url: UserApi.Logout });
+const login = (data: LoginRequest) => client.post<LoginResponse>({
+  url: UserApi.Login,
+  data
+});
+const logout = () => client.get({url: UserApi.Logout});
 
 export default {
   login,

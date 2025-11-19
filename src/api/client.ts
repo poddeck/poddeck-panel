@@ -13,7 +13,12 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    config.headers.Authorization = "Bearer Token";
+    const token = userStore.getState().userToken?.authentication_token;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    } else {
+      delete config.headers.Authorization;
+    }
     return config;
   },
   (error) => Promise.reject(error),
@@ -21,9 +26,6 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (response: AxiosResponse) => {
-    if (!response.data) {
-      throw new Error("The request failed, please try again later!");
-    }
     return response.data;
   },
   (error: AxiosError) => {
