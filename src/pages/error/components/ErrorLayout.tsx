@@ -5,6 +5,7 @@ import {m} from "motion/react";
 import type {ReactNode} from "react";
 import {Helmet} from "react-helmet";
 import {NavLink} from "react-router";
+import {useTranslation} from "react-i18next";
 
 interface ErrorLayoutProps {
   title: string;
@@ -17,41 +18,36 @@ interface ErrorLayoutProps {
 
 export default function ErrorLayout({
                                       title,
-                                      description,
-                                      buttonText = "Go to Home",
-                                      slots = {},
+                                      description
                                     }: ErrorLayoutProps) {
+  const {t} = useTranslation();
   return (
     <>
       <Helmet>
         <title>{title}</title>
       </Helmet>
       <div
-        className="m-auto max-w-[400px] flex items-center justify-center h-full">
+        className="m-auto max-w-[600px] flex items-center justify-center h-full">
         <MotionContainer
           className="flex flex-col items-center justify-center px-2 w-full gap-2">
           <m.div variants={varBounce().in}>
-            <h2 className="text-center">
+            <h2
+              className="text-center text-4xl font-bold tracking-tighter sm:text-5xl">
               {title}
             </h2>
           </m.div>
           {description && (
             <m.div variants={varBounce().in}>
-              <p className="text-center text-secondary">
+              <p className="text-center text-gray-500">
                 {description}
               </p>
             </m.div>
           )}
-
-          {slots.footer ? (
-            slots.footer
-          ) : (
-            <NavLink to={"/"} className="mt-4 w-full flex justify-center">
-              <Button size="lg">
-                {buttonText}
-              </Button>
-            </NavLink>
-          )}
+          <NavLink to={"/"} className="mt-6 w-full flex justify-center">
+            <Button size="lg">
+              {t("error.return")}
+            </Button>
+          </NavLink>
         </MotionContainer>
       </div>
     </>

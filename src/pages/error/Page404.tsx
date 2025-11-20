@@ -1,10 +1,12 @@
 import ErrorLayout from "./components/ErrorLayout";
+import {useTranslation} from "react-i18next";
 
 export default function Page404() {
+  const {t} = useTranslation();
   return (
     <ErrorLayout
-      title="Oops! Page not found!"
-      description="The page you’re looking for doesn’t exist or has been moved."
+      title={t("error.404.title")}
+      description={t("error.404.description")}
     />
   );
 }
