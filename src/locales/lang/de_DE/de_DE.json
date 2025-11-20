@@ -1,4 +1,19 @@
 {
+  "error": {
+    "return": "Zurück zur Website",
+    "403": {
+      "title": "Zugriff verweigert",
+      "description": "Sie haben keine Berechtigung, auf diese Ressource zuzugreifen."
+    },
+    "404": {
+      "title": "Ups! Seite nicht gefunden!",
+      "description": "Die gesuchte Seite existiert nicht oder wurde verschoben."
+    },
+    "500": {
+      "title": "Interner Serverfehler!",
+      "description": "Entschuldigen Sie bitte die Unannehmlichkeiten."
+    }
+  },
   "authentication": {
     "login": {
       "email": "Email Adresse",
@@ -19,6 +34,8 @@
       "cluster.add": "Cluster hinzufügen",
       "overview": "Übersicht",
       "nodes": "Nodes",
+      "workload": "Auslastung",
+      "events": "Ereignisse",
       "units": "Einheiten",
       "pods": "Pods",
       "deployments": "Deployments",
@@ -45,6 +62,20 @@
       "theme.light": "Hell",
       "theme.system": "System",
       "logout": "Abmelden"
+    },
+    "header": {
+      "search": {
+        "placeholder": "Suchen...",
+        "ctrl": "STRG",
+        "empty": "Keine Ergebnisse gefunden.",
+        "popup": {
+          "placeholder": "Geben Sie einen Befehl ein oder suchen Sie...",
+          "heading": "Navigation",
+          "navigate": "zum navigieren",
+          "select": "zum auswählen",
+          "close": "zum schließen"
+        }
+      }
     },
     "page": {
       "overview": {

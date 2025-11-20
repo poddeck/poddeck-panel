@@ -15,6 +15,8 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 import {Badge} from "@/components/ui/badge.tsx";
+import {Link} from "react-router-dom";
+import {useLocation} from "react-use";
 
 export function SidebarNavigation({
                                     items,
@@ -32,6 +34,7 @@ export function SidebarNavigation({
     }[]
   }[]
 }) {
+  const {pathname} = useLocation();
   return (
     <SidebarGroup>
       <SidebarMenu>
@@ -56,8 +59,9 @@ export function SidebarNavigation({
                   <SidebarMenuSub>
                     {item.items?.map((subItem) => (
                       <SidebarMenuSubItem key={subItem.title}>
-                        <SidebarMenuSubButton asChild>
-                          <a href={subItem.url}>
+                        <SidebarMenuSubButton asChild
+                                              className={(pathname === subItem.url) ? "bg-accent text-accent-foreground" : ""}>
+                          <Link to={subItem.url}>
                             {subItem.icon && <subItem.icon/>}
                             <span>{subItem.title}</span>
                             {subItem.notifications &&
@@ -66,7 +70,7 @@ export function SidebarNavigation({
                                 {subItem.notifications}
                               </Badge>
                             }
-                          </a>
+                          </Link>
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     ))}
@@ -75,14 +79,15 @@ export function SidebarNavigation({
               </SidebarMenuItem>
             </Collapsible>
           ) : (
-            <SidebarMenuSubItem key={item.title}>
-              <SidebarMenuSubButton asChild>
-                <a href={item.url}>
+            <SidebarMenuItem key={item.title}>
+              <SidebarMenuButton asChild tooltip={item.title}
+                                 className={(pathname === item.url) ? "bg-accent text-accent-foreground" : ""}>
+                <Link to={item.url!}>
                   {item.icon && <item.icon/>}
                   <span>{item.title}</span>
-                </a>
-              </SidebarMenuSubButton>
-            </SidebarMenuSubItem>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
           )
         )}
       </SidebarMenu>

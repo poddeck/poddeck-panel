@@ -1,5 +1,5 @@
-import {SidebarTrigger} from "@/components/ui/sidebar.tsx";
-import {Separator} from "@/components/ui/separator.tsx";
+import {SidebarTrigger} from "@/components/ui/sidebar";
+import {Separator} from "@/components/ui/separator";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,9 +9,9 @@ import {
 import {useTranslation} from "react-i18next";
 import {AvatarFallback} from "@radix-ui/react-avatar";
 import {Bell, CircleAlertIcon, XIcon} from "lucide-react";
-import {Badge} from "@/components/ui/badge.tsx";
-import {Avatar} from "@/components/ui/avatar.tsx";
-import {Button} from "@/components/ui/button.tsx";
+import {Badge} from "@/components/ui/badge";
+import {Avatar} from "@/components/ui/avatar";
+import {Button} from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -19,9 +19,10 @@ import {
   SheetTitle,
   SheetTrigger
 } from '@/components/ui/sheet'
-import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert.tsx";
+import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {useEffect, useState} from 'react'
-import {Progress} from "@/components/ui/progress.tsx";
+import {Progress} from "@/components/ui/progress";
+import {HeaderSearchBar} from "./search-bar";
 
 interface AppHeaderProps {
   title: string;
@@ -46,31 +47,35 @@ export function AppHeader({title}: AppHeaderProps) {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="ghost" size="sm" className="ml-auto mr-5">
-            <div className='relative w-fit'>
-              <Avatar className='size-5 rounded-sm'>
-                <AvatarFallback className='rounded-sm'>
-                  <Bell className='size-5'/>
-                </AvatarFallback>
-              </Avatar>
-              <Badge
-                className='absolute -top-2 -right-2 h-4 min-w-4 px-1 tabular-nums bg-red-500 text-white'>3</Badge>
-            </div>
-          </Button>
-        </SheetTrigger>
-        <SheetContent>
-          <SheetHeader>
-            <SheetTitle>Notifications</SheetTitle>
-          </SheetHeader>
-          <ul className="px-4">
-            <DemoLoaderAlert title="Security Update In Progress" description="A critical security patch is available for your Kubernetes version. Schedule an update to ensure cluster safety and compliance."></DemoLoaderAlert>
-            <DemoMessageAlert title="Cluster Health Alert" description="One or more nodes in your cluster are reporting high CPU or memory usage. Check workloads to prevent potential performance issues."></DemoMessageAlert>
-            <DemoMessageAlert title="Deployment Success" description="Your recent deployment to the production namespace completed successfully. All pods are running and ready."></DemoMessageAlert>
-          </ul>
-        </SheetContent>
-      </Sheet>
+      <div className="flex align-center ml-auto mr-6 h-5 items-center space-x-4">
+        <HeaderSearchBar/>
+        <Separator orientation="vertical" className="ml-5 mr-3" />
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="sm" className="px-2">
+              <div className='relative w-fit'>
+                <Avatar className='size-5 rounded-sm'>
+                  <AvatarFallback className='rounded-sm'>
+                    <Bell className='size-5'/>
+                  </AvatarFallback>
+                </Avatar>
+                <Badge
+                  className='absolute -top-2 -right-2 h-4 min-w-4 px-0.5 tabular-nums bg-red-500 text-white outline-2 outline-background'>3</Badge>
+              </div>
+            </Button>
+          </SheetTrigger>
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>Notifications</SheetTitle>
+            </SheetHeader>
+            <ul className="px-4">
+              <DemoLoaderAlert title="Security Update In Progress" description="A critical security patch is available for your Kubernetes version. Schedule an update to ensure cluster safety and compliance."></DemoLoaderAlert>
+              <DemoMessageAlert title="Cluster Health Alert" description="One or more nodes in your cluster are reporting high CPU or memory usage. Check workloads to prevent potential performance issues."></DemoMessageAlert>
+              <DemoMessageAlert title="Deployment Success" description="Your recent deployment to the production namespace completed successfully. All pods are running and ready."></DemoMessageAlert>
+            </ul>
+          </SheetContent>
+        </Sheet>
+      </div>
     </header>
   );
 }

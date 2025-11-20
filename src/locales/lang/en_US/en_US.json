@@ -1,4 +1,19 @@
 {
+  "error": {
+    "return": "Return to website",
+    "403": {
+      "title": "Access Denied",
+      "description": "You do not have permission to access this resource."
+    },
+    "404": {
+      "title": "Oops! Page not found!",
+      "description": "The page you’re looking for doesn’t exist or has been moved."
+    },
+    "500": {
+      "title": "Internal Server Error!",
+      "description": "Sorry for the inconvenience."
+    }
+  },
   "authentication": {
     "login": {
       "email": "Email address",
@@ -19,6 +34,8 @@
       "cluster.add": "Add cluster",
       "overview": "Overview",
       "nodes": "Nodes",
+      "workload": "Workload",
+      "events": "Events",
       "units": "Units",
       "pods": "Pods",
       "deployments": "Deployments",
@@ -45,6 +62,20 @@
       "theme.light": "Light",
       "theme.system": "System",
       "logout": "Logout"
+    },
+    "header": {
+      "search": {
+        "placeholder": "Search...",
+        "ctrl": "CTRL",
+        "empty": "No results found.",
+        "popup": {
+          "placeholder": "Type a command or search...",
+          "heading": "Navigation",
+          "navigate": "to navigate",
+          "select": "to select",
+          "close": "to close"
+        }
+      }
     },
     "page": {
       "overview": {
