@@ -97,14 +97,15 @@ export function HeaderSearchBar() {
 
   return (
     <>
-      <Button variant="ghost" className="bg-secondary px-2 rounded-lg mr-0"
+      <Button variant="ghost"
+              className="bg-secondary px-2 rounded-lg mr-0 hidden md:block"
               size="sm" onClick={() => setOpen(true)}>
         <div className="flex items-center justify-center gap-4">
           <Search size="20"/>
           <span
             className="mr-10">{t("panel.header.search.placeholder")}</span>
           <kbd
-            className="flex items-center justify-center rounded-md bg-primary/20 text-common-white px-1.5 py-0.5 text-sm font-semibold">
+            className="flex items-center justify-center rounded-md bg-primary/20 text-common-white px-1.5 py-0.5 text-sm font-extralight">
             <span>{t("panel.header.search.ctrl")} K</span>
           </kbd>
         </div>
@@ -114,39 +115,42 @@ export function HeaderSearchBar() {
         <CommandInput placeholder={t("panel.header.search.popup.placeholder")}
                       value={searchQuery} onValueChange={setSearchQuery}
                       className="focus:outline-none focus:ring-0 focus-visible:ring-0 border-0"/>
-        <CommandList >
+        <CommandList>
           <CommandEmpty>{t("panel.header.search.empty")}</CommandEmpty>
           <CommandGroup heading={t("panel.header.search.popup.heading")}>
-            {flattenedItems.map(({ key, label }) => (
+            {flattenedItems.map(({key, label}) => (
               <CommandItem
                 key={key}
                 onSelect={() => handleSelect(key)}
                 className="flex flex-col items-start"
               >
                 <div className="font-medium">
-                  <HighlightText text={label} query={searchQuery} />
+                  <HighlightText text={label} query={searchQuery}/>
                 </div>
                 <div className="text-xs text-muted-foreground">
-                  <HighlightText text={key} query={searchQuery} />
+                  <HighlightText text={key} query={searchQuery}/>
                 </div>
               </CommandItem>
             ))}
           </CommandGroup>
         </CommandList>
-        <CommandSeparator />
+        <CommandSeparator/>
         <div className="flex flex-wrap text-text-primary p-2 justify-end gap-2">
           <div className="flex items-center gap-1">
             <Badge variant="secondary"><ArrowUp/></Badge>
             <Badge variant="secondary"><ArrowDown/></Badge>
-            <span className="text-[12px]">{t("panel.header.search.popup.navigate")}</span>
+            <span
+              className="text-[12px]">{t("panel.header.search.popup.navigate")}</span>
           </div>
           <div className="flex items-center gap-1">
             <Badge variant="secondary"><CornerDownLeft/></Badge>
-            <span className="text-[12px]">{t("panel.header.search.popup.select")}</span>
+            <span
+              className="text-[12px]">{t("panel.header.search.popup.select")}</span>
           </div>
           <div className="flex items-center gap-1">
             <Badge variant="secondary">ESC</Badge>
-            <span className="text-[12px]">{t("panel.header.search.popup.close")}</span>
+            <span
+              className="text-[12px]">{t("panel.header.search.popup.close")}</span>
           </div>
         </div>
       </CommandDialog>

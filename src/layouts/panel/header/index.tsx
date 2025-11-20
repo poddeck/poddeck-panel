@@ -47,9 +47,11 @@ export function AppHeader({title}: AppHeaderProps) {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-      <div className="flex align-center ml-auto mr-6 h-5 items-center space-x-4">
+      <div
+        className="flex align-center ml-auto mr-6 h-5 items-center space-x-4">
         <HeaderSearchBar/>
-        <Separator orientation="vertical" className="ml-5 mr-3" />
+        <Separator orientation="vertical"
+                   className="ml-5 mr-3 hidden md:block"/>
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="ghost" size="sm" className="px-2">
@@ -69,9 +71,12 @@ export function AppHeader({title}: AppHeaderProps) {
               <SheetTitle>Notifications</SheetTitle>
             </SheetHeader>
             <ul className="px-4">
-              <DemoLoaderAlert title="Security Update In Progress" description="A critical security patch is available for your Kubernetes version. Schedule an update to ensure cluster safety and compliance."></DemoLoaderAlert>
-              <DemoMessageAlert title="Cluster Health Alert" description="One or more nodes in your cluster are reporting high CPU or memory usage. Check workloads to prevent potential performance issues."></DemoMessageAlert>
-              <DemoMessageAlert title="Deployment Success" description="Your recent deployment to the production namespace completed successfully. All pods are running and ready."></DemoMessageAlert>
+              <DemoLoaderAlert title="Security Update In Progress"
+                               description="A critical security patch is available for your Kubernetes version. Schedule an update to ensure cluster safety and compliance."></DemoLoaderAlert>
+              <DemoMessageAlert title="Cluster Health Alert"
+                                description="One or more nodes in your cluster are reporting high CPU or memory usage. Check workloads to prevent potential performance issues."></DemoMessageAlert>
+              <DemoMessageAlert title="Deployment Success"
+                                description="Your recent deployment to the production namespace completed successfully. All pods are running and ready."></DemoMessageAlert>
             </ul>
           </SheetContent>
         </Sheet>

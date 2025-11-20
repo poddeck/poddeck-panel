@@ -80,7 +80,33 @@
     "page": {
       "overview": {
         "title": "Overview"
+      },
+      "nodes": {
+        "title": "Nodes"
+      },
+      "workload": {
+        "title": "Workload"
+      },
+      "events": {
+        "title": "Events"
       }
+    }
+  },
+  "settings": {
+    "general": {
+      "title": "General"
+    },
+    "account": {
+      "title": "Account"
+    },
+    "personalization": {
+      "title": "Personalization"
+    },
+    "security": {
+      "title": "Security"
+    },
+    "sessions": {
+      "title": "Sessions"
     }
   }
 }

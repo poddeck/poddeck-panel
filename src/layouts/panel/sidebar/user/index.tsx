@@ -25,6 +25,8 @@ import {useTranslation} from "react-i18next";
 import {SidebarThemeSelector} from "./theme-selector.tsx";
 import {SidebarLanguageSelector} from "./language-selector.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
+import {SettingsDialog} from "@/layouts/settings";
+import {Dialog, DialogTrigger} from "@/components/ui/dialog.tsx";
 
 export function SidebarUser({
                               user,
@@ -40,34 +42,15 @@ export function SidebarUser({
 
   return (
     <SidebarMenu>
-      <Separator className="my-2" />
+      <Separator className="my-2"/>
       <SidebarMenuItem>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <SidebarMenuButton
-              size="lg"
-              className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-            >
-              <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarFallback className="rounded-lg"><UserRound
-                  className="size-5"/></AvatarFallback>
-              </Avatar>
-              <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
-              </div>
-              <ChevronsUpDown className="ml-auto size-4"/>
-            </SidebarMenuButton>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent
-            className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-            side={isMobile ? "bottom" : "right"}
-            align="end"
-            sideOffset={4}
-          >
-            <DropdownMenuLabel className="p-0 font-normal">
-              <div
-                className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+        <Dialog>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <SidebarMenuButton
+                size="lg"
+                className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+              >
                 <Avatar className="h-8 w-8 rounded-lg">
                   <AvatarFallback className="rounded-lg"><UserRound
                     className="size-5"/></AvatarFallback>
@@ -76,24 +59,48 @@ export function SidebarUser({
                   <span className="truncate font-medium">{user.name}</span>
                   <span className="truncate text-xs">{user.email}</span>
                 </div>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator/>
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Settings/>
-                {t("panel.sidebar.settings")}
+                <ChevronsUpDown className="ml-auto size-4"/>
+              </SidebarMenuButton>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+              side={isMobile ? "bottom" : "right"}
+              align="end"
+              sideOffset={4}
+            >
+              <DropdownMenuLabel className="p-0 font-normal">
+                <div
+                  className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                  <Avatar className="h-8 w-8 rounded-lg">
+                    <AvatarFallback className="rounded-lg"><UserRound
+                      className="size-5"/></AvatarFallback>
+                  </Avatar>
+                  <div className="grid flex-1 text-left text-sm leading-tight">
+                    <span className="truncate font-medium">{user.name}</span>
+                    <span className="truncate text-xs">{user.email}</span>
+                  </div>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator/>
+              <DropdownMenuGroup>
+                <DialogTrigger asChild>
+                  <DropdownMenuItem>
+                    <Settings/>
+                    {t("panel.sidebar.settings")}
+                  </DropdownMenuItem>
+                </DialogTrigger>
+                <SidebarThemeSelector/>
+                <SidebarLanguageSelector/>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator/>
+              <DropdownMenuItem onClick={async () => await logout()}>
+                <LogOut/>
+                {t("panel.sidebar.logout")}
               </DropdownMenuItem>
-              <SidebarThemeSelector/>
-              <SidebarLanguageSelector/>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator/>
-            <DropdownMenuItem onClick={async () => await logout()}>
-              <LogOut/>
-              {t("panel.sidebar.logout")}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <SettingsDialog/>
+        </Dialog>
       </SidebarMenuItem>
     </SidebarMenu>
   )
