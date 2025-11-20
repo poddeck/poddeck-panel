@@ -1,0 +1,86 @@
+{
+  "error": {
+    "return": "Volver al sitio web",
+    "403": {
+      "title": "Acceso denegado",
+      "description": "No tienes permiso para acceder a este recurso."
+    },
+    "404": {
+      "title": "¡Ups! Página no encontrada",
+      "description": "La página que buscas no existe o ha sido movida."
+    },
+    "500": {
+      "title": "¡Error interno del servidor!",
+      "description": "Por favor, disculpa las molestias."
+    }
+  },
+  "authentication": {
+    "login": {
+      "email": "Dirección de correo electrónico",
+      "email.missing": "Por favor introduce una dirección de correo electrónico",
+      "password": "Contraseña",
+      "password.missing": "Por favor introduce una contraseña",
+      "password.forgot": "¿Olvidaste tu contraseña?",
+      "remember": "Mantener sesión iniciada",
+      "submit": "INICIAR SESIÓN",
+      "successful": "Has iniciado sesión correctamente",
+      "failed": "Nombre de usuario o contraseña incorrectos."
+    }
+  },
+  "panel": {
+    "sidebar": {
+      "cluster": "Clúster",
+      "clusters": "Clústeres",
+      "cluster.add": "Agregar clúster",
+      "overview": "Resumen",
+      "nodes": "Nodos",
+      "workload": "Carga de trabajo",
+      "events": "Eventos",
+      "units": "Unidades",
+      "pods": "Pods",
+      "deployments": "Deployments",
+      "daemon.sets": "Daemon Sets",
+      "replica.sets": "Replica Sets",
+      "stateful.sets": "Stateful Sets",
+      "jobs": "Jobs",
+      "cron.jobs": "Cron Jobs",
+      "config": "Configuración",
+      "config.maps": "Config maps",
+      "secrets": "Secrets",
+      "network": "Red",
+      "services": "Servicios",
+      "storage": "Almacenamiento",
+      "pv": "PV",
+      "pvc": "PVC",
+      "security": "Seguridad",
+      "updates": "Actualizaciones",
+      "audits": "Auditorías",
+      "settings": "Configuración",
+      "language": "Idioma",
+      "theme": "Apariencia",
+      "theme.dark": "Oscuro",
+      "theme.light": "Claro",
+      "theme.system": "Sistema",
+      "logout": "Cerrar sesión"
+    },
+    "header": {
+      "search": {
+        "placeholder": "Buscar...",
+        "ctrl": "CTRL",
+        "empty": "No se encontraron resultados.",
+        "popup": {
+          "placeholder": "Escribe un comando o busca...",
+          "heading": "Navegación",
+          "navigate": "para navegar",
+          "select": "para seleccionar",
+          "close": "para cerrar"
+        }
+      }
+    },
+    "page": {
+      "overview": {
+        "title": "Resumen"
+      }
+    }
+  }
+}
