@@ -8,6 +8,9 @@ import {LineLoading} from "@/components/loading";
 const getRoutes = (): RouteObject[] => {
   return [
     {path: "overview", element: Component("/pages/panel/overview")},
+    {path: "nodes", element: Component("/pages/panel/nodes")},
+    {path: "workload", element: Component("/pages/panel/workload")},
+    {path: "events", element: Component("/pages/panel/events")},
   ];
 };
 
