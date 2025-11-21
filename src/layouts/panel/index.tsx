@@ -12,7 +12,9 @@ export default function PanelPage({title, children}: PanelPageProps) {
       <AppSidebar/>
       <SidebarInset>
         <AppHeader title={title}/>
-        {children}
+        <div className="w-[min(1400px,95%)] mx-auto mt-[5vh] flex flex-col flex-1">
+          {children}
+        </div>
       </SidebarInset>
     </SidebarProvider>
   )
