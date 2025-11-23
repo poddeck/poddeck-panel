@@ -50,7 +50,7 @@ import {Skeleton} from "@/components/ui/skeleton"
 interface DataTableProps<T> {
   columns: ColumnDef<T, unknown>[]
   initialSorting?: ColumnSort[]
-  data?: T[]
+  data: T[]
   pageSize?: number,
   isLoading?: boolean
 }
@@ -58,7 +58,7 @@ interface DataTableProps<T> {
 export function DataTable<T>({
                                columns,
                                initialSorting,
-                               data: initialData,
+                               data,
                                pageSize = 10,
                                isLoading
                              }: DataTableProps<T>) {
@@ -70,7 +70,6 @@ export function DataTable<T>({
   const [sorting, setSorting] = useState<SortingState>(
     initialSorting ? initialSorting : []
   )
-  const [data] = useState<T[]>(initialData ?? [])
   const table = useReactTable({
     data,
     columns,
