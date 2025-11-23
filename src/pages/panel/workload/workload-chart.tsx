@@ -16,20 +16,9 @@ import {
 } from "@/components/ui/chart"
 import {useTranslation} from "react-i18next";
 
-export function generateRandomChartData(startDate: string | number | Date, days: number) {
-  const result = [];
-  const current = new Date(startDate);
-
-  for (let i = 0; i < days; i++) {
-    result.push({
-      date: current.toISOString().split("T")[0],
-      data: Math.floor(Math.random() * 500) + 50, // random 50–550
-    });
-
-    current.setDate(current.getDate() + 1);
-  }
-
-  return result;
+export interface WorkloadChartEntry {
+  date: string | number | Date
+  data: string
 }
 
 interface WorkloadChartProps {
@@ -38,7 +27,8 @@ interface WorkloadChartProps {
   usage: string
   relation?: string
   color: string
-  timeRange: string
+  animate: boolean
+  data: WorkloadChartEntry[]
 }
 
 export function WorkloadChart(
@@ -48,26 +38,12 @@ export function WorkloadChart(
     usage,
     relation,
     color,
-    timeRange
+    animate,
+    data
   }: WorkloadChartProps
 ) {
   const {i18n} = useTranslation();
   const language = (i18n.resolvedLanguage || "en_US").replace("_", "-");
-  const chartData = generateRandomChartData("2024-04-01", 90);
-  const filteredData = chartData.filter((item) => {
-    const date = new Date(item.date)
-    const referenceDate = new Date("2024-06-30")
-    let daysToSubtract = 90
-    if (timeRange === "30d") {
-      daysToSubtract = 30
-    } else if (timeRange === "7d") {
-      daysToSubtract = 7
-    }
-    const startDate = new Date(referenceDate)
-    startDate.setDate(startDate.getDate() - daysToSubtract)
-    return date >= startDate
-  })
-  console.log(id);
   const gradientId = `fillData-${id.replace(/\s+/g, "")}`;
   const chartConfig = {
     data: {
@@ -90,7 +66,7 @@ export function WorkloadChart(
           config={chartConfig}
           className="aspect-auto h-[250px] w-full"
         >
-          <AreaChart data={filteredData}>
+          <AreaChart data={data}>
             <defs>
               <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
                 <stop
@@ -126,8 +102,11 @@ export function WorkloadChart(
                 <ChartTooltipContent
                   labelFormatter={(value) => {
                     return new Date(value).toLocaleDateString(language, {
-                      month: "short",
+                      month: "numeric",
                       day: "numeric",
+                      hour: "numeric",
+                      minute: "numeric",
+                      second: "numeric",
                     })
                   }}
                   indicator="dot"
@@ -140,6 +119,9 @@ export function WorkloadChart(
               fill={`url(#${gradientId})`}
               stroke={color}
               stackId="a"
+              isAnimationActive={animate}
+              animationDuration={500}
+              animationEasing="ease-in-out"
             />
           </AreaChart>
         </ChartContainer>
