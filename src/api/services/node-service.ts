@@ -16,6 +16,7 @@ export type Node = {
 
 export type NodeListResponse = {
   nodes: Node[];
+  success?: boolean;
 }
 
 export const NodeApi = {

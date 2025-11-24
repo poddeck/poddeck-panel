@@ -121,11 +121,17 @@ export default function WorkloadPage() {
               <SelectValue placeholder="Select Node" />
             </SelectTrigger>
             <SelectContent className="rounded-xl">
-              {nodes?.map((node) => (
-                <SelectItem key={node.name} value={node.name} className="rounded-lg">
-                  {node.name}
+              {nodes && nodes.length > 0 ? (
+                nodes.map((node) => (
+                  <SelectItem key={node.name} value={node.name} className="rounded-lg">
+                    {node.name}
+                  </SelectItem>
+                ))
+              ) : (
+                <SelectItem value="empty" disabled className="rounded-lg cursor-not-allowed text-gray-400">
+                  No nodes available
                 </SelectItem>
-              ))}
+              )}
             </SelectContent>
           </Select>
           <Select value={timeRange} onValueChange={setTimeRange}>

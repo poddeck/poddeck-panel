@@ -70,7 +70,9 @@ export default function NodesPage() {
     async function loadNodes() {
       try {
         const response = await nodeService.list();
-        setNodes(response.nodes);
+        if (response.success != false) {
+          setNodes(response.nodes);
+        }
       } finally {
         setIsLoading(false);
       }
