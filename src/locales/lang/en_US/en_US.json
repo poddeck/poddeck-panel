@@ -43,7 +43,25 @@
         "description": "Add a new cluster. Assign a name for the new cluster.",
         "name": "Name",
         "cancel": "Cancel",
-        "submit": "Add"
+        "submit": "Add",
+        "icon": {
+          "label": "Icon",
+          "select.placeholder": "Select icon",
+          "input.placeholder": "Search icon...",
+          "rocket": "Rocket",
+          "bug": "Bug",
+          "user": "User",
+          "home": "Home",
+          "headphones": "Headphones",
+          "heart": "Heart",
+          "box": "Box",
+          "cone": "Cone",
+          "cylinder": "Cylinder",
+          "pyramid": "Pyramid",
+          "crown": "Crown",
+          "flame": "Flame",
+          "smile": "Smile"
+        }
       },
       "cluster.add.successful": "Cluster successfully added",
       "overview": "Overview",

@@ -4,7 +4,7 @@ import * as React from "react"
 import {
   AlarmClock,
   Box,
-  Bug, CalendarClock,
+  CalendarClock,
   CreditCard, Cylinder,
   Database, Download, Gauge,
   House,
@@ -31,7 +31,6 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import {useTranslation} from "react-i18next";
-import ClusterService from "@/api/services/cluster-service.ts";
 
 export function AppNavigation() {
   const {t} = useTranslation();
@@ -178,29 +177,10 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
     name: "Lukas",
     email: "lukas@poddeck.io"
   }
-  const [clusters, setClusters] = React.useState<{ name: string; logo: React.ElementType }[]>([]);
-  const [loading, setLoading] = React.useState(true);
-  React.useEffect(() => {
-    async function fetchClusters() {
-      try {
-        const response = await ClusterService.list();
-        const mappedClusters = response.clusters.map(cluster => ({
-          name: cluster.name,
-          logo: cluster.name.toLowerCase() === "production" ? Rocket : Bug,
-        }));
-        setClusters(mappedClusters);
-      } catch (err) {
-        console.error("Failed to fetch clusters:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchClusters();
-  }, []);
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <SidebarClusterSwitcher clusters={loading ? [] : clusters}/>
+        <SidebarClusterSwitcher/>
       </SidebarHeader>
       <SidebarContent>
         <SidebarNavigation items={AppNavigation()}/>

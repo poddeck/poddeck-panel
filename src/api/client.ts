@@ -5,6 +5,7 @@ import axios, {
   type AxiosResponse
 } from "axios";
 import userService from "./services/user-service.ts";
+import clusterStore from "@/store/cluster-store.ts";
 
 export interface AuthenticationRequestConfig extends AxiosRequestConfig {
   _retry?: boolean;
@@ -42,7 +43,9 @@ axiosInstance.interceptors.request.use(
     } else {
       delete config.headers.Authorization;
     }
-    config.headers.Cluster = "03508140-2321-4c14-acdc-3fc3aa1c7ab6"
+    if (clusterStore.getState().clusterId) {
+      config.headers.Cluster = clusterStore.getState().clusterId;
+    }
     return config;
   },
   (error) => Promise.reject(error),

@@ -3,14 +3,18 @@ import client from "../client";
 export type Cluster = {
   id: string;
   name: string;
+  icon: string;
+  online: boolean;
 }
 
 export interface ClusterCreateRequest {
   name: string;
+  icon: string;
 }
 
 export type ClusterCreateResponse = {
   success: boolean;
+  cluster: string;
 }
 
 export type ClusterListResponse = {

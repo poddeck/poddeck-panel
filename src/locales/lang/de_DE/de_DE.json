@@ -42,7 +42,25 @@
         "description": "Fügen Sie einen neuen Cluster hinzu. Weisen Sie dem neuen Cluster einen Namen zu.",
         "name": "Name",
         "cancel": "Abbrechen",
-        "submit": "Hinzufügen"
+        "submit": "Hinzufügen",
+        "icon": {
+          "label": "Icon",
+          "select.placeholder": "Icon auswählen",
+          "input.placeholder": "Nach Icon suchen...",
+          "rocket": "Rakete",
+          "bug": "Bug",
+          "user": "Nutzer",
+          "home": "Haus",
+          "headphones": "Kopfhörer",
+          "heart": "Herz",
+          "box": "Box",
+          "cone": "Kegel",
+          "cylinder": "Zylinder",
+          "pyramid": "Pyramide",
+          "crown": "Krone",
+          "flame": "Flamme",
+          "smile": "Lachen"
+        }
       },
       "cluster.add.successful": "Cluster erfolgreich hinzugefügt",
       "overview": "Übersicht",

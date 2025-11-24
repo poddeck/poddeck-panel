@@ -1,11 +1,6 @@
 "use client"
 
 import * as React from "react"
-import {
-  ChevronsUpDown,
-  EllipsisVertical,
-  Plus
-} from "lucide-react"
 
 import {
   DropdownMenu,
@@ -21,25 +16,26 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import {Input} from "@/components/ui/input"
-import {Label} from "@/components/ui/label"
+import {Dialog, DialogTrigger,} from "@/components/ui/dialog"
 import {useTranslation} from "react-i18next";
 import {Button} from "@/components/ui/button.tsx";
-import ClusterService from "@/api/services/cluster-service.ts";
-import {Spinner} from "@/components/ui/spinner.tsx";
-import {toast} from "sonner";
+import ClusterService, {type Cluster} from "@/api/services/cluster-service.ts";
+import {ChevronsUpDown, EllipsisVertical, Plus, Rocket,} from "lucide-react";
+import {CLUSTER_ICON_LIST} from "./icon-list";
+import ClusterAddDialog from "@/layouts/panel/sidebar/cluster/add-dialog.tsx";
+import clusterStore, {useClusterActions} from "@/store/cluster-store.ts";
+import {useRouter} from "@/routes/hooks";
+import {Skeleton} from "@/components/ui/skeleton.tsx";
 
-function SidebarClusterStatus() {
+function SidebarClusterStatus({isOnline}: { isOnline: boolean }) {
+  if (!isOnline) {
+    return (
+      <span className="relative flex size-2">
+        <span
+          className="relative inline-flex size-2 rounded-full bg-rose-500"></span>
+      </span>
+    )
+  }
   return (
     <span className="relative flex size-2">
       <span
@@ -50,44 +46,69 @@ function SidebarClusterStatus() {
   )
 }
 
-export function SidebarClusterSwitcher({
-                                         clusters,
-                                       }: {
-  clusters: {
-    name: string
-    logo: React.ElementType
-  }[]
-}) {
+export function SidebarClusterSwitcher() {
   const {t} = useTranslation();
   const {isMobile} = useSidebar()
-  const [activeCluster, setActiveCluster] = React.useState(clusters[0]);
-  const [newClusterName, setNewClusterName] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
+  const [clusters, setClusters] = React.useState<Cluster[]>([]);
+  const [activeCluster, setActiveCluster] = React.useState<Cluster | null>(null);
   const [open, setOpen] = React.useState(false);
-  const handleCreateCluster = async () => {
-    if (!newClusterName.trim()) {
-      return;
-    }
-    try {
-      setLoading(true);
-      await ClusterService.create({name: newClusterName});
-      const response = await ClusterService.list();
-      const created = response.clusters.find(c => c.name === newClusterName);
-      if (created) {
-        setActiveCluster({name: created.name, logo: activeCluster.logo});
-      }
-      setNewClusterName("");
-    } finally {
-      setLoading(false);
-      setOpen(false);
-      toast.success(t("panel.sidebar.cluster.add.successful"), {
-        position: "top-right",
-      });
-    }
-  };
-  if (!activeCluster) {
-    return null;
+  const {setClusterId} = useClusterActions();
+  const {replace} = useRouter();
+  const updateCluster = (cluster: Cluster) => {
+    setActiveCluster(cluster);
+    setClusterId(cluster.id);
+    replace("/");
   }
+  React.useEffect(() => {
+    async function fetchClusters() {
+      try {
+        const listResponse = await ClusterService.list();
+        setClusters(listResponse.clusters);
+        const selectedCluster = clusterStore.getState().clusterId;
+        const filteredClusters = selectedCluster == null ? [] :
+          listResponse.clusters.filter((entry: Cluster) => entry.id === selectedCluster);
+        if (filteredClusters.length > 0) {
+          setActiveCluster(filteredClusters[0]);
+        } else {
+          const createResponse = await ClusterService.create({
+            name: "Test",
+            icon: "rocket"
+          });
+          setClusterId(createResponse.cluster);
+          window.location.reload();
+        }
+      } catch (err) {
+        console.error("Failed to load clusters", err);
+      }
+    }
+    fetchClusters();
+  }, []);
+  const handleClusterCreation = (cluster: Cluster) => {
+    setClusters([...clusters, cluster]);
+    updateCluster(cluster);
+    setOpen(false);
+  };
+  if (activeCluster == null) {
+    return (
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton size="lg">
+            <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+            </div>
+            <div className="grid flex-1 text-left text-sm leading-tight">
+              <div className="flex items-center">
+                <Skeleton className="bg-muted/50 w-30 h-3 rounded-md mb-2"/>
+                <Skeleton className="bg-muted/50 size-1 rounded-xl"/>
+              </div>
+              <Skeleton className="bg-muted/50 w-15 h-3 rounded-md"/>
+            </div>
+            <ChevronsUpDown className="ml-auto"/>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    )
+  }
+  const ActiveClusterIcon = CLUSTER_ICON_LIST.find(item => item.id === activeCluster?.icon)?.icon || Rocket;
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -100,13 +121,14 @@ export function SidebarClusterSwitcher({
               >
                 <div
                   className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                  <activeCluster.logo className="size-4"/>
+                  <ActiveClusterIcon className="size-4"/>
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <div className="flex items-center">
                     <span
-                      className="truncate font-medium me-2">{activeCluster.name}</span>
-                    <SidebarClusterStatus/>
+                      className="truncate font-medium me-2">{activeCluster?.name}</span>
+                    <SidebarClusterStatus
+                      isOnline={!activeCluster ? false : activeCluster.online}/>
                   </div>
                   <span
                     className="truncate text-xs">{t("panel.sidebar.cluster")}</span>
@@ -123,68 +145,45 @@ export function SidebarClusterSwitcher({
               <DropdownMenuLabel className="text-muted-foreground text-xs">
                 {t("panel.sidebar.clusters")}
               </DropdownMenuLabel>
-              {clusters.map((cluster) => (
-                <DropdownMenuItem
-                  key={cluster.name}
-                  onClick={() => setActiveCluster(cluster)}
-                  className="gap-2 p-2"
-                >
-                  <div
-                    className="flex size-6 items-center justify-center rounded-md border">
-                    <cluster.logo className="size-3.5 shrink-0"/>
-                  </div>
-                  {cluster.name}
-                  <SidebarClusterStatus/>
-                  <Button variant="ghost" size="sm"
-                          className="p-1 h-6 w-6 ml-auto">
-                    <EllipsisVertical/>
-                  </Button>
-                </DropdownMenuItem>
-              ))}
+              {clusters.map((cluster) => {
+                const Icon = CLUSTER_ICON_LIST.find(item => item.id === cluster.icon)?.icon || Rocket;
+                return (
+                  <DropdownMenuItem
+                    key={cluster.name}
+                    onClick={() => updateCluster(cluster)}
+                    className="gap-2 p-2"
+                  >
+                    <div
+                      className="flex size-6 items-center justify-center rounded-md border">
+                      <Icon className="size-3.5 shrink-0"/>
+                    </div>
+                    {cluster.name}
+                    <SidebarClusterStatus isOnline={cluster.online}/>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="p-1 h-6 w-6 ml-auto"
+                    >
+                      <EllipsisVertical/>
+                    </Button>
+                  </DropdownMenuItem>
+                );
+              })}
               <DropdownMenuSeparator/>
-              <DropdownMenuItem className="gap-2 p-2">
-                <div
-                  className="flex size-6 items-center justify-center rounded-md border bg-transparent">
-                  <Plus className="size-4"/>
-                </div>
-                <DialogTrigger asChild>
+              <DialogTrigger asChild>
+                <DropdownMenuItem className="gap-2 p-2">
+                  <div
+                    className="flex size-6 items-center justify-center rounded-md border bg-transparent">
+                    <Plus className="size-4"/>
+                  </div>
                   <div
                     className="text-muted-foreground font-medium">{t("panel.sidebar.cluster.add")}</div>
-                </DialogTrigger>
-              </DropdownMenuItem>
+                </DropdownMenuItem>
+              </DialogTrigger>
             </DropdownMenuContent>
           </DropdownMenu>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>{t("panel.sidebar.cluster.add.dialog.title")}</DialogTitle>
-              <DialogDescription>
-                {t("panel.sidebar.cluster.add.dialog.description")}
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4">
-              <div className="grid gap-3">
-                <Label
-                  htmlFor="name">{t("panel.sidebar.cluster.add.dialog.name")}</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  placeholder={t("panel.sidebar.cluster.add.dialog.name")}
-                  value={newClusterName}
-                  onChange={(e) => setNewClusterName(e.target.value)}
-                />
-              </div>
-            </div>
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button
-                  variant="outline">{t("panel.sidebar.cluster.add.dialog.cancel")}</Button>
-              </DialogClose>
-              <Button onClick={handleCreateCluster} disabled={loading}>
-                {t("panel.sidebar.cluster.add.dialog.submit")}
-                {loading && <Spinner className="ml-2"></Spinner>}
-              </Button>
-            </DialogFooter>
-          </DialogContent>
+          <ClusterAddDialog
+            onCreation={handleClusterCreation}></ClusterAddDialog>
         </Dialog>
       </SidebarMenuItem>
     </SidebarMenu>
