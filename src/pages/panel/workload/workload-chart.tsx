@@ -27,8 +27,8 @@ interface WorkloadChartProps {
   usage: string
   relation?: string
   color: string
-  animate: boolean
   data: WorkloadChartEntry[]
+  unit: string
 }
 
 export function WorkloadChart(
@@ -38,8 +38,8 @@ export function WorkloadChart(
     usage,
     relation,
     color,
-    animate,
-    data
+    data,
+    unit
   }: WorkloadChartProps
 ) {
   const {i18n} = useTranslation();
@@ -97,7 +97,6 @@ export function WorkloadChart(
               }}
             />
             <ChartTooltip
-              cursor={false}
               content={
                 <ChartTooltipContent
                   labelFormatter={(value) => {
@@ -109,6 +108,25 @@ export function WorkloadChart(
                       second: "numeric",
                     })
                   }}
+                  formatter={(value, name) => (
+                    <>
+                      <div
+                        className="h-2.5 w-2.5 shrink-0 rounded-[2px] bg-(--color-bg)"
+                        style={
+                          {
+                            "--color-bg": `var(--color-${name})`,
+                          } as React.CSSProperties
+                        }
+                      />
+                      {chartConfig[name as keyof typeof chartConfig]?.label || name}
+                      <div className="text-foreground ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums">
+                        {value}
+                        <span className="text-muted-foreground font-normal ml-1">
+                          {unit}
+                        </span>
+                      </div>
+                    </>
+                  )}
                   indicator="dot"
                 />
               }
@@ -119,7 +137,6 @@ export function WorkloadChart(
               fill={`url(#${gradientId})`}
               stroke={color}
               stackId="a"
-              isAnimationActive={animate}
               animationDuration={500}
               animationEasing="ease-in-out"
             />

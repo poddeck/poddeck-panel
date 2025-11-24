@@ -42,6 +42,7 @@ axiosInstance.interceptors.request.use(
     } else {
       delete config.headers.Authorization;
     }
+    config.headers.Cluster = "03508140-2321-4c14-acdc-3fc3aa1c7ab6"
     return config;
   },
   (error) => Promise.reject(error),

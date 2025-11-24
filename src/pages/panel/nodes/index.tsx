@@ -3,7 +3,7 @@ import {DataTable} from "@/components/table";
 import PanelPage from "@/layouts/panel";
 import {Button} from "@/components/ui/button.tsx";
 import {useTranslation} from "react-i18next";
-import {PlusIcon} from "lucide-react";
+import {PlusIcon, ServerIcon} from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -11,9 +11,59 @@ import {
 } from "@/components/ui/tooltip.tsx";
 import nodeService, {type Node} from "@/api/services/node-service"
 import {columns} from "./table-columns";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty"
+
+function NodeAddButton() {
+  const {t} = useTranslation();
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Button size='lg'
+                className='bg-primary'
+        >
+          <PlusIcon/>
+          {t("panel.page.nodes.add")}
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent className='max-w-64 text-pretty'>
+        <div className='flex items-center gap-1.5'>
+          <p>{t("coming.soon")}</p>
+        </div>
+      </TooltipContent>
+    </Tooltip>
+  )
+}
+
+function NodeListEmpty() {
+  const {t} = useTranslation();
+  return (
+    <PanelPage title="panel.page.nodes.title">
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <ServerIcon/>
+          </EmptyMedia>
+          <EmptyTitle>{t("panel.page.nodes.empty.title")}</EmptyTitle>
+          <EmptyDescription>
+            {t("panel.page.nodes.empty.description")}
+          </EmptyDescription>
+        </EmptyHeader>
+        <EmptyContent>
+          <NodeAddButton/>
+        </EmptyContent>
+      </Empty>
+    </PanelPage>
+  )
+}
 
 export default function NodesPage() {
-  const { t } = useTranslation();
   const [nodes, setNodes] = useState<Node[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
@@ -25,34 +75,26 @@ export default function NodesPage() {
         setIsLoading(false);
       }
     }
+
     loadNodes();
   }, []);
+  if (!isLoading && nodes.length === 0) {
+    return <NodeListEmpty/>
+  }
   return (
     <PanelPage title="panel.page.nodes.title">
-      <div className="flex items-center justify-end mb-[4vh]">
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button size='lg'
-                    className='bg-primary'
-            >
-              <PlusIcon/>
-              {t("panel.page.nodes.add")}
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent className='max-w-64 text-pretty'>
-            <div className='flex items-center gap-1.5'>
-              <p>{t("coming.soon")}</p>
-            </div>
-          </TooltipContent>
-        </Tooltip>
+      <div className="mt-[4vh]">
+        <div className="flex items-center justify-end mb-[4vh]">
+          <NodeAddButton/>
+        </div>
+        <DataTable<Node>
+          columns={columns}
+          data={nodes}
+          pageSize={5}
+          initialSorting={[{id: "name", desc: false}]}
+          isLoading={isLoading}
+        />
       </div>
-      <DataTable<Node>
-        columns={columns}
-        data={nodes}
-        pageSize={5}
-        initialSorting={[{id: "name", desc: false}]}
-        isLoading={isLoading}
-      />
     </PanelPage>
   )
 }

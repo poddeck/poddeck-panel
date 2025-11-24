@@ -38,6 +38,14 @@
       "cluster": "Cluster",
       "clusters": "Clusters",
       "cluster.add": "Add cluster",
+      "cluster.add.dialog": {
+        "title": "Add cluster",
+        "description": "Add a new cluster. Assign a name for the new cluster.",
+        "name": "Name",
+        "cancel": "Cancel",
+        "submit": "Add"
+      },
+      "cluster.add.successful": "Cluster successfully added",
       "overview": "Overview",
       "nodes": "Nodes",
       "workload": "Workload",
@@ -89,7 +97,11 @@
       },
       "nodes": {
         "title": "Nodes",
-        "add": "Add node"
+        "add": "Add node",
+        "empty": {
+          "title": "No nodes connected yet",
+          "description": "You have not added any nodes to your cluster yet. Click the button below to add your first node."
+        }
       },
       "workload": {
         "title": "Workload"

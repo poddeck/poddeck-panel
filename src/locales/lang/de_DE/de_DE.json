@@ -37,8 +37,16 @@
       "cluster": "Cluster",
       "clusters": "Cluster",
       "cluster.add": "Cluster hinzufügen",
+      "cluster.add.dialog": {
+        "title": "Cluster hinzufügen",
+        "description": "Fügen Sie einen neuen Cluster hinzu. Weisen Sie dem neuen Cluster einen Namen zu.",
+        "name": "Name",
+        "cancel": "Abbrechen",
+        "submit": "Hinzufügen"
+      },
+      "cluster.add.successful": "Cluster erfolgreich hinzugefügt",
       "overview": "Übersicht",
-      "nodes": "Nodes",
+      "nodes": "Knoten",
       "workload": "Auslastung",
       "events": "Ereignisse",
       "units": "Einheiten",
@@ -87,8 +95,12 @@
         "title": "Übersicht"
       },
       "nodes": {
-        "title": "Nodes",
-        "add": "Node hinzufügen"
+        "title": "Knoten",
+        "add": "Knoten hinzufügen",
+        "empty": {
+          "title": "Noch keine Knoten verbunden",
+          "description": "Sie haben Ihrem Cluster noch keine Knoten hinzugefügt. Klicken Sie auf die Schaltfläche unten, um Ihren ersten Knoten hinzuzufügen."
+        }
       },
       "workload": {
         "title": "Auslastung"

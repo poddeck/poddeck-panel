@@ -31,6 +31,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import {useTranslation} from "react-i18next";
+import ClusterService from "@/api/services/cluster-service.ts";
 
 export function AppNavigation() {
   const {t} = useTranslation();
@@ -173,33 +174,39 @@ export function AppNavigation() {
 }
 
 export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
-  const data = {
-    user: {
-      name: "Lukas",
-      email: "lukas@poddeck.io"
-    },
-    clusters: [
-      {
-        name: "Production",
-        logo: Rocket,
-      },
-      {
-        name: "Staging",
-        logo: Bug,
-      },
-    ],
-    navigation: AppNavigation()
+  const user = {
+    name: "Lukas",
+    email: "lukas@poddeck.io"
   }
+  const [clusters, setClusters] = React.useState<{ name: string; logo: React.ElementType }[]>([]);
+  const [loading, setLoading] = React.useState(true);
+  React.useEffect(() => {
+    async function fetchClusters() {
+      try {
+        const response = await ClusterService.list();
+        const mappedClusters = response.clusters.map(cluster => ({
+          name: cluster.name,
+          logo: cluster.name.toLowerCase() === "production" ? Rocket : Bug,
+        }));
+        setClusters(mappedClusters);
+      } catch (err) {
+        console.error("Failed to fetch clusters:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchClusters();
+  }, []);
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <SidebarClusterSwitcher clusters={data.clusters}/>
+        <SidebarClusterSwitcher clusters={loading ? [] : clusters}/>
       </SidebarHeader>
       <SidebarContent>
-        <SidebarNavigation items={data.navigation}/>
+        <SidebarNavigation items={AppNavigation()}/>
       </SidebarContent>
       <SidebarFooter>
-        <SidebarUser user={data.user}/>
+        <SidebarUser user={user}/>
       </SidebarFooter>
       <SidebarRail/>
     </Sidebar>

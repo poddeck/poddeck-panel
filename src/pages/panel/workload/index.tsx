@@ -25,12 +25,7 @@ export default function WorkloadPage() {
   const [metrics, setMetrics] = useState<Metric[]>([]);
   const [nodes, setNodes] = useState<Node[]>([]);
   const [selectedNode, setSelectedNode] = useState<string>("");
-  const [animate, setAnimate] = useState(true);
   const latestTimestampReference = useRef<number>(0);
-  const handleTimeRangeChange = (value: string) => {
-    setTimeRange(value);
-    setAnimate(true);
-  };
   useEffect(() => {
     async function loadNodes() {
       const response = await nodeService.list();
@@ -86,7 +81,6 @@ export default function WorkloadPage() {
             return [...updated, newEntry];
           });
           latestTimestampReference.current = newEntry.timestamp;
-          setAnimate(false);
         }
       }
     }, 1000);
@@ -120,60 +114,62 @@ export default function WorkloadPage() {
     : "-";
   return (
     <PanelPage title="panel.page.workload.title">
-      <div className="flex items-center justify-between mb-[4vh]">
-        <Select value={selectedNode} onValueChange={setSelectedNode}>
-          <SelectTrigger className="w-[160px] rounded-lg">
-            <SelectValue placeholder="Select Node" />
-          </SelectTrigger>
-          <SelectContent className="rounded-xl">
-            {nodes?.map((node) => (
-              <SelectItem key={node.name} value={node.name} className="rounded-lg">
-                {node.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Select value={timeRange} onValueChange={handleTimeRangeChange}>
-          <SelectTrigger className="w-[160px] rounded-lg">
-            <SelectValue placeholder="Select Range" />
-          </SelectTrigger>
-          <SelectContent className="rounded-xl">
-            <SelectItem value="1m" className="rounded-lg">Last 1 minute</SelectItem>
-            <SelectItem value="1h" className="rounded-lg">Last 1 hour</SelectItem>
-            <SelectItem value="1d" className="rounded-lg">Last 1 day</SelectItem>
-            <SelectItem value="7d" className="rounded-lg">Last 7 days</SelectItem>
-            <SelectItem value="30d" className="rounded-lg">Last 30 days</SelectItem>
-            <SelectItem value="90d" className="rounded-lg">Last 3 months</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <WorkloadChart
-          id="cpu"
-          title="CPU"
-          usage={cpuUsage}
-          color="oklch(0.75 0.14 233)"
-          animate={animate}
-          data={cpuData}
-        />
-        <WorkloadChart
-          id="memory"
-          title="Memory"
-          usage={memoryUsage}
-          relation={memoryRelation}
-          color="oklch(0.77 0.15 163)"
-          animate={animate}
-          data={memoryData}
-        />
-        <WorkloadChart
-          id="storage"
-          title="Storage"
-          usage={storageUsage}
-          relation={storageRelation}
-          color="oklch(0.75 0.21 322)"
-          animate={animate}
-          data={storageData}
-        />
+      <div className="mt-[4vh]">
+        <div className="flex items-center justify-between mb-[4vh]">
+          <Select value={selectedNode} onValueChange={setSelectedNode}>
+            <SelectTrigger className="w-[160px] rounded-lg">
+              <SelectValue placeholder="Select Node" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              {nodes?.map((node) => (
+                <SelectItem key={node.name} value={node.name} className="rounded-lg">
+                  {node.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select value={timeRange} onValueChange={setTimeRange}>
+            <SelectTrigger className="w-[160px] rounded-lg">
+              <SelectValue placeholder="Select Range" />
+            </SelectTrigger>
+            <SelectContent className="rounded-xl">
+              <SelectItem value="1m" className="rounded-lg">Last 1 minute</SelectItem>
+              <SelectItem value="1h" className="rounded-lg">Last 1 hour</SelectItem>
+              <SelectItem value="1d" className="rounded-lg">Last 1 day</SelectItem>
+              <SelectItem value="7d" className="rounded-lg">Last 7 days</SelectItem>
+              <SelectItem value="30d" className="rounded-lg">Last 30 days</SelectItem>
+              <SelectItem value="90d" className="rounded-lg">Last 3 months</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+          <WorkloadChart
+            id="cpu"
+            title="CPU"
+            usage={cpuUsage}
+            color="oklch(0.75 0.14 233)"
+            data={cpuData}
+            unit={"%"}
+          />
+          <WorkloadChart
+            id="memory"
+            title="Memory"
+            usage={memoryUsage}
+            relation={memoryRelation}
+            color="oklch(0.77 0.15 163)"
+            data={memoryData}
+            unit={"GB"}
+          />
+          <WorkloadChart
+            id="storage"
+            title="Storage"
+            usage={storageUsage}
+            relation={storageRelation}
+            color="oklch(0.75 0.21 322)"
+            data={storageData}
+            unit={"GB"}
+          />
+        </div>
       </div>
     </PanelPage>
   );
