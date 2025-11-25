@@ -156,6 +156,7 @@ export default function WorkloadPage() {
             color="oklch(0.75 0.14 233)"
             data={cpuData}
             unit={"%"}
+            currentRange={RANGE_MAP[timeRange].accuracy}
           />
           <WorkloadChart
             id="memory"
@@ -165,6 +166,7 @@ export default function WorkloadPage() {
             color="oklch(0.77 0.15 163)"
             data={memoryData}
             unit={"GB"}
+            currentRange={RANGE_MAP[timeRange].accuracy}
           />
           <WorkloadChart
             id="storage"
@@ -174,6 +176,7 @@ export default function WorkloadPage() {
             color="oklch(0.75 0.21 322)"
             data={storageData}
             unit={"GB"}
+            currentRange={RANGE_MAP[timeRange].accuracy}
           />
         </div>
       </div>

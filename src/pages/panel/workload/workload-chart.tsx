@@ -28,8 +28,40 @@ interface WorkloadChartProps {
   relation?: string
   color: string
   data: WorkloadChartEntry[]
-  unit: string
+  unit: string,
+  currentRange: string
 }
+
+const getTickFormatter = (range: string, language: string) => {
+  return (value: string | number) => {
+    const date = new Date(value);
+    switch (range) {
+      case "second":
+        return date.toLocaleTimeString(language, {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        });
+      case "minute":
+        return date.toLocaleTimeString(language, {
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+      case "hour":
+        return date.toLocaleString(language, {
+          month: "short",
+          day: "numeric",
+          hour: "2-digit",
+        });
+      default:
+        return date.toLocaleDateString(language, {
+          month: "short",
+          day: "numeric",
+        });
+    }
+  };
+};
+
 
 export function WorkloadChart(
   {
@@ -39,7 +71,8 @@ export function WorkloadChart(
     relation,
     color,
     data,
-    unit
+    unit,
+    currentRange
   }: WorkloadChartProps
 ) {
   const {i18n} = useTranslation();
@@ -58,7 +91,8 @@ export function WorkloadChart(
         <CardTitle>{title}</CardTitle>
         <div className="flex items-center gap-2">
           <CardTitle>{usage}</CardTitle>
-          {relation && <CardDescription className="pb-0.5">{relation}</CardDescription>}
+          {relation &&
+            <CardDescription className="pb-0.5">{relation}</CardDescription>}
         </div>
       </CardHeader>
       <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
@@ -88,13 +122,7 @@ export function WorkloadChart(
               axisLine={false}
               tickMargin={8}
               minTickGap={32}
-              tickFormatter={(value) => {
-                const date = new Date(value)
-                return date.toLocaleDateString(language, {
-                  month: "short",
-                  day: "numeric",
-                })
-              }}
+              tickFormatter={getTickFormatter(currentRange, language)}
             />
             <ChartTooltip
               content={
@@ -119,9 +147,11 @@ export function WorkloadChart(
                         }
                       />
                       {chartConfig[name as keyof typeof chartConfig]?.label || name}
-                      <div className="text-foreground ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums">
+                      <div
+                        className="text-foreground ml-auto flex items-baseline gap-0.5 font-mono font-medium tabular-nums">
                         {value}
-                        <span className="text-muted-foreground font-normal ml-1">
+                        <span
+                          className="text-muted-foreground font-normal ml-1">
                           {unit}
                         </span>
                       </div>
