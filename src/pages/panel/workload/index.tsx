@@ -10,39 +10,47 @@ import {
 import {useEffect, useMemo, useRef, useState} from "react";
 import workloadService, { type Metric, type WorkloadRequest } from "@/api/services/workload-service.ts";
 import nodeService, { type Node } from "@/api/services/node-service.ts";
+import {useTranslation} from "react-i18next";
+import {useSearchParams} from "react-router-dom";
 
 const RANGE_MAP: Record<string, { ms: number; accuracy: string }> = {
-  "1m": { ms: 1 * 60 * 1000, accuracy: "second" },
-  "1h": { ms: 60 * 60 * 1000, accuracy: "minute" },
-  "1d": { ms: 24 * 60 * 60 * 1000, accuracy: "minute" },
-  "7d": { ms: 7 * 24 * 60 * 60 * 1000, accuracy: "hour" },
-  "30d": { ms: 30 * 24 * 60 * 60 * 1000, accuracy: "hour" },
-  "90d": { ms: 90 * 24 * 60 * 60 * 1000, accuracy: "hour" },
+  "minute": { ms: 1 * 60 * 1000, accuracy: "second" },
+  "hour": { ms: 60 * 60 * 1000, accuracy: "minute" },
+  "day": { ms: 24 * 60 * 60 * 1000, accuracy: "hour" },
+  "week": { ms: 7 * 24 * 60 * 60 * 1000, accuracy: "day" },
+  "month": { ms: 30 * 24 * 60 * 60 * 1000, accuracy: "day" },
+  "year": { ms: 365 * 24 * 60 * 60 * 1000, accuracy: "month" },
 };
 
 export default function WorkloadPage() {
-  const [timeRange, setTimeRange] = useState("1h");
+  const {t} = useTranslation();
+  const [timeRange, setTimeRange] = useState("hour");
   const [metrics, setMetrics] = useState<Metric[]>([]);
   const [nodes, setNodes] = useState<Node[]>([]);
   const [selectedNode, setSelectedNode] = useState<string>("");
   const latestTimestampReference = useRef<number>(0);
+  const [searchParams] = useSearchParams();
   useEffect(() => {
     async function loadNodes() {
       const response = await nodeService.list();
       setNodes(response.nodes);
-      if (response.nodes.length > 0) {
+      const nodeFromQuery = searchParams.get("node");
+      const nodeExists = response.nodes.some(n => n.name === nodeFromQuery);
+      if (nodeExists) {
+        setSelectedNode(nodeFromQuery!);
+      } else if (response.nodes.length > 0) {
         setSelectedNode(response.nodes[0].name);
       }
     }
     loadNodes();
-  }, []);
+  }, [searchParams]);
   useEffect(() => {
     if (!selectedNode) {
       return;
     }
     async function loadMetrics() {
       const now = Date.now();
-      const cfg = RANGE_MAP[timeRange] ?? RANGE_MAP["1h"];
+      const cfg = RANGE_MAP[timeRange] ?? RANGE_MAP["hour"];
       const start = now - cfg.ms;
       const request: WorkloadRequest = {
         node: selectedNode,
@@ -65,7 +73,7 @@ export default function WorkloadPage() {
     }
     const interval = setInterval(async () => {
       const now = Date.now();
-      const cfg = RANGE_MAP[timeRange] ?? RANGE_MAP["1h"];
+      const cfg = RANGE_MAP[timeRange] ?? RANGE_MAP["hour"];
       const request: WorkloadRequest = {
         node: selectedNode,
         start: latestTimestampReference.current + 1,
@@ -129,29 +137,29 @@ export default function WorkloadPage() {
                 ))
               ) : (
                 <SelectItem value="empty" disabled className="rounded-lg cursor-not-allowed text-gray-400">
-                  No nodes available
+                  {t("panel.page.workload.nodes.empty")}
                 </SelectItem>
               )}
             </SelectContent>
           </Select>
           <Select value={timeRange} onValueChange={setTimeRange}>
             <SelectTrigger className="w-[160px] rounded-lg">
-              <SelectValue placeholder="Select Range" />
+              <SelectValue/>
             </SelectTrigger>
             <SelectContent className="rounded-xl">
-              <SelectItem value="1m" className="rounded-lg">Last 1 minute</SelectItem>
-              <SelectItem value="1h" className="rounded-lg">Last 1 hour</SelectItem>
-              <SelectItem value="1d" className="rounded-lg">Last 1 day</SelectItem>
-              <SelectItem value="7d" className="rounded-lg">Last 7 days</SelectItem>
-              <SelectItem value="30d" className="rounded-lg">Last 30 days</SelectItem>
-              <SelectItem value="90d" className="rounded-lg">Last 3 months</SelectItem>
+              <SelectItem value="minute" className="rounded-lg">{t("panel.page.workload.range.minute")}</SelectItem>
+              <SelectItem value="hour" className="rounded-lg">{t("panel.page.workload.range.hour")}</SelectItem>
+              <SelectItem value="day" className="rounded-lg">{t("panel.page.workload.range.day")}</SelectItem>
+              <SelectItem value="week" className="rounded-lg">{t("panel.page.workload.range.week")}</SelectItem>
+              <SelectItem value="month" className="rounded-lg">{t("panel.page.workload.range.month")}</SelectItem>
+              <SelectItem value="year" className="rounded-lg">{t("panel.page.workload.range.year")}</SelectItem>
             </SelectContent>
           </Select>
         </div>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           <WorkloadChart
             id="cpu"
-            title="CPU"
+            title={t("panel.page.workload.cpu")}
             usage={cpuUsage}
             color="oklch(0.75 0.14 233)"
             data={cpuData}
@@ -160,7 +168,7 @@ export default function WorkloadPage() {
           />
           <WorkloadChart
             id="memory"
-            title="Memory"
+            title={t("panel.page.workload.memory")}
             usage={memoryUsage}
             relation={memoryRelation}
             color="oklch(0.77 0.15 163)"
@@ -170,7 +178,7 @@ export default function WorkloadPage() {
           />
           <WorkloadChart
             id="storage"
-            title="Storage"
+            title={t("panel.page.workload.storage")}
             usage={storageUsage}
             relation={storageRelation}
             color="oklch(0.75 0.21 322)"
