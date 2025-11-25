@@ -81,7 +81,8 @@ export function DataTable<T>({
     enableColumnResizing: true,
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
-    state: {pagination, sorting}
+    state: {pagination, sorting},
+    autoResetPageIndex: false
   })
   const {pages, showLeftEllipsis, showRightEllipsis} = usePagination({
     currentPage: table.getState().pagination.pageIndex + 1,
@@ -113,7 +114,14 @@ export function DataTable<T>({
                         className="flex items-center justify-start cursor-pointer select-none group"
                         onClick={header.column.getToggleSortingHandler()}
                       >
-                        {flexRender(header.column.columnDef.header, header.getContext())}
+                        {
+                          flexRender(
+                            typeof header.column.columnDef.header === "string"
+                              ? t(header.column.columnDef.header)
+                              : header.column.columnDef.header,
+                            header.getContext()
+                          )
+                        }
                         {{
                           asc: (
                             <ChevronUpIcon
@@ -135,7 +143,12 @@ export function DataTable<T>({
                         )}
                       </div>
                     ) : (
-                      flexRender(header.column.columnDef.header, header.getContext())
+                      flexRender(
+                        typeof header.column.columnDef.header === "string"
+                          ? t(header.column.columnDef.header)
+                          : header.column.columnDef.header,
+                        header.getContext()
+                      )
                     )}
                   </TableHead>
                 ))}
@@ -145,7 +158,7 @@ export function DataTable<T>({
           {isLoading ? (
             <>
               <TableBody>
-                {Array.from({length: pageSize}).map((_, rowIndex) => (
+                {Array.from({length: pagination.pageSize}).map((_, rowIndex) => (
                   <TableRow key={rowIndex} className="hover:bg-transparent">
                     {Array.from({length: columns.length}).map((_, cellIndex) => (
                       <TableCell

@@ -119,10 +119,42 @@
         "empty": {
           "title": "No nodes connected yet",
           "description": "You have not added any nodes to your cluster yet. Click the button below to add your first node."
+        },
+        "column": {
+          "name": "Name",
+          "cpu": "CPU",
+          "memory": "Memory",
+          "storage": "Storage",
+          "version": "Version",
+          "status": "Status"
+        },
+        "cores": "Cores",
+        "status": {
+          "ready": "Ready",
+          "not.ready": "Not ready"
+        },
+        "action": {
+          "edit": "Edit",
+          "workload": "Workload",
+          "restart": "Restart",
+          "drain": "Drain",
+          "delete": "Delete"
         }
       },
       "workload": {
-        "title": "Workload"
+        "title": "Workload",
+        "nodes.empty": "No nodes available",
+        "range": {
+          "minute": "Last minute",
+          "hour": "Last hour",
+          "day": "Last day",
+          "week": "Last week",
+          "month": "Last month",
+          "year": "Last year"
+        },
+        "cpu": "CPU",
+        "memory": "Memory",
+        "storage": "Storage"
       },
       "events": {
         "title": "Events"

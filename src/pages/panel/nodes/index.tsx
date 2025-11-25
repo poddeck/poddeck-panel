@@ -77,8 +77,11 @@ export default function NodesPage() {
         setIsLoading(false);
       }
     }
-
     loadNodes();
+    const interval = window.setInterval(loadNodes, 2000);
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
   if (!isLoading && nodes.length === 0) {
     return <NodeListEmpty/>

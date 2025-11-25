@@ -118,10 +118,42 @@
         "empty": {
           "title": "Noch keine Knoten verbunden",
           "description": "Sie haben Ihrem Cluster noch keine Knoten hinzugefügt. Klicken Sie auf die Schaltfläche unten, um Ihren ersten Knoten hinzuzufügen."
+        },
+        "column": {
+          "name": "Name",
+          "cpu": "CPU",
+          "memory": "Memory",
+          "storage": "Speicher",
+          "version": "Version",
+          "status": "Status"
+        },
+        "cores": "Kerne",
+        "status": {
+          "ready": "Bereit",
+          "not.ready": "Nicht bereit"
+        },
+        "action": {
+          "edit": "Bearbeiten",
+          "workload": "Auslastung",
+          "restart": "Neustarten",
+          "drain": "Entleeren",
+          "delete": "Löschen"
         }
       },
       "workload": {
-        "title": "Auslastung"
+        "title": "Auslastung",
+        "nodes.empty": "Keine Knoten verfügbar",
+        "range": {
+          "minute": "Letzte Minute",
+          "hour": "Letzte Stunde",
+          "day": "Letzter Tag",
+          "week": "Letzte Woche",
+          "month": "Letzter Monat",
+          "year": "Letztes Jahr"
+        },
+        "cpu": "CPU",
+        "memory": "Memory",
+        "storage": "Speicher"
       },
       "events": {
         "title": "Ereignisse"
