@@ -28,14 +28,16 @@ import {Separator} from "@/components/ui/separator.tsx";
 import {SettingsDialog} from "@/layouts/settings";
 import {Dialog, DialogTrigger} from "@/components/ui/dialog.tsx";
 
-export function SidebarUser({
-                              user,
-                            }: {
-  user: {
-    name: string
-    email: string
+export function SidebarUser(
+  {
+    user,
+  }: {
+    user: {
+      name: string
+      email: string
+    }
   }
-}) {
+) {
   const {t} = useTranslation();
   const {isMobile} = useSidebar()
   const logout = useLogout();
@@ -72,8 +74,9 @@ export function SidebarUser({
                 <div
                   className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                   <Avatar className="h-8 w-8 rounded-lg">
-                    <AvatarFallback className="rounded-lg"><UserRound
-                      className="size-5"/></AvatarFallback>
+                    <AvatarFallback className="rounded-lg">
+                      <UserRound className="size-5"/>
+                    </AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-medium">{user.name}</span>

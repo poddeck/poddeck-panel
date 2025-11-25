@@ -18,33 +18,16 @@ import {
 } from "@/components/ui/sidebar"
 import {Dialog, DialogTrigger,} from "@/components/ui/dialog"
 import {useTranslation} from "react-i18next";
-import {Button} from "@/components/ui/button.tsx";
 import ClusterService, {type Cluster} from "@/api/services/cluster-service.ts";
-import {ChevronsUpDown, EllipsisVertical, Plus, Rocket,} from "lucide-react";
+import {ChevronsUpDown, Plus, Rocket,} from "lucide-react";
 import {CLUSTER_ICON_LIST} from "./icon-list";
-import ClusterAddDialog from "@/layouts/panel/sidebar/cluster/add-dialog.tsx";
+import ClusterAddDialog from "./add-dialog.tsx";
+import SidebarClusterStatus from "./status.tsx";
+import SidebarClusterLoader from "./loader.tsx";
 import clusterStore, {useClusterActions} from "@/store/cluster-store.ts";
 import {useRouter} from "@/routes/hooks";
-import {Skeleton} from "@/components/ui/skeleton.tsx";
-
-function SidebarClusterStatus({isOnline}: { isOnline: boolean }) {
-  if (!isOnline) {
-    return (
-      <span className="relative flex size-2">
-        <span
-          className="relative inline-flex size-2 rounded-full bg-rose-500"></span>
-      </span>
-    )
-  }
-  return (
-    <span className="relative flex size-2">
-      <span
-        className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-      <span
-        className="relative inline-flex size-2 rounded-full bg-emerald-500"></span>
-    </span>
-  )
-}
+import SidebarClusterSettings
+  from "@/layouts/panel/sidebar/cluster/settings.tsx";
 
 export function SidebarClusterSwitcher() {
   const {t} = useTranslation();
@@ -89,24 +72,7 @@ export function SidebarClusterSwitcher() {
     setOpen(false);
   };
   if (activeCluster == null) {
-    return (
-      <SidebarMenu>
-        <SidebarMenuItem>
-          <SidebarMenuButton size="lg">
-            <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-            </div>
-            <div className="grid flex-1 text-left text-sm leading-tight">
-              <div className="flex items-center">
-                <Skeleton className="bg-muted/50 w-30 h-3 rounded-md mb-2"/>
-                <Skeleton className="bg-muted/50 size-1 rounded-xl"/>
-              </div>
-              <Skeleton className="bg-muted/50 w-15 h-3 rounded-md"/>
-            </div>
-            <ChevronsUpDown className="ml-auto"/>
-          </SidebarMenuButton>
-        </SidebarMenuItem>
-      </SidebarMenu>
-    )
+    return <SidebarClusterLoader/>
   }
   const ActiveClusterIcon = CLUSTER_ICON_LIST.find(item => item.id === activeCluster?.icon)?.icon || Rocket;
   return (
@@ -159,13 +125,7 @@ export function SidebarClusterSwitcher() {
                     </div>
                     {cluster.name}
                     <SidebarClusterStatus isOnline={cluster.online}/>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="p-1 h-6 w-6 ml-auto"
-                    >
-                      <EllipsisVertical/>
-                    </Button>
+                    <SidebarClusterSettings/>
                   </DropdownMenuItem>
                 );
               })}
