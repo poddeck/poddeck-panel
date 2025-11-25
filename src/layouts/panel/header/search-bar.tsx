@@ -105,7 +105,7 @@ export function HeaderSearchBar() {
           <span
             className="mr-10">{t("panel.header.search.placeholder")}</span>
           <kbd
-            className="flex items-center justify-center rounded-md bg-primary/20 text-common-white px-1.5 py-0.5 text-sm font-extralight">
+            className="flex items-center justify-center rounded-md bg-primary/20 text-common-white px-1.5 text-sm font-extralight">
             <span className="pt-1">{t("panel.header.search.ctrl")} K</span>
           </kbd>
         </div>
