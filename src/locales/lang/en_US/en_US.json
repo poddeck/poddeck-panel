@@ -37,36 +37,57 @@
     "sidebar": {
       "cluster": "Cluster",
       "clusters": "Clusters",
+      "cluster.icon": {
+        "label": "Icon",
+        "select.placeholder": "Select icon",
+        "input.placeholder": "Search icon...",
+        "rocket": "Rocket",
+        "bug": "Bug",
+        "user": "User",
+        "home": "Home",
+        "headphones": "Headphones",
+        "heart": "Heart",
+        "box": "Box",
+        "cone": "Cone",
+        "cylinder": "Cylinder",
+        "pyramid": "Pyramid",
+        "crown": "Crown",
+        "flame": "Flame",
+        "smile": "Smile"
+      },
       "cluster.add": "Add cluster",
       "cluster.add.dialog": {
         "title": "Add cluster",
         "description": "Add a new cluster. Assign a name for the new cluster.",
         "name": "Name",
         "cancel": "Cancel",
-        "submit": "Add",
-        "icon": {
-          "label": "Icon",
-          "select.placeholder": "Select icon",
-          "input.placeholder": "Search icon...",
-          "rocket": "Rocket",
-          "bug": "Bug",
-          "user": "User",
-          "home": "Home",
-          "headphones": "Headphones",
-          "heart": "Heart",
-          "box": "Box",
-          "cone": "Cone",
-          "cylinder": "Cylinder",
-          "pyramid": "Pyramid",
-          "crown": "Crown",
-          "flame": "Flame",
-          "smile": "Smile"
-        }
+        "submit": "Add"
       },
       "cluster.add.successful": "Cluster successfully added",
+      "cluster.settings": {
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "cluster.edit.dialog": {
+        "title": "Edit cluster",
+        "description": "Here you have the option to edit an existing cluster.",
+        "name": "Name",
+        "cancel": "Cancel",
+        "submit": "Edit"
+      },
+      "cluster.delete.dialog": {
+        "title": "Delete cluster",
+        "description": "Here you have the option to delete an existing cluster.",
+        "confirm.1": "Please type ",
+        "confirm.2": " to confirm.",
+        "name": "Name",
+        "cancel": "Cancel",
+        "submit": "Delete"
+      },
       "overview": "Overview",
       "nodes": "Nodes",
       "workload": "Workload",
+      "namespaces": "Namespaces",
       "events": "Events",
       "units": "Units",
       "pods": "Pods",

@@ -6,15 +6,14 @@ import {
   Box,
   CalendarClock,
   CreditCard, Cylinder,
-  Database, Download, Gauge,
+  Database, Download, Gauge, Group,
   House,
   LayoutGrid,
   Lock,
   Network,
   Rocket, SearchCheck,
   Server,
-  Settings, Shield, SquareDashedMousePointer,
-  SquareStack,
+  Settings, Shield, SquareDashedMousePointer, SquareMousePointer,
   Unplug,
   VectorSquare,
   Waypoints
@@ -57,6 +56,13 @@ export function AppNavigation() {
       items: [],
     },
     {
+      title: t("panel.sidebar.namespaces"),
+      url: "/namespaces/",
+      icon: Group,
+      isActive: false,
+      items: [],
+    },
+    {
       title: t("panel.sidebar.events"),
       url: "/events/",
       icon: CalendarClock,
@@ -71,7 +77,7 @@ export function AppNavigation() {
         {
           title: t("panel.sidebar.pods"),
           url: "/pods/",
-          icon: SquareStack,
+          icon: Box,
         },
         {
           title: t("panel.sidebar.deployments"),
@@ -96,7 +102,7 @@ export function AppNavigation() {
         {
           title: t("panel.sidebar.jobs"),
           url: "/jobs/",
-          icon: Box,
+          icon: SquareMousePointer,
         },
         {
           title: t("panel.sidebar.cron.jobs"),

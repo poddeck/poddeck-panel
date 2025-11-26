@@ -28,13 +28,18 @@ import clusterStore, {useClusterActions} from "@/store/cluster-store.ts";
 import {useRouter} from "@/routes/hooks";
 import SidebarClusterSettings
   from "@/layouts/panel/sidebar/cluster/settings.tsx";
+import ClusterEditDialog from "@/layouts/panel/sidebar/cluster/edit-dialog.tsx";
+import ClusterDeleteDialog
+  from "@/layouts/panel/sidebar/cluster/delete-dialog.tsx";
 
 export function SidebarClusterSwitcher() {
   const {t} = useTranslation();
   const {isMobile} = useSidebar()
   const [clusters, setClusters] = React.useState<Cluster[]>([]);
   const [activeCluster, setActiveCluster] = React.useState<Cluster | null>(null);
+  const [clickedCluster, setClickedCluster] = React.useState<Cluster | null>(null);
   const [open, setOpen] = React.useState(false);
+  const [dialogMode, setDialogMode] = React.useState("add");
   const {setClusterId} = useClusterActions();
   const {replace} = useRouter();
   const updateCluster = (cluster: Cluster) => {
@@ -52,6 +57,8 @@ export function SidebarClusterSwitcher() {
           listResponse.clusters.filter((entry: Cluster) => entry.id === selectedCluster);
         if (filteredClusters.length > 0) {
           setActiveCluster(filteredClusters[0]);
+        } else if (listResponse.clusters.length > 0) {
+          setActiveCluster(listResponse.clusters[0]);
         } else {
           const createResponse = await ClusterService.create({
             name: "Test",
@@ -125,13 +132,22 @@ export function SidebarClusterSwitcher() {
                     </div>
                     {cluster.name}
                     <SidebarClusterStatus isOnline={cluster.online}/>
-                    <SidebarClusterSettings/>
+                    <div className="flex items-center ml-auto" onClick={(e) => e.stopPropagation()}>
+                      <SidebarClusterSettings
+                        cluster={cluster}
+                        setClickedCluster={setClickedCluster}
+                        setDialogMode={setDialogMode}
+                      />
+                    </div>
                   </DropdownMenuItem>
                 );
               })}
               <DropdownMenuSeparator/>
               <DialogTrigger asChild>
-                <DropdownMenuItem className="gap-2 p-2">
+                <DropdownMenuItem
+                  className="gap-2 p-2"
+                  onClick={() => {setDialogMode("add")}}
+                >
                   <div
                     className="flex size-6 items-center justify-center rounded-md border bg-transparent">
                     <Plus className="size-4"/>
@@ -142,8 +158,24 @@ export function SidebarClusterSwitcher() {
               </DialogTrigger>
             </DropdownMenuContent>
           </DropdownMenu>
-          <ClusterAddDialog
-            onCreation={handleClusterCreation}></ClusterAddDialog>
+          {open && dialogMode === "add" && (
+            <ClusterAddDialog
+              onCreation={handleClusterCreation}
+            />
+          )}
+          {open && dialogMode === "edit" && (
+            <ClusterEditDialog
+              id={clickedCluster?.id}
+              name={clickedCluster?.name}
+              icon={clickedCluster?.icon}
+            />
+          )}
+          {open && dialogMode === "delete" && (
+            <ClusterDeleteDialog
+              id={clickedCluster?.id}
+              name={clickedCluster?.name}
+            />
+          )}
         </Dialog>
       </SidebarMenuItem>
     </SidebarMenu>

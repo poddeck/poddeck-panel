@@ -63,7 +63,7 @@ export default function ClusterAddDialog({ onCreation }: {
           />
         </div>
         <div className="grid gap-3">
-          <Label>{t("panel.sidebar.cluster.add.dialog.icon.label")}</Label>
+          <Label>{t("panel.sidebar.cluster.icon.label")}</Label>
           <ClusterIconSelect onChange={(value) => setNewClusterIcon(value)}/>
         </div>
       </div>

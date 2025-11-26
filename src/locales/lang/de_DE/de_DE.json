@@ -36,36 +36,57 @@
     "sidebar": {
       "cluster": "Cluster",
       "clusters": "Cluster",
+      "cluster.icon": {
+        "label": "Icon",
+        "select.placeholder": "Icon auswählen",
+        "input.placeholder": "Nach Icon suchen...",
+        "rocket": "Rakete",
+        "bug": "Bug",
+        "user": "Nutzer",
+        "home": "Haus",
+        "headphones": "Kopfhörer",
+        "heart": "Herz",
+        "box": "Box",
+        "cone": "Kegel",
+        "cylinder": "Zylinder",
+        "pyramid": "Pyramide",
+        "crown": "Krone",
+        "flame": "Flamme",
+        "smile": "Lachen"
+      },
       "cluster.add": "Cluster hinzufügen",
       "cluster.add.dialog": {
         "title": "Cluster hinzufügen",
         "description": "Fügen Sie einen neuen Cluster hinzu. Weisen Sie dem neuen Cluster einen Namen zu.",
         "name": "Name",
         "cancel": "Abbrechen",
-        "submit": "Hinzufügen",
-        "icon": {
-          "label": "Icon",
-          "select.placeholder": "Icon auswählen",
-          "input.placeholder": "Nach Icon suchen...",
-          "rocket": "Rakete",
-          "bug": "Bug",
-          "user": "Nutzer",
-          "home": "Haus",
-          "headphones": "Kopfhörer",
-          "heart": "Herz",
-          "box": "Box",
-          "cone": "Kegel",
-          "cylinder": "Zylinder",
-          "pyramid": "Pyramide",
-          "crown": "Krone",
-          "flame": "Flamme",
-          "smile": "Lachen"
-        }
+        "submit": "Hinzufügen"
       },
       "cluster.add.successful": "Cluster erfolgreich hinzugefügt",
+      "cluster.settings": {
+        "edit": "Bearbeiten",
+        "delete": "Löschen"
+      },
+      "cluster.edit.dialog": {
+        "title": "Cluster bearbeiten",
+        "description": "Hier haben Sie die Möglichkeit, einen bestehenden Cluster zu bearbeiten.",
+        "name": "Name",
+        "cancel": "Abbrechen",
+        "submit": "Bearbeiten"
+      },
+      "cluster.delete.dialog": {
+        "title": "Cluster löschen",
+        "description": "Löschen Sie einen Cluster, indem Sie den Namen des Clusters eingeben.",
+        "confirm.1": "Bitte geben Sie ",
+        "confirm.2": " zur Bestätigung ein.",
+        "name": "Name",
+        "cancel": "Abbrechen",
+        "submit": "Löschen"
+      },
       "overview": "Übersicht",
       "nodes": "Knoten",
       "workload": "Auslastung",
+      "namespaces": "Namensräume",
       "events": "Ereignisse",
       "units": "Einheiten",
       "pods": "Pods",

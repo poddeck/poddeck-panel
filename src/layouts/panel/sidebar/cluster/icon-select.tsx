@@ -25,12 +25,12 @@ export default function ClusterIconSelect({ value, onChange }: {
     <div className="space-y-4 w-full max-w-md">
       <Select value={selected ? selected.id : ""} onValueChange={handleChange}>
         <SelectTrigger className="w-full">
-          <SelectValue placeholder={t("panel.sidebar.cluster.add.dialog.icon.select.placeholder")} />
+          <SelectValue placeholder={t("panel.sidebar.cluster.icon.select.placeholder")} />
         </SelectTrigger>
         <SelectContent className="w-94">
           <div className="p-2">
             <Input
-              placeholder={t("panel.sidebar.cluster.add.dialog.icon.input.placeholder")}
+              placeholder={t("panel.sidebar.cluster.icon.input.placeholder")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />

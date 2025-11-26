@@ -12,8 +12,13 @@ import {
 import {useTranslation} from "react-i18next";
 import {useSidebar} from "@/components/ui/sidebar.tsx";
 import {DialogTrigger} from "@/components/ui/dialog.tsx";
+import type {Cluster} from "@/api/services/cluster-service.ts";
 
-export default function SidebarClusterSettings() {
+export default function SidebarClusterSettings({cluster, setClickedCluster, setDialogMode}: {
+  cluster: Cluster
+  setClickedCluster: React.Dispatch<React.SetStateAction<Cluster | null>>
+  setDialogMode: React.Dispatch<React.SetStateAction<string>>
+}) {
   const {t} = useTranslation();
   const {isMobile} = useSidebar()
   return (
@@ -35,19 +40,27 @@ export default function SidebarClusterSettings() {
       >
         <DialogTrigger asChild>
           <DropdownMenuItem
-            onClick={(e) => e.stopPropagation()}
             className="flex items-center gap-2"
+            onClick={() => {
+              setClickedCluster(cluster);
+              setDialogMode("edit")
+            }}
           >
-            <Edit2 size={16}/> {t("panel.page.nodes.action.edit")}
+            <Edit2 size={16}/> {t("panel.sidebar.cluster.settings.edit")}
           </DropdownMenuItem>
         </DialogTrigger>
-        <DropdownMenuItem
-          onClick={(e) => e.stopPropagation()}
-          className="text-rose-600 flex items-center gap-2"
-        >
-          <Trash2 className="text-rose-600"
-                  size={16}/> {t("panel.page.nodes.action.delete")}
-        </DropdownMenuItem>
+        <DialogTrigger asChild>
+          <DropdownMenuItem
+            className="text-rose-600 flex items-center gap-2"
+            onClick={() => {
+              setClickedCluster(cluster);
+              setDialogMode("delete")
+            }}
+          >
+            <Trash2 className="text-rose-600"
+                    size={16}/> {t("panel.sidebar.cluster.settings.delete")}
+          </DropdownMenuItem>
+        </DialogTrigger>
       </DropdownMenuContent>
     </DropdownMenu>
   )
