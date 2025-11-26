@@ -25,8 +25,9 @@ function NodeAddButton() {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button size='lg'
-                className='bg-primary'
+        <Button
+          size='lg'
+          className='bg-primary'
         >
           <PlusIcon/>
           {t("panel.page.nodes.add")}
@@ -78,7 +79,7 @@ export default function NodesPage() {
       }
     }
     loadNodes();
-    const interval = window.setInterval(loadNodes, 2000);
+    const interval = window.setInterval(loadNodes, 1000);
     return () => {
       clearInterval(interval);
     };
@@ -93,6 +94,7 @@ export default function NodesPage() {
           <NodeAddButton/>
         </div>
         <DataTable<Node>
+          name="nodes"
           columns={columns}
           data={nodes}
           pageSize={5}

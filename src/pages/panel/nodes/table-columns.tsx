@@ -14,7 +14,7 @@ import {Progress} from "@/components/ui/progress.tsx";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
+  DropdownMenuItem, DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
 import {type Node} from "@/api/services/node-service"
@@ -70,10 +70,12 @@ export function NodesActionDropdown({row}: { row: Row<Node> }) {
             <Power className="text-amber-600"
                    size={16}/> {t("panel.page.nodes.action.drain")}
           </DropdownMenuItem>
+          <DropdownMenuSeparator/>
           <DropdownMenuItem
             onClick={() => {
             }}
             className="text-rose-600 flex items-center gap-2"
+            variant="destructive"
           >
             <Trash2 className="text-rose-600"
                     size={16}/> {t("panel.page.nodes.action.delete")}
@@ -123,12 +125,10 @@ export const columns: ColumnDef<Node, unknown>[] = [
   {
     header: "panel.page.nodes.column.name",
     accessorKey: "name",
-    enableSorting: true,
   },
   {
     header: "panel.page.nodes.column.cpu",
     accessorKey: "cpu_cores",
-    enableSorting: true,
     cell: ({row}) => {
       const cores = row.original.cpu_cores;
       const usage = row.original.cpu_ratio;
@@ -150,7 +150,6 @@ export const columns: ColumnDef<Node, unknown>[] = [
   {
     header: "panel.page.nodes.column.memory",
     accessorKey: "total_memory",
-    enableSorting: true,
     cell: ({row}) => {
       const memory = row.original.total_memory;
       const usage = row.original.memory_ratio;
@@ -172,7 +171,6 @@ export const columns: ColumnDef<Node, unknown>[] = [
   {
     header: "panel.page.nodes.column.storage",
     accessorKey: "total_storage",
-    enableSorting: true,
     cell: ({row}) => {
       const storage = row.original.total_storage;
       const usage = row.original.storage_ratio;
@@ -194,13 +192,11 @@ export const columns: ColumnDef<Node, unknown>[] = [
   {
     header: "panel.page.nodes.column.version",
     accessorKey: "version",
-    enableSorting: true,
     maxSize: 100,
   },
   {
     header: "panel.page.nodes.column.status",
     accessorKey: "ready",
-    enableSorting: true,
     maxSize: 120,
     cell: ({row}) => {
       if (row.original.ready) {
@@ -219,6 +215,7 @@ export const columns: ColumnDef<Node, unknown>[] = [
     id: "actions",
     header: "",
     maxSize: 60,
+    enableHiding: false,
     cell: ({row}) => {
       return <NodesActionDropdown row={row}/>
     },

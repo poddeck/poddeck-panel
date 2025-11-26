@@ -1,6 +1,6 @@
 import {
   DropdownMenu,
-  DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
 import {Button} from "@/components/ui/button.tsx";
@@ -49,6 +49,7 @@ export default function SidebarClusterSettings({cluster, setClickedCluster, setD
             <Edit2 size={16}/> {t("panel.sidebar.cluster.settings.edit")}
           </DropdownMenuItem>
         </DialogTrigger>
+        <DropdownMenuSeparator/>
         <DialogTrigger asChild>
           <DropdownMenuItem
             className="text-rose-600 flex items-center gap-2"
@@ -56,6 +57,7 @@ export default function SidebarClusterSettings({cluster, setClickedCluster, setD
               setClickedCluster(cluster);
               setDialogMode("delete")
             }}
+            variant="destructive"
           >
             <Trash2 className="text-rose-600"
                     size={16}/> {t("panel.sidebar.cluster.settings.delete")}
