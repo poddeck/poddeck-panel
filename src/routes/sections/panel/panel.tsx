@@ -12,6 +12,7 @@ const getRoutes = (): RouteObject[] => {
     {path: "workload", element: Component("/pages/panel/workload")},
     {path: "events", element: Component("/pages/panel/events")},
     {path: "pods", element: Component("/pages/panel/pods")},
+    {path: "pod", element: Component("/pages/panel/pod")},
   ];
 };
 
