@@ -179,6 +179,26 @@
       },
       "events": {
         "title": "Events"
+      },
+      "pods": {
+        "title": "Pods",
+        "empty": {
+          "title": "No pods found",
+          "description": "No pods could be found in the cluster."
+        },
+        "column": {
+          "name": "Name",
+          "containers": "Containers",
+          "status": "Status",
+          "age": "Age"
+        },
+        "status": {
+          "ready": "Ready",
+          "not.ready": "Not ready"
+        },
+        "action": {
+          "delete": "Delete"
+        }
       }
     }
   },
