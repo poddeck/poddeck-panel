@@ -14,7 +14,14 @@
       "description": "Entschuldigen Sie bitte die Unannehmlichkeiten."
     }
   },
-  "table":{
+  "table": {
+    "search": "Suche...",
+    "columns": {
+      "label": "Spalten",
+      "search": "Spalte suchen...",
+      "all": "Alle",
+      "reset": "Zurücksetzen"
+    },
     "page": "Seite",
     "of": "von",
     "empty": "Keine Ergebnisse."
@@ -178,6 +185,33 @@
       },
       "events": {
         "title": "Ereignisse"
+      },
+      "pods": {
+        "title": "Pods",
+        "empty": {
+          "title": "Keine Pods gefunden",
+          "description": "Im Cluster konnten keine Pods gefunden werden."
+        },
+        "column": {
+          "namespace": "Namensraum",
+          "name": "Name",
+          "containers": "Container",
+          "status": "Status",
+          "restarts": "Neustarts",
+          "age": "Alter",
+          "node": "Knoten",
+          "ip": "IP"
+        },
+        "status": {
+          "pending": "Ausstehend",
+          "running": "Läuft",
+          "succeeded": "Erfolgreich",
+          "failed": "Fehlgeschlagen",
+          "unknown": "Unbekannt"
+        },
+        "action": {
+          "delete": "Löschen"
+        }
       }
     }
   },

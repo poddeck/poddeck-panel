@@ -6,7 +6,10 @@ export type Pod = {
   total_containers: number;
   ready_containers: number;
   status: string;
+  restarts: number;
   age: number;
+  ip: string;
+  node: string;
 }
 
 export type PodListResponse = {

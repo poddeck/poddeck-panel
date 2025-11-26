@@ -16,6 +16,13 @@
   },
   "coming.soon": "Coming soon",
   "table": {
+    "search": "Search...",
+    "columns": {
+      "label": "Columns",
+      "search": "Search column...",
+      "all": "All",
+      "reset": "Reset"
+    },
     "page": "Page",
     "of": "of",
     "empty": "No results."
@@ -187,14 +194,21 @@
           "description": "No pods could be found in the cluster."
         },
         "column": {
+          "namespace": "Namespace",
           "name": "Name",
           "containers": "Containers",
           "status": "Status",
-          "age": "Age"
+          "restarts": "Restarts",
+          "age": "Age",
+          "node": "Node",
+          "ip": "IP"
         },
         "status": {
-          "ready": "Ready",
-          "not.ready": "Not ready"
+          "pending": "Pending",
+          "running": "Running",
+          "succeeded": "Succeeded",
+          "failed": "Failed",
+          "unknown": "Unknown"
         },
         "action": {
           "delete": "Delete"

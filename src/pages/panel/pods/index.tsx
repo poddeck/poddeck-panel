@@ -12,6 +12,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty"
+import {useRouter} from "@/routes/hooks";
 
 function PodListEmpty() {
   const {t} = useTranslation();
@@ -35,6 +36,7 @@ function PodListEmpty() {
 export default function PodsPage() {
   const [pods, setPods] = useState<Pod[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const {replace} = useRouter();
   useEffect(() => {
     async function loadPods() {
       try {
@@ -47,7 +49,7 @@ export default function PodsPage() {
       }
     }
     loadPods();
-    const interval = window.setInterval(loadPods, 2000);
+    const interval = window.setInterval(loadPods, 1000);
     return () => {
       clearInterval(interval);
     };
@@ -61,11 +63,14 @@ export default function PodsPage() {
         <div className="flex items-center justify-end mb-[4vh]">
         </div>
         <DataTable<Pod>
+          name="pods"
           columns={columns}
           data={pods}
           pageSize={5}
-          initialSorting={[{id: "name", desc: false}]}
+          initialSorting={[{id: "namespace", desc: false}]}
           isLoading={isLoading}
+          visibilityState={{node: false, ip: false}}
+          onClick={row => replace("/pod/?pod=" + row.original.name)}
         />
       </div>
     </PanelPage>

@@ -1,26 +1,17 @@
 import {type ColumnDef, type Row} from "@tanstack/react-table";
 import {Button} from "@/components/ui/button.tsx";
-import {type LucideIcon, MoreHorizontal, Trash2} from "lucide-react";
-import {Progress} from "@/components/ui/progress.tsx";
+import {MoreHorizontal, Trash2} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
+  DropdownMenuItem, DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
 import {type Pod} from "@/api/services/pod-service"
 import {t} from "@/locales/i18n";
-import {useRouter} from "@/routes/hooks";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger
-} from '@/components/ui/hover-card'
-import {Avatar, AvatarFallback} from "@/components/ui/avatar.tsx";
-import React from "react";
+import {Badge} from "@/components/ui/badge.tsx";
 
 export function PodsActionDropdown({row}: { row: Row<Pod> }) {
-  const {replace} = useRouter();
   return (
     <div className="flex justify-end">
       <DropdownMenu>
@@ -29,11 +20,12 @@ export function PodsActionDropdown({row}: { row: Row<Pod> }) {
             <MoreHorizontal/>
           </Button>
         </DropdownMenuTrigger>
+        <DropdownMenuSeparator/>
         <DropdownMenuContent align="start">
           <DropdownMenuItem
-            onClick={() => {
-            }}
+            onClick={() => {}}
             className="text-rose-600 flex items-center gap-2"
+            variant='destructive'
           >
             <Trash2 className="text-rose-600"
                     size={16}/> {t("panel.page.pods.action.delete")}
@@ -44,51 +36,66 @@ export function PodsActionDropdown({row}: { row: Row<Pod> }) {
   );
 }
 
-export function PodsActionProgress(
-  {color, label, icon, usage, value, unit}: {
-    color: string,
-    label: string,
-    icon: LucideIcon,
-    usage: number,
-    value: number,
-    unit: string
+export function PodsStatus({status}: {status: string}) {
+  if (status === "pending") {
+    return <Badge
+      className="px-4 py-2 -my-2 bg-yellow-600/10 text-yellow-600">
+      {t("panel.page.pods.status.pending")}
+    </Badge>;
+  } else if (status === "running") {
+    return <Badge
+      className="px-4 py-2 -my-2 bg-green-600/10 text-green-600">
+      {t("panel.page.pods.status.running")}
+    </Badge>;
+  } else if (status === "succeeded") {
+    return <Badge
+      className="px-4 py-2 -my-2 bg-lime-600/10 text-lime-600">
+      {t("panel.page.pods.status.succeeded")}
+    </Badge>;
+  } else if (status === "failed") {
+    return <Badge
+      className="px-4 py-2 -my-2 bg-red-600/10 text-red-600">
+      {t("panel.page.pods.status.failed")}
+    </Badge>;
+  } else if (status === "unknown") {
+    return <Badge
+      className="px-4 py-2 -my-2 bg-zinc-400/10 text-zinc-400">
+      {t("panel.page.pods.status.unknown")}
+    </Badge>;
   }
-) {
+}
+
+export function PodsAge({age}: { age: number }) {
+  function convertTime(age: number) {
+    const abs = Math.abs(age);
+    if (abs < 1000 * 60) {
+      return Math.round(age / 1000) + "s";
+    }
+    if (abs < 1000 * 60 * 60) {
+      return Math.round(age / (1000 * 60)) + "m";
+    }
+    if (abs < 1000 * 60 * 60 * 24) {
+      return Math.round(age / (1000 * 60 * 60)) + "h";
+    }
+    return Math.round(age / (1000 * 60 * 60 * 24)) + "d";
+  }
   return (
-    <HoverCard openDelay={0} closeDelay={0}>
-      <HoverCardTrigger asChild>
-        <div className="inline-block p-5 -m-5 w-full">
-          <Progress value={usage} className={color} />
-        </div>
-      </HoverCardTrigger>
-      <HoverCardContent className='w-fit -mt-4'>
-        <div className='flex items-center gap-4'>
-          <Avatar className="h-12 w-12 rounded-lg">
-            <AvatarFallback className="rounded-lg">
-              {React.createElement(icon, { className: "size-8" })}
-            </AvatarFallback>
-          </Avatar>
-          <div className='flex flex-col gap-1'>
-            <div
-              className='text-sm font-medium'>{label}</div>
-            <div className='text-xl font-semibold'>{value.toFixed(2)} {unit}</div>
-          </div>
-        </div>
-      </HoverCardContent>
-    </HoverCard>
-  )
+    <span>{convertTime(age)}</span>
+  );
 }
 
 export const columns: ColumnDef<Pod, unknown>[] = [
   {
+    header: "panel.page.pods.column.namespace",
+    accessorKey: "namespace"
+  },
+  {
     header: "panel.page.pods.column.name",
     accessorKey: "name",
-    enableSorting: true,
   },
   {
     header: "panel.page.pods.column.containers",
     accessorKey: "container",
-    enableSorting: true,
     cell: ({row}) => {
       return (
         <span>{row.original.ready_containers} / {row.original.total_containers}</span>
@@ -98,35 +105,34 @@ export const columns: ColumnDef<Pod, unknown>[] = [
   {
     header: "panel.page.pods.column.status",
     accessorKey: "status",
-    enableSorting: true,
+    cell: ({row}) => {
+      return <PodsStatus status={row.original.status.toLowerCase()}/>
+    },
+  },
+  {
+    header: "panel.page.pods.column.restarts",
+    accessorKey: "restarts",
   },
   {
     header: "panel.page.pods.column.age",
     accessorKey: "age",
-    enableSorting: true,
     cell: ({row}) => {
-      function convertTime(age: number) {
-        const abs = Math.abs(age);
-        if (abs < 1000 * 60) {
-          return Math.round(age / 1000) + "s";
-        }
-        if (abs < 1000 * 60 * 60) {
-          return Math.round(age / (1000 * 60)) + "m";
-        }
-        if (abs < 1000 * 60 * 60 * 24) {
-          return Math.round(age / (1000 * 60 * 60)) + "h";
-        }
-        return Math.round(age / (1000 * 60 * 60 * 24)) + "d";
-      }
-      return (
-        <span>{convertTime(row.original.age)}</span>
-      );
+      return <PodsAge age={row.original.age}/>
     },
+  },
+  {
+    header: "panel.page.pods.column.node",
+    accessorKey: "node",
+  },
+  {
+    header: "panel.page.pods.column.ip",
+    accessorKey: "ip",
   },
   {
     id: "actions",
     header: "",
     maxSize: 60,
+    enableHiding: false,
     cell: ({row}) => {
       return <PodsActionDropdown row={row}/>
     },
