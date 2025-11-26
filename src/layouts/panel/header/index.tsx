@@ -25,10 +25,16 @@ import {Progress} from "@/components/ui/progress";
 import {HeaderSearchBar} from "./search-bar";
 
 interface AppHeaderProps {
-  title: string;
+  title?: string;
+  breadcrumb?: React.ReactNode;
 }
 
-export function AppHeader({title}: AppHeaderProps) {
+export function AppHeader(
+  {
+    title,
+    breadcrumb
+  }: AppHeaderProps
+) {
   const {t} = useTranslation();
   return (
     <header
@@ -39,13 +45,17 @@ export function AppHeader({title}: AppHeaderProps) {
           orientation="vertical"
           className="mr-2 data-[orientation=vertical]:h-4"
         />
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbPage>{t(title)}</BreadcrumbPage>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        {title ?
+          (
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem>
+                  <BreadcrumbPage>{t(title)}</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          ) : breadcrumb
+        }
       </div>
       <div
         className="flex align-center ml-auto mr-6 h-5 items-center space-x-4">
