@@ -3,7 +3,7 @@
 import {Button} from '@/components/ui/button'
 import {
   CheckCheck,
-  ChevronDownIcon,
+  ChevronDown,
   Columns3Icon,
   RefreshCcwIcon,
   SearchIcon
@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {useTranslation} from "react-i18next";
+import {useState} from "react";
 
 export default function DataTableColumnSelection(
   {
@@ -28,14 +29,19 @@ export default function DataTableColumnSelection(
   }: any
 ) {
   const {t} = useTranslation();
+  const [open, setOpen] = useState(false);
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="justify-between">
           <span className="flex items-center gap-2">
             <Columns3Icon/> {t("table.columns.label")}
           </span>
-          <ChevronDownIcon className="ml-3"/>
+          <ChevronDown
+            className={`ml-2 transition-transform duration-300 ${
+              open ? 'scale-y-[-1]' : 'scale-y-100'
+            }`}
+          />
         </Button>
       </DropdownMenuTrigger>
 

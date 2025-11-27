@@ -85,7 +85,7 @@ export default function DataTablePagination<T>(
       <Select value={pagination.pageSize.toString()}
               onValueChange={v => table.setPageSize(Number(v))}>
         <SelectTrigger className="w-fit"><SelectValue/></SelectTrigger>
-        <SelectContent>
+        <SelectContent align="end">
           {[1, 5, 10, 25, 50].map(size => (
             <SelectItem key={size}
                         value={size.toString()}>{size} / {t("table.page")}</SelectItem>
