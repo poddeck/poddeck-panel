@@ -212,6 +212,15 @@
         "action": {
           "delete": "Löschen"
         }
+      },
+      "pod": {
+        "tabs": {
+          "overview": "Übersicht",
+          "logs": "Logs",
+          "console": "Konsole",
+          "events": "Events"
+        },
+        "actions": "Aktionen"
       }
     }
   },
