@@ -183,6 +183,26 @@
         "memory": "Memory",
         "storage": "Speicher"
       },
+      "namespaces": {
+        "title": "Namensräume",
+        "add": "Namensraum hinzufügen",
+        "empty": {
+          "title": "Es wurden noch keine Namespaces erstellt.",
+          "description": "Sie haben Ihrem Cluster noch keine Namespaces hinzugefügt. Klicken Sie auf die Schaltfläche unten, um Ihren ersten Namespace hinzuzufügen."
+        },
+        "column": {
+          "name": "Name",
+          "status": "Status",
+          "age": "Alter"
+        },
+        "status": {
+          "active": "Aktiv",
+          "terminating": "Terminierend"
+        },
+        "action": {
+          "delete": "Löschen"
+        }
+      },
       "events": {
         "title": "Ereignisse"
       },

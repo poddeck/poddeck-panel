@@ -184,6 +184,26 @@
         "memory": "Memory",
         "storage": "Storage"
       },
+      "namespaces": {
+        "title": "Namespaces",
+        "add": "Add namespace",
+        "empty": {
+          "title": "No namespaces created yet",
+          "description": "You have not added any namespaces to your cluster yet. Click the button below to add your first namespace."
+        },
+        "column": {
+          "name": "Name",
+          "status": "Status",
+          "age": "Age"
+        },
+        "status": {
+          "active": "Active",
+          "terminating": "Terminating"
+        },
+        "action": {
+          "delete": "Delete"
+        }
+      },
       "events": {
         "title": "Events"
       },

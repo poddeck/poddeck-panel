@@ -10,6 +10,7 @@ const getRoutes = (): RouteObject[] => {
     {path: "overview", element: Component("/pages/panel/overview")},
     {path: "nodes", element: Component("/pages/panel/nodes")},
     {path: "workload", element: Component("/pages/panel/workload")},
+    {path: "namespaces", element: Component("/pages/panel/namespaces")},
     {path: "events", element: Component("/pages/panel/events")},
     {path: "pods", element: Component("/pages/panel/pods")},
     {path: "pod/overview", element: Component("/pages/panel/pod/overview")},
