@@ -268,7 +268,33 @@
           "events": "Events",
           "containers": "Containers"
         },
-        "actions": "Actions"
+        "actions": "Actions",
+        "overview": {
+          "general": {
+            "title": "GENERAL",
+            "namespace": "Namespace",
+            "node": "Node",
+            "start": "Start time",
+            "labels": "Labels",
+            "annotations": "Annotations"
+          },
+          "status": {
+            "title": "STATUS",
+            "status": "Status",
+            "restarts": "Restarts"
+          },
+          "network": {
+            "title": "NETWORK",
+            "host.ip": "Host IP",
+            "pod.ip": "Pod IP"
+          },
+          "containers": {
+            "title": "CONTAINERS"
+          },
+          "events": {
+            "title": "EVENTS"
+          }
+        }
       }
     }
   },

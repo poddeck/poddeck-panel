@@ -8,8 +8,20 @@ export type Pod = {
   status: string;
   restarts: number;
   age: number;
-  ip: string;
+  pod_ip: string;
+  host_ip: string;
   node: string;
+  labels: Record<string, string>;
+  annotations: Record<string, string>;
+  containers: Container[];
+}
+
+export type Container = {
+  name: string;
+  image: string;
+  ready: boolean;
+  state: string;
+  restarts: number;
 }
 
 export interface PodDeleteRequest {

@@ -5,16 +5,16 @@ import {useSearchParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import podService, {type Pod} from "@/api/services/pod-service.ts";
 import {
-  Bolt, CalendarClock,
-  Container,
-  Lightbulb,
-  Network,
+  CalendarClock,
 } from "lucide-react";
 import {useTranslation} from "react-i18next";
+import PodOverviewGeneral from "@/pages/panel/pod/overview/general.tsx";
+import PodOverviewStatus from "@/pages/panel/pod/overview/status.tsx";
+import PodOverviewNetwork from "@/pages/panel/pod/overview/network.tsx";
+import PodOverviewContainers from "@/pages/panel/pod/overview/containers.tsx";
 
 export default function PodOverviewPage() {
-  const {i18n} = useTranslation();
-  const language = (i18n.resolvedLanguage || "en_US").replace("_", "-");
+  const {t} = useTranslation();
   const [pod, setPod] = useState<Pod | null>(null);
   const [searchParams] = useSearchParams();
   useEffect(() => {
@@ -37,49 +37,16 @@ export default function PodOverviewPage() {
   return (
     <PanelPage breadcrumb={PodPageBreadcrumb()} layout={false}>
       <PodPageHeader pod={pod} page="overview"/>
-      <div className="w-[min(1500px,95%)] mx-auto flex flex-1 flex-col gap-6 p-4 pt-0">
+      <div className="w-[min(calc(1500px+var(--spacing)*8),95%)] mx-auto flex flex-1 flex-col gap-6 p-4 pt-0">
         <div className="grid auto-rows-min gap-6 md:grid-cols-3">
-          <div className="bg-sidebar aspect-video rounded-xl p-8">
-            <span className="flex items-center gap-3 text-xl mb-5"><Bolt size={20}/> GENERAL</span>
-            <div className="flex justify-between mb-1">
-              <span className="text-primary/60">Namespace</span>
-              <span>{pod?.namespace}</span>
-            </div>
-            <div className="flex justify-between mb-1">
-              <span className="text-primary/60">Node</span>
-              <span>{pod?.node}</span>
-            </div>
-            <div className="flex justify-between mb-1">
-              <span className="text-primary/60">Start time</span>
-              <span>{new Date(Date.now() - (pod ? pod.age : 0)).toLocaleString(language)}</span>
-            </div>
-            <div className="flex justify-between mb-1">
-              <span className="text-primary/60">Labels</span>
-              <div className="flex flex-col">
-                <div className="flex items-center bg-muted py-0.5 pr-0.5 rounded-lg">
-                  <span className="px-2">app</span>
-                  <span className="bg-background px-2 rounded-r-sm">poddeck-agent</span>
-                </div>
-              </div>
-            </div>
-            <div className="flex justify-between mb-1">
-              <span className="text-primary/60">Annotations</span>
-              <span>kubectl.kubernetes.io/restartedAt</span>
-            </div>
-          </div>
-          <div className="bg-sidebar aspect-video rounded-xl p-8">
-            <span className="flex items-center gap-3 text-xl mb-5"><Lightbulb size={20}/> STATUS</span>
-          </div>
-          <div className="bg-sidebar aspect-video rounded-xl p-8">
-            <span className="flex items-center gap-3 text-xl mb-5"><Network size={20}/> NETWORK</span>
-          </div>
+          <PodOverviewGeneral pod={pod}/>
+          <PodOverviewStatus pod={pod}/>
+          <PodOverviewNetwork pod={pod}/>
         </div>
         <div className="grid auto-rows-min gap-6 md:grid-cols-2">
+          <PodOverviewContainers pod={pod}/>
           <div className="bg-sidebar aspect-video rounded-xl p-8">
-            <span className="flex items-center gap-3 text-xl mb-5"><Container size={20}/> CONTAINERS</span>
-          </div>
-          <div className="bg-sidebar aspect-video rounded-xl p-8">
-            <span className="flex items-center gap-3 text-xl mb-5"><CalendarClock size={20}/> EVENTS</span>
+            <span className="flex items-center gap-3 text-xl mb-5"><CalendarClock size={20}/> {t("panel.page.pod.overview.events.title")}</span>
           </div>
         </div>
       </div>

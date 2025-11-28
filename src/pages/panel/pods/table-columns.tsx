@@ -45,7 +45,7 @@ export const columns: ColumnDef<Pod, unknown>[] = [
   },
   {
     header: "panel.page.pods.column.ip",
-    accessorKey: "ip",
+    accessorKey: "pod_ip",
   },
   {
     id: "actions",

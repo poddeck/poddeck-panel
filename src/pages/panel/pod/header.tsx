@@ -115,7 +115,7 @@ export default function PodPageHeader(
                 <div className="flex items-center gap-2">
                   <Globe size={16}/>
                   {pod ? (
-                    <span>{pod.ip}</span>
+                    <span>{pod.pod_ip}</span>
                   ) : (
                     <Skeleton className="w-30 h-6"/>
                   )}
@@ -131,7 +131,7 @@ export default function PodPageHeader(
               </div>
             </div>
           </div>
-          <div className="flex items-center">
+          <div className="flex items-center mr-2">
             <Button
               variant="outline"
               size="icon"
