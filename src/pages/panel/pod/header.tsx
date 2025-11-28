@@ -50,6 +50,11 @@ const tabs = [
     name: "panel.page.pod.tabs.events",
     url: "/pod/events/"
   },
+  {
+    id: "containers",
+    name: "panel.page.pod.tabs.containers",
+    url: "/pod/containers/"
+  },
 ]
 
 export default function PodPageHeader(
@@ -67,7 +72,7 @@ export default function PodPageHeader(
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [searchParams] = useSearchParams();
   return (
-    <div className="w-full bg-sidebar">
+    <div className="w-full bg-sidebar mb-6">
       <div className="w-[min(1500px,95%)] mx-auto flex flex-col flex-1">
         <div className="flex items-center justify-between pt-10 pb-8">
           <div className="flex items-center">

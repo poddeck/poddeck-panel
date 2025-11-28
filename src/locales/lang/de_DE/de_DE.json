@@ -264,7 +264,8 @@
           "overview": "Übersicht",
           "logs": "Logs",
           "console": "Konsole",
-          "events": "Events"
+          "events": "Events",
+          "containers": "Containers"
         },
         "actions": "Aktionen"
       }
