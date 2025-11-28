@@ -28,10 +28,11 @@ export function NamespacesActionDropdown({row}: { row: Row<Namespace> }) {
             <DialogTrigger asChild>
               <DropdownMenuItem
                 variant="destructive"
+                onClick={(e) => e.stopPropagation()}
               >
                 <div className="text-rose-600 flex items-center gap-2">
                   <Trash2 className="text-rose-600" size={16}/>
-                  {t("panel.page.nodes.action.delete")}
+                  {t("panel.page.namespaces.action.delete")}
                 </div>
               </DropdownMenuItem>
             </DialogTrigger>

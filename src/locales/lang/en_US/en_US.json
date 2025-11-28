@@ -249,6 +249,15 @@
         },
         "action": {
           "delete": "Delete"
+        },
+        "delete.dialog": {
+          "title": "Delete pod",
+          "description": "Here you have the option to delete an existing pod.",
+          "confirm.1": "Please type ",
+          "confirm.2": " to confirm.",
+          "name": "Name",
+          "cancel": "Cancel",
+          "submit": "Delete"
         }
       },
       "pod": {

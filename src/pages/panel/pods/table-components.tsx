@@ -1,38 +1,50 @@
-import {type Row} from "@tanstack/react-table";
 import {Button} from "@/components/ui/button.tsx";
 import {MoreHorizontal, Trash2} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
 import {type Pod} from "@/api/services/pod-service"
 import {t} from "@/locales/i18n";
 import {Badge} from "@/components/ui/badge.tsx";
+import PodDeleteDialog from "@/pages/panel/pods/delete-dialog.tsx";
+import React from "react";
+import {DialogTrigger} from "@/components/ui/dialog.tsx";
+import {Dialog} from "@radix-ui/react-dialog";
 
-export function PodsActionDropdown({row}: { row: Row<Pod> }) {
+export function PodsActionDropdown({pod}: { pod: Pod }) {
+  const [open, setOpen] = React.useState(false);
   return (
     <div className="flex justify-end">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm" className="h-fit hover:bg-black/10 dark:hover:bg-white/10 py-2 -my-2 rounded-full">
-            <MoreHorizontal/>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuSeparator/>
-        <DropdownMenuContent align="start">
-          <DropdownMenuItem
-            onClick={() => {}}
-            className="text-rose-600 flex items-center gap-2"
-            variant='destructive'
-          >
-            <Trash2 className="text-rose-600"
-                    size={16}/> {t("panel.page.pods.action.delete")}
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="sm" className="h-fit hover:bg-black/10 dark:hover:bg-white/10 py-2 -my-2 rounded-full">
+              <MoreHorizontal/>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            <DialogTrigger asChild>
+              <DropdownMenuItem
+                variant="destructive"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="text-rose-600 flex items-center gap-2">
+                  <Trash2 className="text-rose-600" size={16}/>
+                  {t("panel.page.pods.action.delete")}
+                </div>
+              </DropdownMenuItem>
+            </DialogTrigger>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <PodDeleteDialog
+          namespace={pod.namespace}
+          pod={pod.name}
+          setOpen={setOpen}
+        />
+      </Dialog>
     </div>
   );
 }

@@ -25,6 +25,9 @@ import {useState} from "react";
 import type {Pod} from "@/api/services/pod-service.ts";
 import {PodAge} from "@/pages/panel/pod/age.tsx";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
+import {Dialog, DialogTrigger} from "@/components/ui/dialog.tsx";
+import PodDeleteDialog from "@/pages/panel/pods/delete-dialog.tsx";
+import {useRouter} from "@/routes/hooks";
 
 const tabs = [
   {
@@ -59,7 +62,9 @@ export default function PodPageHeader(
   }
 ) {
   const {t} = useTranslation();
-  const [open, setOpen] = useState(false);
+  const {replace} = useRouter();
+  const [actionsOpen, setActionsOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const [searchParams] = useSearchParams();
   return (
     <div className="w-full bg-sidebar">
@@ -133,30 +138,40 @@ export default function PodPageHeader(
             >
               <Terminal/>
             </Button>
-            <DropdownMenu open={open} onOpenChange={setOpen}>
-              <DropdownMenuTrigger asChild>
-                <Button variant='outline'>
-                  {t("panel.page.pod.actions")}
-                  <ChevronDown
-                    className={`ml-2 transition-transform duration-300 ${
-                      open ? 'scale-y-[-1]' : 'scale-y-100'
-                    }`}
-                  />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuSeparator/>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  onClick={() => {
-                  }}
-                  className="text-rose-600 flex items-center gap-2"
-                  variant='destructive'
-                >
-                  <Trash2 className="text-rose-600"
-                          size={16}/> {t("panel.page.pods.action.delete")}
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+              <DropdownMenu open={actionsOpen} onOpenChange={setActionsOpen}>
+                <DropdownMenuTrigger asChild>
+                  <Button variant='outline'>
+                    {t("panel.page.pod.actions")}
+                    <ChevronDown
+                      className={`ml-2 transition-transform duration-300 ${
+                        actionsOpen ? 'scale-y-[-1]' : 'scale-y-100'
+                      }`}
+                    />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuSeparator/>
+                <DropdownMenuContent align="end">
+                  <DialogTrigger asChild>
+                    <DropdownMenuItem
+                      variant="destructive"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <div className="text-rose-600 flex items-center gap-2">
+                        <Trash2 className="text-rose-600" size={16}/>
+                        {t("panel.page.pods.action.delete")}
+                      </div>
+                    </DropdownMenuItem>
+                  </DialogTrigger>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <PodDeleteDialog
+                namespace={pod ? pod.namespace : ""}
+                pod={pod ? pod.name : ""}
+                setOpen={setDeleteOpen}
+                onDelete={() => replace("/pods/")}
+              />
+            </Dialog>
           </div>
         </div>
         <div className='w-full max-w-md'>

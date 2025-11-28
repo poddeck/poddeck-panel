@@ -53,7 +53,7 @@ export const columns: ColumnDef<Pod, unknown>[] = [
     maxSize: 60,
     enableHiding: false,
     cell: ({row}) => {
-      return <PodsActionDropdown row={row}/>
+      return <PodsActionDropdown pod={row.original}/>
     },
   },
 ];

@@ -11,45 +11,52 @@ import {
 import {Button} from "@/components/ui/button.tsx";
 import {Spinner} from "@/components/ui/spinner.tsx";
 import * as React from "react";
-import NamespaceService from "@/api/services/namespace-service.ts";
+import PodService from "@/api/services/pod-service.ts";
 
-export default function NamespaceDeleteDialog(
+export default function PodDeleteDialog(
   {
-    name,
+    namespace,
+    pod,
     setOpen,
+    onDelete,
   }: {
-    name?: string;
+    namespace?: string;
+    pod?: string;
     setOpen: (open: boolean) => void;
+    onDelete?: () => void;
   }
 ) {
   const {t} = useTranslation();
-  const [newNamespaceName, setNewNamespaceName] = React.useState("");
+  const [newPodName, setNewPodName] = React.useState("");
   const [loading, setLoading] = React.useState(false);
-  const handleEditNamespace = async () => {
-    if (newNamespaceName != name) {
+  const handleEditPod = async () => {
+    if (newPodName != pod) {
       return;
     }
     setLoading(true);
-    await NamespaceService.remove({
-      name: name ? name : "",
+    await PodService.remove({
+      namespace: namespace ? namespace : "",
+      pod: pod ? pod : ""
     });
     setLoading(false);
-    setNewNamespaceName("");
+    setNewPodName("");
     setOpen(false);
+    onDelete?.();
   };
   return (
-    <DialogContent className="sm:max-w-[425px]" onClick={(e) => e.stopPropagation()}>
+    <DialogContent className="sm:max-w-[425px]" onClick={(e) => e.stopPropagation()}
+                   onMouseDown={(e) => e.stopPropagation()}>
       <DialogHeader>
-        <DialogTitle>{t("panel.page.namespaces.delete.dialog.title")}</DialogTitle>
+        <DialogTitle>{t("panel.page.pods.delete.dialog.title")}</DialogTitle>
         <DialogDescription>
-          {t("panel.page.namespaces.delete.dialog.description")}
+          {t("panel.page.pods.delete.dialog.description")}
         </DialogDescription>
         <DialogDescription>
-          {t("panel.page.namespaces.delete.dialog.confirm.1")}
+          {t("panel.page.pods.delete.dialog.confirm.1")}
           <code className="bg-muted relative rounded mx-[0.2rem] px-[0.3rem] py-[0.2rem] font-mono text-sm text-primary">
-            {name}
+            {pod}
           </code>
-          {t("panel.page.namespaces.delete.dialog.confirm.2")}
+          {t("panel.page.pods.delete.dialog.confirm.2")}
         </DialogDescription>
       </DialogHeader>
       <div className="grid gap-4">
@@ -57,19 +64,19 @@ export default function NamespaceDeleteDialog(
           <Input
             id="name"
             name="name"
-            placeholder={t("panel.page.namespaces.delete.dialog.name")}
-            value={newNamespaceName}
-            onChange={(e) => setNewNamespaceName(e.target.value)}
+            placeholder={t("panel.page.pods.delete.dialog.name")}
+            value={newPodName}
+            onChange={(e) => setNewPodName(e.target.value)}
           />
         </div>
       </div>
       <DialogFooter>
         <DialogClose asChild>
           <Button
-            variant="outline">{t("panel.page.namespaces.delete.dialog.cancel")}</Button>
+            variant="outline">{t("panel.page.pods.delete.dialog.cancel")}</Button>
         </DialogClose>
-        <Button variant="destructive" onClick={handleEditNamespace} disabled={loading || newNamespaceName !== name}>
-          {t("panel.page.namespaces.delete.dialog.submit")}
+        <Button variant="destructive" onClick={handleEditPod} disabled={loading || newPodName !== pod}>
+          {t("panel.page.pods.delete.dialog.submit")}
           {loading && <Spinner className="ml-2"></Spinner>}
         </Button>
       </DialogFooter>

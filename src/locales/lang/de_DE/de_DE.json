@@ -248,6 +248,15 @@
         },
         "action": {
           "delete": "Löschen"
+        },
+        "delete.dialog": {
+          "title": "Pod löschen",
+          "description": "Löschen Sie einen Pod, indem Sie den Namen des Pod eingeben.",
+          "confirm.1": "Bitte geben Sie ",
+          "confirm.2": " zur Bestätigung ein.",
+          "name": "Name",
+          "cancel": "Abbrechen",
+          "submit": "Löschen"
         }
       },
       "pod": {
