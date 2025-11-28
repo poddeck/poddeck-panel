@@ -187,6 +187,23 @@
       "namespaces": {
         "title": "Namespaces",
         "add": "Add namespace",
+        "add.dialog": {
+          "title": "Add namespace",
+          "description": "Add a new namespace. Assign a name for the new namespace.",
+          "name": "Name",
+          "cancel": "Cancel",
+          "submit": "Add"
+        },
+        "add.successful": "Namespace successfully added",
+        "delete.dialog": {
+          "title": "Delete namespace",
+          "description": "Here you have the option to delete an existing namespace.",
+          "confirm.1": "Please type ",
+          "confirm.2": " to confirm.",
+          "name": "Name",
+          "cancel": "Cancel",
+          "submit": "Delete"
+        },
         "empty": {
           "title": "No namespaces created yet",
           "description": "You have not added any namespaces to your cluster yet. Click the button below to add your first namespace."

@@ -186,6 +186,23 @@
       "namespaces": {
         "title": "Namensräume",
         "add": "Namensraum hinzufügen",
+        "add.dialog": {
+          "title": "Namensraum hinzufügen",
+          "description": "Fügen Sie einen neuen Namensraum hinzu. Weisen Sie dem neuen Namensraum einen Namen zu.",
+          "name": "Name",
+          "cancel": "Abbrechen",
+          "submit": "Hinzufügen"
+        },
+        "add.successful": "Namensraum erfolgreich hinzugefügt",
+        "delete.dialog": {
+          "title": "Namensraum löschen",
+          "description": "Löschen Sie einen Namensraum, indem Sie den Namen des Namensraums eingeben.",
+          "confirm.1": "Bitte geben Sie ",
+          "confirm.2": " zur Bestätigung ein.",
+          "name": "Name",
+          "cancel": "Abbrechen",
+          "submit": "Löschen"
+        },
         "empty": {
           "title": "Es wurden noch keine Namespaces erstellt.",
           "description": "Sie haben Ihrem Cluster noch keine Namespaces hinzugefügt. Klicken Sie auf die Schaltfläche unten, um Ihren ersten Namespace hinzuzufügen."
