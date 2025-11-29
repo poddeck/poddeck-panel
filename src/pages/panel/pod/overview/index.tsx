@@ -4,17 +4,13 @@ import PodPageHeader from "@/pages/panel/pod/header.tsx";
 import {useSearchParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import podService, {type Pod} from "@/api/services/pod-service.ts";
-import {
-  CalendarClock,
-} from "lucide-react";
-import {useTranslation} from "react-i18next";
 import PodOverviewGeneral from "@/pages/panel/pod/overview/general.tsx";
 import PodOverviewStatus from "@/pages/panel/pod/overview/status.tsx";
 import PodOverviewNetwork from "@/pages/panel/pod/overview/network.tsx";
 import PodOverviewContainers from "@/pages/panel/pod/overview/containers.tsx";
+import PodOverviewEvents from "@/pages/panel/pod/overview/events.tsx";
 
 export default function PodOverviewPage() {
-  const {t} = useTranslation();
   const [pod, setPod] = useState<Pod | null>(null);
   const [searchParams] = useSearchParams();
   useEffect(() => {
@@ -45,9 +41,7 @@ export default function PodOverviewPage() {
         </div>
         <div className="grid auto-rows-min gap-6 md:grid-cols-2">
           <PodOverviewContainers pod={pod}/>
-          <div className="bg-sidebar aspect-video rounded-xl p-8">
-            <span className="flex items-center gap-3 text-xl mb-5"><CalendarClock size={20}/> {t("panel.page.pod.overview.events.title")}</span>
-          </div>
+          <PodOverviewEvents pod={pod}/>
         </div>
       </div>
     </PanelPage>

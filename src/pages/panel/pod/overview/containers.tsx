@@ -38,7 +38,13 @@ export default function PodOverviewContainers({pod}: { pod: Pod | null }) {
           <span>{pod?.ready_containers} / {pod?.total_containers}</span>
         </div>
       </span>
-      <div className="overflow-y-auto flex-1">
+      <div
+        className="overflow-y-auto flex-1 relative pb-8"
+        style={{
+          maskImage: "linear-gradient(to bottom, black 0%, black 85%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 85%, transparent 100%)"
+        }}
+      >
         {pod &&
           pod.containers.map((container) => (
             <div
