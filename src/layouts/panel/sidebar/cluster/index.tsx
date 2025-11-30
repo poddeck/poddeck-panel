@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/sidebar"
 import {Dialog, DialogTrigger,} from "@/components/ui/dialog"
 import {useTranslation} from "react-i18next";
-import ClusterService, {type Cluster} from "@/api/services/cluster-service.ts";
+import {type Cluster} from "@/api/services/cluster-service.ts";
 import {ChevronsUpDown, Plus, Rocket,} from "lucide-react";
 import {CLUSTER_ICON_LIST} from "./icon-list";
 import ClusterAddDialog from "./add-dialog.tsx";
@@ -31,48 +31,36 @@ import SidebarClusterSettings
 import ClusterEditDialog from "@/layouts/panel/sidebar/cluster/edit-dialog.tsx";
 import ClusterDeleteDialog
   from "@/layouts/panel/sidebar/cluster/delete-dialog.tsx";
+import {useClusters} from "@/hooks/use-cluster.ts";
 
 export function SidebarClusterSwitcher() {
   const {t} = useTranslation();
   const {isMobile} = useSidebar()
-  const [clusters, setClusters] = React.useState<Cluster[]>([]);
-  const [activeCluster, setActiveCluster] = React.useState<Cluster | null>(null);
+  const {clusters, setClusters} = useClusters();
+  const [activeCluster, setActiveCluster] = React.useState<Cluster | null>(() => {
+    const selectedCluster = clusterStore.getState().clusterId;
+    if (clusters && clusters.length > 0) {
+      if (selectedCluster) {
+        const match = clusters.find(c => c.id === selectedCluster);
+        if (match) {
+          return match;
+        }
+      }
+      return clusters[0];
+    }
+    return null;
+  });
   const [clickedCluster, setClickedCluster] = React.useState<Cluster | null>(null);
   const [open, setOpen] = React.useState(false);
   const [dialogMode, setDialogMode] = React.useState("add");
   const {setClusterId} = useClusterActions();
   const {replace} = useRouter();
+
   const updateCluster = (cluster: Cluster) => {
     setActiveCluster(cluster);
     setClusterId(cluster.id);
     replace("/");
-  }
-  React.useEffect(() => {
-    async function fetchClusters() {
-      try {
-        const listResponse = await ClusterService.list();
-        setClusters(listResponse.clusters);
-        const selectedCluster = clusterStore.getState().clusterId;
-        const filteredClusters = selectedCluster == null ? [] :
-          listResponse.clusters.filter((entry: Cluster) => entry.id === selectedCluster);
-        if (filteredClusters.length > 0) {
-          setActiveCluster(filteredClusters[0]);
-        } else if (listResponse.clusters.length > 0) {
-          setActiveCluster(listResponse.clusters[0]);
-        } else {
-          const createResponse = await ClusterService.create({
-            name: "Test",
-            icon: "rocket"
-          });
-          setClusterId(createResponse.cluster);
-          window.location.reload();
-        }
-      } catch (err) {
-        console.error("Failed to load clusters", err);
-      }
-    }
-    fetchClusters();
-  }, []);
+  };
   const handleClusterCreation = (cluster: Cluster) => {
     setClusters([...clusters, cluster]);
     updateCluster(cluster);
