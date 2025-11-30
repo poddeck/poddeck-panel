@@ -1,35 +1,15 @@
 import PanelPage from "@/layouts/panel"
 import PodPageBreadcrumb from "@/pages/panel/pod/breadcrumb.tsx";
 import PodPageHeader from "@/pages/panel/pod/header.tsx";
-import {useSearchParams} from "react-router-dom";
-import {useEffect, useState} from "react";
-import podService, {type Pod} from "@/api/services/pod-service.ts";
 import PodOverviewGeneral from "@/pages/panel/pod/overview/general.tsx";
 import PodOverviewStatus from "@/pages/panel/pod/overview/status.tsx";
 import PodOverviewNetwork from "@/pages/panel/pod/overview/network.tsx";
 import PodOverviewContainers from "@/pages/panel/pod/overview/containers.tsx";
 import PodOverviewEvents from "@/pages/panel/pod/overview/events.tsx";
+import usePod from "@/hooks/use-pod.ts";
 
 export default function PodOverviewPage() {
-  const [pod, setPod] = useState<Pod | null>(null);
-  const [searchParams] = useSearchParams();
-  useEffect(() => {
-    async function loadPod() {
-      const response = await podService.list();
-      if (response.success != false) {
-        const podFromQuery = searchParams.get("pod");
-        const pod = response.pods.filter(entry => entry.name === podFromQuery);
-        if (pod.length > 0) {
-          setPod(pod[0]);
-        }
-      }
-    }
-    loadPod();
-    const interval = window.setInterval(loadPod, 1000);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+  const pod = usePod();
   return (
     <PanelPage breadcrumb={PodPageBreadcrumb()} layout={false}>
       <PodPageHeader pod={pod} page="overview"/>

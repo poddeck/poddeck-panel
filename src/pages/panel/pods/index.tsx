@@ -70,7 +70,8 @@ export default function PodsPage() {
           initialSorting={[{id: "namespace", desc: false}]}
           isLoading={isLoading}
           visibilityState={{node: false, ip: false}}
-          onClick={row => replace("/pod/overview/?pod=" + row.original.name)}
+          onClick={row => replace("/pod/overview/?pod=" + row.original.name +
+            "&namespace=" + row.original.namespace)}
         />
       </div>
     </PanelPage>
