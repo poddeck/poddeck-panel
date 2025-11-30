@@ -22,6 +22,10 @@ import DataTablePagination from "./pagination.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {useTranslation} from "react-i18next";
 import {Search} from "lucide-react";
+import {
+  type DataTableFilterOption,
+  DataTableFilters
+} from "@/components/table/filter.tsx";
 
 interface DataTableProps<T> {
   name: string;
@@ -31,6 +35,7 @@ interface DataTableProps<T> {
   pageSize?: number,
   isLoading?: boolean
   visibilityState?: VisibilityState
+  filters?: DataTableFilterOption[]
   onClick?: (row: Row<T>) => void
 }
 
@@ -43,6 +48,7 @@ export function DataTable<T>(
     pageSize = 10,
     isLoading,
     visibilityState,
+    filters,
     onClick
   }: DataTableProps<T>
 ) {
@@ -115,12 +121,21 @@ export function DataTable<T>(
             className="max-w-sm peer pl-9"
           />
         </div>
-        <DataTableColumnSelection
-          table={table}
-          searchQuery={searchQuery}
-          setSearchQuery={setSearchQuery}
-          visibilityState={visibilityState}
-        />
+        <div>
+          {filters &&
+            <DataTableFilters
+              table={table}
+              name={name}
+              filters={filters}
+            />
+          }
+          <DataTableColumnSelection
+            table={table}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            visibilityState={visibilityState}
+          />
+        </div>
       </div>
 
       <div className="rounded-md">

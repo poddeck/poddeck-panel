@@ -23,6 +23,10 @@
       "all": "All",
       "reset": "Reset"
     },
+    "filter": {
+      "placeholder": "Select...",
+      "empty": "No filter"
+    },
     "page": "Page",
     "of": "of",
     "empty": "No results."

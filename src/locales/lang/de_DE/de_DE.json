@@ -22,6 +22,10 @@
       "all": "Alle",
       "reset": "Zurücksetzen"
     },
+    "filter": {
+      "placeholder": "Auswählen...",
+      "empty": "Kein Filter"
+    },
     "page": "Seite",
     "of": "von",
     "empty": "Keine Ergebnisse."

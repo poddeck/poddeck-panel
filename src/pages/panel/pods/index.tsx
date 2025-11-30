@@ -13,6 +13,7 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty"
 import {useRouter} from "@/routes/hooks";
+import namespaceService, {type Namespace} from "@/api/services/namespace-service.ts";
 
 function PodListEmpty() {
   const {t} = useTranslation();
@@ -35,6 +36,7 @@ function PodListEmpty() {
 
 export default function PodsPage() {
   const [pods, setPods] = useState<Pod[]>([]);
+  const [namespaces, setNamespaces] = useState<Namespace[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const {replace} = useRouter();
   useEffect(() => {
@@ -48,7 +50,16 @@ export default function PodsPage() {
         setIsLoading(false);
       }
     }
+
+    async function loadNamespaces() {
+      const response = await namespaceService.list();
+      if (response.success !== false) {
+        setNamespaces(response.namespaces);
+      }
+    }
+
     loadPods();
+    loadNamespaces();
     const interval = window.setInterval(loadPods, 1000);
     return () => {
       clearInterval(interval);
@@ -70,6 +81,12 @@ export default function PodsPage() {
           initialSorting={[{id: "namespace", desc: false}]}
           isLoading={isLoading}
           visibilityState={{node: false, ip: false}}
+          filters={[
+            {
+              column: 'namespace',
+              options: namespaces.map(namespace => namespace.name)
+            },
+          ]}
           onClick={row => replace("/pod/overview/?pod=" + row.original.name +
             "&namespace=" + row.original.namespace)}
         />

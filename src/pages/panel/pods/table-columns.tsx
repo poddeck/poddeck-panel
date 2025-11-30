@@ -6,7 +6,8 @@ import {PodAge} from "@/pages/panel/pod/age.tsx";
 export const columns: ColumnDef<Pod, unknown>[] = [
   {
     header: "panel.page.pods.column.namespace",
-    accessorKey: "namespace"
+    accessorKey: "namespace",
+    filterFn: 'equals',
   },
   {
     header: "panel.page.pods.column.name",
