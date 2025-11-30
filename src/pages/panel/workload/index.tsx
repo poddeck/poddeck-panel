@@ -24,10 +24,14 @@ const RANGE_MAP: Record<string, { ms: number; accuracy: string }> = {
 
 export default function WorkloadPage() {
   const {t} = useTranslation();
-  const [timeRange, setTimeRange] = useState("hour");
+  const [timeRange, setTimeRange] = useState(
+    () => localStorage.getItem("workload_range") || "hour"
+  );
+  const [selectedNode, setSelectedNode] = useState<string>(
+    () => localStorage.getItem("workload_node") || ""
+  );
   const [metrics, setMetrics] = useState<Metric[]>([]);
   const [nodes, setNodes] = useState<Node[]>([]);
-  const [selectedNode, setSelectedNode] = useState<string>("");
   const latestTimestampReference = useRef<number>(0);
   const [searchParams] = useSearchParams();
   useEffect(() => {
@@ -94,6 +98,16 @@ export default function WorkloadPage() {
     }, 1000);
     return () => clearInterval(interval);
   }, [selectedNode, timeRange]);
+  useEffect(() => {
+    if (selectedNode) {
+      localStorage.setItem("workload_node", selectedNode);
+    }
+  }, [selectedNode]);
+  useEffect(() => {
+    if (timeRange) {
+      localStorage.setItem("workload_range", timeRange);
+    }
+  }, [timeRange]);
   const cpuData = useMemo(
     () => metrics.map((m) => ({ date: new Date(m.timestamp).toISOString(), data: m.cpu_ratio.toFixed(2) })),
     [metrics]
