@@ -14,6 +14,7 @@
       "description": "Entschuldigen Sie bitte die Unannehmlichkeiten."
     }
   },
+  "coming.soon": "Kommt bald",
   "table": {
     "search": "Suche...",
     "columns": {
@@ -267,11 +268,35 @@
         "tabs": {
           "overview": "Übersicht",
           "logs": "Logs",
-          "console": "Konsole",
-          "events": "Events",
-          "containers": "Containers"
+          "console": "Konsole"
         },
-        "actions": "Aktionen"
+        "actions": "Aktionen",
+        "overview": {
+          "general": {
+            "title": "ALLGEMEIN",
+            "namespace": "Namensraum",
+            "node": "Knoten",
+            "start": "Startzeit",
+            "labels": "Labels",
+            "annotations": "Annotations"
+          },
+          "status": {
+            "title": "STATUS",
+            "status": "Status",
+            "restarts": "Neustarts"
+          },
+          "network": {
+            "title": "NETZWERK",
+            "host.ip": "Host IP",
+            "pod.ip": "Pod IP"
+          },
+          "containers": {
+            "title": "CONTAINER"
+          },
+          "events": {
+            "title": "EREIGNISSE"
+          }
+        }
       }
     }
   },

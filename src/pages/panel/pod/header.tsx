@@ -45,16 +45,6 @@ const tabs = [
     name: "panel.page.pod.tabs.console",
     url: "/pod/console/"
   },
-  {
-    id: "events",
-    name: "panel.page.pod.tabs.events",
-    url: "/pod/events/"
-  },
-  {
-    id: "containers",
-    name: "panel.page.pod.tabs.containers",
-    url: "/pod/containers/"
-  },
 ]
 
 export default function PodPageHeader(
@@ -80,9 +70,9 @@ export default function PodPageHeader(
             <Separator orientation="vertical" className="mx-5 h-15!"/>
             <div>
               <div className="flex items-center gap-3 mb-2">
-                <PodHeaderStatus isActive={pod ? true : false}/>
+                <PodHeaderStatus isActive={pod?.status.toLowerCase() == "running"}/>
                 {pod ? (
-                  <span className="text-xl pb-1">{pod.name}</span>
+                  <span className="text-xl">{pod.name}</span>
                 ) : (
                   <Skeleton className="w-80 h-8"/>
                 )}

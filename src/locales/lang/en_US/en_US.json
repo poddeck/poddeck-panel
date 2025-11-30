@@ -268,9 +268,7 @@
         "tabs": {
           "overview": "Overview",
           "logs": "Logs",
-          "console": "Console",
-          "events": "Events",
-          "containers": "Containers"
+          "console": "Console"
         },
         "actions": "Actions",
         "overview": {
