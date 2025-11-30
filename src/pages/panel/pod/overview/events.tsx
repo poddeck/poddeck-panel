@@ -1,8 +1,4 @@
-import {
-  CalendarClock,
-  Siren,
-  TriangleAlert
-} from "lucide-react";
+import {CalendarClock, Siren, TriangleAlert} from "lucide-react";
 import {useTranslation} from "react-i18next";
 import type {Pod} from "@/api/services/pod-service.ts";
 import {cn} from "@/lib/utils.ts";
@@ -16,6 +12,7 @@ export default function PodOverviewEvents({pod}: { pod: Pod | null }) {
     : events.some(e => e.type.toLowerCase() === "warning")
       ? "text-amber-500"
       : "text-primary";
+
   return (
     <div className="bg-sidebar aspect-video rounded-xl p-8 pb-9 flex flex-col">
       <span className="flex items-center justify-between text-xl mb-5">
@@ -26,45 +23,59 @@ export default function PodOverviewEvents({pod}: { pod: Pod | null }) {
           <span className={statusColor}>{events.length}</span>
         </div>
       </span>
+
       <div
-        className="overflow-y-auto flex-1 relative pb-8"
+        className="overflow-y-auto flex-1 relative pb-8 pr-2 w-[min(calc(500px),100%)] mx-auto"
         style={{
           maskImage: "linear-gradient(to bottom, black 0%, black 85%, transparent 100%)",
           WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 85%, transparent 100%)"
         }}
       >
-        {pod &&
-          [...pod.events]
-            .sort((a, b) => b.timestamp - a.timestamp)
-            .map((event) => {
-              let color = "text-primary";
-              let icon = null;
-              if (event.type.toLowerCase() === "warning") {
-                color = "text-amber-500";
-                icon = <TriangleAlert/>;
-              } else if (event.type.toLowerCase() === "error") {
-                color = "text-rose-500";
-                icon = <Siren/>;
-              }
-              return (
-                <div
-                  key={event.reason}
-                  className={cn(color, "w-[min(calc(500px),100%)] mx-auto mb-3 bg-muted border-1 px-3 py-2 rounded-lg")}
-                >
-                  <div className="flex items-center justify-between mb-2 ml-0.5">
-                    <div className="flex items-center gap-3">
-                      {icon}
-                      <span>{event.reason} ({event.type})</span>
+        <div
+          className="relative before:absolute before:left-2 before:top-1 before:h-full before:w-0.5 before:bg-primary/20">
+          {pod &&
+            [...pod.events]
+              .sort((a, b) => b.timestamp - a.timestamp)
+              .map((event) => {
+                let color = "text-primary";
+                let icon = null;
+                if (event.type.toLowerCase() === "warning") {
+                  color = "text-amber-500";
+                  icon = <TriangleAlert size={16}/>;
+                } else if (event.type.toLowerCase() === "error") {
+                  color = "text-rose-500";
+                  icon = <Siren size={16}/>;
+                }
+
+                return (
+                  <div key={event.reason}
+                       className="relative mb-8 flex items-start">
+                    <div className="absolute left-[1px] top-1">
+                      <div
+                        className="rounded-full w-4 h-4 flex items-center justify-center border-2 border-primary/75 bg-sidebar">
+                      </div>
                     </div>
-                    <div>
-                      <PodAge age={Date.now() - event.timestamp}/>
+                    <div className={cn("ml-8 w-full", color)}>
+                      <div
+                        className="flex items-center justify-between mb-2 ml-0.5">
+                        <div className="flex items-center gap-3">
+                          {icon}
+                          <span>{event.reason} ({event.type})</span>
+                        </div>
+                        <div>
+                          <PodAge age={Date.now() - event.timestamp}/>
+                        </div>
+                      </div>
+                      <div
+                        className={cn("text-sm wrap-anywhere opacity-60", color)}>
+                        {event.message}
+                      </div>
                     </div>
                   </div>
-                  <span className="text-sm opacity-75">{event.message}</span>
-                </div>
-              )
-            })
-        }
+                );
+              })
+          }
+        </div>
       </div>
     </div>
   );
