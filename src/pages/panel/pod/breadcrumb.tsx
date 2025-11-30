@@ -1,5 +1,5 @@
 import {useTranslation} from "react-i18next";
-import {useSearchParams} from "react-router-dom";
+import {Link, useSearchParams} from "react-router-dom";
 import {
   Breadcrumb,
   BreadcrumbItem, BreadcrumbLink,
@@ -9,16 +9,18 @@ import {
 export default function PodPageBreadcrumb() {
   const {t} = useTranslation();
   const [searchParams] = useSearchParams();
-  const podFromQuery = searchParams.get("pod");
+  const queryPod = searchParams.get("pod");
   return (
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href='/pods/'>{t("panel.page.pods.title")}</BreadcrumbLink>
+          <BreadcrumbLink asChild>
+            <Link to="/pods/">{t("panel.page.pods.title")}</Link>
+          </BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <BreadcrumbPage>{podFromQuery}</BreadcrumbPage>
+          <BreadcrumbPage>{queryPod}</BreadcrumbPage>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
