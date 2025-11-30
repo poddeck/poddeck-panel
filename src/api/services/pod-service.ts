@@ -33,6 +33,21 @@ export type Event = {
   source: string;
 }
 
+export type PodListResponse = {
+  pods: Pod[];
+  success?: boolean;
+}
+
+export interface PodFindRequest {
+  namespace: string;
+  pod: string;
+}
+
+export type PodFindResponse = {
+  success: boolean;
+  pod: Pod;
+}
+
 export interface PodDeleteRequest {
   namespace: string;
   pod: string;
@@ -53,17 +68,18 @@ export type PodLogResponse = {
   logs: string;
 }
 
-export type PodListResponse = {
-  pods: Pod[];
-  success?: boolean;
-}
-
 export const PodApi = {
+  List: "/pods/",
+  Find: "/pod/find/",
   Delete: "/pod/delete/",
   Log: "/pod/log/",
-  List: "/pods/",
 } as const;
 
+const list = () => client.get<PodListResponse>({url: PodApi.List});
+const find = (data: PodFindRequest) => client.post<PodFindResponse>({
+  url: PodApi.Find,
+  data
+});
 const remove = (data: PodDeleteRequest) => client.post<PodDeleteResponse>({
   url: PodApi.Delete,
   data
@@ -72,10 +88,10 @@ const log = (data: PodLogRequest) => client.post<PodLogResponse>({
   url: PodApi.Log,
   data
 });
-const list = () => client.get<PodListResponse>({url: PodApi.List});
 
 export default {
+  list,
+  find,
   remove,
   log,
-  list,
 };
