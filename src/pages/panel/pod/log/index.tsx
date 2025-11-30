@@ -1,53 +1,86 @@
+import {useEffect, useRef, useState} from "react";
 import PanelPage from "@/layouts/panel";
 import PodPageBreadcrumb from "@/pages/panel/pod/breadcrumb.tsx";
 import PodPageHeader from "@/pages/panel/pod/header.tsx";
-import { useEffect, useState } from "react";
-import podService, { type Pod, type PodLogResponse } from "@/api/services/pod-service.ts";
-import { useSearchParams } from "react-router-dom";
-import {AnsiUp} from 'ansi_up';
+import podService, {
+  type PodLogResponse
+} from "@/api/services/pod-service.ts";
+import {AnsiUp} from "ansi_up";
+import usePod from "@/hooks/use-pod.ts";
+
+type LogEntry = {
+  original: string;
+  display: string;
+};
 
 export default function PodLogsPage() {
-  const [pod, setPod] = useState<Pod | null>(null);
-  const [logs, setLogs] = useState<string>("");
-  const [searchParams] = useSearchParams();
+  const pod = usePod();
+  const [logs, setLogs] = useState<string[]>([]);
+  const logRef = useRef<HTMLDivElement | null>(null);
+  const autoScrollRef = useRef(true);
+  const logsRef = useRef<LogEntry[]>([]);
+  const firstRunRef = useRef(true);
 
   useEffect(() => {
-    async function loadPod() {
-      const response = await podService.list();
-      if (response.success !== false) {
-        const podFromQuery = searchParams.get("pod");
-        const pod = response.pods.find((entry) => entry.name === podFromQuery);
-        if (pod) setPod(pod);
-      }
+    if (!pod) {
+      return;
     }
+    let isMounted = true;
 
-    loadPod();
-    const interval = window.setInterval(loadPod, 1000);
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    async function loadLogs() {
-      if (!pod) return;
+    const fetchPodLogs = async () => {
       const logResponse: PodLogResponse = await podService.log({
         namespace: pod.namespace,
         pod: pod.name,
-        since_seconds: 300,
+        since_seconds: firstRunRef.current ? -1 : 2,
       });
-      if (logResponse.success) {
-        setLogs(logResponse.logs);
+      if (!logResponse.success || !isMounted) {
+        return;
       }
-    }
+      const lines = logResponse.logs
+        .split("\n")
+        .map((l) => l.trim())
+        .filter((l) => l !== "")
+        .filter((l) => !logsRef.current.some((existing) => existing.original === l));
+      if (lines.length > 0) {
+        updateLogs(lines);
+      }
+      if (firstRunRef.current) {
+        firstRunRef.current = false;
+      }
+    };
 
-    loadLogs();
-    const interval = window.setInterval(loadLogs, 2000);
-    return () => clearInterval(interval);
+    const updateLogs = (lines: string[]) => {
+      const mapped = lines.map((l) => {
+        const firstSpace = l.indexOf(" ");
+        const display = firstSpace > 0 ? l.slice(firstSpace + 1) : l;
+        return { original: l, display };
+      });
+
+      logsRef.current = [...logsRef.current, ...mapped];
+      setLogs(logsRef.current.map((l) => l.display));
+    };
+
+    fetchPodLogs();
+    const interval = setInterval(fetchPodLogs, 1000);
+    return () => { isMounted = false; clearInterval(interval); };
   }, [pod]);
 
-  const ansi = new AnsiUp();
-  ansi.use_classes = true;
+  const handleScroll = () => {
+    if (!logRef.current) {
+      return;
+    }
+    const { scrollTop, scrollHeight, clientHeight } = logRef.current;
+    autoScrollRef.current = scrollTop + clientHeight >= scrollHeight - 10;
+  };
+  useEffect(() => {
+    if (autoScrollRef.current && logRef.current) {
+      logRef.current.scrollTop = logRef.current.scrollHeight;
+    }
+  }, [logs]);
 
-  const ansi_to_html = (txt: string) => ansi.ansi_to_html(txt);
+  const ansi = new AnsiUp();
+  ansi.use_classes = false;
+  const htmlLogs = logs.map(l => ansi.ansi_to_html(l)).join("<br/>");
 
   return (
     <PanelPage breadcrumb={PodPageBreadcrumb()} layout={false}>
@@ -55,8 +88,10 @@ export default function PodLogsPage() {
       <div className="w-[min(calc(1500px+var(--spacing)*8),95%)] mx-auto flex flex-1 flex-col gap-6 p-4 pt-0">
         <div className="bg-sidebar aspect-video rounded-xl p-4">
           <div
-            className="bg-black p-4 rounded-xl overflow-auto h-full whitespace-pre-wrap font-mono"
-            dangerouslySetInnerHTML={{ __html: ansi_to_html(logs) }}
+            ref={logRef}
+            onScroll={handleScroll}
+            className="bg-white dark:bg-black p-4 rounded-xl overflow-auto h-full whitespace-pre-wrap font-mono select-text"
+            dangerouslySetInnerHTML={{ __html: htmlLogs }}
           />
         </div>
       </div>
