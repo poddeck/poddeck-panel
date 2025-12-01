@@ -297,6 +297,42 @@
             "title": "EVENTS"
           }
         }
+      },
+      "deployments": {
+        "title": "Deployments",
+        "empty": {
+          "title": "No deployments found",
+          "description": "No deployments could be found in the cluster."
+        },
+        "column": {
+          "namespace": "Namespace",
+          "name": "Name",
+          "ready": "Ready",
+          "up-to-date": "Up-To-Date",
+          "available": "Available",
+          "age": "Age"
+        },
+        "action": {
+          "delete": "Delete"
+        },
+        "delete.dialog": {
+          "title": "Delete deployment",
+          "description": "Here you have the option to delete an existing deployment.",
+          "confirm.1": "Please type ",
+          "confirm.2": " to confirm.",
+          "name": "Name",
+          "cancel": "Cancel",
+          "submit": "Delete"
+        }
+      },
+      "deployment": {
+        "tabs": {
+          "overview": "Overview"
+        },
+        "actions": "Actions",
+        "overview": {
+
+        }
       }
     }
   },

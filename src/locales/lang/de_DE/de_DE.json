@@ -297,6 +297,42 @@
             "title": "EREIGNISSE"
           }
         }
+      },
+      "deployments": {
+        "title": "Deployments",
+        "empty": {
+          "title": "Keine Deployments gefunden",
+          "description": "Im Cluster konnten keine Deployments gefunden werden."
+        },
+        "column": {
+          "namespace": "Namensraum",
+          "name": "Name",
+          "ready": "Bereit",
+          "up-to-date": "Aktuell",
+          "available": "Verfügbar",
+          "age": "Alter"
+        },
+        "action": {
+          "delete": "Löschen"
+        },
+        "delete.dialog": {
+          "title": "Deployment löschen",
+          "description": "Löschen Sie einen Deployment, indem Sie den Namen des Deployment eingeben.",
+          "confirm.1": "Bitte geben Sie ",
+          "confirm.2": " zur Bestätigung ein.",
+          "name": "Name",
+          "cancel": "Abbrechen",
+          "submit": "Löschen"
+        }
+      },
+      "deployment": {
+        "tabs": {
+          "overview": "Übersicht"
+        },
+        "actions": "Aktionen",
+        "overview": {
+
+        }
       }
     }
   },
