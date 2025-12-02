@@ -40,23 +40,36 @@ export default function DataTableHeader<T>(
     pagination: PaginationState
   }) {
   const {t} = useTranslation();
-  const spacing = pagination.pageSize <= 5 ? "h-11 px-8" : "h-11 px-4";
+  const horizontalSpacing = pagination.pageSize <= 5 ? 30 : 25;
 
   return (
     <TableHeader>
       {table.getHeaderGroups().map((headerGroup: any) => (
         <TableRow key={headerGroup.id}
                   className="hover:bg-transparent border-none">
-          <TableHead key="select_all" className="py-6 px-4 w-0">
+          <TableHead
+            key="select_all"
+            className="h-11 w-0"
+            style={{
+              paddingRight: 20,
+              paddingLeft: 0
+            }}
+          >
             <DataTableSelectAll table={table} />
           </TableHead>
-          {headerGroup.headers.map((header: any, index: number) => {
+          {headerGroup.headers.map((header: any) => {
             return (
-              <TableHead key={header.id} className={spacing} style={{
-                width: header.getSize(),
-                minWidth: header.column.columnDef.minSize,
-                maxWidth: header.column.columnDef.maxSize
-              }}>
+              <TableHead
+                key={header.id}
+                className="h-11"
+                style={{
+                  width: header.getSize(),
+                  minWidth: header.column.columnDef.minSize,
+                  maxWidth: header.column.columnDef.maxSize,
+                  paddingLeft: horizontalSpacing,
+                  paddingRight: horizontalSpacing
+                }}
+              >
                 {header.isPlaceholder ? null : header.column.getCanSort() ? (
                   <div
                     className="flex items-center justify-start cursor-pointer select-none group"

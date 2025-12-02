@@ -14,18 +14,19 @@ import {useState} from "react";
 function DataRow<T>(
   {
     row,
-    spacing,
-    pagination,
+    verticalSpacing,
+    horizontalSpacing,
     onClick
   }: {
     row: Row<T>,
-    spacing: string,
-    pagination: PaginationState,
+    verticalSpacing: number,
+    horizontalSpacing: number,
     onClick?: (row: Row<T>) => void
   }
 ) {
   const [disableGroup, setDisableGroup] = useState(false);
   const selected = row.getIsSelected();
+  const borderSize = 2;
 
   return (
     <TableRow
@@ -35,10 +36,14 @@ function DataRow<T>(
       onClick={() => onClick ? onClick(row) : {}}
     >
       <TableCell
-        className="py-6 px-4 !bg-transparent w-10 pointer-events-auto"
+        className="!bg-transparent pointer-events-auto w-0"
         onMouseEnter={() => setDisableGroup(true)}
         onMouseLeave={() => setDisableGroup(false)}
         onClick={e => e.stopPropagation()}
+        style={{
+          paddingRight: 20,
+          paddingLeft: 0
+        }}
       >
         <Checkbox
           checked={selected}
@@ -50,24 +55,28 @@ function DataRow<T>(
       {row.getVisibleCells().map((cell: any, index: number) => {
         const isFirst = index === 0;
         const isLast = index === row.getVisibleCells().length - 1;
-
         const selectedEdgeClasses = selected
-          ? `border-t-2 border-b-2 box-border py-${pagination.pageSize <= 5 ? 9.5 : 5.5} ${!isFirst && !isLast ? (pagination.pageSize <= 5 ? "px-8" : "px-4") : ""}`
-          : '';
-        const firstExtra = isFirst && selected ?
-          `border-l-2 rounded-l-xl pl-${pagination.pageSize <= 5 ? 7.5 : 3.5} pr-${pagination.pageSize <= 5 ? 8 : 4}` :
+          ? `border-t border-b border-blue-600` : ``;
+        const firstExtra = isFirst && selected ? `border-l rounded-l-xl` :
           (isFirst ? 'rounded-l-xl' : '');
-        const lastExtra = isLast && selected ?
-          `border-r-2 rounded-r-xl pr-${pagination.pageSize <= 5 ? 7.5 : 3.5} pl-${pagination.pageSize <= 5 ? 8 : 4}` :
+        const lastExtra = isLast && selected ? `border-r rounded-r-xl` :
           (isLast ? 'rounded-r-xl' : '');
         return (
           <TableCell
             key={cell.id}
-            className={`${selected ? "" : spacing} bg-muted/50 group-hover:bg-muted transition ${selectedEdgeClasses} ${firstExtra} ${lastExtra}`}
+            className={`bg-muted/50 group-hover:bg-muted transition ${selectedEdgeClasses} ${firstExtra} ${lastExtra}`}
             style={{
               width: cell.column.getSize(),
               minWidth: cell.column.columnDef.minSize,
-              maxWidth: cell.column.columnDef.maxSize
+              maxWidth: cell.column.columnDef.maxSize,
+              borderTopWidth: selected ? borderSize : 0,
+              borderBottomWidth: selected ? borderSize : 0,
+              borderLeftWidth: selected && isFirst ? borderSize : 0,
+              borderRightWidth: selected && isLast ? borderSize : 0,
+              paddingTop: verticalSpacing - (selected ? borderSize : 0),
+              paddingBottom: verticalSpacing - (selected ? borderSize : 0),
+              paddingLeft: horizontalSpacing - (isFirst && selected ? borderSize : 0),
+              paddingRight: horizontalSpacing - (isLast && selected ? borderSize : 0)
             }}
           >
             {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -95,19 +104,34 @@ export default function DataTableBody<T>(
   }
 ) {
   const {t} = useTranslation();
-  const spacing = pagination.pageSize <= 5 ? "py-10 px-8" : "py-6 px-4";
+  const verticalSpacing = pagination.pageSize <= 5 ? 40 : 30;
+  const horizontalSpacing = pagination.pageSize <= 5 ? 30 : 25;
 
   if (isLoading) {
     return (
       <TableBody>
         {Array.from({length: pagination.pageSize}).map((_, rowIndex) => (
           <TableRow key={rowIndex} className="hover:bg-transparent">
-            <TableCell className={`${spacing} bg-muted/50`}>
-              <Skeleton className="h-5 w-5"/>
+            <TableCell
+              className="bg-transparent w-0"
+              style={{
+                paddingRight: 20,
+                paddingLeft: 0
+              }}
+            >
+              <Skeleton className="h-4 w-4"/>
             </TableCell>
             {Array.from({length: columns.length}).map((_, cellIndex) => (
-              <TableCell key={cellIndex}
-                         className={`${spacing} bg-muted/50 ${cellIndex === columns.length - 1 ? "rounded-r-xl" : ""}`}>
+              <TableCell
+                key={cellIndex}
+                className={`bg-muted/50 ${cellIndex === 0 ? "rounded-l-xl" : ""} ${cellIndex === columns.length - 1 ? "rounded-r-xl" : ""}`}
+                style={{
+                  paddingTop: verticalSpacing,
+                  paddingBottom: verticalSpacing,
+                  paddingLeft: horizontalSpacing,
+                  paddingRight: horizontalSpacing
+                }}
+              >
                 <Skeleton className="h-5 w-full"/>
               </TableCell>
             ))}
@@ -124,8 +148,8 @@ export default function DataTableBody<T>(
         <DataRow
           key={row.id}
           row={row}
-          spacing={spacing}
-          pagination={pagination}
+          verticalSpacing={verticalSpacing}
+          horizontalSpacing={horizontalSpacing}
           onClick={onClick}
         />
       )) : (

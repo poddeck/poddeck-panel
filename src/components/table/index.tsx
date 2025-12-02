@@ -26,6 +26,7 @@ import {
   type DataTableFilterOption,
   DataTableFilters
 } from "@/components/table/filter.tsx";
+import DataTableBottomBar from "@/components/table/bottom-bar.tsx";
 
 interface DataTableProps<T> {
   name: string;
@@ -151,6 +152,7 @@ export function DataTable<T>(
             pagination={pagination}
             onClick={onClick}
           />
+          <DataTableBottomBar table={table}/>
         </Table>
       </div>
 
