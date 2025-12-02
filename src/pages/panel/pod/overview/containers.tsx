@@ -49,7 +49,7 @@ export default function PodOverviewContainers({pod}: { pod: Pod | null }) {
           pod.containers.map((container) => (
             <div
               key={container.name}
-              className="w-[min(calc(500px),100%)] mx-auto mb-3 bg-muted border-1 px-3 py-2 rounded-lg"
+              className="w-full mx-auto mb-3 bg-muted border-1 px-3 py-2 rounded-lg"
             >
               <div className="flex items-center gap-3 mb-2 ml-0.5">
                 <PodOverviewContainerStatus isReady={container.ready}/>

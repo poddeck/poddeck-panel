@@ -25,7 +25,7 @@ export default function PodOverviewEvents({pod}: { pod: Pod | null }) {
       </span>
 
       <div
-        className="overflow-y-auto flex-1 relative pb-8 pr-2 w-[min(calc(500px),100%)] mx-auto"
+        className="overflow-y-auto flex-1 relative pb-8 pr-2 w-full mx-auto"
         style={{
           maskImage: "linear-gradient(to bottom, black 0%, black 85%, transparent 100%)",
           WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 85%, transparent 100%)"
