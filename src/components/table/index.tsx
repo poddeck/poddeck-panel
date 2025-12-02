@@ -10,8 +10,7 @@ import {
   type PaginationState,
   type SortingState,
   useReactTable,
-  type VisibilityState,
-  type Row
+  type VisibilityState
 } from '@tanstack/react-table'
 
 import {Table} from '@/components/ui/table'
@@ -26,7 +25,9 @@ import {
   type DataTableFilterOption,
   DataTableFilters
 } from "@/components/table/filter.tsx";
-import DataTableBottomBar from "@/components/table/bottom-bar.tsx";
+import DataTableBottomBar, {
+  type DataTableBottomBarAction
+} from "@/components/table/bottom-bar.tsx";
 
 interface DataTableProps<T> {
   name: string;
@@ -37,7 +38,8 @@ interface DataTableProps<T> {
   isLoading?: boolean
   visibilityState?: VisibilityState
   filters?: DataTableFilterOption[]
-  onClick?: (row: Row<T>) => void
+  onClick?: (entry: T) => void,
+  bulkActions?: DataTableBottomBarAction<T>[]
 }
 
 export function DataTable<T>(
@@ -50,7 +52,8 @@ export function DataTable<T>(
     isLoading,
     visibilityState,
     filters,
-    onClick
+    onClick,
+    bulkActions
   }: DataTableProps<T>
 ) {
   const {t} = useTranslation();
@@ -140,7 +143,7 @@ export function DataTable<T>(
       </div>
 
       <div className="rounded-md">
-        <Table className="border-separate border-spacing-y-2">
+        <Table className={`border-separate border-spacing-y-${pagination.pageSize <= 5 ? 4 : 2}`}>
           <DataTableHeader
             table={table}
             pagination={pagination}
@@ -152,7 +155,10 @@ export function DataTable<T>(
             pagination={pagination}
             onClick={onClick}
           />
-          <DataTableBottomBar table={table}/>
+          <DataTableBottomBar
+            table={table}
+            actions={bulkActions ? bulkActions : []}
+          />
         </Table>
       </div>
 

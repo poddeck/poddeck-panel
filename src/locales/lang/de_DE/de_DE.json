@@ -29,7 +29,10 @@
     },
     "page": "Seite",
     "of": "von",
-    "empty": "Keine Ergebnisse."
+    "empty": "Keine Ergebnisse.",
+    "bottom.bar": {
+      "selected": "AUSGEWÄHLT"
+    }
   },
   "authentication": {
     "login": {

@@ -29,7 +29,10 @@
     },
     "page": "Page",
     "of": "of",
-    "empty": "No results."
+    "empty": "No results.",
+    "bottom.bar": {
+      "selected": "SELECTED"
+    }
   },
   "authentication": {
     "login": {

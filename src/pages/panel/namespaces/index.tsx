@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {DataTable} from "@/components/table";
 import PanelPage from "@/layouts/panel";
 import {useTranslation} from "react-i18next";
-import {ServerIcon} from "lucide-react";
+import {ServerIcon, Trash2} from "lucide-react";
 import namespaceService, {
   type Namespace
 } from "@/api/services/namespace-service"
@@ -16,6 +16,7 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty"
 import NamespaceAddButton from "./add-button.tsx";
+import NamespaceService from "@/api/services/namespace-service";
 
 function NamespaceListEmpty() {
   const {t} = useTranslation();
@@ -73,6 +74,19 @@ export default function NamespacesPage() {
           pageSize={5}
           initialSorting={[{id: "name", desc: false}]}
           isLoading={isLoading}
+          bulkActions={[
+            {
+              name: "panel.page.namespaces.action.delete",
+              icon: Trash2,
+              onClick: (entries) => {
+                entries.forEach(entry => {
+                  NamespaceService.remove({
+                    name: entry.name
+                  });
+                })
+              }
+            }
+          ]}
         />
       </div>
     </PanelPage>

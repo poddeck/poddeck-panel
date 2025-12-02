@@ -26,6 +26,7 @@ function DataTableSelectAll({ table }: { table: any }) {
       checked={table.getIsAllPageRowsSelected()}
       onCheckedChange={value => table.toggleAllPageRowsSelected(!!value)}
       aria-label="Select all"
+      className="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
     />
   )
 }

@@ -49,6 +49,7 @@ function DataRow<T>(
           checked={selected}
           onCheckedChange={value => row.toggleSelected(!!value)}
           aria-label="Select row"
+          className="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"
         />
       </TableCell>
 
@@ -100,7 +101,7 @@ export default function DataTableBody<T>(
     columns: ColumnDef<T, unknown>[],
     isLoading?: boolean,
     pagination: PaginationState,
-    onClick?: (row: Row<T>) => void
+    onClick?: (entry: T) => void
   }
 ) {
   const {t} = useTranslation();
@@ -150,7 +151,7 @@ export default function DataTableBody<T>(
           row={row}
           verticalSpacing={verticalSpacing}
           horizontalSpacing={horizontalSpacing}
-          onClick={onClick}
+          onClick={(row) => onClick ? onClick(row.original) : {}}
         />
       )) : (
         <TableRow className="hover:bg-transparent">

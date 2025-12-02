@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {DataTable} from "@/components/table";
 import PanelPage from "@/layouts/panel";
 import {useTranslation} from "react-i18next";
-import {Box} from "lucide-react";
+import {Box, Trash2} from "lucide-react";
 import deploymentService, {type Deployment} from "@/api/services/deployment-service"
 import {columns} from "./table-columns";
 import {
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/empty"
 import {useRouter} from "@/routes/hooks";
 import namespaceService, {type Namespace} from "@/api/services/namespace-service.ts";
+import DeploymentService from "@/api/services/deployment-service";
 
 function DeploymentListEmpty() {
   const {t} = useTranslation();
@@ -87,8 +88,22 @@ export default function DeploymentsPage() {
               options: namespaces.map(namespace => namespace.name)
             },
           ]}
-          onClick={row => replace("/deployment/overview/?deployment=" + row.original.name +
-            "&namespace=" + row.original.namespace)}
+          onClick={deployment => replace("/deployment/overview/?" +
+            "deployment=" + deployment.name + "&namespace=" + deployment.namespace)}
+          bulkActions={[
+            {
+              name: "panel.page.deployments.action.delete",
+              icon: Trash2,
+              onClick: (entries) => {
+                entries.forEach(entry => {
+                  DeploymentService.remove({
+                    namespace: entry.namespace,
+                    deployment: entry.name
+                  });
+                })
+              }
+            }
+          ]}
         />
       </div>
     </PanelPage>

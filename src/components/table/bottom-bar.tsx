@@ -1,27 +1,69 @@
-import type {Table} from "@tanstack/react-table";
+import type {
+  Table,
+} from "@tanstack/react-table";
+import {useSidebar} from "@/components/ui/sidebar.tsx";
+import {useTranslation} from "react-i18next";
+import type {LucideIcon} from "lucide-react";
 
-export default function DataTableBottomBar<T>({table}: { table: Table<T> }) {
-  const selectedCount = table.getSelectedRowModel().rows.length;
+export interface DataTableBottomBarAction<T> {
+  name: string;
+  icon: LucideIcon;
+  onClick?: (entries: T[]) => void
+}
+
+export default function DataTableBottomBar<T>(
+  {
+    table,
+    actions,
+  }: {
+    table: Table<T>
+    actions: DataTableBottomBarAction<T>[]
+  }
+) {
+  const selectedRows = table.getSelectedRowModel().rows;
+  const selectedCount = selectedRows.length;
+  const {t} = useTranslation();
+  const {open} = useSidebar()
   return (
     <div
       className={`
-        fixed w-[min(1000px,95%)] bottom-0 -py-10
+        fixed inset-x-0 bottom-0
         bg-sidebar shadow-lg
         transition-transform duration-300
         ${selectedCount > 0 ? "translate-y-0" : "translate-y-full"}
       `}
     >
       <div
-        className="w-[min(1000px,95%)] mx-auto"
+        style={{
+          paddingLeft: open ? "var(--sidebar-width)" : "var(--sidebar-width-icon)",
+          transition: "padding-left 300ms ease"
+        }}
       >
-        <div className="py-10 flex items-center justify-between">
-        <span className="text-sm font-medium">
-          {selectedCount} AUSGEWÄHLT
-        </span>
-
-          <div className="flex gap-4">
-            <button className="btn">Aktion 1</button>
-            <button className="btn">Aktion 2</button>
+        <div className="w-[min(1500px,95%)] mx-auto">
+          <div className="py-5 flex items-center justify-between">
+            <span className="text-sm font-medium">
+              {selectedCount} {t("table.bottom.bar.selected")}
+            </span>
+            <div className="flex gap-6">
+              {actions.map(({ name, icon: Icon, onClick }, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => {
+                    onClick?.(selectedRows.map(entry => entry.original));
+                    table.resetRowSelection(true);
+                  }}
+                  className="
+                    flex flex-col items-center justify-center
+                    px-10 py-5
+                    rounded-lg text-accent-foreground
+                    hover:bg-accent/80 transition-colors
+                  "
+                >
+                  <Icon className="size-6 mb-3" />
+                  <span className="font-medium">{t(name)}</span>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>

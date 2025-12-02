@@ -3,7 +3,7 @@ import {DataTable} from "@/components/table";
 import PanelPage from "@/layouts/panel";
 import {Button} from "@/components/ui/button.tsx";
 import {useTranslation} from "react-i18next";
-import {PlusIcon, ServerIcon} from "lucide-react";
+import {PlusIcon, ServerIcon, Trash2} from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -100,6 +100,13 @@ export default function NodesPage() {
           pageSize={5}
           initialSorting={[{id: "name", desc: false}]}
           isLoading={isLoading}
+          bulkActions={[
+            {
+              name: "panel.page.nodes.action.delete",
+              icon: Trash2,
+              onClick: () => {}
+            }
+          ]}
         />
       </div>
     </PanelPage>

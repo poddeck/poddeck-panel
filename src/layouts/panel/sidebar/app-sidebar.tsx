@@ -184,17 +184,19 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
     email: "lukas@poddeck.io"
   }
   return (
-    <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
-        <SidebarClusterSwitcher/>
-      </SidebarHeader>
-      <SidebarContent>
-        <SidebarNavigation items={AppNavigation()}/>
-      </SidebarContent>
-      <SidebarFooter>
-        <SidebarUser user={user}/>
-      </SidebarFooter>
-      <SidebarRail/>
-    </Sidebar>
+    <div id="sidebar">
+      <Sidebar collapsible="icon" {...props}>
+        <SidebarHeader>
+          <SidebarClusterSwitcher/>
+        </SidebarHeader>
+        <SidebarContent>
+          <SidebarNavigation items={AppNavigation()}/>
+        </SidebarContent>
+        <SidebarFooter>
+          <SidebarUser user={user}/>
+        </SidebarFooter>
+        <SidebarRail/>
+      </Sidebar>
+    </div>
   )
 }
