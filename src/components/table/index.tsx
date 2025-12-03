@@ -143,7 +143,12 @@ export function DataTable<T>(
       </div>
 
       <div className="rounded-md">
-        <Table className={`border-separate border-spacing-y-${pagination.pageSize <= 5 ? 4 : 2}`}>
+        <Table
+          className={`border-separate border-spacing-y-2`}
+          style={{
+            borderSpacing: `0 ${pagination.pageSize <= 5 ? 12 : 6}px`
+          }}
+        >
           <DataTableHeader
             table={table}
             pagination={pagination}
