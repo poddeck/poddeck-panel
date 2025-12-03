@@ -44,6 +44,12 @@ export function SidebarLanguageSelector() {
               <span>Deutsch</span>
             </span>
           </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="es_DE">
+            <span className="flex items-center gap-2">
+              <span>🇪🇸</span>
+              <span>Español</span>
+            </span>
+          </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
