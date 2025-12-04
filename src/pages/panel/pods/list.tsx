@@ -78,7 +78,7 @@ export default function PodsList() {
       pageSize={5}
       initialSorting={[{id: "namespace", desc: false}]}
       isLoading={isLoading}
-      visibilityState={{node: false, ip: false}}
+      visibilityState={{node: false, pod_ip: false, controlled_by: false}}
       filters={[
         {
           column: 'namespace',

@@ -49,6 +49,10 @@ export const columns: ColumnDef<Pod, unknown>[] = [
     accessorKey: "pod_ip",
   },
   {
+    header: "panel.page.pods.column.controller",
+    accessorKey: "controlled_by",
+  },
+  {
     id: "actions",
     header: "",
     maxSize: 60,
