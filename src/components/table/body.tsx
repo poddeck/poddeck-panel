@@ -33,7 +33,13 @@ function DataRow<T>(
       key={row.id}
       className={`${disableGroup ? '' : 'group'} transition hover:bg-transparent !bg-transparent`}
       data-state={selected ? 'selected' : undefined}
-      onClick={() => onClick ? onClick(row) : {}}
+      onClick={(event) => {
+        const target = event.target as HTMLElement;
+        const tag = target.nodeName;
+        if (tag === "TR" || tag === "TD") {
+          onClick?.(row);
+        }
+      }}
     >
       <TableCell
         className="!bg-transparent pointer-events-auto w-0"
