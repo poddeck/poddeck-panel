@@ -2,9 +2,11 @@ import {Tabs, TabsList, TabsTrigger} from "@/components/ui/tabs.tsx";
 import {Link, useSearchParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {
+  Activity,
   ChevronDown,
   Clock,
-  Group, Rocket,
+  Group,
+  Rocket, Scale,
   Trash2
 } from "lucide-react";
 import {Separator} from "@/components/ui/separator.tsx";
@@ -22,12 +24,24 @@ import {Skeleton} from "@/components/ui/skeleton.tsx";
 import {Dialog, DialogTrigger} from "@/components/ui/dialog.tsx";
 import DeploymentDeleteDialog from "@/pages/panel/deployments/delete-dialog.tsx";
 import {useRouter} from "@/routes/hooks";
+import {DeploymentScaleDrawer} from "@/pages/panel/deployment/scale.tsx";
+import {Drawer, DrawerTrigger} from "@/components/ui/drawer.tsx";
 
 const tabs = [
   {
     id: "overview",
     name: "panel.page.deployment.tabs.overview",
     url: "/deployment/overview/"
+  },
+  {
+    id: "pods",
+    name: "panel.page.deployment.tabs.pods",
+    url: "/deployment/pods/"
+  },
+  {
+    id: "edit",
+    name: "panel.page.deployment.tabs.edit",
+    url: "/deployment/edit/"
   },
 ]
 
@@ -62,6 +76,14 @@ export default function DeploymentPageHeader(
               </div>
               <div className="flex items-center gap-8">
                 <div className="flex items-center gap-2">
+                  <Activity size={16}/>
+                  {deployment ? (
+                    <span>{deployment.ready_replicas} / {deployment.replicas}</span>
+                  ) : (
+                    <Skeleton className="w-15 h-6"/>
+                  )}
+                </div>
+                <div className="flex items-center gap-2">
                   <Group size={16}/>
                   {deployment ? (
                     <span>{deployment.namespace}</span>
@@ -81,6 +103,14 @@ export default function DeploymentPageHeader(
             </div>
           </div>
           <div className="flex items-center mr-2">
+            <Drawer>
+              <DrawerTrigger asChild>
+                <Button variant="outline" size="icon" className="mr-5">
+                  <Scale />
+                </Button>
+              </DrawerTrigger>
+              <DeploymentScaleDrawer/>
+            </Drawer>
             <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
               <DropdownMenu open={actionsOpen} onOpenChange={setActionsOpen}>
                 <DropdownMenuTrigger asChild>
