@@ -316,6 +316,7 @@
           "age": "Age"
         },
         "action": {
+          "scale": "Scale",
           "delete": "Delete"
         },
         "delete.dialog": {
@@ -330,11 +331,39 @@
       },
       "deployment": {
         "tabs": {
-          "overview": "Overview"
+          "overview": "Overview",
+          "pods": "Pods",
+          "edit": "Edit"
         },
         "actions": "Actions",
+        "scale": {
+          "title": "Scale",
+          "description": "Set the desired number of pods and check resource utilization.",
+          "overload": "Overload",
+          "cpu": "CPU",
+          "memory": "Memory",
+          "submit": "Submit",
+          "cancel": "Cancel"
+        },
         "overview": {
-
+          "general": {
+            "title": "GENERAL",
+            "namespace": "Namespace",
+            "start": "Start time",
+            "labels": "Labels",
+            "annotations": "Annotations"
+          },
+          "replicas": {
+            "title": "REPLICAS",
+            "replicas": "Replicas",
+            "updated": "Updated",
+            "ready": "Ready",
+            "available": "Available",
+            "unavailable": "Unavailable"
+          },
+          "events": {
+            "title": "EVENTS"
+          }
         }
       }
     }

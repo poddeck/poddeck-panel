@@ -316,6 +316,7 @@
           "age": "Alter"
         },
         "action": {
+          "scale": "Skalieren",
           "delete": "Löschen"
         },
         "delete.dialog": {
@@ -330,11 +331,39 @@
       },
       "deployment": {
         "tabs": {
-          "overview": "Übersicht"
+          "overview": "Übersicht",
+          "pods": "Pods",
+          "edit": "Bearbeiten"
         },
         "actions": "Aktionen",
+        "scale": {
+          "title": "Skalieren",
+          "description": "Stelle eine gewünschte Anzahl an Pods ein und prüfe die Ressourcen-Auslastung.",
+          "overload": "Überlastung",
+          "cpu": "CPU",
+          "memory": "Memory",
+          "submit": "Übernehmen",
+          "cancel": "Abbrechen"
+        },
         "overview": {
-
+          "general": {
+            "title": "ALLGEMEIN",
+            "namespace": "Namensraum",
+            "start": "Startzeit",
+            "labels": "Labels",
+            "annotations": "Annotations"
+          },
+          "replicas": {
+            "title": "REPLIKEN",
+            "replicas": "Repliken",
+            "updated": "Aktualisiert",
+            "ready": "Bereit",
+            "available": "Verfügbar",
+            "unavailable": "Nicht verfügbar"
+          },
+          "events": {
+            "title": "EREIGNISSE"
+          }
         }
       }
     }
