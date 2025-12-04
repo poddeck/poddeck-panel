@@ -13,6 +13,7 @@ export type Deployment = {
   annotations: Record<string, string>;
   conditions: Condition[];
   events: Event[];
+  raw: string;
 }
 
 export type Condition = {
@@ -54,22 +55,32 @@ export type DeploymentDeleteResponse = {
   success: boolean;
 }
 
-export interface DeploymentLogRequest {
+export interface DeploymentScaleRequest {
   namespace: string;
   deployment: string;
-  since_seconds?: number;
+  replicas: number;
 }
 
-export type DeploymentLogResponse = {
+export type DeploymentScaleResponse = {
   success: boolean;
-  logs: string;
+}
+
+export interface DeploymentEditRequest {
+  namespace: string;
+  deployment: string;
+  raw: string;
+}
+
+export type DeploymentEditResponse = {
+  success: boolean;
 }
 
 export const DeploymentApi = {
   List: "/deployments/",
   Find: "/deployment/find/",
   Delete: "/deployment/delete/",
-  Log: "/deployment/log/",
+  Scale: "/deployment/scale/",
+  Edit: "/deployment/edit/",
 } as const;
 
 const list = () => client.get<DeploymentListResponse>({url: DeploymentApi.List});
@@ -81,8 +92,12 @@ const remove = (data: DeploymentDeleteRequest) => client.post<DeploymentDeleteRe
   url: DeploymentApi.Delete,
   data
 });
-const log = (data: DeploymentLogRequest) => client.post<DeploymentLogResponse>({
-  url: DeploymentApi.Log,
+const scale = (data: DeploymentScaleRequest) => client.post<DeploymentScaleResponse>({
+  url: DeploymentApi.Scale,
+  data
+});
+const edit = (data: DeploymentEditRequest) => client.post<DeploymentEditResponse>({
+  url: DeploymentApi.Edit,
   data
 });
 
@@ -90,5 +105,6 @@ export default {
   list,
   find,
   remove,
-  log,
+  scale,
+  edit
 };

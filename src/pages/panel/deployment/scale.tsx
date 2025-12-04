@@ -13,6 +13,8 @@ import {Input} from "@/components/ui/input.tsx"
 import React from "react"
 import {useTranslation} from "react-i18next";
 import {cn} from "@/lib/utils.ts";
+import DeploymentService, {type Deployment} from "@/api/services/deployment-service.ts";
+import {Spinner} from "@/components/ui/spinner.tsx";
 
 const RESOURCE_LIMIT = 100
 const RESOURCE_PER_POD_CPU = 7
@@ -67,9 +69,26 @@ function DeploymentScaleDrawerWorkload(
   )
 }
 
-export function DeploymentScaleDrawer() {
+export function DeploymentScaleDrawer(
+  {
+    deployment,
+    setOpen
+  }: {
+    deployment: Deployment | null,
+    setOpen: (open: boolean) => void
+  }
+  ) {
   const {t} = useTranslation();
-  const [pods, setPods] = React.useState<number | "">(5)
+  const [pods, setPods] = React.useState<number | "">(1);
+  const [loading, setLoading] = React.useState(false);
+  const [initialized, setInitialized] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!initialized && deployment) {
+      setPods(deployment.replicas);
+      setInitialized(true);
+    }
+  }, [deployment, initialized]);
 
   function adjust(amount: number) {
     setPods((prev) => {
@@ -94,6 +113,17 @@ export function DeploymentScaleDrawer() {
     if (pods === "") {
       setPods(1)
     }
+  }
+
+  async function submit() {
+    setLoading(true);
+    await DeploymentService.scale({
+      namespace: deployment ? deployment.namespace : "",
+      deployment: deployment ? deployment.name : "",
+      replicas: pods === "" ? (deployment ? deployment.replicas : 1) : pods
+    });
+    setLoading(false);
+    setOpen(false);
   }
 
   const cpuUnits = (typeof pods === "number" ? pods : 0) * RESOURCE_PER_POD_CPU
@@ -126,7 +156,7 @@ export function DeploymentScaleDrawer() {
             <div className="flex flex-col items-center flex-1">
               <Input
                 type="number"
-                value={pods === "" ? "" : pods}
+                value={pods}
                 onChange={handleInputChange}
                 onBlur={handleInputBlur}
                 onFocus={(event) => event.target.select()}
@@ -159,7 +189,10 @@ export function DeploymentScaleDrawer() {
         </div>
 
         <DrawerFooter>
-          <Button>{t("panel.page.deployment.scale.submit")}</Button>
+          <Button onClick={submit} disabled={loading}>
+            {t("panel.page.deployment.scale.submit")}
+            {loading && <Spinner className="ml-2"></Spinner>}
+          </Button>
           <DrawerClose asChild>
             <Button
               variant="outline">{t("panel.page.deployment.scale.cancel")}</Button>

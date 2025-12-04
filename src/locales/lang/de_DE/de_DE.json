@@ -245,7 +245,8 @@
           "restarts": "Neustarts",
           "age": "Alter",
           "node": "Knoten",
-          "ip": "IP"
+          "ip": "IP",
+          "controller": "Steuerer"
         },
         "status": {
           "pending": "Ausstehend",
@@ -317,6 +318,7 @@
         },
         "action": {
           "scale": "Skalieren",
+          "restart": "Neustarten",
           "delete": "Löschen"
         },
         "delete.dialog": {

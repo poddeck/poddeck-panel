@@ -1,15 +1,17 @@
 import {Button} from "@/components/ui/button.tsx";
-import {MoreHorizontal, Scale, Trash2} from "lucide-react";
+import {MoreHorizontal, RefreshCcw, Scale, Trash2} from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
 import {type Deployment} from "@/api/services/deployment-service"
 import {t} from "@/locales/i18n";
 import {Badge} from "@/components/ui/badge.tsx";
-import DeploymentDeleteDialog from "@/pages/panel/deployments/delete-dialog.tsx";
+import DeploymentDeleteDialog
+  from "@/pages/panel/deployments/delete-dialog.tsx";
 import React from "react";
 import {DialogTrigger} from "@/components/ui/dialog.tsx";
 import {Dialog} from "@radix-ui/react-dialog";
@@ -17,11 +19,12 @@ import {Drawer, DrawerTrigger} from "@/components/ui/drawer.tsx";
 import {DeploymentScaleDrawer} from "@/pages/panel/deployment/scale.tsx";
 
 export function DeploymentsActionDropdown({deployment}: { deployment: Deployment }) {
-  const [open, setOpen] = React.useState(false);
+  const [deleteOpen, setDeleteOpen] = React.useState(false);
+  const [scaleOpen, setScaleOpen] = React.useState(false);
   return (
     <div className="flex justify-end">
-      <Dialog open={open} onOpenChange={setOpen}>
-        <Drawer>
+      <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
+        <Drawer open={scaleOpen} onOpenChange={setScaleOpen}>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="h-fit hover:bg-black/10 dark:hover:bg-white/10 py-2 -my-2 rounded-full">
@@ -39,6 +42,14 @@ export function DeploymentsActionDropdown({deployment}: { deployment: Deployment
                   </div>
                 </DropdownMenuItem>
               </DrawerTrigger>
+              <DropdownMenuItem
+                onClick={() => {}}
+                className="text-amber-600 flex items-center gap-2"
+              >
+                <RefreshCcw className="text-amber-600" size={16}/>
+                {t("panel.page.deployments.action.restart")}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator/>
               <DialogTrigger asChild>
                 <DropdownMenuItem
                   variant="destructive"
@@ -52,12 +63,13 @@ export function DeploymentsActionDropdown({deployment}: { deployment: Deployment
               </DialogTrigger>
             </DropdownMenuContent>
           </DropdownMenu>
-          <DeploymentScaleDrawer/>
+          <DeploymentScaleDrawer deployment={deployment}
+                                 setOpen={setScaleOpen}/>
         </Drawer>
         <DeploymentDeleteDialog
           namespace={deployment.namespace}
           deployment={deployment.name}
-          setOpen={setOpen}
+          setOpen={setDeleteOpen}
         />
       </Dialog>
     </div>

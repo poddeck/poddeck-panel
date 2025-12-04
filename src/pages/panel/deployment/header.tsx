@@ -5,7 +5,7 @@ import {
   Activity,
   ChevronDown,
   Clock,
-  Group,
+  Group, RefreshCcw,
   Rocket, Scale,
   Trash2
 } from "lucide-react";
@@ -58,6 +58,7 @@ export default function DeploymentPageHeader(
   const {replace} = useRouter();
   const [actionsOpen, setActionsOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [scaleOpen, setScaleOpen] = useState(false);
   const [searchParams] = useSearchParams();
   return (
     <div className="w-full bg-sidebar mb-6">
@@ -103,13 +104,13 @@ export default function DeploymentPageHeader(
             </div>
           </div>
           <div className="flex items-center mr-2">
-            <Drawer>
+            <Drawer open={scaleOpen} onOpenChange={setScaleOpen}>
               <DrawerTrigger asChild>
                 <Button variant="outline" size="icon" className="mr-5">
                   <Scale />
                 </Button>
               </DrawerTrigger>
-              <DeploymentScaleDrawer/>
+              <DeploymentScaleDrawer deployment={deployment} setOpen={setScaleOpen}/>
             </Drawer>
             <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
               <DropdownMenu open={actionsOpen} onOpenChange={setActionsOpen}>
@@ -125,6 +126,14 @@ export default function DeploymentPageHeader(
                 </DropdownMenuTrigger>
                 <DropdownMenuSeparator/>
                 <DropdownMenuContent align="end">
+                  <DropdownMenuItem
+                    onClick={() => {}}
+                    className="text-amber-600 flex items-center gap-2"
+                  >
+                    <RefreshCcw className="text-amber-600" size={16}/>
+                    {t("panel.page.deployments.action.restart")}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator/>
                   <DialogTrigger asChild>
                     <DropdownMenuItem
                       variant="destructive"

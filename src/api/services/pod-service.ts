@@ -13,6 +13,7 @@ export type Pod = {
   node: string;
   labels: Record<string, string>;
   annotations: Record<string, string>;
+  controlled_by: string;
   containers: Container[];
   events: Event[];
 }

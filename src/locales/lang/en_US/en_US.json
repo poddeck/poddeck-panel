@@ -245,7 +245,8 @@
           "restarts": "Restarts",
           "age": "Age",
           "node": "Node",
-          "ip": "IP"
+          "ip": "IP",
+          "controller": "Controller"
         },
         "status": {
           "pending": "Pending",
@@ -317,6 +318,7 @@
         },
         "action": {
           "scale": "Scale",
+          "restart": "Restart",
           "delete": "Delete"
         },
         "delete.dialog": {
