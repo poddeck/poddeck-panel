@@ -319,6 +319,7 @@
         "action": {
           "scale": "Skalieren",
           "restart": "Neustarten",
+          "restart.successful": "Deployment wurde erfolgreich neugestarted",
           "delete": "Löschen"
         },
         "delete.dialog": {
@@ -374,6 +375,11 @@
           "events": {
             "title": "EREIGNISSE"
           }
+        },
+        "edit": {
+          "save": "Speichern",
+          "successful": "Deployment wurde erfolgreich bearbeitet",
+          "copy.successful": "Deployment wurde erfolgreich kopiert"
         }
       }
     }

@@ -18,6 +18,7 @@ import {Dialog} from "@radix-ui/react-dialog";
 import {Drawer, DrawerTrigger} from "@/components/ui/drawer.tsx";
 import {DeploymentScaleDrawer} from "@/pages/panel/deployment/scale.tsx";
 import DeploymentService from "@/api/services/deployment-service.ts";
+import {toast} from "sonner";
 
 export function DeploymentsActionDropdown({deployment}: { deployment: Deployment }) {
   const [deleteOpen, setDeleteOpen] = React.useState(false);
@@ -48,6 +49,9 @@ export function DeploymentsActionDropdown({deployment}: { deployment: Deployment
                   DeploymentService.restart({
                     namespace: deployment ? deployment.namespace : "",
                     deployment: deployment ? deployment.name : ""
+                  });
+                  toast.success(t("panel.page.deployments.action.restart.successful"), {
+                    position: "top-right",
                   });
                 }}
                 className="text-amber-600 flex items-center gap-2"

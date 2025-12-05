@@ -26,6 +26,7 @@ import DeploymentDeleteDialog from "@/pages/panel/deployments/delete-dialog.tsx"
 import {useRouter} from "@/routes/hooks";
 import {DeploymentScaleDrawer} from "@/pages/panel/deployment/scale.tsx";
 import {Drawer, DrawerTrigger} from "@/components/ui/drawer.tsx";
+import {toast} from "sonner";
 
 const tabs = [
   {
@@ -131,6 +132,9 @@ export default function DeploymentPageHeader(
                       DeploymentService.restart({
                         namespace: deployment ? deployment.namespace : "",
                         deployment: deployment ? deployment.name : ""
+                      });
+                      toast.success(t("panel.page.deployments.action.restart.successful"), {
+                        position: "top-right",
                       });
                     }}
                     className="text-amber-600 flex items-center gap-2"

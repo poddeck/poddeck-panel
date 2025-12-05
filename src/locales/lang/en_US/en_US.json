@@ -319,6 +319,7 @@
         "action": {
           "scale": "Scale",
           "restart": "Restart",
+          "restart.successful": "Deployment has been successfully restarted",
           "delete": "Delete"
         },
         "delete.dialog": {
@@ -374,6 +375,11 @@
           "events": {
             "title": "EVENTS"
           }
+        },
+        "edit": {
+          "save": "Save",
+          "successful": "Deployment has been successfully edited",
+          "copy.successful": "Deployment has been successfully copied"
         }
       }
     }
