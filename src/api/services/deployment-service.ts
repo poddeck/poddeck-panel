@@ -11,6 +11,8 @@ export type Deployment = {
   age: number;
   labels: Record<string, string>;
   annotations: Record<string, string>;
+  container_name: string;
+  container_image: string;
   conditions: Condition[];
   events: Event[];
   raw: string;

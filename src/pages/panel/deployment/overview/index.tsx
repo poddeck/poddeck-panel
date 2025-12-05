@@ -2,12 +2,11 @@ import PanelPage from "@/layouts/panel"
 import DeploymentPageBreadcrumb from "@/pages/panel/deployment/breadcrumb.tsx";
 import DeploymentPageHeader from "@/pages/panel/deployment/header.tsx";
 import useDeployment from "@/hooks/use-deployment";
-import DeploymentOverviewGeneral
-  from "@/pages/panel/deployment/overview/general.tsx";
-import DeploymentOverviewReplicas
-  from "@/pages/panel/deployment/overview/replicas.tsx";
-import DeploymentOverviewEvents
-  from "@/pages/panel/deployment/overview/events.tsx";
+import DeploymentOverviewGeneral from "./general.tsx";
+import DeploymentOverviewReplicas from "./replicas.tsx";
+import DeploymentOverviewContainer from "./container.tsx";
+import DeploymentOverviewConditions from "./conditions.tsx";
+import DeploymentOverviewEvents from "./events.tsx";
 
 export default function DeploymentOverviewPage() {
   const deployment = useDeployment();
@@ -18,9 +17,10 @@ export default function DeploymentOverviewPage() {
         <div className="grid auto-rows-min gap-6 md:grid-cols-3">
           <DeploymentOverviewGeneral deployment={deployment}/>
           <DeploymentOverviewReplicas deployment={deployment}/>
-          <DeploymentOverviewGeneral deployment={deployment}/>
+          <DeploymentOverviewContainer deployment={deployment}/>
         </div>
         <div className="grid auto-rows-min gap-6 md:grid-cols-2">
+          <DeploymentOverviewConditions deployment={deployment}/>
           <DeploymentOverviewEvents deployment={deployment}/>
         </div>
       </div>

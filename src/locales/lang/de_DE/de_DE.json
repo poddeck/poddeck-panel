@@ -363,6 +363,14 @@
             "available": "Verfügbar",
             "unavailable": "Nicht verfügbar"
           },
+          "container": {
+            "title": "CONTAINER",
+            "name": "Name",
+            "image": "Image"
+          },
+          "conditions": {
+            "title": "ZUSTÄNDE"
+          },
           "events": {
             "title": "EREIGNISSE"
           }

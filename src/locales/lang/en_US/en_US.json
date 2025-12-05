@@ -363,6 +363,14 @@
             "available": "Available",
             "unavailable": "Unavailable"
           },
+          "container": {
+            "title": "CONTAINER",
+            "name": "Name",
+            "image": "Image"
+          },
+          "conditions": {
+            "title": "CONDITIONS"
+          },
           "events": {
             "title": "EVENTS"
           }
