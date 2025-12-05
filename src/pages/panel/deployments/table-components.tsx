@@ -17,6 +17,7 @@ import {DialogTrigger} from "@/components/ui/dialog.tsx";
 import {Dialog} from "@radix-ui/react-dialog";
 import {Drawer, DrawerTrigger} from "@/components/ui/drawer.tsx";
 import {DeploymentScaleDrawer} from "@/pages/panel/deployment/scale.tsx";
+import DeploymentService from "@/api/services/deployment-service.ts";
 
 export function DeploymentsActionDropdown({deployment}: { deployment: Deployment }) {
   const [deleteOpen, setDeleteOpen] = React.useState(false);
@@ -43,7 +44,12 @@ export function DeploymentsActionDropdown({deployment}: { deployment: Deployment
                 </DropdownMenuItem>
               </DrawerTrigger>
               <DropdownMenuItem
-                onClick={() => {}}
+                onClick={() => {
+                  DeploymentService.restart({
+                    namespace: deployment ? deployment.namespace : "",
+                    deployment: deployment ? deployment.name : ""
+                  });
+                }}
                 className="text-amber-600 flex items-center gap-2"
               >
                 <RefreshCcw className="text-amber-600" size={16}/>

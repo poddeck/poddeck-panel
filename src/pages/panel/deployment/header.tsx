@@ -18,7 +18,7 @@ import {
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
 import {useState} from "react";
-import type {Deployment} from "@/api/services/deployment-service.ts";
+import DeploymentService, {type Deployment} from "@/api/services/deployment-service.ts";
 import {DeploymentAge} from "@/pages/panel/deployment/age.tsx";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
 import {Dialog, DialogTrigger} from "@/components/ui/dialog.tsx";
@@ -127,7 +127,12 @@ export default function DeploymentPageHeader(
                 <DropdownMenuSeparator/>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem
-                    onClick={() => {}}
+                    onClick={() => {
+                      DeploymentService.restart({
+                        namespace: deployment ? deployment.namespace : "",
+                        deployment: deployment ? deployment.name : ""
+                      });
+                    }}
                     className="text-amber-600 flex items-center gap-2"
                   >
                     <RefreshCcw className="text-amber-600" size={16}/>

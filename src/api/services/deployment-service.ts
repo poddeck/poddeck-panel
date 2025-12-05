@@ -65,6 +65,15 @@ export type DeploymentScaleResponse = {
   success: boolean;
 }
 
+export interface DeploymentRestartRequest {
+  namespace: string;
+  deployment: string;
+}
+
+export type DeploymentRestartResponse = {
+  success: boolean;
+}
+
 export interface DeploymentEditRequest {
   namespace: string;
   deployment: string;
@@ -80,6 +89,7 @@ export const DeploymentApi = {
   Find: "/deployment/find/",
   Delete: "/deployment/delete/",
   Scale: "/deployment/scale/",
+  Restart: "/deployment/restart/",
   Edit: "/deployment/edit/",
 } as const;
 
@@ -96,6 +106,10 @@ const scale = (data: DeploymentScaleRequest) => client.post<DeploymentScaleRespo
   url: DeploymentApi.Scale,
   data
 });
+const restart = (data: DeploymentRestartRequest) => client.post<DeploymentRestartResponse>({
+  url: DeploymentApi.Restart,
+  data
+});
 const edit = (data: DeploymentEditRequest) => client.post<DeploymentEditResponse>({
   url: DeploymentApi.Edit,
   data
@@ -106,5 +120,6 @@ export default {
   find,
   remove,
   scale,
+  restart,
   edit
 };
