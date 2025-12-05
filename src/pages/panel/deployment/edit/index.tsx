@@ -82,7 +82,7 @@ export default function DeploymentEditPage() {
             name="yaml_editor"
             editorProps={{ $blockScrolling: true }}
             width="100%"
-            height="calc(100% - var(--spacing) * 16)"
+            height="calc(100% - var(--spacing) * 12)"
             fontSize={14}
             showPrintMargin={false}
             setOptions={{
