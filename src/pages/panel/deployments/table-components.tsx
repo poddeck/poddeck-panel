@@ -13,9 +13,8 @@ import {Badge} from "@/components/ui/badge.tsx";
 import DeploymentDeleteDialog
   from "@/pages/panel/deployments/delete-dialog.tsx";
 import React from "react";
-import {DialogTrigger} from "@/components/ui/dialog.tsx";
 import {Dialog} from "@radix-ui/react-dialog";
-import {Drawer, DrawerTrigger} from "@/components/ui/drawer.tsx";
+import {Drawer} from "@/components/ui/drawer.tsx";
 import {DeploymentScaleDrawer} from "@/pages/panel/deployment/scale.tsx";
 import DeploymentService from "@/api/services/deployment-service.ts";
 import {toast} from "sonner";
@@ -23,59 +22,65 @@ import {toast} from "sonner";
 export function DeploymentsActionDropdown({deployment}: { deployment: Deployment }) {
   const [deleteOpen, setDeleteOpen] = React.useState(false);
   const [scaleOpen, setScaleOpen] = React.useState(false);
+
   return (
     <div className="flex justify-end">
+      <Drawer open={scaleOpen} onOpenChange={setScaleOpen}>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-fit hover:bg-black/10 dark:hover:bg-white/10 py-2 -my-2 rounded-full"
+            >
+              <MoreHorizontal/>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            <DropdownMenuItem
+              onClick={(e) => {
+                e.stopPropagation();
+                setScaleOpen(true);
+              }}
+            >
+              <div className="flex items-center gap-2">
+                <Scale size={16}/>
+                {t("panel.page.deployments.action.scale")}
+              </div>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                DeploymentService.restart({
+                  namespace: deployment ? deployment.namespace : "",
+                  deployment: deployment ? deployment.name : "",
+                });
+                toast.success(t("panel.page.deployments.action.restart.successful"), {
+                  position: "top-right",
+                });
+              }}
+              className="text-amber-600 flex items-center gap-2"
+            >
+              <RefreshCcw className="text-amber-600" size={16}/>
+              {t("panel.page.deployments.action.restart")}
+            </DropdownMenuItem>
+            <DropdownMenuSeparator/>
+            <DropdownMenuItem
+              variant="destructive"
+              onClick={(e) => {
+                e.stopPropagation();
+                setDeleteOpen(true);
+              }}
+            >
+              <div className="text-rose-600 flex items-center gap-2">
+                <Trash2 className="text-rose-600" size={16}/>
+                {t("panel.page.deployments.action.delete")}
+              </div>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <DeploymentScaleDrawer deployment={deployment} setOpen={setScaleOpen}/>
+      </Drawer>
       <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
-        <Drawer open={scaleOpen} onOpenChange={setScaleOpen}>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="h-fit hover:bg-black/10 dark:hover:bg-white/10 py-2 -my-2 rounded-full">
-                <MoreHorizontal/>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
-              <DrawerTrigger asChild>
-                <DropdownMenuItem
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <div className="flex items-center gap-2">
-                    <Scale size={16}/>
-                    {t("panel.page.deployments.action.scale")}
-                  </div>
-                </DropdownMenuItem>
-              </DrawerTrigger>
-              <DropdownMenuItem
-                onClick={() => {
-                  DeploymentService.restart({
-                    namespace: deployment ? deployment.namespace : "",
-                    deployment: deployment ? deployment.name : ""
-                  });
-                  toast.success(t("panel.page.deployments.action.restart.successful"), {
-                    position: "top-right",
-                  });
-                }}
-                className="text-amber-600 flex items-center gap-2"
-              >
-                <RefreshCcw className="text-amber-600" size={16}/>
-                {t("panel.page.deployments.action.restart")}
-              </DropdownMenuItem>
-              <DropdownMenuSeparator/>
-              <DialogTrigger asChild>
-                <DropdownMenuItem
-                  variant="destructive"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <div className="text-rose-600 flex items-center gap-2">
-                    <Trash2 className="text-rose-600" size={16}/>
-                    {t("panel.page.deployments.action.delete")}
-                  </div>
-                </DropdownMenuItem>
-              </DialogTrigger>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <DeploymentScaleDrawer deployment={deployment}
-                                 setOpen={setScaleOpen}/>
-        </Drawer>
         <DeploymentDeleteDialog
           namespace={deployment.namespace}
           deployment={deployment.name}
