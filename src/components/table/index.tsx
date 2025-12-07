@@ -38,6 +38,7 @@ interface DataTableProps<T> {
   isLoading?: boolean
   visibilityState?: VisibilityState
   filters?: DataTableFilterOption[]
+  defaultFilters?: Record<string, string>
   onClick?: (entry: T) => void,
   bulkActions?: DataTableBottomBarAction<T>[]
 }
@@ -52,6 +53,7 @@ export function DataTable<T>(
     isLoading,
     visibilityState,
     filters,
+    defaultFilters = {},
     onClick,
     bulkActions
   }: DataTableProps<T>
@@ -131,6 +133,7 @@ export function DataTable<T>(
               table={table}
               name={name}
               filters={filters}
+              defaultFilters={defaultFilters}
             />
           }
           <DataTableColumnSelection

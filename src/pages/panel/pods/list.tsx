@@ -36,7 +36,9 @@ function PodListEmpty() {
   )
 }
 
-export default function PodsList() {
+export default function PodsList(
+  {controller}: { controller?: string }
+) {
   const [pods, setPods] = useState<Pod[]>([]);
   const [namespaces, setNamespaces] = useState<Namespace[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -85,6 +87,11 @@ export default function PodsList() {
           options: namespaces.map(namespace => namespace.name)
         },
       ]}
+      defaultFilters={controller ?
+        {
+          controlled_by: controller,
+        } : {}
+      }
       onClick={pod => replace("/pod/overview/?pod=" + pod.name +
         "&namespace=" + pod.namespace)}
       bulkActions={[

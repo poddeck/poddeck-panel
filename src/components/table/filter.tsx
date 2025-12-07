@@ -27,24 +27,27 @@ interface DataTableFiltersProps<T> {
   table: Table<T>;
   name: string;
   filters: DataTableFilterOption[];
+  defaultFilters?: Record<string, string>
 }
 
 export function DataTableFilters<T>(
   {
     table,
     name,
-    filters
+    filters,
+    defaultFilters = {},
   }: DataTableFiltersProps<T>
 ) {
   const {t} = useTranslation();
 
   const loadFilters = (): Record<string, string | undefined> => {
-    if (typeof window === 'undefined') return {};
+    if (typeof window === 'undefined') return defaultFilters;
     try {
       const stored = localStorage.getItem(`table_${name}_filters`);
-      return stored ? JSON.parse(stored) : {};
+      const saved = stored ? JSON.parse(stored) : {};
+      return {...defaultFilters, ...saved};
     } catch {
-      return {};
+      return defaultFilters;
     }
   };
 
@@ -56,15 +59,17 @@ export function DataTableFilters<T>(
   }, [selectedValues, name]);
 
   useEffect(() => {
-    filters.forEach(filter => {
-      const column = table.getColumn(filter.column);
+    if (!defaultFilters) {
+      return;
+    }
+    Object.entries(defaultFilters).forEach(([columnKey, value]) => {
+      const column = table.getColumn(columnKey);
       if (!column) {
         return;
       }
-      const value = selectedValues[filter.column];
-      column.setFilterValue(value === 'EMPTY' ? undefined : value);
+      column.setFilterValue(value === "EMPTY" ? undefined : value);
     });
-  }, [filters, selectedValues, table]);
+  }, [defaultFilters, table]);
 
   return (
     <DropdownMenu>
