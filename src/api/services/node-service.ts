@@ -2,8 +2,12 @@ import client from "../client";
 
 export type Node = {
   name: string;
+  total_cpu_capacity: number;
+  allocated_cpu_capacity: number;
   cpu_cores: number;
   cpu_ratio: number;
+  total_memory_capacity: number;
+  allocated_memory_capacity: number;
   total_memory: number;
   used_memory: number;
   memory_ratio: number;

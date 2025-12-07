@@ -78,7 +78,7 @@ export function DeploymentsActionDropdown({deployment}: { deployment: Deployment
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <DeploymentScaleDrawer deployment={deployment} setOpen={setScaleOpen}/>
+        <DeploymentScaleDrawer deployment={deployment} open={scaleOpen} setOpen={setScaleOpen}/>
       </Drawer>
       <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <DeploymentDeleteDialog

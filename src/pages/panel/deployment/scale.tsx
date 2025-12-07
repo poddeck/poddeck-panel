@@ -10,15 +10,12 @@ import {
   DrawerTitle,
 } from "@/components/ui/drawer"
 import {Input} from "@/components/ui/input.tsx"
-import React from "react"
 import {useTranslation} from "react-i18next";
 import {cn} from "@/lib/utils.ts";
 import DeploymentService, {type Deployment} from "@/api/services/deployment-service.ts";
 import {Spinner} from "@/components/ui/spinner.tsx";
-
-const RESOURCE_LIMIT = 100
-const RESOURCE_PER_POD_CPU = 7
-const RESOURCE_PER_POD_RAM = 5
+import NodeService, {type Node} from "@/api/services/node-service.ts";
+import {type ChangeEvent, useEffect, useMemo, useState} from "react";
 
 function DeploymentScaleDrawerWorkload(
   {
@@ -72,23 +69,44 @@ function DeploymentScaleDrawerWorkload(
 export function DeploymentScaleDrawer(
   {
     deployment,
+    open,
     setOpen
   }: {
     deployment: Deployment | null,
+    open: boolean,
     setOpen: (open: boolean) => void
   }
   ) {
   const {t} = useTranslation();
-  const [pods, setPods] = React.useState<number | "">(1);
-  const [loading, setLoading] = React.useState(false);
-  const [initialized, setInitialized] = React.useState(false);
+  const [pods, setPods] = useState<number | "">(1);
+  const [loading, setLoading] = useState(false);
+  const [initialized, setInitialized] = useState(false);
 
-  React.useEffect(() => {
+  const [nodes, setNodes] = useState<Node[] | null>(null);
+  const [loadingNodes, setLoadingNodes] = useState(false);
+
+  useEffect(() => {
     if (!initialized && deployment) {
       setPods(deployment.replicas);
       setInitialized(true);
     }
   }, [deployment, initialized]);
+
+  useEffect(() => {
+    async function fetchNodes() {
+      setLoadingNodes(true);
+      try {
+        const response = await NodeService.list();
+        setNodes(response.nodes);
+      } catch (err) {
+        console.error("Failed to load nodes", err);
+        setNodes([]);
+      } finally {
+        setLoadingNodes(false);
+      }
+    }
+    fetchNodes();
+  }, [open]);
 
   function adjust(amount: number) {
     setPods((prev) => {
@@ -97,7 +115,7 @@ export function DeploymentScaleDrawer(
     })
   }
 
-  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
     const v = e.target.value
     if (v === "") {
       setPods("")
@@ -125,12 +143,44 @@ export function DeploymentScaleDrawer(
     setLoading(false);
     setOpen(false);
   }
+  const totalCpuCapacity = useMemo(() => {
+    if (!nodes) return 0;
+    return nodes.reduce((sum, n) => sum + n.total_cpu_capacity, 0);
+  }, [nodes]);
+  const totalMemoryCapacity = useMemo(() => {
+    if (!nodes) return 0;
+    return nodes.reduce((sum, n) => sum + n.total_memory_capacity, 0);
+  }, [nodes]);
+  const totalAllocatedCpu = useMemo(() => {
+    if (!nodes) return 0;
+    return nodes.reduce((sum, n) => sum + n.allocated_cpu_capacity, 0);
+  }, [nodes]);
+  const totalAllocatedMemory = useMemo(() => {
+    if (!nodes) return 0;
+    return nodes.reduce((sum, n) => sum + n.allocated_memory_capacity, 0);
+  }, [nodes]);
 
-  const cpuUnits = (typeof pods === "number" ? pods : 0) * RESOURCE_PER_POD_CPU
-  const ramUnits = (typeof pods === "number" ? pods : 0) * RESOURCE_PER_POD_RAM
+  const existingReplicas = deployment?.replicas ?? 0;
+  const podCount = typeof pods === "number" ? pods : 0;
+  const newPods = Math.max(0, podCount - existingReplicas);
+  const requestedCpu = newPods * (deployment?.container_cpu_request ?? 0);
+  const requestedMemory = newPods * (deployment?.container_memory_request ?? 0);
+  const cpuPercent = totalCpuCapacity > 0
+    ? ((totalAllocatedCpu + requestedCpu) / totalCpuCapacity) * 100
+    : 0;
+  const memoryPercent = totalMemoryCapacity > 0
+    ? ((totalAllocatedMemory + requestedMemory) / totalMemoryCapacity) * 100
+    : 0;
 
-  const cpuPercent = (cpuUnits / RESOURCE_LIMIT) * 100
-  const ramPercent = (ramUnits / RESOURCE_LIMIT) * 100
+  if (loadingNodes) {
+    return (
+      <DrawerContent>
+        <div className="flex items-center justify-center p-8">
+          <Spinner />
+        </div>
+      </DrawerContent>
+    );
+  }
 
   return (
     <DrawerContent>
@@ -182,7 +232,7 @@ export function DeploymentScaleDrawer(
                 color={"bg-sky-400"}/>
               <DeploymentScaleDrawerWorkload
                 name={t("panel.page.deployment.scale.memory")}
-                percent={ramPercent} color={"bg-emerald-400"}/>
+                percent={memoryPercent} color={"bg-emerald-400"}/>
             </div>
           </div>
 

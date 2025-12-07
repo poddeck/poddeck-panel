@@ -111,7 +111,7 @@ export default function DeploymentPageHeader(
                   <Scale />
                 </Button>
               </DrawerTrigger>
-              <DeploymentScaleDrawer deployment={deployment} setOpen={setScaleOpen}/>
+              <DeploymentScaleDrawer deployment={deployment} open={scaleOpen} setOpen={setScaleOpen}/>
             </Drawer>
             <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
               <DropdownMenu open={actionsOpen} onOpenChange={setActionsOpen}>

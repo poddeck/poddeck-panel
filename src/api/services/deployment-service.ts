@@ -13,6 +13,11 @@ export type Deployment = {
   annotations: Record<string, string>;
   container_name: string;
   container_image: string;
+  container_cpu_limit: number;
+  container_cpu_request: number;
+  container_memory_limit: number;
+  container_memory_request: number;
+  replica_set: string;
   conditions: Condition[];
   events: Event[];
   raw: string;
