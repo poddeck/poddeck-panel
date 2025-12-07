@@ -304,9 +304,18 @@
       },
       "deployments": {
         "title": "Deployments",
+        "add": "Deployment hinzufügen",
+        "add.dialog": {
+          "title": "Deployment hinzufügen",
+          "description": "Hier haben Sie die Möglichkeit, ein Deployment hinzuzufügen.",
+          "cancel": "Abbrechen",
+          "submit": "Hinzufügen",
+          "successful": "Das Deployment wurde erfolgreich hinzugefügt",
+          "failure": "Das Hinzufügen der Bereitstellung ist fehlgeschlagen. Bitte überprüfen Sie die Konfiguration"
+        },
         "empty": {
           "title": "Keine Deployments gefunden",
-          "description": "Im Cluster konnten keine Deployments gefunden werden."
+          "description": "Im Cluster konnten keine Deployments gefunden werden. Klicken Sie auf die Schaltfläche unten, um Ihr erstes Deployment hinzuzufügen."
         },
         "column": {
           "namespace": "Namensraum",

@@ -2,11 +2,11 @@ import {useEffect, useState} from "react";
 import {DataTable} from "@/components/table";
 import PanelPage from "@/layouts/panel";
 import {useTranslation} from "react-i18next";
-import {Box, Trash2} from "lucide-react";
+import {Box, PlusIcon, Trash2} from "lucide-react";
 import deploymentService, {type Deployment} from "@/api/services/deployment-service"
 import {columns} from "./table-columns";
 import {
-  Empty,
+  Empty, EmptyContent,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
@@ -15,6 +15,27 @@ import {
 import {useRouter} from "@/routes/hooks";
 import namespaceService, {type Namespace} from "@/api/services/namespace-service.ts";
 import DeploymentService from "@/api/services/deployment-service";
+import {Button} from "@/components/ui/button.tsx";
+import {Dialog, DialogTrigger} from "@/components/ui/dialog.tsx";
+import DeploymentAddDialog from "@/pages/panel/deployments/add-dialog.tsx";
+
+function DeploymentAddButton() {
+  const {t} = useTranslation();
+  return (
+    <Dialog>
+      <DialogTrigger>
+        <Button
+          size='lg'
+          className='bg-primary'
+        >
+          <PlusIcon/>
+          {t("panel.page.deployments.add")}
+        </Button>
+      </DialogTrigger>
+      <DeploymentAddDialog/>
+    </Dialog>
+  )
+}
 
 function DeploymentListEmpty() {
   const {t} = useTranslation();
@@ -30,6 +51,9 @@ function DeploymentListEmpty() {
             {t("panel.page.deployments.empty.description")}
           </EmptyDescription>
         </EmptyHeader>
+        <EmptyContent>
+          <DeploymentAddButton/>
+        </EmptyContent>
       </Empty>
     </PanelPage>
   )
@@ -73,6 +97,7 @@ export default function DeploymentsPage() {
     <PanelPage title="panel.page.deployments.title">
       <div className="mt-[4vh]">
         <div className="flex items-center justify-end mb-[4vh]">
+          <DeploymentAddButton/>
         </div>
         <DataTable<Deployment>
           name="deployments"

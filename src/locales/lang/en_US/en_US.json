@@ -304,9 +304,18 @@
       },
       "deployments": {
         "title": "Deployments",
+        "add": "Add deployment",
+        "add.dialog": {
+          "title": "Add deployment",
+          "description": "Here you have the option to add a deployment.",
+          "cancel": "Cancel",
+          "submit": "Add",
+          "successful": "Deployment has been successfully added",
+          "failure": "Adding the deployment failed. Please check the configuration"
+        },
         "empty": {
           "title": "No deployments found",
-          "description": "No deployments could be found in the cluster."
+          "description": "No deployments could be found in the cluster. Click the button below to add your first deployment."
         },
         "column": {
           "namespace": "Namespace",

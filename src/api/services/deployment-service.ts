@@ -53,6 +53,16 @@ export type DeploymentFindResponse = {
   deployment: Deployment;
 }
 
+export interface DeploymentCreateRequest {
+  raw: string;
+}
+
+export type DeploymentCreateResponse = {
+  success: boolean;
+  namespace: string;
+  deployment: string;
+}
+
 export interface DeploymentDeleteRequest {
   namespace: string;
   deployment: string;
@@ -94,6 +104,7 @@ export type DeploymentEditResponse = {
 export const DeploymentApi = {
   List: "/deployments/",
   Find: "/deployment/find/",
+  Create: "/deployment/create/",
   Delete: "/deployment/delete/",
   Scale: "/deployment/scale/",
   Restart: "/deployment/restart/",
@@ -103,6 +114,10 @@ export const DeploymentApi = {
 const list = () => client.get<DeploymentListResponse>({url: DeploymentApi.List});
 const find = (data: DeploymentFindRequest) => client.post<DeploymentFindResponse>({
   url: DeploymentApi.Find,
+  data
+});
+const create = (data: DeploymentCreateRequest) => client.post<DeploymentCreateResponse>({
+  url: DeploymentApi.Create,
   data
 });
 const remove = (data: DeploymentDeleteRequest) => client.post<DeploymentDeleteResponse>({
@@ -125,6 +140,7 @@ const edit = (data: DeploymentEditRequest) => client.post<DeploymentEditResponse
 export default {
   list,
   find,
+  create,
   remove,
   scale,
   restart,

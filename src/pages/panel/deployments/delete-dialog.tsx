@@ -29,7 +29,7 @@ export default function DeploymentDeleteDialog(
   const {t} = useTranslation();
   const [newDeploymentName, setNewDeploymentName] = React.useState("");
   const [loading, setLoading] = React.useState(false);
-  const handleEditDeployment = async () => {
+  const handleDeleteDeployment = async () => {
     if (newDeploymentName != deployment) {
       return;
     }
@@ -75,7 +75,7 @@ export default function DeploymentDeleteDialog(
           <Button
             variant="outline">{t("panel.page.deployments.delete.dialog.cancel")}</Button>
         </DialogClose>
-        <Button variant="destructive" onClick={handleEditDeployment} disabled={loading || newDeploymentName !== deployment}>
+        <Button variant="destructive" onClick={handleDeleteDeployment} disabled={loading || newDeploymentName !== deployment}>
           {t("panel.page.deployments.delete.dialog.submit")}
           {loading && <Spinner className="ml-2"></Spinner>}
         </Button>
