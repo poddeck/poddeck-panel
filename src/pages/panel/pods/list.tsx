@@ -5,7 +5,6 @@ import namespaceService, {
   type Namespace
 } from "@/api/services/namespace-service.ts";
 import {useRouter} from "@/routes/hooks";
-import PanelPage from "@/layouts/panel";
 import {useTranslation} from "react-i18next";
 import podService, {type Pod} from "@/api/services/pod-service"
 import {columns} from "./table-columns";
@@ -20,19 +19,17 @@ import {
 function PodListEmpty() {
   const {t} = useTranslation();
   return (
-    <PanelPage title="panel.page.pods.title">
-      <Empty>
-        <EmptyHeader>
-          <EmptyMedia variant="icon">
-            <Box/>
-          </EmptyMedia>
-          <EmptyTitle>{t("panel.page.pods.empty.title")}</EmptyTitle>
-          <EmptyDescription>
-            {t("panel.page.pods.empty.description")}
-          </EmptyDescription>
-        </EmptyHeader>
-      </Empty>
-    </PanelPage>
+    <Empty>
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <Box/>
+        </EmptyMedia>
+        <EmptyTitle>{t("panel.page.pods.empty.title")}</EmptyTitle>
+        <EmptyDescription>
+          {t("panel.page.pods.empty.description")}
+        </EmptyDescription>
+      </EmptyHeader>
+    </Empty>
   )
 }
 
