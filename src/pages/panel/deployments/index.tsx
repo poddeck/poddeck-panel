@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {DataTable} from "@/components/table";
 import PanelPage from "@/layouts/panel";
 import {useTranslation} from "react-i18next";
-import {Box, PlusIcon, Trash2} from "lucide-react";
+import {Box, PlusIcon, RefreshCcw, Trash2} from "lucide-react";
 import deploymentService, {type Deployment} from "@/api/services/deployment-service"
 import {columns} from "./table-columns";
 import {
@@ -116,6 +116,18 @@ export default function DeploymentsPage() {
           onClick={deployment => replace("/deployment/overview/?" +
             "deployment=" + deployment.name + "&namespace=" + deployment.namespace)}
           bulkActions={[
+            {
+              name: "panel.page.deployments.action.restart",
+              icon: RefreshCcw,
+              onClick: (entries) => {
+                entries.forEach(entry => {
+                  DeploymentService.restart({
+                    namespace: entry.namespace,
+                    deployment: entry.name
+                  });
+                })
+              }
+            },
             {
               name: "panel.page.deployments.action.delete",
               icon: Trash2,
