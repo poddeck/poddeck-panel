@@ -229,7 +229,11 @@
         }
       },
       "events": {
-        "title": "Ereignisse"
+        "title": "Ereignisse",
+        "empty": {
+          "title": "Keine Ereignisse gefunden",
+          "description": "Bisher konnten keine Ereignisse im Cluster gefunden werden."
+        }
       },
       "pods": {
         "title": "Pods",

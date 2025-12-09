@@ -1,7 +1,14 @@
 import PanelPage from "@/layouts/panel"
 import {useEffect, useState} from "react";
 import EventService, {type Event} from "@/api/services/event-service.ts";
-import {ChevronDownIcon, Search, Siren, TriangleAlert} from "lucide-react";
+import {
+  CalendarClock,
+  CalendarIcon,
+  ChevronDownIcon,
+  Search,
+  Siren, SquareArrowDown,
+  TriangleAlert
+} from "lucide-react";
 import {Input} from "@/components/ui/input.tsx";
 import {useTranslation} from "react-i18next";
 import {
@@ -12,22 +19,74 @@ import {
 import {Button} from "@/components/ui/button.tsx";
 import {Calendar} from "@/components/ui/calendar.tsx";
 import {cn} from "@/lib/utils.ts";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger, SelectValue
+} from "@/components/ui/select.tsx";
+import {
+  MultiSelect,
+  type Option
+} from '@/components/ui/multi-select.tsx'
+import {
+  Empty, EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle
+} from "@/components/ui/empty.tsx";
+
+function EventListEmpty() {
+  const {t} = useTranslation();
+  return (
+    <PanelPage title="panel.page.events.title">
+      <Empty>
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <CalendarClock/>
+          </EmptyMedia>
+          <EmptyTitle>{t("panel.page.events.empty.title")}</EmptyTitle>
+          <EmptyDescription>
+            {t("panel.page.events.empty.description")}
+          </EmptyDescription>
+        </EmptyHeader>
+      </Empty>
+    </PanelPage>
+  )
+}
 
 export default function EventsPage() {
   const {t} = useTranslation();
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [selectedValues, setSelectedValues] = useState<string[]>([]);
+  const [limit, setLimit] = useState("100");
   const [openStart, setOpenStart] = useState(false);
   const [openEnd, setOpenEnd] = useState(false);
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
 
+  const types: Option[] = [
+    {
+      value: 'normal',
+      label: 'Normal'
+    },
+    {
+      value: 'warning',
+      label: 'Warning'
+    },
+    {
+      value: 'error',
+      label: 'Error'
+    },
+  ]
+
   useEffect(() => {
     async function loadEvents() {
       try {
         const now = Date.now();
-        const sixtyMinutesAgo = now - 60 * 60 * 1000;
+        const sixtyMinutesAgo = now - 24 * 60 * 60 * 1000;
         const response = await EventService.list({
           start: sixtyMinutesAgo,
           end: now,
@@ -45,7 +104,7 @@ export default function EventsPage() {
     };
   }, []);
   if (!loading && events.length === 0) {
-    return null;//<NodeListEmpty/>
+    return <EventListEmpty/>
   }
   return (
     <PanelPage title="panel.page.events.title">
@@ -62,6 +121,26 @@ export default function EventsPage() {
           />
         </div>
         <div className="flex items-center gap-4">
+          <MultiSelect
+            options={types}
+            onValueChange={setSelectedValues}
+            defaultValue={selectedValues}
+          />
+          <Select value={limit} onValueChange={setLimit}>
+            <SelectTrigger className="w-[180px]">
+              <div className="flex items-center gap-2">
+                <SquareArrowDown/>
+                <span className="pt-0.5">
+                   Limit: <SelectValue placeholder="Select a limit" />
+                </span>
+              </div>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="100">100</SelectItem>
+              <SelectItem value="1000">1000</SelectItem>
+              <SelectItem value="10000">10000</SelectItem>
+            </SelectContent>
+          </Select>
           <Popover open={openStart} onOpenChange={setOpenStart}>
             <PopoverTrigger asChild>
               <Button
@@ -69,7 +148,12 @@ export default function EventsPage() {
                 id="date"
                 className="w-48 justify-between font-normal"
               >
-                {startDate ? "Start: " + startDate.toLocaleDateString() : "Select start"}
+                <div className="flex items-center gap-2">
+                  <CalendarIcon/>
+                  <span className="pt-0.5">
+                    {startDate ? "Start: " + startDate.toLocaleDateString() : "Select start"}
+                  </span>
+                </div>
                 <ChevronDownIcon />
               </Button>
             </PopoverTrigger>
@@ -77,7 +161,6 @@ export default function EventsPage() {
               <Calendar
                 mode="single"
                 selected={startDate}
-                captionLayout="dropdown"
                 onSelect={(date) => {
                   setStartDate(date)
                   setOpenStart(false)
@@ -92,7 +175,12 @@ export default function EventsPage() {
                 id="date"
                 className="w-48 justify-between font-normal"
               >
-                {endDate ? "End: " + endDate.toLocaleDateString() : "Select end"}
+                <div className="flex items-center gap-2">
+                  <CalendarIcon/>
+                  <span className="pt-0.5">
+                    {endDate ? "End: " + endDate.toLocaleDateString() : "Select end"}
+                  </span>
+                </div>
                 <ChevronDownIcon />
               </Button>
             </PopoverTrigger>
@@ -100,7 +188,6 @@ export default function EventsPage() {
               <Calendar
                 mode="single"
                 selected={endDate}
-                captionLayout="dropdown"
                 onSelect={(date) => {
                   setEndDate(date)
                   setOpenEnd(false)

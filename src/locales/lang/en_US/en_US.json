@@ -229,7 +229,11 @@
         }
       },
       "events": {
-        "title": "Events"
+        "title": "Events",
+        "empty": {
+          "title": "No events found",
+          "description": "No events could be found in the cluster so far."
+        }
       },
       "pods": {
         "title": "Pods",
