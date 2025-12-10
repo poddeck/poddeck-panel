@@ -1,22 +1,19 @@
 'use client'
 
 import * as React from 'react'
-import {useEffect} from 'react'
 
-import {Command as CommandPrimitive, useCommandState} from 'cmdk'
-import {XIcon} from 'lucide-react'
+import { useEffect } from 'react'
 
-import {
-  Command,
-  CommandGroup,
-  CommandItem,
-  CommandList
-} from '@/components/ui/command'
-import {cn} from '@/lib/utils'
+import { Command as CommandPrimitive, useCommandState } from 'cmdk'
+import { XIcon } from 'lucide-react'
+
+import { Command, CommandGroup, CommandItem, CommandList } from '@/components/ui/command'
+import { cn } from '@/lib/utils'
 
 export interface Option {
   value: string
   label: string
+  color?: string;
   disable?: boolean
 
   /** fixed option that can't be removed. */
@@ -97,6 +94,8 @@ interface MultipleSelectorProps {
 
   /** hide the clear all button. */
   hideClearAllButton?: boolean
+
+  prefixIcon?: React.ReactNode
 }
 
 export interface MultipleSelectorRef {
@@ -177,30 +176,31 @@ const CommandEmpty = ({ className, ...props }: React.ComponentProps<typeof Comma
 CommandEmpty.displayName = 'CommandEmpty'
 
 const MultipleSelector = ({
-                            value,
-                            onChange,
-                            placeholder,
-                            defaultOptions: arrayDefaultOptions = [],
-                            options: arrayOptions,
-                            delay,
-                            onSearch,
-                            onSearchSync,
-                            loadingIndicator,
-                            emptyIndicator,
-                            maxSelected = Number.MAX_SAFE_INTEGER,
-                            onMaxSelected,
-                            hidePlaceholderWhenSelected,
-                            disabled,
-                            groupBy,
-                            className,
-                            badgeClassName,
-                            selectFirstItem = true,
-                            creatable = false,
-                            triggerSearchOnFocus = false,
-                            commandProps,
-                            inputProps,
-                            hideClearAllButton = false
-                          }: MultipleSelectorProps) => {
+  value,
+  onChange,
+  placeholder,
+  defaultOptions: arrayDefaultOptions = [],
+  options: arrayOptions,
+  delay,
+  onSearch,
+  onSearchSync,
+  loadingIndicator,
+  emptyIndicator,
+  maxSelected = Number.MAX_SAFE_INTEGER,
+  onMaxSelected,
+  hidePlaceholderWhenSelected,
+  disabled,
+  groupBy,
+  className,
+  badgeClassName,
+  selectFirstItem = true,
+  creatable = false,
+  triggerSearchOnFocus = false,
+  commandProps,
+  inputProps,
+  hideClearAllButton = false,
+  prefixIcon,
+}: MultipleSelectorProps) => {
   const inputRef = React.useRef<HTMLInputElement>(null)
   const [open, setOpen] = React.useState(false)
   const [onScrollbar, setOnScrollbar] = React.useState(false)
@@ -443,9 +443,9 @@ const MultipleSelector = ({
     >
       <div
         className={cn(
-          'border-input focus-within:border-ring focus-within:ring-ring/50 has-aria-invalid:ring-destructive/20 dark:has-aria-invalid:ring-destructive/40 has-aria-invalid:border-destructive relative min-h-[38px] rounded-md border text-sm transition-[color,box-shadow] outline-none focus-within:ring-[3px] has-disabled:pointer-events-none has-disabled:cursor-not-allowed has-disabled:opacity-50',
+          'flex items-center border-input focus-within:border-ring focus-within:ring-ring/50 has-aria-invalid:ring-destructive/20 dark:has-aria-invalid:ring-destructive/40 has-aria-invalid:border-destructive relative min-h-[36px] rounded-md border text-sm transition-[color,box-shadow] outline-none focus-within:ring-[3px] has-disabled:pointer-events-none has-disabled:cursor-not-allowed has-disabled:opacity-50',
           {
-            'p-1': selected.length !== 0,
+            'px-1': selected.length !== 0,
             'cursor-text': !disabled && selected.length !== 0
           },
           !hideClearAllButton && 'pr-9',
@@ -456,19 +456,32 @@ const MultipleSelector = ({
           inputRef?.current?.focus()
         }}
       >
-        <div className='flex flex-wrap gap-1'>
+        {prefixIcon && (
+          <div className="absolute left-2 top-1/2 -translate-y-1/2 pointer-events-none">
+            {prefixIcon}
+          </div>
+        )}
+        <div
+          className={cn(
+            'flex flex-wrap gap-1 items-center w-full',
+            prefixIcon ? 'pl-6' : 'pl-0'
+          )}
+        >
           {selected.map(option => {
+            console.log(option);
             return (
               <div
                 key={option.value}
                 className={cn(
-                  'animate-fadeIn bg-background text-secondary-foreground hover:bg-background relative inline-flex h-7 cursor-default items-center rounded-md border pr-7 pl-2 text-xs font-medium transition-all disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 data-fixed:pr-2',
+                  'animate-fadeIn text-secondary-foreground relative inline-flex h-7 cursor-default items-center rounded-md border pr-7 pl-2 text-xs font-medium transition-all disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 data-fixed:pr-2',
                   badgeClassName
                 )}
                 data-fixed={option.fixed}
                 data-disabled={disabled || undefined}
               >
-                {option.label}
+                <span className={option.color}>
+                  {option.label}
+                </span>
                 <button
                   className='text-muted-foreground/80 hover:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 absolute -inset-y-px -right-px flex size-7 items-center justify-center rounded-r-md border border-transparent p-0 outline-hidden transition-[color,box-shadow] outline-none focus-visible:ring-[3px]'
                   onKeyDown={e => {
@@ -516,10 +529,12 @@ const MultipleSelector = ({
             }}
             placeholder={hidePlaceholderWhenSelected && selected.length !== 0 ? '' : placeholder}
             className={cn(
-              'placeholder:text-muted-foreground/70 flex-1 bg-transparent outline-hidden disabled:cursor-not-allowed',
+              'placeholder:text-foreground text-sm flex-1 bg-transparent ' +
+              'outline-hidden focus:ring-0 disabled:cursor-not-allowed border-none py-0',
               {
                 'w-full': hidePlaceholderWhenSelected,
-                'px-3 py-2': selected.length === 0,
+                'px-3': selected.length === 0 && !prefixIcon,
+                'pl-2': prefixIcon && selected.length === 0,
                 'ml-1': selected.length !== 0
               },
               inputProps?.className
@@ -537,7 +552,7 @@ const MultipleSelector = ({
                 disabled ||
                 selected.length < 1 ||
                 selected.filter(s => s.fixed).length === selected.length) &&
-              'hidden'
+                'hidden'
             )}
             aria-label='Clear all'
           >
@@ -595,8 +610,11 @@ const MultipleSelector = ({
                                 }
 
                                 setInputValue('')
-                                const newOptions = [...selected, option]
-
+                                const fullOption =
+                                  (arrayOptions ?? [])
+                                    .find(o => o.value === option.value)
+                                  || option;
+                                const newOptions = [...selected, fullOption];
                                 setSelected(newOptions)
                                 onChange?.(newOptions)
                               }}
@@ -605,7 +623,9 @@ const MultipleSelector = ({
                                 option.disable && 'pointer-events-none cursor-not-allowed opacity-50'
                               )}
                             >
-                              {option.label}
+                              <span className={option.color}>
+                                {option.label}
+                              </span>
                             </CommandItem>
                           )
                         })}

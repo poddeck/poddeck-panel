@@ -233,6 +233,19 @@
         "empty": {
           "title": "Keine Ereignisse gefunden",
           "description": "Bisher konnten keine Ereignisse im Cluster gefunden werden."
+        },
+        "limit": "Limit",
+        "status": {
+          "placeholder": "Status auswählen",
+          "empty": "Keine Ergebnisse gefunden."
+        },
+        "start": {
+          "placeholder": "Start auswählen",
+          "label": "Start"
+        },
+        "end": {
+          "placeholder": "Ende auswählen",
+          "label": "Ende"
         }
       },
       "pods": {

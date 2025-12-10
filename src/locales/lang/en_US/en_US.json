@@ -233,6 +233,19 @@
         "empty": {
           "title": "No events found",
           "description": "No events could be found in the cluster so far."
+        },
+        "limit": "Limit",
+        "status": {
+          "placeholder": "Select status",
+          "empty": "No results found."
+        },
+        "start": {
+          "placeholder": "Select start",
+          "label": "Start"
+        },
+        "end": {
+          "placeholder": "Select end",
+          "label": "End"
         }
       },
       "pods": {
