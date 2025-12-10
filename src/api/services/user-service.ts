@@ -10,6 +10,8 @@ export type LoginResponse = {
   success: boolean;
   authentication_token?: string;
   refresh_token?: string;
+  email?: string;
+  name?: string;
 }
 
 export interface RefreshRequest {

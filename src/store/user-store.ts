@@ -13,12 +13,20 @@ export interface UserToken {
   refresh_token?: string;
 }
 
+export interface UserInformation {
+  email?: string;
+  name?: string;
+}
+
 type UserStore = {
   token: UserToken;
+  information: UserInformation;
 
   actions: {
     setUserToken: (token: UserToken) => void;
     clearUserToken: () => void;
+    setUserInformation: (token: UserInformation) => void;
+    clearUserInformation: () => void;
   };
 };
 
@@ -26,12 +34,21 @@ const useUserStore = create<UserStore>()(
   persist(
     (set) => ({
       token: {},
+      information: {},
+
       actions: {
         setUserToken: (token) => {
-          set({token});
+          set({ token });
         },
         clearUserToken() {
-          set({token: {}});
+          set({ token: {} });
+        },
+
+        setUserInformation: (info) => {
+          set({ information: info });
+        },
+        clearUserInformation() {
+          set({ information: {} });
         },
       },
     }),
@@ -39,19 +56,22 @@ const useUserStore = create<UserStore>()(
       name: "user",
       storage: createJSONStorage(() => cookiesStorage),
       partialize: (state) => ({
-        ["token"]: state.token,
+        token: state.token,
+        information: state.information,
       }),
     },
   ),
 );
 
 export const useUserToken = () => useUserStore((state) => state.token);
+export const useUserInformation = () =>
+  useUserStore((state) => state.information);
 export const useUserActions = () => useUserStore((state) => state.actions);
 
 export const useLogin = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
-  const {setUserToken} = useUserActions();
+  const { setUserToken, setUserInformation } = useUserActions();
 
   const loginMutation = useMutation({
     mutationFn: userService.login,
@@ -60,8 +80,11 @@ export const useLogin = () => {
   return async (data: LoginRequest) => {
     try {
       const response = await loginMutation.mutateAsync(data);
-      const {authentication_token, refresh_token} = response;
-      setUserToken({authentication_token, refresh_token});
+      const { authentication_token, refresh_token, email, name } = response;
+
+      setUserToken({ authentication_token, refresh_token });
+      setUserInformation({ email, name });
+
       toast.success(t("authentication.login.successful"), {
         position: "top-right",
       });
@@ -75,8 +98,8 @@ export const useLogin = () => {
 };
 
 export const useLogout = () => {
-  const {clearUserToken} = useUserActions();
-  const {replace} = useRouter();
+  const { clearUserToken, clearUserInformation } = useUserActions();
+  const { replace } = useRouter();
 
   const logoutMutation = useMutation({
     mutationFn: userService.logout,
@@ -86,6 +109,7 @@ export const useLogout = () => {
     await logoutMutation.mutateAsync();
     try {
       clearUserToken();
+      clearUserInformation();
       replace("/login/");
     } catch (error) {
       console.log(error);

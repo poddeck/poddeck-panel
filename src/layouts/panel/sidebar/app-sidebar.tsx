@@ -30,6 +30,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import {useTranslation} from "react-i18next";
+import {useUserInformation} from "@/store/user-store.ts";
 
 export function AppNavigation() {
   const {t} = useTranslation();
@@ -179,10 +180,11 @@ export function AppNavigation() {
 }
 
 export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
+  const userInformation = useUserInformation();
   const user = {
-    name: "Lukas",
-    email: "lukas@poddeck.io"
-  }
+    name: userInformation?.name ?? "",
+    email: userInformation?.email ?? "",
+  };
   return (
     <div id="sidebar">
       <Sidebar collapsible="icon" {...props}>
