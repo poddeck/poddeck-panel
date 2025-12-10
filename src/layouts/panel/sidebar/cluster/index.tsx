@@ -19,7 +19,13 @@ import {
 import {Dialog, DialogTrigger,} from "@/components/ui/dialog"
 import {useTranslation} from "react-i18next";
 import ClusterService, {type Cluster} from "@/api/services/cluster-service.ts";
-import {ChevronRight, ChevronsUpDown, Plus, Rocket,} from "lucide-react";
+import {
+  ChevronRight,
+  ChevronsUpDown,
+  EllipsisVertical,
+  Plus,
+  Rocket,
+} from "lucide-react";
 import {CLUSTER_ICON_LIST} from "./icon-list";
 import ClusterAddDialog from "./add-dialog.tsx";
 import SidebarClusterStatus from "./status.tsx";
@@ -33,6 +39,7 @@ import ClusterDeleteDialog
   from "@/layouts/panel/sidebar/cluster/delete-dialog.tsx";
 import {useClusters} from "@/hooks/use-cluster.ts";
 import {Link} from "react-router-dom";
+import {Button} from "@/components/ui/button.tsx";
 
 export function SidebarClusterSwitcher() {
   const {t} = useTranslation();
@@ -144,7 +151,15 @@ export function SidebarClusterSwitcher() {
                         cluster={cluster}
                         setClickedCluster={setClickedCluster}
                         setDialogMode={setDialogMode}
-                      />
+                      >
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="p-1 h-6 w-6 ml-auto hover:bg-black/10 dark:hover:bg-white/10 py-2 -my-2 rounded-full"
+                        >
+                          <EllipsisVertical/>
+                        </Button>
+                      </SidebarClusterSettings>
                     </div>
                   </DropdownMenuItem>
                 );

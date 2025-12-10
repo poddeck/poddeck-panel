@@ -3,8 +3,10 @@ import {SidebarProvider} from "@/components/ui/sidebar.tsx";
 import React, {useEffect, useState} from "react";
 import ClusterService, {type Cluster} from "@/api/services/cluster-service.ts";
 import {
-  Card, CardContent,
-  CardDescription, CardFooter,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle
 } from "@/components/ui/card.tsx";
@@ -13,13 +15,13 @@ import {useClusterActions} from "@/store/cluster-store.ts";
 import {useRouter} from "@/routes/hooks";
 import {t} from "@/locales/i18n.ts";
 import {
-  Box,
   Clock,
-  Cpu, Layers,
+  Cpu,
+  Ellipsis,
+  Layers,
   type LucideIcon,
   MemoryStick,
-  Rocket,
-  Server
+  Rocket
 } from "lucide-react";
 import {
   HoverCard,
@@ -37,6 +39,8 @@ import ClusterDeleteDialog
   from "@/layouts/panel/sidebar/cluster/delete-dialog.tsx";
 import {CLUSTER_ICON_LIST} from "@/layouts/panel/sidebar/cluster/icon-list.tsx";
 import {ClusterAge} from "@/pages/panel/cluster/age.tsx";
+import {Button} from "@/components/ui/button.tsx";
+import NodeService, {type Node} from "@/api/services/node-service.ts";
 
 export function ClusterProgress(
   {color, label, icon, usage, value, unit}: {
@@ -76,6 +80,7 @@ export function ClusterProgress(
 
 export default function ClusterPage() {
   const [clusters, setClusters] = useState<Cluster[]>([]);
+  const [nodes, setNodes] = useState<Node[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogMode, setDialogMode] = React.useState("add");
   const [clickedCluster, setClickedCluster] = React.useState<Cluster | null>(null);
@@ -84,8 +89,14 @@ export default function ClusterPage() {
   const {replace} = useRouter();
 
   useEffect(() => {
-    ClusterService.list()
-      .then((res) => setClusters(res.clusters))
+    Promise.all([
+      ClusterService.list(),
+      NodeService.list(),
+    ])
+      .then(([clusterRes, nodeRes]) => {
+        setClusters(clusterRes.clusters);
+        setNodes(nodeRes.nodes);
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -101,6 +112,28 @@ export default function ClusterPage() {
   if (loading) {
     return <p className="text-gray-400">Loading clusters...</p>;
   }
+
+  const latestVersion =
+    nodes
+      .map(n => n.version)
+      .sort()
+      .reverse()[0] ?? "Unknown";
+
+  const totalCpuCores = nodes.reduce((sum, n) => sum + n.cpu_cores, 0);
+
+  const avgCpuUsage =
+    nodes.length > 0
+      ? nodes.reduce((sum, n) => sum + n.cpu_ratio, 0) / nodes.length
+      : 0;
+
+  const totalMemory = nodes.reduce((sum, n) => sum + n.total_memory, 0);
+  const usedMemory = nodes.reduce((sum, n) => sum + n.used_memory, 0);
+  const avgMemoryUsage = totalMemory > 0 ? (usedMemory / totalMemory) * 100 : 0;
+
+  const totalStorage = nodes.reduce((sum, n) => sum + n.total_storage, 0);
+  const usedStorage = nodes.reduce((sum, n) => sum + n.used_storage, 0);
+  const avgStorageUsage = totalStorage > 0 ? (usedStorage / totalStorage) * 100 : 0;
+
 
   return (
     <SidebarProvider>
@@ -136,7 +169,15 @@ export default function ClusterPage() {
                               cluster={cluster}
                               setClickedCluster={setClickedCluster}
                               setDialogMode={setDialogMode}
-                            />
+                            >
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="p-1 h-8 w-8 ml-auto hover:bg-black/10 dark:hover:bg-white/10 py-1 -my-1 rounded-full"
+                              >
+                                <Ellipsis className="size-7"/>
+                              </Button>
+                            </SidebarClusterSettings>
                           </div>
                         </div>
                         <CardDescription className='flex items-center gap-4'>
@@ -153,30 +194,32 @@ export default function ClusterPage() {
                         </CardDescription>
                       </CardHeader>
                       <CardContent>
-                        <div className="grid grid-cols-3 gap-8">
-                          <div className="flex flex-col gap-3 justify-center items-center border rounded-lg p-2">
-                            <span className="text-4xl">
-                              3
-                            </span>
-                            <span className="flex items-center gap-2">
-                               <Server size={15}/> Nodes
-                            </span>
+                        <div className="grid grid-cols-3 gap-4">
+                          <div className="flex flex-col gap-2 justify-center items-center border rounded-lg p-2">
+                            <span className="text-3xl">3</span>
+                            <span className="flex items-center gap-2">Nodes</span>
                           </div>
-                          <div className="flex flex-col gap-3 justify-center items-center border rounded-lg p-2">
-                            <span className="text-4xl">
-                              10
+                          <div className="flex flex-col gap-2 justify-center items-center border rounded-lg p-2">
+                            <span className="text-3xl">10
                             </span>
-                            <span className="flex items-center gap-2">
-                               <Rocket size={15}/> Deployments
-                            </span>
+                            <span className="flex items-center gap-2">Deployments</span>
                           </div>
-                          <div className="flex flex-col gap-3 justify-center items-center border rounded-lg p-2">
-                            <span className="text-4xl">
-                              50
+                          <div className="flex flex-col gap-2 justify-center items-center border rounded-lg p-2">
+                            <span className="text-3xl">50
                             </span>
-                            <span className="flex items-center gap-2">
-                               <Box size={15}/> Pods
-                            </span>
+                            <span className="flex items-center gap-2">Pods</span>
+                          </div>
+                          <div className="flex flex-col gap-2 justify-center items-center border rounded-lg p-2">
+                            <span className="text-3xl">5</span>
+                            <span className="flex items-center gap-2">Notifications</span>
+                          </div>
+                          <div className="flex flex-col gap-2 justify-center items-center border rounded-lg p-2">
+                            <span className="text-3xl">8</span>
+                            <span className="flex items-center gap-2">Services</span>
+                          </div>
+                          <div className="flex flex-col gap-2 justify-center items-center border rounded-lg p-2">
+                            <span className="text-3xl">4</span>
+                            <span className="flex items-center gap-2">Namespaces</span>
                           </div>
                         </div>
                       </CardContent>

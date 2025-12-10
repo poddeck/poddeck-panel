@@ -3,10 +3,8 @@ import {
   DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
-import {Button} from "@/components/ui/button.tsx";
 import {
   Edit2,
-  EllipsisVertical,
   Trash2
 } from "lucide-react";
 import {useTranslation} from "react-i18next";
@@ -14,23 +12,25 @@ import {useSidebar} from "@/components/ui/sidebar.tsx";
 import {DialogTrigger} from "@/components/ui/dialog.tsx";
 import type {Cluster} from "@/api/services/cluster-service.ts";
 
-export default function SidebarClusterSettings({cluster, setClickedCluster, setDialogMode}: {
-  cluster: Cluster
-  setClickedCluster: React.Dispatch<React.SetStateAction<Cluster | null>>
-  setDialogMode: React.Dispatch<React.SetStateAction<string>>
-}) {
+export default function SidebarClusterSettings(
+  {
+    cluster,
+    setClickedCluster,
+    setDialogMode,
+    children
+  }: {
+    cluster: Cluster
+    setClickedCluster: React.Dispatch<React.SetStateAction<Cluster | null>>
+    setDialogMode: React.Dispatch<React.SetStateAction<string>>
+    children: React.ReactNode;
+  }
+) {
   const {t} = useTranslation();
   const {isMobile} = useSidebar()
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="p-1 h-6 w-6 ml-auto hover:bg-black/10 dark:hover:bg-white/10 py-2 -my-2 rounded-full"
-        >
-          <EllipsisVertical/>
-        </Button>
+        {children}
       </DropdownMenuTrigger>
       <DropdownMenuContent
         className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
