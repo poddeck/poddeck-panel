@@ -4,6 +4,7 @@ export type Cluster = {
   id: string;
   name: string;
   icon: string;
+  created_at: number;
   online: boolean;
 }
 

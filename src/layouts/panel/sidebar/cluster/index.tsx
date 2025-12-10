@@ -19,7 +19,7 @@ import {
 import {Dialog, DialogTrigger,} from "@/components/ui/dialog"
 import {useTranslation} from "react-i18next";
 import ClusterService, {type Cluster} from "@/api/services/cluster-service.ts";
-import {ChevronsUpDown, Plus, Rocket,} from "lucide-react";
+import {ChevronRight, ChevronsUpDown, Plus, Rocket,} from "lucide-react";
 import {CLUSTER_ICON_LIST} from "./icon-list";
 import ClusterAddDialog from "./add-dialog.tsx";
 import SidebarClusterStatus from "./status.tsx";
@@ -32,6 +32,7 @@ import ClusterEditDialog from "@/layouts/panel/sidebar/cluster/edit-dialog.tsx";
 import ClusterDeleteDialog
   from "@/layouts/panel/sidebar/cluster/delete-dialog.tsx";
 import {useClusters} from "@/hooks/use-cluster.ts";
+import {Link} from "react-router-dom";
 
 export function SidebarClusterSwitcher() {
   const {t} = useTranslation();
@@ -113,9 +114,17 @@ export function SidebarClusterSwitcher() {
               side={isMobile ? "bottom" : "right"}
               sideOffset={4}
             >
-              <DropdownMenuLabel className="text-muted-foreground text-xs">
-                {t("panel.sidebar.clusters")}
-              </DropdownMenuLabel>
+              <div className="flex items-center justify-between">
+                <DropdownMenuLabel className="text-muted-foreground text-xs">
+                  {t("panel.sidebar.clusters")}
+                </DropdownMenuLabel>
+                <DropdownMenuLabel className="text-muted-foreground text-xs">
+                  <Link to="/cluster/" className="flex items-center">
+                    <span>{t("panel.sidebar.cluster.overview")}</span>
+                    <ChevronRight size={15}/>
+                  </Link>
+                </DropdownMenuLabel>
+              </div>
               {clusters.map((cluster) => {
                 const Icon = CLUSTER_ICON_LIST.find(item => item.id === cluster.icon)?.icon || Rocket;
                 return (

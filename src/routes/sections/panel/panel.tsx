@@ -7,6 +7,7 @@ import {LineLoading} from "@/components/loading";
 
 const getRoutes = (): RouteObject[] => {
   return [
+    {path: "cluster", element: Component("/pages/panel/cluster")},
     {path: "overview", element: Component("/pages/panel/overview")},
     {path: "nodes", element: Component("/pages/panel/nodes")},
     {path: "workload", element: Component("/pages/panel/workload")},
@@ -36,7 +37,7 @@ export const panelRoutes: RouteObject[] = [
     ),
     children: [{
       index: true,
-      element: <Navigate to="/overview/" replace/>
+      element: <Navigate to="/cluster/" replace/>
     }, ...getRoutes()],
   },
 ];

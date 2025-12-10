@@ -28,7 +28,7 @@ export default function LoginForm() {
   const token = useUserToken();
 
   if (token.authentication_token) {
-    return <Navigate to="/overview/" replace/>;
+    return <Navigate to="/cluster/" replace/>;
   }
 
   const handleFinish = async (values: LoginRequest) => {
@@ -39,7 +39,7 @@ export default function LoginForm() {
     setLoading(true);
     try {
       await login(payload);
-      navigate("/overview/", {replace: true});
+      navigate("/cluster/", {replace: true});
     } finally {
       setLoading(false);
     }

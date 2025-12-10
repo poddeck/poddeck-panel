@@ -27,12 +27,14 @@ import {HeaderSearchBar} from "./search-bar";
 interface AppHeaderProps {
   title?: string;
   breadcrumb?: React.ReactNode;
+  sidebar?: boolean
 }
 
 export function AppHeader(
   {
     title,
-    breadcrumb
+    breadcrumb,
+    sidebar = true
   }: AppHeaderProps
 ) {
   const {t} = useTranslation();
@@ -40,7 +42,15 @@ export function AppHeader(
     <header
       className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 border-b-1">
       <div className="flex items-center gap-2 px-4">
-        <SidebarTrigger className="-ml-1"/>
+        {sidebar ?
+          (
+            <SidebarTrigger className="-ml-1"/>
+          ) : (
+            <span className="mr-2 text-xl font-bold">
+              PodDeck
+            </span>
+          )
+        }
         <Separator
           orientation="vertical"
           className="mr-2 data-[orientation=vertical]:h-4"

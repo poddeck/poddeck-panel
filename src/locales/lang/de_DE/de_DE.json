@@ -51,6 +51,7 @@
     "sidebar": {
       "cluster": "Cluster",
       "clusters": "Cluster",
+      "cluster.overview": "Alle anzeigen",
       "cluster.icon": {
         "label": "Icon",
         "select.placeholder": "Icon auswählen",
@@ -145,6 +146,9 @@
       }
     },
     "page": {
+      "cluster": {
+        "title": "Cluster"
+      },
       "overview": {
         "title": "Übersicht"
       },
