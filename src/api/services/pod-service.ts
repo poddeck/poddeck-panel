@@ -77,6 +77,14 @@ export const PodApi = {
 } as const;
 
 const list = () => client.get<PodListResponse>({url: PodApi.List});
+const listCluster = (clusterId: string) => client.get<PodListResponse>(
+  {
+    url: PodApi.List,
+    headers: {
+      Cluster: clusterId,
+    },
+  }
+);
 const find = (data: PodFindRequest) => client.post<PodFindResponse>({
   url: PodApi.Find,
   data
@@ -92,6 +100,7 @@ const log = (data: PodLogRequest) => client.post<PodLogResponse>({
 
 export default {
   list,
+  listCluster,
   find,
   remove,
   log,

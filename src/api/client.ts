@@ -43,7 +43,7 @@ axiosInstance.interceptors.request.use(
     } else {
       delete config.headers.Authorization;
     }
-    if (clusterStore.getState().clusterId) {
+    if (clusterStore.getState().clusterId && !config.headers.Cluster) {
       config.headers.Cluster = clusterStore.getState().clusterId;
     }
     return config;

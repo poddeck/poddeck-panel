@@ -112,6 +112,14 @@ export const DeploymentApi = {
 } as const;
 
 const list = () => client.get<DeploymentListResponse>({url: DeploymentApi.List});
+const listCluster = (clusterId: string) => client.get<DeploymentListResponse>(
+  {
+    url: DeploymentApi.List,
+    headers: {
+      Cluster: clusterId,
+    },
+  }
+);
 const find = (data: DeploymentFindRequest) => client.post<DeploymentFindResponse>({
   url: DeploymentApi.Find,
   data
@@ -139,6 +147,7 @@ const edit = (data: DeploymentEditRequest) => client.post<DeploymentEditResponse
 
 export default {
   list,
+  listCluster,
   find,
   create,
   remove,

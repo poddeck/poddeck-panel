@@ -77,7 +77,7 @@ export function SidebarClusterSwitcher() {
   const updateCluster = (cluster: Cluster) => {
     setActiveCluster(cluster);
     setClusterId(cluster.id);
-    replace("/");
+    replace("/overview/");
   };
   const handleClusterCreation = (cluster: Cluster) => {
     setClusters([...clusters, cluster]);

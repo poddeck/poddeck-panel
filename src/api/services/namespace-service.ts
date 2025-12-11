@@ -42,9 +42,18 @@ const remove = (data: NamespaceDeleteRequest) => client.post<NamespaceDeleteResp
   data
 });
 const list = () => client.get<NamespaceListResponse>({url: NamespaceApi.List});
+const listCluster = (clusterId: string) => client.get<NamespaceListResponse>(
+  {
+    url: NamespaceApi.List,
+    headers: {
+      Cluster: clusterId,
+    },
+  }
+);
 
 export default {
   create,
   remove,
   list,
+  listCluster
 };

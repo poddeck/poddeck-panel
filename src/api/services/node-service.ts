@@ -28,7 +28,16 @@ export const NodeApi = {
 } as const;
 
 const list = () => client.get<NodeListResponse>({url: NodeApi.List});
+const listCluster = (clusterId: string) => client.get<NodeListResponse>(
+  {
+    url: NodeApi.List,
+    headers: {
+      Cluster: clusterId,
+    },
+  }
+);
 
 export default {
   list,
+  listCluster
 };
