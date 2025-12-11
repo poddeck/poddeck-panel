@@ -143,11 +143,19 @@
           "select": "zum auswählen",
           "close": "zum schließen"
         }
-      }
+      },
+      "resources.add": "Ressource hinzufügen"
     },
     "page": {
       "cluster": {
-        "title": "Cluster"
+        "title": "Cluster",
+        "add": "Cluster hinzufügen",
+        "nodes": "Knoten",
+        "deployments": "Deployments",
+        "pods": "Pods",
+        "notifications": "Benachrichtigungen",
+        "services": "Services",
+        "namespaces": "Namensräume"
       },
       "overview": {
         "title": "Übersicht"

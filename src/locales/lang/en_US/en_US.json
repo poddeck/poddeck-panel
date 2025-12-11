@@ -143,11 +143,19 @@
           "select": "to select",
           "close": "to close"
         }
-      }
+      },
+      "resources.add": "Add resource"
     },
     "page": {
       "cluster": {
-        "title": "Cluster"
+        "title": "Cluster",
+        "add": "Add cluster",
+        "nodes": "Nodes",
+        "deployments": "Deployments",
+        "pods": "Pods",
+        "notifications": "Notifications",
+        "services": "Services",
+        "namespaces": "Namespaces"
       },
       "overview": {
         "title": "Overview"

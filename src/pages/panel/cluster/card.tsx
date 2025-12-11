@@ -8,7 +8,6 @@ import {
   CardTitle
 } from "@/components/ui/card.tsx";
 import SidebarClusterStatus from "@/layouts/panel/sidebar/cluster/status.tsx";
-import {t} from "@/locales/i18n.ts";
 import {
   Clock,
   Cpu,
@@ -32,6 +31,7 @@ import {ClusterAge} from "@/pages/panel/cluster/age.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import type {ExtendedCluster} from "@/pages/panel/cluster/index.tsx";
 import type {Cluster} from "@/api/services/cluster-service.ts";
+import {useTranslation} from "react-i18next";
 
 function ClusterUsageItem(
   {
@@ -105,7 +105,7 @@ function ClusterMetric({label, value}: {
 }) {
   return (
     <div
-      className="flex flex-col gap-1 justify-center items-center border rounded-lg p-2">
+      className="flex flex-col gap-1 justify-center items-center border border-zinc-300 dark:border-zinc-700 rounded-lg p-2">
       <span className="text-3xl">{value}</span>
       <span className="flex items-center gap-2">{label}</span>
     </div>
@@ -125,6 +125,7 @@ export function ClusterCard(
     setDialogMode: React.Dispatch<React.SetStateAction<string>>;
   }
 ) {
+  const {t} = useTranslation();
   const Icon =
     CLUSTER_ICON_LIST.find(item => item.id === cluster.icon)?.icon ?? Rocket;
 
@@ -149,12 +150,12 @@ export function ClusterCard(
       onClick={onClick}
     >
       <Card
-        className="border-none gap-4 bg-linear-to-b from-zinc-800 to-zinc-950 pb-0 pt-4 aspect-video">
+        className="border-none gap-4 bg-linear-to-b from-zinc-100 to-zinc-200 dark:from-zinc-800 dark:to-zinc-950 pb-0 pt-4 aspect-video">
         <CardHeader>
           <div className="flex justify-between">
             <CardTitle className="flex items-center gap-2">
               <div
-                className="flex size-10 items-center justify-center rounded-md border">
+                className="flex size-10 items-center justify-center rounded-md border border-zinc-300 dark:border-zinc-700">
                 <Icon className="size-6"/>
               </div>
               <span className="text-lg">{cluster.name}</span>
@@ -194,16 +195,17 @@ export function ClusterCard(
 
         <CardContent>
           <div className="grid grid-cols-3 gap-4">
-            <ClusterMetric label="Nodes"
+            <ClusterMetric label={t("panel.page.cluster.nodes")}
                            value={cluster.online ? totalNodes : "-"}/>
-            <ClusterMetric label="Deployments"
+            <ClusterMetric label={t("panel.page.cluster.deployments")}
                            value={cluster.online ? cluster.deployments.length : "-"}/>
-            <ClusterMetric label="Pods"
+            <ClusterMetric label={t("panel.page.cluster.pods")}
                            value={cluster.online ? cluster.pods.length : "-"}/>
-            <ClusterMetric label="Notifications"
+            <ClusterMetric label={t("panel.page.cluster.notifications")}
                            value={cluster.online ? 4 : "-"}/>
-            <ClusterMetric label="Services" value={cluster.online ? 9 : "-"}/>
-            <ClusterMetric label="Namespaces"
+            <ClusterMetric label={t("panel.page.cluster.services")}
+                           value={cluster.online ? 9 : "-"}/>
+            <ClusterMetric label={t("panel.page.cluster.namespaces")}
                            value={cluster.online ? cluster.namespaces.length : "-"}/>
           </div>
         </CardContent>

@@ -19,6 +19,7 @@ import NamespaceService, {
 } from "@/api/services/namespace-service.ts";
 import ClusterCardSkeleton from "@/pages/panel/cluster/skeleton.tsx";
 import {ClusterCard} from "@/pages/panel/cluster/card.tsx";
+import {useTranslation} from "react-i18next";
 
 export type ExtendedCluster = Cluster & {
   nodes: Node[],
@@ -28,6 +29,7 @@ export type ExtendedCluster = Cluster & {
 };
 
 export default function ClusterPage() {
+  const {t} = useTranslation();
   const [clusters, setClusters] = useState<ExtendedCluster[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogMode, setDialogMode] = React.useState("add");
@@ -98,7 +100,7 @@ export default function ClusterPage() {
   return (
     <SidebarProvider>
       <div className="w-full">
-        <AppHeader title="panel.page.cluster.title" sidebar={false}/>
+        <AppHeader title="panel.page.cluster.title" cluster={false}/>
         <Dialog open={open} onOpenChange={setOpen}>
           <div
             className={"w-[min(1350px,95%)] mx-auto flex flex-wrap gap-4 flex-col flex-1"}>
@@ -123,7 +125,7 @@ export default function ClusterPage() {
               <DialogTrigger asChild>
                 <div
                   className="aspect-video border-2 border-dashed border-zinc-600 rounded-xl p-4 flex justify-center items-center text-zinc-600 cursor-pointer hover:bg-zinc-600/10 hover:text-zinc-500 transition">
-                  + Neues Projekt
+                  + {t("panel.page.cluster.add")}
                 </div>
               </DialogTrigger>
             </div>

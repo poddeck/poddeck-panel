@@ -10,7 +10,7 @@ export default function ClusterCardSkeleton() {
   return (
     <div className="relative w-full rounded-xl pt-0 shadow-lg aspect-video">
       <Card
-        className="border-none bg-linear-to-b from-zinc-800 to-zinc-950 pb-0 aspect-video">
+        className="border-none bg-linear-to-b from-zinc-200 to-zinc-100 dark:from-zinc-800 dark:to-zinc-950 pb-0 aspect-video">
         <CardHeader>
           <div className="flex justify-between">
             <CardTitle className="flex items-center gap-2">
