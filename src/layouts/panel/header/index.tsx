@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/breadcrumb.tsx";
 import {useTranslation} from "react-i18next";
 import {AvatarFallback} from "@radix-ui/react-avatar";
-import {Bell, CircleAlertIcon, XIcon} from "lucide-react";
+import {Bell, CircleAlertIcon, PlusIcon, XIcon} from "lucide-react";
 import {Badge} from "@/components/ui/badge";
 import {Avatar} from "@/components/ui/avatar";
 import {Button} from "@/components/ui/button";
@@ -27,14 +27,14 @@ import {HeaderSearchBar} from "./search-bar";
 interface AppHeaderProps {
   title?: string;
   breadcrumb?: React.ReactNode;
-  sidebar?: boolean
+  cluster?: boolean
 }
 
 export function AppHeader(
   {
     title,
     breadcrumb,
-    sidebar = true
+    cluster = true
   }: AppHeaderProps
 ) {
   const {t} = useTranslation();
@@ -42,11 +42,11 @@ export function AppHeader(
     <header
       className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 border-b-1">
       <div className="flex items-center gap-2 px-4">
-        {sidebar ?
+        {cluster ?
           (
             <SidebarTrigger className="-ml-1"/>
           ) : (
-            <span className="mr-2 text-xl font-bold">
+            <span className="mr-2 text-xl font-bold cursor-default">
               PodDeck
             </span>
           )
@@ -69,6 +69,18 @@ export function AppHeader(
       </div>
       <div
         className="flex align-center ml-auto mr-6 h-5 items-center space-x-4">
+        {cluster && (
+          <>
+            <Button
+              className="mr-0 bg-secondary text-primary hover:bg-black/20 dark:hover:bg-white/20"
+              size="sm"
+            >
+              <PlusIcon/>
+              {t("panel.header.resources.add")}
+            </Button>
+            <Separator orientation="vertical" className="ml-5 mr-5 hidden md:block"/>
+          </>
+        )}
         <HeaderSearchBar/>
         <Separator orientation="vertical"
                    className="ml-5 mr-3 hidden md:block"/>
