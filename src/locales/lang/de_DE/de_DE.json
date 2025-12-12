@@ -168,7 +168,9 @@
         "namespaces": "Namensräume"
       },
       "overview": {
-        "title": "Übersicht"
+        "title": "Übersicht",
+        "online": "Online",
+        "offline": "Offline"
       },
       "nodes": {
         "title": "Knoten",

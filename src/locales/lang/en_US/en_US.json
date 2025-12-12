@@ -168,7 +168,9 @@
         "namespaces": "Namespaces"
       },
       "overview": {
-        "title": "Overview"
+        "title": "Overview",
+        "online": "Online",
+        "offline": "Offline"
       },
       "nodes": {
         "title": "Nodes",
