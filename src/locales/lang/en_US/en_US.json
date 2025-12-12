@@ -144,7 +144,17 @@
           "close": "to close"
         }
       },
-      "resources.add": "Add resource"
+      "resources": {
+        "add": "Add resource",
+        "add.dialog": {
+          "title": "Add resource",
+          "description": "Here you have the option to add a generic resource.",
+          "cancel": "Cancel",
+          "submit": "Add",
+          "successful": "Resource has been successfully added",
+          "failure": "Adding the resource failed. Please check the configuration"
+        }
+      }
     },
     "page": {
       "cluster": {

@@ -23,6 +23,8 @@ import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 import {useEffect, useState} from 'react'
 import {Progress} from "@/components/ui/progress";
 import {HeaderSearchBar} from "./search-bar";
+import {Dialog, DialogTrigger} from "@/components/ui/dialog.tsx";
+import ResourceAddDialog from "@/layouts/panel/header/resource-add-dialog.tsx";
 
 interface AppHeaderProps {
   title?: string;
@@ -71,13 +73,18 @@ export function AppHeader(
         className="flex align-center ml-auto mr-6 h-5 items-center space-x-4">
         {cluster && (
           <>
-            <Button
-              className="mr-0 bg-secondary text-primary hover:bg-black/20 dark:hover:bg-white/20"
-              size="sm"
-            >
-              <PlusIcon/>
-              {t("panel.header.resources.add")}
-            </Button>
+            <Dialog>
+              <DialogTrigger className="mr-0">
+                <Button
+                  className="bg-secondary text-primary hover:bg-black/20 dark:hover:bg-white/20"
+                  size="sm"
+                >
+                  <PlusIcon/>
+                  {t("panel.header.resources.add")}
+                </Button>
+              </DialogTrigger>
+              <ResourceAddDialog/>
+            </Dialog>
             <Separator orientation="vertical" className="ml-5 mr-5 hidden md:block"/>
           </>
         )}

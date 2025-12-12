@@ -144,7 +144,17 @@
           "close": "zum schließen"
         }
       },
-      "resources.add": "Ressource hinzufügen"
+      "resources": {
+        "add": "Ressource hinzufügen",
+        "add.dialog": {
+          "title": "Ressource hinzufügen",
+          "description": "Hier haben Sie die Möglichkeit, eine generische Ressource hinzuzufügen.",
+          "cancel": "Abbrechen",
+          "submit": "Hinzufügen",
+          "successful": "Die Ressource wurde erfolgreich hinzugefügt",
+          "failure": "Das Hinzufügen der Ressource ist fehlgeschlagen. Bitte überprüfen Sie die Konfiguration"
+        }
+      }
     },
     "page": {
       "cluster": {
