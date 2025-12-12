@@ -17,7 +17,13 @@ import {useState} from "react";
 import {toast} from "sonner";
 import ResourceService from "@/api/services/resource-service.ts";
 
-export default function ResourceAddDialog() {
+export default function ResourceAddDialog(
+  {
+    setOpen
+  }: {
+    setOpen: (open: boolean) => void
+  }
+) {
   const {t} = useTranslation();
   const {theme} = useTheme();
   const [code, setCode] = useState("");
@@ -35,6 +41,8 @@ export default function ResourceAddDialog() {
     toast.success(t("panel.header.resources.add.dialog.successful"), {
       position: "top-right",
     });
+    setCode("");
+    setOpen(false);
   };
   return (
     <DialogContent className="sm:max-w-[1000px]" onClick={(e) => e.stopPropagation()}

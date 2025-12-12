@@ -25,6 +25,7 @@ import {Progress} from "@/components/ui/progress";
 import {HeaderSearchBar} from "./search-bar";
 import {Dialog, DialogTrigger} from "@/components/ui/dialog.tsx";
 import ResourceAddDialog from "@/layouts/panel/header/resource-add-dialog.tsx";
+import * as React from "react";
 
 interface AppHeaderProps {
   title?: string;
@@ -40,6 +41,7 @@ export function AppHeader(
   }: AppHeaderProps
 ) {
   const {t} = useTranslation();
+  const [open, setOpen] = React.useState(false);
   return (
     <header
       className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 border-b-1">
@@ -73,7 +75,7 @@ export function AppHeader(
         className="flex align-center ml-auto mr-6 h-5 items-center space-x-4">
         {cluster && (
           <>
-            <Dialog>
+            <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger className="mr-0">
                 <Button
                   className="bg-secondary text-primary hover:bg-black/20 dark:hover:bg-white/20"
@@ -83,7 +85,7 @@ export function AppHeader(
                   {t("panel.header.resources.add")}
                 </Button>
               </DialogTrigger>
-              <ResourceAddDialog/>
+              <ResourceAddDialog setOpen={setOpen}/>
             </Dialog>
             <Separator orientation="vertical" className="ml-5 mr-5 hidden md:block"/>
           </>
