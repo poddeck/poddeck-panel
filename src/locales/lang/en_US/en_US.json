@@ -154,6 +154,10 @@
           "successful": "Resource has been successfully added",
           "failure": "Adding the resource failed. Please check the configuration"
         }
+      },
+      "notifications": {
+        "title": "Notifications",
+        "empty": "No notifications found."
       }
     },
     "page": {

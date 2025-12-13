@@ -154,6 +154,10 @@
           "successful": "Die Ressource wurde erfolgreich hinzugefügt",
           "failure": "Das Hinzufügen der Ressource ist fehlgeschlagen. Bitte überprüfen Sie die Konfiguration"
         }
+      },
+      "notifications": {
+        "title": "Benachrichtigungen",
+        "empty": "Keine Benachrichtigungen gefunden."
       }
     },
     "page": {
