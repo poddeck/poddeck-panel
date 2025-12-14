@@ -13,19 +13,28 @@ import * as React from "react";
 import NotificationService, {
   type Notification
 } from "@/api/services/notification-service.ts";
-import Alert
-  from "@/layouts/panel/header/notification/alert.tsx";
 import {useTranslation} from "react-i18next";
+import NotificationAlert from "@/layouts/panel/header/notification/alert.tsx";
 
-export default function NotificationSheet() {
+export default function NotificationSheet({cluster}: {cluster: boolean}) {
   const {t} = useTranslation();
   const [notifications, setNotifications] = React.useState<Notification[]>([]);
 
   React.useEffect(() => {
-    NotificationService.listAll().then(({ notifications }) => {
-      setNotifications(notifications);
-    });
-  }, []);
+    const fetchNotifications = () => {
+      const result = cluster
+        ? NotificationService.listCluster()
+        : NotificationService.listAll();
+
+      result.then(({ notifications }) => {
+        setNotifications(notifications);
+      });
+    };
+
+    fetchNotifications();
+    const interval = setInterval(fetchNotifications, 1000);
+    return () => clearInterval(interval);
+  }, [cluster]);
 
   const unseenCount = notifications.filter(n => n.state !== "SEEN").length;
 
@@ -62,8 +71,9 @@ export default function NotificationSheet() {
             )}
 
             {notifications.map(notification => (
-              <Alert
+              <NotificationAlert
                 key={notification.id}
+                cluster={cluster}
                 notification={notification}
                 onSeen={(id) =>
                   setNotifications(prev =>

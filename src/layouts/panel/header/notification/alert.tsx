@@ -1,18 +1,24 @@
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { useEffect, useRef } from "react";
-import NotificationService, { type Notification } from "@/api/services/notification-service";
-import { TriangleAlert, Siren, CheckCircle, ScrollText } from "lucide-react";
-import { NotificationAge } from "./age";
+import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
+import {useEffect, useRef} from "react";
+import NotificationService, {
+  type Notification
+} from "@/api/services/notification-service";
+import {CheckCircle, ScrollText, Siren, TriangleAlert} from "lucide-react";
+import {Age} from "@/components/age/age.tsx";
 
 interface NotificationAlertProps {
+  cluster: boolean;
   notification: Notification;
   onSeen: (id: string) => void;
 }
 
-export default function NotificationAlert({
-                                            notification,
-                                            onSeen,
-                                          }: NotificationAlertProps) {
+export default function NotificationAlert(
+  {
+    cluster,
+    notification,
+    onSeen,
+  }: NotificationAlertProps
+) {
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -57,21 +63,23 @@ export default function NotificationAlert({
   return (
     <Alert
       ref={ref}
-      className={`mb-4 transition-colors flex items-start ${
-        notification.state !== "SEEN" ? "border-primary/40 bg-primary/5" : ""
-      }`}
+      className={`mb-4 transition-colors flex items-start`}
     >
-      <div className={`mr-3 flex-shrink-0 ${color}`}>{icon}</div>
+      <div className="mr-3 flex flex-col items-center flex-shrink-0 gap-2 w-8">
+        <div className={color}>{icon}</div>
+        <Age age={age} />
+      </div>
 
       <div className="flex-1 flex flex-col justify-center gap-1">
-        <div className={`flex justify-between items-center ${color}`}>
-          <AlertTitle>{notification.title}</AlertTitle>
-          <NotificationAge age={age} />
-        </div>
-        <AlertDescription>{notification.description}</AlertDescription>
-        {notification.cluster_found && (
-          <span className="text-xs opacity-60">
-            Cluster: {notification.cluster_name}
+        <AlertTitle className={`line-clamp-none whitespace-normal break-words ${color}`}>
+          {notification.title}
+        </AlertTitle>
+        <AlertDescription className="whitespace-normal break-words">
+          {notification.description}
+        </AlertDescription>
+        {!cluster && notification.cluster_found && (
+          <span className="inline-block text-xs font-medium bg-primary/20 text-primary px-2 py-0.5 rounded-full w-fit">
+            {notification.cluster_name}
           </span>
         )}
       </div>
