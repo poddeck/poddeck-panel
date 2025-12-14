@@ -173,8 +173,24 @@
       },
       "overview": {
         "title": "Übersicht",
-        "online": "Online",
-        "offline": "Offline"
+        "status": {
+          "title": "STATUS",
+          "online": "Online",
+          "offline": "Offline"
+        },
+        "workload": {
+          "title": "AUSLASTUNG",
+          "cpu": "CPU",
+          "memory": "Memory",
+          "storage": "Speicher"
+        },
+        "distribution": {
+          "title": "VERTEILUNG",
+          "pods": "Pods"
+        },
+        "location": {
+          "title": "STANDORTE"
+        }
       },
       "nodes": {
         "title": "Knoten",
