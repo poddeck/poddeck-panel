@@ -202,7 +202,7 @@ export function ClusterCard(
             <ClusterMetric label={t("panel.page.cluster.pods")}
                            value={cluster.online ? cluster.pods.length : "-"}/>
             <ClusterMetric label={t("panel.page.cluster.notifications")}
-                           value={cluster.online ? 4 : "-"}/>
+                           value={cluster.online ? cluster.notifications.length : "-"}/>
             <ClusterMetric label={t("panel.page.cluster.services")}
                            value={cluster.online ? 9 : "-"}/>
             <ClusterMetric label={t("panel.page.cluster.namespaces")}

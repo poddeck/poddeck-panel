@@ -20,12 +20,16 @@ import NamespaceService, {
 import ClusterCardSkeleton from "@/pages/panel/cluster/skeleton.tsx";
 import {ClusterCard} from "@/pages/panel/cluster/card.tsx";
 import {useTranslation} from "react-i18next";
+import NotificationService, {
+  type Notification
+} from "@/api/services/notification-service.ts";
 
 export type ExtendedCluster = Cluster & {
   nodes: Node[],
   pods: Pod[],
   deployments: Deployment[],
-  namespaces: Namespace[]
+  namespaces: Namespace[],
+  notifications: Notification[]
 };
 
 export default function ClusterPage() {
@@ -50,12 +54,15 @@ export default function ClusterPage() {
             const podResponse = await PodService.listCluster(cluster.id);
             const deployResponse = await DeploymentService.listCluster(cluster.id);
             const namespaceResponse = await NamespaceService.listCluster(cluster.id);
+            const notificationResponse = await NotificationService.listSpecificCluster(cluster.id);
             return {
               ...cluster,
               nodes: nodeResponse.nodes ?? [],
               pods: podResponse.pods ?? [],
               deployments: deployResponse.deployments ?? [],
-              namespaces: namespaceResponse.namespaces ?? []
+              namespaces: namespaceResponse.namespaces ?? [],
+              notifications: notificationResponse.notifications
+                .filter(n => n.state !== "SEEN") ?? []
             };
           })
         );

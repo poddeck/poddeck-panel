@@ -33,11 +33,17 @@ export const NotificationApi = {
 const listAll = () => client.get<NotificationListResponse>({
   url: NotificationApi.ListAll,
 });
-
 const listCluster = () => client.get<NotificationListResponse>({
   url: NotificationApi.ListCluster,
 });
-
+const listSpecificCluster = (clusterId: string) => client.get<NotificationListResponse>(
+  {
+    url: NotificationApi.ListCluster,
+    headers: {
+      Cluster: clusterId,
+    },
+  }
+);
 const markSeen = (data: NotificationSeenRequest) => client.post<void>({
   url: NotificationApi.Seen,
   data,
@@ -46,5 +52,6 @@ const markSeen = (data: NotificationSeenRequest) => client.post<void>({
 export default {
   listAll,
   listCluster,
+  listSpecificCluster,
   markSeen,
 };
