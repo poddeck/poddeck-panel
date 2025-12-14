@@ -1,7 +1,7 @@
 import {type ColumnDef} from "@tanstack/react-table";
 import {type Deployment} from "@/api/services/deployment-service"
 import {DeploymentsActionDropdown} from "./table-components.tsx";
-import {DeploymentAge} from "@/pages/panel/deployment/age.tsx";
+import {Age} from "@/components/age/age.tsx";
 
 export const columns: ColumnDef<Deployment, unknown>[] = [
   {
@@ -34,7 +34,7 @@ export const columns: ColumnDef<Deployment, unknown>[] = [
     header: "panel.page.deployments.column.age",
     accessorKey: "age",
     cell: ({row}) => {
-      return <DeploymentAge age={row.original.age}/>
+      return <Age age={row.original.age}/>
     },
   },
   {

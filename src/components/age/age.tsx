@@ -1,4 +1,4 @@
-export function PodAge({age}: { age: number }) {
+export function Age({age}: { age: number }) {
   function convertTime(age: number) {
     const abs = Math.abs(age);
     if (abs < 1000 * 60) {

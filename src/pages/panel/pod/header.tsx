@@ -23,11 +23,11 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import {useState} from "react";
 import type {Pod} from "@/api/services/pod-service.ts";
-import {PodAge} from "@/pages/panel/pod/age.tsx";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
 import {Dialog, DialogTrigger} from "@/components/ui/dialog.tsx";
 import PodDeleteDialog from "@/pages/panel/pods/delete-dialog.tsx";
 import {useRouter} from "@/routes/hooks";
+import {Age} from "@/components/age/age.tsx";
 
 const tabs = [
   {
@@ -113,7 +113,7 @@ export default function PodPageHeader(
                 <div className="flex items-center gap-2">
                   <Clock size={16}/>
                   {pod ? (
-                    <PodAge age={pod!.age}/>
+                    <Age age={pod!.age}/>
                   ) : (
                     <Skeleton className="w-8 h-6"/>
                   )}

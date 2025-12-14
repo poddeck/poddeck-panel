@@ -32,8 +32,8 @@ import {
   EmptyMedia,
   EmptyTitle
 } from "@/components/ui/empty.tsx";
-import {EventTime} from "@/pages/panel/events/time.tsx";
 import {Badge} from "@/components/ui/badge.tsx";
+import {Age} from "@/components/age/age.tsx";
 
 function EventListEmpty() {
   const {t} = useTranslation();
@@ -277,7 +277,7 @@ export default function EventsPage() {
                               )}
                             </div>
                             <div className="text-xs opacity-70">
-                              <EventTime time={Date.now() - event.first_timestamp}/>
+                              <Age age={Date.now() - event.first_timestamp}/>
                             </div>
                           </div>
                           <div className={cn("text-sm wrap-anywhere opacity-60", color)}>

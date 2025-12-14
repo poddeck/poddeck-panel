@@ -13,8 +13,6 @@ import * as React from 'react'
 import {HeaderSearchBar} from "./search-bar";
 import {Dialog, DialogTrigger} from "@/components/ui/dialog.tsx";
 import ResourceAddDialog from "@/layouts/panel/header/resource-add-dialog.tsx";
-import Sheet
-  from "@/layouts/panel/header/notification/sheet.tsx";
 import NotificationSheet from "@/layouts/panel/header/notification/sheet.tsx";
 
 interface AppHeaderProps {
@@ -84,7 +82,7 @@ export function AppHeader(
         <HeaderSearchBar/>
         <Separator orientation="vertical"
                    className="ml-5 mr-3 hidden md:block"/>
-        <NotificationSheet/>
+        <NotificationSheet cluster={cluster}/>
       </div>
     </header>
   );

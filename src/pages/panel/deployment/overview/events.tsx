@@ -2,7 +2,7 @@ import {CalendarClock, Siren, TriangleAlert} from "lucide-react";
 import {useTranslation} from "react-i18next";
 import type {Deployment} from "@/api/services/deployment-service.ts";
 import {cn} from "@/lib/utils.ts";
-import {DeploymentAge} from "@/pages/panel/deployment/age.tsx";
+import {Age} from "@/components/age/age.tsx";
 
 export default function DeploymentOverviewEvents({deployment}: { deployment: Deployment | null }) {
   const {t} = useTranslation();
@@ -63,7 +63,7 @@ export default function DeploymentOverviewEvents({deployment}: { deployment: Dep
                           <span>{event.reason} ({event.type})</span>
                         </div>
                         <div>
-                          <DeploymentAge age={Date.now() - event.timestamp}/>
+                          <Age age={Date.now() - event.timestamp}/>
                         </div>
                       </div>
                       <div

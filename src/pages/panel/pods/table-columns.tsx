@@ -1,7 +1,7 @@
 import {type ColumnDef} from "@tanstack/react-table";
 import {type Pod} from "@/api/services/pod-service"
 import {PodsStatus, PodsActionDropdown} from "./table-components.tsx";
-import {PodAge} from "@/pages/panel/pod/age.tsx";
+import {Age} from "@/components/age/age.tsx";
 
 export const columns: ColumnDef<Pod, unknown>[] = [
   {
@@ -37,7 +37,7 @@ export const columns: ColumnDef<Pod, unknown>[] = [
     header: "panel.page.pods.column.age",
     accessorKey: "age",
     cell: ({row}) => {
-      return <PodAge age={row.original.age}/>
+      return <Age age={row.original.age}/>
     },
   },
   {

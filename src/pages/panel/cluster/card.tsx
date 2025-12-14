@@ -27,11 +27,11 @@ import {Avatar, AvatarFallback} from "@/components/ui/avatar.tsx";
 import SidebarClusterSettings
   from "@/layouts/panel/sidebar/cluster/settings.tsx";
 import {CLUSTER_ICON_LIST} from "@/layouts/panel/sidebar/cluster/icon-list.tsx";
-import {ClusterAge} from "@/pages/panel/cluster/age.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import type {ExtendedCluster} from "@/pages/panel/cluster/index.tsx";
 import type {Cluster} from "@/api/services/cluster-service.ts";
 import {useTranslation} from "react-i18next";
+import {Age} from "@/components/age/age.tsx";
 
 function ClusterUsageItem(
   {
@@ -181,7 +181,7 @@ export function ClusterCard(
           <CardDescription className="flex items-center gap-4">
             <div className="flex items-center gap-1">
               <Clock size={15}/>
-              <ClusterAge age={Date.now() - cluster.created_at}/>
+              <Age age={Date.now() - cluster.created_at}/>
             </div>
 
             {cluster.online && (

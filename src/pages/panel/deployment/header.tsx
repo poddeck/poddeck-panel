@@ -19,7 +19,6 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import {useState} from "react";
 import DeploymentService, {type Deployment} from "@/api/services/deployment-service.ts";
-import {DeploymentAge} from "@/pages/panel/deployment/age.tsx";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
 import {Dialog, DialogTrigger} from "@/components/ui/dialog.tsx";
 import DeploymentDeleteDialog from "@/pages/panel/deployments/delete-dialog.tsx";
@@ -27,6 +26,7 @@ import {useRouter} from "@/routes/hooks";
 import {DeploymentScaleDrawer} from "@/pages/panel/deployment/scale.tsx";
 import {Drawer, DrawerTrigger} from "@/components/ui/drawer.tsx";
 import {toast} from "sonner";
+import {Age} from "@/components/age/age.tsx";
 
 const tabs = [
   {
@@ -96,7 +96,7 @@ export default function DeploymentPageHeader(
                 <div className="flex items-center gap-2">
                   <Clock size={16}/>
                   {deployment ? (
-                    <DeploymentAge age={deployment!.age}/>
+                    <Age age={deployment!.age}/>
                   ) : (
                     <Skeleton className="w-8 h-6"/>
                   )}

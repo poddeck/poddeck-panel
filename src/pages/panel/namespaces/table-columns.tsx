@@ -2,7 +2,8 @@ import {type ColumnDef} from "@tanstack/react-table";
 import {Badge} from "@/components/ui/badge";
 import {type Namespace} from "@/api/services/namespace-service"
 import {t} from "@/locales/i18n";
-import {NamespaceAge, NamespacesActionDropdown} from "./table-components.tsx";
+import {NamespacesActionDropdown} from "./table-components.tsx";
+import {Age} from "@/components/age/age.tsx";
 
 export const columns: ColumnDef<Namespace, unknown>[] = [
   {
@@ -29,7 +30,7 @@ export const columns: ColumnDef<Namespace, unknown>[] = [
     header: "panel.page.namespaces.column.age",
     accessorKey: "age",
     cell: ({row}) => {
-      return <NamespaceAge age={row.original.age}/>
+      return <Age age={row.original.age}/>
     },
   },
   {

@@ -2,7 +2,7 @@ import {CalendarClock, Siren, TriangleAlert} from "lucide-react";
 import {useTranslation} from "react-i18next";
 import type {Pod} from "@/api/services/pod-service.ts";
 import {cn} from "@/lib/utils.ts";
-import {PodAge} from "@/pages/panel/pod/age.tsx";
+import {Age} from "@/components/age/age.tsx";
 
 export default function PodOverviewEvents({pod}: { pod: Pod | null }) {
   const {t} = useTranslation();
@@ -63,7 +63,7 @@ export default function PodOverviewEvents({pod}: { pod: Pod | null }) {
                           <span>{event.reason} ({event.type})</span>
                         </div>
                         <div>
-                          <PodAge age={Date.now() - event.timestamp}/>
+                          <Age age={Date.now() - event.timestamp}/>
                         </div>
                       </div>
                       <div
