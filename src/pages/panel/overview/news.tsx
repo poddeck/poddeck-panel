@@ -39,7 +39,7 @@ export default function OverviewNewsBox() {
 
   useEffect(() => {
     const fetchNotifications = async () => {
-      const result = await NotificationService.listAll();
+      const result = await NotificationService.listCluster();
       if (result.notifications) {
         setNotifications(result.notifications);
       }
