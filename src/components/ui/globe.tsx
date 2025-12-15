@@ -70,7 +70,7 @@ export function Globe({ className, markers }: GlobeProps) {
       <canvas
         ref={canvasRef}
         className="duration-500"
-        style={{ width: 500, height: 500, maxWidth: '100%', aspectRatio: 1, cursor: 'grab' }}
+        style={{ width: 500, maxWidth: '100%', aspectRatio: 1, cursor: 'grab' }}
         onPointerDown={() => {
           pointerInteracting.current = true;
           canvasRef.current!.style.cursor = 'grabbing';

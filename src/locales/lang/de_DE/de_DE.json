@@ -184,12 +184,17 @@
           "memory": "Memory",
           "storage": "Speicher"
         },
-        "distribution": {
-          "title": "VERTEILUNG",
-          "pods": "Pods"
+        "activity": {
+          "title": "AKTIVITÄT"
+        },
+        "nodes": {
+          "title": "KNOTEN"
         },
         "location": {
           "title": "STANDORTE"
+        },
+        "news": {
+          "title": "AKTUELLES"
         }
       },
       "nodes": {

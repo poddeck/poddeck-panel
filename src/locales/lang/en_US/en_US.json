@@ -184,12 +184,17 @@
           "memory": "Memory",
           "storage": "Storage"
         },
-        "distribution": {
-          "title": "DISTRIBUTION",
-          "pods": "Pods"
+        "activity": {
+          "title": "ACTIVITY"
+        },
+        "nodes": {
+          "title": "NODES"
         },
         "location": {
           "title": "LOCATIONS"
+        },
+        "news": {
+          "title": "NEWS"
         }
       },
       "nodes": {

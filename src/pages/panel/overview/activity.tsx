@@ -66,11 +66,11 @@ const chartConfig = {
   // Define colors for the bar fill
   success: {
     label: "Success",
-    color: "oklch(97% 0.001 106.424)", // A shade of green
+    color: "oklch(43.9% 0 0)", // A shade of green
   },
   warning: {
     label: "Warning",
-    color: "oklch(87.9% 0.169 91.605)", // A shade of yellow/orange
+    color: "oklch(76.9% 0.188 70.08)", // A shade of yellow/orange
   },
   error: {
     label: "Error",
@@ -115,8 +115,7 @@ export default function OverviewActivityBox() {
       <CardHeader>
         <CardTitle className="flex gap-2">
           <Activity size={18} className="-translate-y-0.5"/>
-          {/* Use a relevant translation key for the title */}
-          {t("panel.page.overview.activity.title", { defaultValue: "Last 24h Activity" })}
+          {t("panel.page.overview.activity.title")}
         </CardTitle>
       </CardHeader>
       <CardContent className="h-full">
