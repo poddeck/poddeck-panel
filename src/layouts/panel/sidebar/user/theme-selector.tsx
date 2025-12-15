@@ -34,9 +34,9 @@ export function SidebarThemeSelector() {
         sideOffset={4}
       >
         <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
-          <DropdownMenuRadioItem value="light">
-            <Sun className="mr-2"/>
-            {t("panel.sidebar.theme.light")}
+          <DropdownMenuRadioItem value="system">
+            <MonitorCog className="mr-2"/>
+            {t("panel.sidebar.theme.system")}
           </DropdownMenuRadioItem>
 
           <DropdownMenuRadioItem value="dark">
@@ -44,9 +44,9 @@ export function SidebarThemeSelector() {
             {t("panel.sidebar.theme.dark")}
           </DropdownMenuRadioItem>
 
-          <DropdownMenuRadioItem value="system">
-            <MonitorCog className="mr-2"/>
-            {t("panel.sidebar.theme.system")}
+          <DropdownMenuRadioItem value="light">
+            <Sun className="mr-2"/>
+            {t("panel.sidebar.theme.light")}
           </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuContent>
