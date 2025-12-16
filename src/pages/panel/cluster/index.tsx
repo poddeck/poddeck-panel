@@ -23,13 +23,15 @@ import {useTranslation} from "react-i18next";
 import NotificationService, {
   type Notification
 } from "@/api/services/notification-service.ts";
+import ServiceService, {type Service} from "@/api/services/service-service.ts";
 
 export type ExtendedCluster = Cluster & {
   nodes: Node[],
   pods: Pod[],
   deployments: Deployment[],
   namespaces: Namespace[],
-  notifications: Notification[]
+  notifications: Notification[],
+  services: Service[]
 };
 
 export default function ClusterPage() {
@@ -55,6 +57,7 @@ export default function ClusterPage() {
             const deployResponse = await DeploymentService.listCluster(cluster.id);
             const namespaceResponse = await NamespaceService.listCluster(cluster.id);
             const notificationResponse = await NotificationService.listSpecificCluster(cluster.id);
+            const serviceResponse = await ServiceService.listCluster(cluster.id);
             return {
               ...cluster,
               nodes: nodeResponse.nodes ?? [],
@@ -62,7 +65,8 @@ export default function ClusterPage() {
               deployments: deployResponse.deployments ?? [],
               namespaces: namespaceResponse.namespaces ?? [],
               notifications: notificationResponse.notifications
-                .filter(n => n.state !== "SEEN") ?? []
+                .filter(n => n.state !== "SEEN") ?? [],
+              services: serviceResponse.services ?? []
             };
           })
         );
