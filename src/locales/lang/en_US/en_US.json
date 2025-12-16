@@ -456,6 +456,42 @@
           "successful": "Deployment has been successfully edited",
           "copy.successful": "Deployment has been successfully copied"
         }
+      },
+      "services": {
+        "title": "Services",
+        "add": "Add service",
+        "add.dialog": {
+          "title": "Add service",
+          "description": "Add a new service. Assign a name for the new service.",
+          "name": "Name",
+          "cancel": "Cancel",
+          "submit": "Add",
+          "successful": "Service has been successfully added",
+          "failure": "Adding the service failed. Please check the configuration"
+        },
+        "delete.dialog": {
+          "title": "Delete service",
+          "description": "Here you have the option to delete an existing service.",
+          "confirm.1": "Please type ",
+          "confirm.2": " to confirm.",
+          "name": "Name",
+          "cancel": "Cancel",
+          "submit": "Delete"
+        },
+        "empty": {
+          "title": "No services created yet",
+          "description": "You have not added any services to your cluster yet. Click the button below to add your first service."
+        },
+        "column": {
+          "namespace": "Namespace",
+          "name": "Name",
+          "type": "Type",
+          "cluster.ip": "Cluster IP",
+          "age": "Age"
+        },
+        "action": {
+          "delete": "Delete"
+        }
       }
     }
   },

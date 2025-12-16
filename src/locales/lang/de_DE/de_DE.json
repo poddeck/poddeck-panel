@@ -377,7 +377,7 @@
           "cancel": "Abbrechen",
           "submit": "Hinzufügen",
           "successful": "Das Deployment wurde erfolgreich hinzugefügt",
-          "failure": "Das Hinzufügen der Bereitstellung ist fehlgeschlagen. Bitte überprüfen Sie die Konfiguration"
+          "failure": "Das Hinzufügen des Deployments ist fehlgeschlagen. Bitte überprüfen Sie die Konfiguration"
         },
         "empty": {
           "title": "Keine Deployments gefunden",
@@ -455,6 +455,42 @@
           "save": "Speichern",
           "successful": "Deployment wurde erfolgreich bearbeitet",
           "copy.successful": "Deployment wurde erfolgreich kopiert"
+        }
+      },
+      "services": {
+        "title": "Services",
+        "add": "Service hinzufügen",
+        "add.dialog": {
+          "title": "Service hinzufügen",
+          "description": "Fügen Sie einen neuen Service hinzu. Weisen Sie dem neuen Service einen Namen zu.",
+          "name": "Name",
+          "cancel": "Abbrechen",
+          "submit": "Hinzufügen",
+          "successful": "Der Service wurde erfolgreich hinzugefügt",
+          "failure": "Das Hinzufügen des Service ist fehlgeschlagen. Bitte überprüfen Sie die Konfiguration"
+        },
+        "delete.dialog": {
+          "title": "Service löschen",
+          "description": "Löschen Sie einen Service, indem Sie den Namen des Service eingeben.",
+          "confirm.1": "Bitte geben Sie ",
+          "confirm.2": " zur Bestätigung ein.",
+          "name": "Name",
+          "cancel": "Abbrechen",
+          "submit": "Löschen"
+        },
+        "empty": {
+          "title": "Es wurden noch kein Service erstellt.",
+          "description": "Sie haben Ihrem Cluster noch keine Service hinzugefügt. Klicken Sie auf die Schaltfläche unten, um Ihren ersten Service hinzuzufügen."
+        },
+        "column": {
+          "namespace": "Namensraum",
+          "name": "Name",
+          "type": "Typ",
+          "cluster.ip": "Cluster IP",
+          "age": "Alter"
+        },
+        "action": {
+          "delete": "Löschen"
         }
       }
     }

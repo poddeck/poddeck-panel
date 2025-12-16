@@ -21,6 +21,7 @@ const getRoutes = (): RouteObject[] => {
     {path: "deployment/overview", element: Component("/pages/panel/deployment/overview")},
     {path: "deployment/pods", element: Component("/pages/panel/deployment/pods")},
     {path: "deployment/edit", element: Component("/pages/panel/deployment/edit")},
+    {path: "services", element: Component("/pages/panel/services")},
   ];
 };
 
