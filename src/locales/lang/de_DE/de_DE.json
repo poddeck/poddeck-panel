@@ -44,7 +44,11 @@
       "remember": "Angemeldet bleiben",
       "submit": "ANMELDEN",
       "successful": "Erfolgreich angemeldet",
-      "failed": "Falscher Benutzername oder falsches Passwort."
+      "failed": "Falscher Benutzername oder falsches Passwort.",
+      "otp": {
+        "title": "2-Faktor-Code eingeben",
+        "submit": "Einreichen"
+      }
     }
   },
   "panel": {

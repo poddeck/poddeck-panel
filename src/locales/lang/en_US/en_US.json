@@ -44,7 +44,11 @@
       "remember": "Remember me",
       "submit": "LOGIN",
       "successful": "Successfully logged in",
-      "failed": "Incorrect username or password."
+      "failed": "Incorrect username or password.",
+      "otp": {
+        "title": "Enter 2 factor code",
+        "submit": "Submit"
+      }
     }
   },
   "panel": {
