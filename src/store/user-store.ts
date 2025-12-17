@@ -3,7 +3,6 @@ import {create} from "zustand";
 import {createJSONStorage, persist} from "zustand/middleware";
 import userService, {type LoginRequest} from "@/api/services/user-service";
 import cookiesStorage from "@/store/cookie-store.ts";
-import type {AxiosError} from "axios";
 import {toast} from "sonner";
 import {useTranslation} from "react-i18next";
 import {useRouter} from "@/routes/hooks";
@@ -78,22 +77,19 @@ export const useLogin = () => {
   });
 
   return async (data: LoginRequest) => {
-    try {
-      const response = await loginMutation.mutateAsync(data);
-      const { authentication_token, refresh_token, email, name } = response;
-
-      setUserToken({ authentication_token, refresh_token });
-      setUserInformation({ email, name });
-
-      toast.success(t("authentication.login.successful"), {
-        position: "top-right",
-      });
-    } catch (error) {
-      if (error != null && (error as AxiosError).status === 401) {
-        toast.error(t("authentication.login.failed"));
-      }
-      throw error;
+    const response = await loginMutation.mutateAsync(data);
+    if (!response.success) {
+      return response
     }
+    const { authentication_token, refresh_token, email, name } = response;
+
+    setUserToken({ authentication_token, refresh_token });
+    setUserInformation({ email, name });
+
+    toast.success(t("authentication.login.successful"), {
+      position: "top-right",
+    });
+    return response;
   };
 };
 

@@ -1,6 +1,6 @@
 import type {LoginRequest} from "@/api/services/user-service";
-import Logo from "@/assets/logo.webp"
-import {Spinner} from "@/components/ui/spinner"
+import Logo from "@/assets/logo.webp";
+import {Spinner} from "@/components/ui/spinner";
 import {
   Form,
   FormControl,
@@ -11,39 +11,88 @@ import {
 } from "@/components/ui/form";
 import {Navigate, useNavigate} from "react-router";
 import {useTranslation} from "react-i18next";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import './index.css';
 import {useLogin, useUserToken} from "@/store/user-store.ts";
 
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter
+} from "@/components/ui/dialog";
+import {toast} from "sonner";
+import {Button} from "@/components/ui/button.tsx";
+
 export default function LoginForm() {
   const {t} = useTranslation();
   const [loading, setLoading] = useState(false);
+  const [otpRequired, setOtpRequired] = useState(false);
+  const [otp, setOtp] = useState("");
   const navigate = useNavigate();
 
   const login = useLogin();
-
   const form = useForm<LoginRequest>({});
-
   const token = useUserToken();
 
   if (token.authentication_token) {
-    return <Navigate to="/cluster/" replace/>;
+    return <Navigate to="/cluster/" replace />;
   }
 
   const handleFinish = async (values: LoginRequest) => {
-    const payload: LoginRequest = {
-      ...values,
-      multi_factor_code: "",
-    };
     setLoading(true);
     try {
-      await login(payload);
-      navigate("/cluster/", {replace: true});
+      const payload: LoginRequest = {...values, multi_factor_code: ""};
+      const response = await login(payload);
+
+      if (!response.success && response.error === 1001) {
+        setOtpRequired(true);
+      } else if (response.success) {
+        navigate("/cluster/", {replace: true});
+      } else {
+        toast.error(t("authentication.login.failed"));
+      }
     } finally {
       setLoading(false);
     }
   };
+
+  const handleOtpSubmit = async () => {
+    if (!form.getValues().email || !form.getValues().password) return;
+
+    setLoading(true);
+    try {
+      const payload: LoginRequest = {
+        email: form.getValues().email,
+        password: form.getValues().password,
+        multi_factor_code: otp
+      };
+      const response = await login(payload);
+
+      setOtp("");
+      if (response.success) {
+        setOtpRequired(false);
+        navigate("/cluster/", {replace: true});
+      } else {
+        toast.error("Wrong code", {
+          position: "top-right",
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (otp.length === 6 && !loading) {
+      handleOtpSubmit();
+    }
+  }, [otp]);
+
   return (
     <div
       id="login-container"
@@ -76,7 +125,7 @@ export default function LoginForm() {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage/>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -106,7 +155,7 @@ export default function LoginForm() {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage/>
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -128,11 +177,38 @@ export default function LoginForm() {
               className="w-full py-2 rounded-xl bg-blue-600 hover:bg-blue-500 transition inline-flex items-center justify-center"
             >
               {t("authentication.login.submit")}
-              {loading && <Spinner className="ml-3"></Spinner>}
+              {loading && <Spinner className="ml-3" />}
             </button>
           </form>
         </Form>
       </div>
+
+      <Dialog open={otpRequired} onOpenChange={setOtpRequired}>
+        <DialogContent className="bg-white/10 backdrop-blur-md">
+          <DialogHeader>
+            <DialogTitle>{t("authentication.login.otp.title")}</DialogTitle>
+          </DialogHeader>
+          <div className="flex justify-center items-center my-4">
+            <InputOTP maxLength={6} value={otp} onChange={setOtp}>
+              <InputOTPGroup>
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+                <InputOTPSlot index={2} />
+              </InputOTPGroup>
+              <InputOTPGroup>
+                <InputOTPSlot index={3} />
+                <InputOTPSlot index={4} />
+                <InputOTPSlot index={5} />
+              </InputOTPGroup>
+            </InputOTP>
+          </div>
+          <DialogFooter>
+            <Button onClick={handleOtpSubmit} disabled={loading}>
+              {t("authentication.login.otp.submit")} {loading && <Spinner />}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
