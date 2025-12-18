@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import { ShieldPlus, ShieldOff } from "lucide-react";
+import {ShieldPlus, ShieldOff, Copy} from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -20,10 +20,12 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import {toast} from "sonner";
+import {useTranslation} from "react-i18next";
 
 type Step = "password" | "qr" | "recovery" | "confirm" | "deactivate";
 
 export default function SecurityPageContent() {
+  const {t} = useTranslation();
   const [enabled, setEnabled] = React.useState<boolean | null>(null);
   const [open, setOpen] = React.useState(false);
   const [step, setStep] = React.useState<Step>("password");
@@ -51,7 +53,7 @@ export default function SecurityPageContent() {
         setRecoveryCodes(response.recoveryCodes || []);
         setStep("qr");
       } else {
-        toast.error("Wrong password", {
+        toast.error(t("settings.security.2fa.wrong.password"), {
           position: "top-right",
         });
       }
@@ -69,11 +71,11 @@ export default function SecurityPageContent() {
         setOpen(false);
         setStep("password");
         setToken("");
-        toast.success("Successful", {
+        toast.success(t("settings.security.2fa.activation.successful"), {
           position: "top-right",
         });
       } else {
-        toast.error("Wrong code", {
+        toast.error(t("settings.security.2fa.wrong.code"), {
           position: "top-right",
         });
       }
@@ -98,11 +100,11 @@ export default function SecurityPageContent() {
         setOpen(false);
         setStep("password");
         setPassword("");
-        toast.success("Successful", {
+        toast.success(t("settings.security.2fa.deactivation.successful"), {
           position: "top-right",
         });
       } else {
-        toast.error("Wrong password", {
+        toast.error(t("settings.security.2fa.wrong.password"), {
           position: "top-right",
         });
       }
@@ -111,25 +113,30 @@ export default function SecurityPageContent() {
     }
   };
 
-  if (enabled === null) return null;
+  const handleCopyRecoveryCodes = async () => {
+    await navigator.clipboard.writeText(recoveryCodes.join("\n"));
+  };
+
+  if (enabled === null) {
+    return null;
+  }
 
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
         <div className="mb-4 border-b pb-2">
-          Two-factor authentication
+          {t("settings.security.2fa.title")}
         </div>
 
         <p className="mb-6 text-sm text-muted-foreground">
-          With two-factor authentication, you can protect your account against
-          unauthorized access.
+          {t("settings.security.2fa.description")}
         </p>
 
         <div className="flex justify-center gap-4">
           {!enabled && (
             <Button onClick={() => setOpen(true)}>
-              <ShieldPlus className="mr-2 size-4" />
-              Activate
+              <ShieldPlus className="mr-1 size-4" />
+              {t("settings.security.2fa.activate")}
             </Button>
           )}
 
@@ -138,8 +145,8 @@ export default function SecurityPageContent() {
               variant="destructive"
               onClick={deactivateTwoFactor}
             >
-              <ShieldOff className="mr-2 size-4" />
-              Deactivate
+              <ShieldOff className="mr-1 size-4" />
+              {t("settings.security.2fa.deactivate")}
             </Button>
           )}
         </div>
@@ -150,16 +157,16 @@ export default function SecurityPageContent() {
           {step === "password" && (
             <>
               <DialogHeader>
-                <DialogTitle>Confirm your password</DialogTitle>
+                <DialogTitle>{t("settings.security.2fa.password.title")}</DialogTitle>
                 <DialogDescription>
-                  Enter your password to begin two-factor authentication setup.
+                  {t("settings.security.2fa.password.description")}
                 </DialogDescription>
               </DialogHeader>
 
-              <Label>Password</Label>
+              <Label>{t("settings.security.2fa.password.label")}</Label>
               <Input
                 type="password"
-                placeholder="Password"
+                placeholder={t("settings.security.2fa.password.label")}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -169,7 +176,7 @@ export default function SecurityPageContent() {
                   onClick={startSetup}
                   disabled={!password || loading}
                 >
-                  Continue
+                  {t("settings.security.2fa.continue")}
                 </Button>
               </DialogFooter>
             </>
@@ -178,9 +185,9 @@ export default function SecurityPageContent() {
           {step === "qr" && (
             <>
               <DialogHeader>
-                <DialogTitle>Scan QR code</DialogTitle>
+                <DialogTitle>{t("settings.security.2fa.qr.title")}</DialogTitle>
                 <DialogDescription>
-                  Add your account to an authenticator app.
+                  {t("settings.security.2fa.qr.description")}
                 </DialogDescription>
               </DialogHeader>
 
@@ -197,17 +204,16 @@ export default function SecurityPageContent() {
 
               <ol className="list-decimal space-y-1 pl-5 text-sm text-muted-foreground">
                 <li>
-                  Download an authenticator app (Google Authenticator,
-                  Microsoft Authenticator, etc.)
+                  {t("settings.security.2fa.qr.instructions.1")}
                 </li>
                 <li>
-                  Scan the QR code or manually enter the secret key above.
+                  {t("settings.security.2fa.qr.instructions.2")}
                 </li>
               </ol>
 
               <DialogFooter>
                 <Button onClick={() => setStep("recovery")}>
-                  I’ve scanned the QR code
+                  {t("settings.security.2fa.continue")}
                 </Button>
               </DialogFooter>
             </>
@@ -216,27 +222,36 @@ export default function SecurityPageContent() {
           {step === "recovery" && (
             <>
               <DialogHeader>
-                <DialogTitle>Save recovery codes</DialogTitle>
+                <DialogTitle>{t("settings.security.2fa.recovery.title")}</DialogTitle>
                 <DialogDescription>
-                  These codes are required if you lose access to your
-                  authenticator device.
+                  {t("settings.security.2fa.recovery.description")}
                 </DialogDescription>
               </DialogHeader>
 
-              <div className="grid grid-cols-2 gap-2 rounded-lg border p-3 font-mono text-sm">
-                {recoveryCodes.map((code) => (
-                  <div key={code}>{code}</div>
-                ))}
+              <div className="relative">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="absolute right-2 top-2"
+                  onClick={handleCopyRecoveryCodes}
+                >
+                  <Copy/> {t("settings.security.2fa.recovery.copy")}
+                </Button>
+
+                <div className="grid grid-cols-2 gap-2 rounded-lg border px-3 py-15 font-mono text-sm text-center">
+                  {recoveryCodes.map((code) => (
+                    <div key={code}>{code}</div>
+                  ))}
+                </div>
               </div>
 
               <p className="text-sm text-muted-foreground">
-                Store these codes in a safe place. Do not keep them on the same
-                device you use for two-factor authentication.
+                {t("settings.security.2fa.recovery.instructions")}
               </p>
 
               <DialogFooter>
                 <Button onClick={() => setStep("confirm")}>
-                  I have saved my codes
+                  {t("settings.security.2fa.continue")}
                 </Button>
               </DialogFooter>
             </>
@@ -245,9 +260,9 @@ export default function SecurityPageContent() {
           {step === "confirm" && (
             <>
               <DialogHeader>
-                <DialogTitle>Confirm setup</DialogTitle>
+                <DialogTitle>{t("settings.security.2fa.confirmation.title")}</DialogTitle>
                 <DialogDescription>
-                  Enter the 6-digit code from your authenticator app.
+                  {t("settings.security.2fa.confirmation.description")}
                 </DialogDescription>
               </DialogHeader>
 
@@ -272,7 +287,7 @@ export default function SecurityPageContent() {
                   onClick={confirmSetup}
                   disabled={token.length !== 6 || loading}
                 >
-                  Enable two-factor authentication
+                  {t("settings.security.2fa.continue")}
                 </Button>
               </DialogFooter>
             </>
@@ -281,16 +296,16 @@ export default function SecurityPageContent() {
           {step === "deactivate" && (
             <>
               <DialogHeader>
-                <DialogTitle>Deactivate 2FA</DialogTitle>
+                <DialogTitle>{t("settings.security.2fa.deactivation.title")}</DialogTitle>
                 <DialogDescription>
-                  Enter your password to deactivate two-factor authentication.
+                  {t("settings.security.2fa.deactivation.description")}
                 </DialogDescription>
               </DialogHeader>
 
-              <Label>Password</Label>
+              <Label>{t("settings.security.2fa.password.label")}</Label>
               <Input
                 type="password"
-                placeholder="Password"
+                placeholder={t("settings.security.2fa.password.label")}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -302,7 +317,7 @@ export default function SecurityPageContent() {
                   onClick={confirmDeactivation}
                   disabled={!password || loading}
                 >
-                  Deactivate
+                  {t("settings.security.2fa.deactivate")}
                 </Button>
               </DialogFooter>
             </>

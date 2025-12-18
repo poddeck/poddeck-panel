@@ -47,7 +47,15 @@
       "failed": "Incorrect username or password.",
       "otp": {
         "title": "Enter 2 factor code",
-        "submit": "Submit"
+        "description": "Please go to your authenticator app now and enter your current token",
+        "submit": "Submit",
+        "failed": "The code you entered is incorrect. Please try again"
+      },
+      "recovery": {
+        "title": "Recovery code",
+        "description": "Enter one of your recovery codes",
+        "confirm": "Confirm",
+        "failed": "The code you entered is incorrect. Please try again"
       }
     }
   },
@@ -501,7 +509,10 @@
   },
   "settings": {
     "general": {
-      "title": "General"
+      "title": "General",
+      "username": "Username",
+      "save": "Save",
+      "saving": "Saving"
     },
     "account": {
       "title": "Account"
@@ -510,7 +521,45 @@
       "title": "Personalization"
     },
     "security": {
-      "title": "Security"
+      "title": "Security",
+      "2fa": {
+        "title": "Two-factor authentication",
+        "description": "With two-factor authentication, you can protect your account against unauthorized access.",
+        "activate": "Activate",
+        "deactivate": "Deactivate",
+        "continue": "Continue",
+        "password": {
+          "title": "Confirm your password",
+          "description": "Enter your password to begin two-factor authentication setup.",
+          "label": "Password"
+        },
+        "qr": {
+          "title": "Scan QR code",
+          "description": "Add your account to an authenticator app.",
+          "instructions": {
+            "1": "Download an authenticator app (Google Authenticator, Microsoft Authenticator, etc.)",
+            "2": "Scan the QR code or manually enter the secret key above."
+          }
+        },
+        "recovery": {
+          "title": "Recovery codes",
+          "description": "These codes are required if you lose access to your authenticator device.",
+          "instructions": "Store these codes in a safe place. Do not keep them on the same device you use for two-factor authentication.",
+          "copy": "Copy"
+        },
+        "confirmation": {
+          "title": "Confirmation",
+          "description": "Enter the 6-digit code from your authenticator app."
+        },
+        "activation.successful": "You have successfully enabled two-factor authentication",
+        "deactivation": {
+          "title": "Deactivate 2FA",
+          "description": "Enter your password to deactivate two-factor authentication.",
+          "successful": "You have successfully disabled two-factor authentication"
+        },
+        "wrong.password": "The password you entered is incorrect. Please try again",
+        "wrong.code": "The code you entered is incorrect. Please try again"
+      }
     },
     "sessions": {
       "title": "Sessions"
