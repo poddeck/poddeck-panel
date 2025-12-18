@@ -84,7 +84,7 @@ export default function PersonalizationPageContent() {
     <div className="space-y-6">
       <div>
         <div className="border-b-1 border-secondary pb-2 mb-4 w-full">
-          <span>Language</span>
+          <span>{t("panel.sidebar.language")}</span>
         </div>
 
         <RadioGroup
