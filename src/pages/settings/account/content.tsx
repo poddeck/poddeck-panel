@@ -54,7 +54,7 @@ export default function AccountPageContent() {
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="destructive">
-                <Trash2 className="mr-2 size-4" />
+                <Trash2 className="mr-1 size-4" />
                 Delete
               </Button>
             </AlertDialogTrigger>
