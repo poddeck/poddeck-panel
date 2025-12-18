@@ -18,12 +18,13 @@ import {useLogin, useUserToken} from "@/store/user-store.ts";
 
 import {
   InputOTP,
-  InputOTPGroup,
+  InputOTPGroup, InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
+  DialogDescription
 } from "@/components/ui/dialog";
 import {toast} from "sonner";
 import {Button} from "@/components/ui/button.tsx";
@@ -33,6 +34,10 @@ export default function LoginForm() {
   const [loading, setLoading] = useState(false);
   const [otpRequired, setOtpRequired] = useState(false);
   const [otp, setOtp] = useState("");
+  const [recoveryOpen, setRecoveryOpen] = useState(false);
+  const [recoveryCode, setRecoveryCode] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+
   const navigate = useNavigate();
 
   const login = useLogin();
@@ -43,9 +48,23 @@ export default function LoginForm() {
     return <Navigate to="/cluster/" replace />;
   }
 
+  useEffect(() => {
+    const rememberedEmail = localStorage.getItem("remembered_email");
+    if (rememberedEmail) {
+      form.setValue("email", rememberedEmail);
+      setRememberMe(true);
+    }
+  }, []);
+
   const handleFinish = async (values: LoginRequest) => {
     setLoading(true);
     try {
+      if (rememberMe) {
+        localStorage.setItem("remembered_email", values.email);
+      } else {
+        localStorage.removeItem("remembered_email");
+      }
+
       const payload: LoginRequest = {...values, multi_factor_code: ""};
       const response = await login(payload);
 
@@ -78,7 +97,7 @@ export default function LoginForm() {
         setOtpRequired(false);
         navigate("/cluster/", {replace: true});
       } else {
-        toast.error("Wrong code", {
+        toast.error(t("authentication.login.otp.failed"), {
           position: "top-right",
         });
       }
@@ -92,6 +111,38 @@ export default function LoginForm() {
       handleOtpSubmit();
     }
   }, [otp]);
+
+  const handleRecoverySubmit = async () => {
+    if (!form.getValues().email || !form.getValues().password) return;
+
+    setLoading(true);
+    try {
+      const payload: LoginRequest = {
+        email: form.getValues().email,
+        password: form.getValues().password,
+        multi_factor_code: recoveryCode
+      };
+
+      const response = await login(payload);
+
+      if (response.success) {
+        setRecoveryOpen(false);
+        navigate("/cluster/", {replace: true});
+      } else {
+        toast.error(t("authentication.login.recovery.failed"), {
+          position: "top-right",
+        });
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (recoveryCode.length === 16 && !loading) {
+      handleRecoverySubmit();
+    }
+  }, [recoveryCode]);
 
   return (
     <div
@@ -164,6 +215,8 @@ export default function LoginForm() {
               <input
                 id="remember-check"
                 type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
                 className="h-4 w-4 mr-3 border border-gray-600 rounded-sm bg-transparent checked:bg-blue-600"
               />
               <label htmlFor="remember-check" className="select-none">
@@ -187,6 +240,7 @@ export default function LoginForm() {
         <DialogContent className="bg-white/10 backdrop-blur-md">
           <DialogHeader>
             <DialogTitle>{t("authentication.login.otp.title")}</DialogTitle>
+            <DialogDescription>{t("authentication.login.otp.description")}</DialogDescription>
           </DialogHeader>
           <div className="flex justify-center items-center my-4">
             <InputOTP maxLength={6} value={otp} onChange={setOtp}>
@@ -202,9 +256,74 @@ export default function LoginForm() {
               </InputOTPGroup>
             </InputOTP>
           </div>
+          <div className="flex justify-center items-center text-sm text-muted-foreground gap-1">
+            Zugang verloren?
+            <button
+              type="button"
+              onClick={() => {
+                setOtpRequired(false)
+                setRecoveryOpen(true)
+              }}
+              className="underline text-blue-400 hover:text-blue-300"
+            >
+              Wiederherstellungscodes!
+            </button>
+          </div>
           <DialogFooter>
             <Button onClick={handleOtpSubmit} disabled={loading}>
               {t("authentication.login.otp.submit")} {loading && <Spinner />}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={recoveryOpen} onOpenChange={setRecoveryOpen}>
+        <DialogContent className="sm:max-w-[800px] bg-white/10 backdrop-blur-md">
+          <DialogHeader>
+            <DialogTitle>{t("authentication.login.recovery.title")}</DialogTitle>
+            <DialogDescription>
+              {t("authentication.login.recovery.description")}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex justify-center items-center my-4">
+            <InputOTP maxLength={16} value={recoveryCode} onChange={setRecoveryCode}>
+              <InputOTPGroup>
+                <InputOTPSlot index={0} />
+                <InputOTPSlot index={1} />
+                <InputOTPSlot index={2} />
+                <InputOTPSlot index={3} />
+              </InputOTPGroup>
+              <InputOTPSeparator/>
+              <InputOTPGroup>
+                <InputOTPSlot index={4} />
+                <InputOTPSlot index={5} />
+                <InputOTPSlot index={6} />
+                <InputOTPSlot index={7} />
+              </InputOTPGroup>
+              <InputOTPSeparator/>
+              <InputOTPGroup>
+                <InputOTPSlot index={8} />
+                <InputOTPSlot index={9} />
+                <InputOTPSlot index={10} />
+                <InputOTPSlot index={11} />
+              </InputOTPGroup>
+              <InputOTPSeparator/>
+              <InputOTPGroup>
+                <InputOTPSlot index={12} />
+                <InputOTPSlot index={13} />
+                <InputOTPSlot index={14} />
+                <InputOTPSlot index={15} />
+              </InputOTPGroup>
+            </InputOTP>
+          </div>
+
+          <DialogFooter>
+            <Button
+              onClick={handleRecoverySubmit}
+              disabled={loading || recoveryCode.length !== 16}
+            >
+              {t("authentication.login.recovery.confirm")} {loading && <Spinner className="ml-2" />}
             </Button>
           </DialogFooter>
         </DialogContent>
