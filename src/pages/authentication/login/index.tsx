@@ -42,6 +42,8 @@ export default function LoginForm() {
 
   const login = useLogin();
   const form = useForm<LoginRequest>({});
+  const { setFocus } = form;
+
   const token = useUserToken();
 
   if (token.authentication_token) {
@@ -53,8 +55,11 @@ export default function LoginForm() {
     if (rememberedEmail) {
       form.setValue("email", rememberedEmail);
       setRememberMe(true);
+      setTimeout(() => setFocus("password"), 0);
+    } else {
+      setTimeout(() => setFocus("email"), 0);
     }
-  }, []);
+  }, [setFocus]);
 
   const handleFinish = async (values: LoginRequest) => {
     setLoading(true);
