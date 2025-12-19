@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import {ShieldPlus, ShieldOff, Copy} from "lucide-react";
+import {ShieldPlus, ShieldOff, Copy, Check} from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -16,7 +16,6 @@ import SettingsService from "@/api/services/settings-service.ts";
 import {
   InputOTP,
   InputOTPGroup,
-  InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import {toast} from "sonner";
@@ -36,6 +35,7 @@ export default function SecurityPageContent() {
   const [secret, setSecret] = React.useState<string>("");
   const [recoveryCodes, setRecoveryCodes] = React.useState<string[]>([]);
   const [token, setToken] = React.useState("");
+  const [copied, setCopied] = React.useState(false);
 
   React.useEffect(() => {
     SettingsService.getTwoFactorStatus().then((response) =>
@@ -115,6 +115,11 @@ export default function SecurityPageContent() {
 
   const handleCopyRecoveryCodes = async () => {
     await navigator.clipboard.writeText(recoveryCodes.join("\n"));
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
   };
 
   if (enabled === null) {
@@ -232,10 +237,15 @@ export default function SecurityPageContent() {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="absolute right-2 top-2"
+                  className={`absolute right-2 top-2`}
                   onClick={handleCopyRecoveryCodes}
                 >
-                  <Copy/> {t("settings.security.2fa.recovery.copy")}
+                  {copied
+                    ? <Check className="mr-1 h-4 w-4" />
+                    : <Copy className="mr-1 h-4 w-4" />}
+                  {copied
+                    ? t("settings.security.2fa.recovery.copied")
+                    : t("settings.security.2fa.recovery.copy")}
                 </Button>
 
                 <div className="grid grid-cols-2 gap-2 rounded-lg border px-3 py-15 font-mono text-sm text-center">
@@ -273,7 +283,6 @@ export default function SecurityPageContent() {
                     <InputOTPSlot index={1} />
                     <InputOTPSlot index={2} />
                   </InputOTPGroup>
-                  <InputOTPSeparator />
                   <InputOTPGroup>
                     <InputOTPSlot index={3} />
                     <InputOTPSlot index={4} />

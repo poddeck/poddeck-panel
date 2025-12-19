@@ -545,7 +545,8 @@
           "title": "Wiederherstellungscodes",
           "description": "Diese Codes werden benötigt, wenn Sie den Zugriff auf Ihr Authentifizierungsgerät verlieren.",
           "instructions": "Bewahren Sie diese Codes an einem sicheren Ort auf. Speichern Sie sie nicht auf demselben Gerät, das Sie für die Zwei-Faktor-Authentifizierung verwenden.",
-          "copy": "Kopieren"
+          "copy": "Kopieren",
+          "copied": "Kopiert"
         },
         "confirmation": {
           "title": "Bestätigung",

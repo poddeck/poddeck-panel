@@ -545,7 +545,8 @@
           "title": "Recovery codes",
           "description": "These codes are required if you lose access to your authenticator device.",
           "instructions": "Store these codes in a safe place. Do not keep them on the same device you use for two-factor authentication.",
-          "copy": "Copy"
+          "copy": "Copy",
+          "copied": "Copied"
         },
         "confirmation": {
           "title": "Confirmation",
