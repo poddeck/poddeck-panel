@@ -2,7 +2,7 @@ import {AppHeader} from "@/layouts/panel/header";
 import {SidebarProvider} from "@/components/ui/sidebar.tsx";
 import React, {useEffect, useState} from "react";
 import ClusterService, {type Cluster} from "@/api/services/cluster-service.ts";
-import {useClusterActions} from "@/store/cluster-store.ts";
+import useClusterStore, {useClusterActions} from "@/store/cluster-store.ts";
 import {useRouter} from "@/routes/hooks";
 import {Dialog, DialogTrigger} from "@/components/ui/dialog.tsx";
 import ClusterAddDialog from "@/layouts/panel/sidebar/cluster/add-dialog.tsx";
@@ -42,6 +42,7 @@ export default function ClusterPage() {
   const [clickedCluster, setClickedCluster] = React.useState<Cluster | null>(null);
   const [open, setOpen] = React.useState(false);
   const {setClusterId} = useClusterActions();
+  const currentClusterId = useClusterStore(state => state.clusterId);
   const {replace} = useRouter();
 
   useEffect(() => {
@@ -99,6 +100,16 @@ export default function ClusterPage() {
     return () => clearInterval(interval);
   }, [clusters]);
 
+  const sortedClusters = React.useMemo(() => {
+    if (!currentClusterId) return clusters;
+
+    return [...clusters].sort((a, b) => {
+      if (a.id === currentClusterId) return -1;
+      if (b.id === currentClusterId) return 1;
+      return 0;
+    });
+  }, [clusters, currentClusterId]);
+
   function clickCluster(cluster: Cluster) {
     setClusterId(cluster.id);
     replace("/overview/");
@@ -122,7 +133,7 @@ export default function ClusterPage() {
                 </>
               ) : (
                 <>
-                  {clusters.map(cluster => (
+                  {sortedClusters.map(cluster => (
                     <ClusterCard
                       key={cluster.id}
                       cluster={cluster}
