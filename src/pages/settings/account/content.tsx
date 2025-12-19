@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -15,10 +14,19 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import SettingsService from "@/api/services/settings-service.ts";
+import {useTranslation} from "react-i18next";
+import {Spinner} from "@/components/ui/spinner.tsx";
+import {toast} from "sonner";
+import {useRouter} from "@/routes/hooks";
+import {useUserActions} from "@/store/user-store.ts";
 
 export default function AccountPageContent() {
+  const {t} = useTranslation();
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const { clearUserToken, clearUserInformation } = useUserActions();
+  const { replace } = useRouter();
 
   const handleDelete = async () => {
     if (!password) return;
@@ -28,7 +36,13 @@ export default function AccountPageContent() {
       const response = await SettingsService.deleteAccount({ password });
 
       if (response.success) {
-        window.location.href = "/login";
+        clearUserToken();
+        clearUserInformation();
+        replace("/login/");
+      } else {
+        toast.error(t("settings.account.delete.wrong.password"), {
+          position: "top-right",
+        });
       }
     } finally {
       setLoading(false);
@@ -39,42 +53,40 @@ export default function AccountPageContent() {
     <div className="space-y-6">
       <div>
         <div className="mb-4 w-full border-b border-secondary pb-2">
-          <span className="text-destructive">Delete account</span>
+          <span className="text-destructive">{t("settings.account.delete.title")}</span>
         </div>
 
         <div className="mb-6">
           <span className="text-sm text-muted-foreground">
-            Are you sure you want to permanently delete your account? This
-            operation cannot be reversed and will result in permanent loss of
-            access to PodDeck.
+            {t("settings.account.delete.description")}
           </span>
         </div>
 
         <div className="flex justify-center">
-          <AlertDialog>
+          <AlertDialog open={deleteOpen} onOpenChange={setDeleteOpen}>
             <AlertDialogTrigger asChild>
               <Button variant="destructive">
                 <Trash2 className="mr-1 size-4" />
-                Delete
+                {t("settings.account.delete.button")}
               </Button>
             </AlertDialogTrigger>
 
             <AlertDialogContent>
               <AlertDialogHeader>
                 <AlertDialogTitle>
-                  Confirm account deletion
+                  {t("settings.account.delete.dialog.title")}
                 </AlertDialogTitle>
                 <AlertDialogDescription>
-                  Please enter your password to permanently delete your account.
+                  {t("settings.account.delete.dialog.description")}
                 </AlertDialogDescription>
               </AlertDialogHeader>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t("settings.account.delete.password")}</Label>
                 <Input
                   id="password"
                   type="password"
-                  placeholder="Password"
+                  placeholder={t("settings.account.delete.password")}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={loading}
@@ -83,15 +95,18 @@ export default function AccountPageContent() {
 
               <AlertDialogFooter>
                 <AlertDialogCancel disabled={loading}>
-                  Cancel
+                  {t("settings.account.delete.cancel")}
                 </AlertDialogCancel>
-                <AlertDialogAction
+
+                <Button
+                  type="button"
                   onClick={handleDelete}
-                  disabled={!password || loading}
-                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  disabled={loading}
+                  variant="destructive"
                 >
-                  {loading ? "Deleting…" : "Delete account"}
-                </AlertDialogAction>
+                  {loading && <Spinner className="mr-1" />}
+                  {t("settings.account.delete.button")}
+                </Button>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>

@@ -515,7 +515,19 @@
       "saving": "Speichere"
     },
     "account": {
-      "title": "Konto"
+      "title": "Konto",
+      "delete": {
+        "title": "Konto löschen",
+        "description": "Möchten Sie Ihr Konto wirklich dauerhaft löschen? Dieser Vorgang kann nicht rückgängig gemacht werden und führt zum dauerhaften Verlust des Zugriffs auf PodDeck.",
+        "button": "Löschen",
+        "password": "Passwort",
+        "cancel": "Abbrechen",
+        "dialog": {
+          "title": "Konto löschen bestätigen",
+          "description": "Bitte geben Sie Ihr Passwort ein, um Ihr Konto dauerhaft zu löschen. Dieser Vorgang kann nicht rückgängig gemacht werden."
+        },
+        "wrong.password": "Das eingegebene Passwort ist falsch. Bitte versuchen Sie es erneut"
+      }
     },
     "personalization": {
       "title": "Personalisierung"

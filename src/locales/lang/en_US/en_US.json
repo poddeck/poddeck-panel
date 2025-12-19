@@ -515,7 +515,19 @@
       "saving": "Saving"
     },
     "account": {
-      "title": "Account"
+      "title": "Account",
+      "delete": {
+        "title": "Delete account",
+        "description": "Are you sure you want to permanently delete your account? This operation cannot be reversed and will result in permanent loss of access to PodDeck.",
+        "button": "Delete",
+        "password": "Password",
+        "cancel": "Cancel",
+        "dialog": {
+          "title": "Confirm account deletion",
+          "description": "Please enter your password to permanently delete your account. This cannot be undone."
+        },
+        "wrong.password": "The password you entered is incorrect. Please try again"
+      }
     },
     "personalization": {
       "title": "Personalization"
