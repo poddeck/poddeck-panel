@@ -19,8 +19,11 @@ import {MoreHorizontal, Monitor, Smartphone, X} from "lucide-react";
 import SettingsService, {
   type SessionInfo
 } from "@/api/services/settings-service.ts";
+import {useTranslation} from "react-i18next";
+import {toast} from "sonner";
 
 export default function SessionsPageContent() {
+  const {t} = useTranslation();
   const [sessions, setSessions] = React.useState<SessionInfo[]>([]);
   const [loading, setLoading] = React.useState(true);
 
@@ -44,10 +47,13 @@ export default function SessionsPageContent() {
   const removeSession = async (id: string) => {
     await SettingsService.closeSession({session: id});
     setSessions((prev) => prev.filter((s) => s.id !== id));
+    toast.success(t("settings.sessions.close.successful"), {
+      position: "top-right",
+    });
   };
 
   if (loading) {
-    return <div className="text-muted-foreground">Loading sessions…</div>;
+    return <div className="text-muted-foreground">{t("settings.sessions.loading")}…</div>;
   }
 
   return (
@@ -72,6 +78,7 @@ function SessionRow(
     onDelete: (id: string) => void;
   }
 ) {
+  const {t} = useTranslation();
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -86,7 +93,7 @@ function SessionRow(
 
         <div className="space-y-1">
           <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs text-emerald-600">
-            {session.isCurrent ? "Current" : "Active"}
+            {session.isCurrent ? t("settings.sessions.current") : t("settings.sessions.active")}
           </span>
 
           <div>
@@ -127,7 +134,7 @@ function SessionRow(
                   >
                     <div className="flex items-center gap-2 text-rose-600">
                       <X size={16} className="text-rose-600"/>
-                      Close
+                      {t("settings.sessions.close.button")}
                     </div>
                   </DropdownMenuItem>
                 </DialogTrigger>
@@ -136,10 +143,9 @@ function SessionRow(
 
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Close session</DialogTitle>
+                <DialogTitle>{t("settings.sessions.close.title")}</DialogTitle>
                 <DialogDescription>
-                  This will immediately log out this session. This action
-                  cannot be undone.
+                  {t("settings.sessions.close.description")}
                 </DialogDescription>
               </DialogHeader>
 
@@ -151,7 +157,7 @@ function SessionRow(
                     setOpen(false);
                   }}
                 >
-                  Close session
+                  {t("settings.sessions.close.button")}
                 </Button>
               </DialogFooter>
             </DialogContent>

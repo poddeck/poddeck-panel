@@ -563,7 +563,16 @@
       }
     },
     "sessions": {
-      "title": "Sessions"
+      "title": "Sessions",
+      "loading": "Loading sessions",
+      "current": "Current",
+      "active": "Active",
+      "close": {
+        "button": "Close",
+        "title": "Close session",
+        "description": "This will immediately log out this session. This action cannot be undone.",
+        "successful": "You have successfully closed the session"
+      }
     }
   }
 }

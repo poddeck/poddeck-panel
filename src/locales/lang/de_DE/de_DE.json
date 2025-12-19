@@ -563,7 +563,16 @@
       }
     },
     "sessions": {
-      "title": "Sitzungen"
+      "title": "Sitzungen",
+      "loading": "Lade Sitzungen",
+      "current": "Aktuelle",
+      "active": "Aktiv",
+      "close": {
+        "button": "Schließen",
+        "title": "Sitzung schließen",
+        "description": "Dadurch wird diese Sitzung sofort beendet. Diese Aktion kann nicht rückgängig gemacht werden.",
+        "successful": "Sie haben die Sitzung erfolgreich geschlossen"
+      }
     }
   }
 }
