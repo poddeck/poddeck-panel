@@ -5,7 +5,7 @@ import OverviewLocationBox from "@/pages/panel/overview/location.tsx";
 import OverviewActivityBox from "@/pages/panel/overview/activity.tsx";
 import OverviewNodesBox from "@/pages/panel/overview/nodes.tsx";
 import OverviewNewsBox from "@/pages/panel/overview/news.tsx";
-import {useEffect, useState} from "react";
+import {startTransition, useEffect, useState} from "react";
 import nodeService, {type Node} from "@/api/services/node-service.ts";
 
 export default function OverviewPage() {
@@ -15,7 +15,9 @@ export default function OverviewPage() {
     async function loadNodes() {
       const response = await nodeService.list();
       if (response.success !== false) {
-        setNodes(response.nodes);
+        startTransition(() => {
+          setNodes(response.nodes);
+        });
       }
     }
     loadNodes();

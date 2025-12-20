@@ -9,9 +9,9 @@ import {
 } from "@/components/ui/card.tsx";
 import {Globe, type GlobeMarker} from "@/components/ui/globe.tsx";
 import {MapPin} from "lucide-react";
-import {useMemo} from "react";
+import {memo, useMemo} from "react";
 
-export default function OverviewLocationBox() {
+function OverviewLocationBox() {
   const {t} = useTranslation();
   const markers: GlobeMarker[] = useMemo(() => [
     { location: [52.5200, 13.4050], size: 0.1 },
@@ -29,3 +29,5 @@ export default function OverviewLocationBox() {
     </Card>
   )
 }
+
+export default memo(OverviewLocationBox);

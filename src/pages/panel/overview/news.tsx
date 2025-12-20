@@ -1,6 +1,6 @@
 "use client"
 
-import {useEffect, useState} from "react";
+import {startTransition, useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {
   Card,
@@ -41,7 +41,9 @@ export default function OverviewNewsBox() {
     const fetchNotifications = async () => {
       const result = await NotificationService.listCluster();
       if (result.notifications) {
-        setNotifications(result.notifications);
+        startTransition(() => {
+          setNotifications(result.notifications);
+        });
       }
     };
 

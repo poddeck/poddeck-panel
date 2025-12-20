@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {startTransition, useEffect, useState} from "react";
 import { useTranslation } from "react-i18next";
 import { Bar, BarChart, CartesianGrid, Rectangle, XAxis } from "recharts";
 import { Activity } from "lucide-react";
@@ -132,7 +132,9 @@ export default function OverviewActivityBox() {
           response.events as Event[]
         );
 
-        setChartData(aggregated);
+        startTransition(() => {
+          setChartData(aggregated);
+        });
       } catch (err) {
         console.error("Failed to load events", err);
       }
