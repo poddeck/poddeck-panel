@@ -7,13 +7,24 @@ import {
   BreadcrumbPage
 } from "@/components/ui/breadcrumb.tsx";
 import {useTranslation} from "react-i18next";
-import {PlusIcon} from "lucide-react";
+import {PlusIcon, UserRound} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import * as React from 'react'
 import {HeaderSearchBar} from "./search-bar";
 import {Dialog, DialogTrigger} from "@/components/ui/dialog.tsx";
 import ResourceAddDialog from "@/layouts/panel/header/resource-add-dialog.tsx";
 import NotificationSheet from "@/layouts/panel/header/notification/sheet.tsx";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger
+} from "@/components/ui/dropdown-menu.tsx";
+import {Avatar, AvatarFallback} from "@/components/ui/avatar.tsx";
+import {
+  SidebarUserDropdownContent
+} from "@/layouts/panel/sidebar/user/dropdown-content.tsx";
+import {SettingsDialog} from "@/layouts/settings";
+import {useUserInformation} from "@/store/user-store.ts";
 
 interface AppHeaderProps {
   title?: string;
@@ -30,6 +41,11 @@ export function AppHeader(
 ) {
   const {t} = useTranslation();
   const [open, setOpen] = React.useState(false);
+  const userInformation = useUserInformation();
+  const user = {
+    name: userInformation?.name ?? "",
+    email: userInformation?.email ?? "",
+  };
 
   return (
     <header
@@ -83,6 +99,36 @@ export function AppHeader(
         <Separator orientation="vertical"
                    className="ml-5 mr-3 hidden md:block"/>
         <NotificationSheet cluster={cluster}/>
+        {!cluster && (
+          <>
+            <Separator orientation="vertical"
+                       className="mr-3 hidden md:block"/>
+            <Dialog>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="px-2">
+                    <div className='relative w-fit'>
+                      <Avatar className='size-5 rounded-sm'>
+                        <AvatarFallback className='rounded-sm bg-transparent'>
+                          <UserRound className='size-5'/>
+                        </AvatarFallback>
+                      </Avatar>
+                    </div>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
+                  side="top"
+                  align="end"
+                  sideOffset={4}
+                >
+                  <SidebarUserDropdownContent user={user}/>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              <SettingsDialog/>
+            </Dialog>
+          </>
+        )}
       </div>
     </header>
   );
