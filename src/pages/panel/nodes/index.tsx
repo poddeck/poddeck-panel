@@ -19,6 +19,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty"
+import {useRouter} from "@/routes/hooks";
 
 function NodeAddButton() {
   const {t} = useTranslation();
@@ -67,6 +68,7 @@ function NodeListEmpty() {
 export default function NodesPage() {
   const [nodes, setNodes] = useState<Node[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const {replace} = useRouter();
   useEffect(() => {
     async function loadNodes() {
       try {
@@ -100,6 +102,7 @@ export default function NodesPage() {
           pageSize={5}
           initialSorting={[{id: "name", desc: false}]}
           isLoading={isLoading}
+          onClick={node => replace("/node/overview/?node=" + node.name)}
           bulkActions={[
             {
               name: "panel.page.nodes.action.delete",
