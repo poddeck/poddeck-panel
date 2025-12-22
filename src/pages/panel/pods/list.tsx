@@ -34,7 +34,13 @@ function PodListEmpty() {
 }
 
 export default function PodsList(
-  {controller}: { controller?: string }
+  {
+    controller,
+    node
+  }: {
+    controller?: string,
+    node?: string
+  },
 ) {
   const [pods, setPods] = useState<Pod[]>([]);
   const [namespaces, setNamespaces] = useState<Namespace[]>([]);
@@ -66,6 +72,10 @@ export default function PodsList(
       clearInterval(interval);
     };
   }, []);
+  const defaultFilters = {
+    ...(controller && { controlled_by: controller }),
+    ...(node && { node }),
+  }
   if (!isLoading && pods.length === 0) {
     return <PodListEmpty/>
   }
@@ -84,11 +94,7 @@ export default function PodsList(
           options: namespaces.map(namespace => namespace.name)
         },
       ]}
-      defaultFilters={controller ?
-        {
-          controlled_by: controller,
-        } : {}
-      }
+      defaultFilters={defaultFilters}
       onClick={pod => replace("/pod/overview/?pod=" + pod.name +
         "&namespace=" + pod.namespace)}
       bulkActions={[
