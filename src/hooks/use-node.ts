@@ -17,7 +17,7 @@ export default function useNode() {
       if (nodeCache[cacheKey]) {
         setNode(nodeCache[cacheKey]);
       }
-      const response = await nodeService.find({ node: queryNode });
+      const response = await nodeService.find({ name: queryNode });
       if (response.success && isMounted) {
         nodeCache[cacheKey] = response.node;
         setNode(response.node);

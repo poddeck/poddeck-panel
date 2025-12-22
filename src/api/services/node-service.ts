@@ -23,8 +23,18 @@ export type NodeListResponse = {
   success?: boolean;
 }
 
+export interface NodeFindRequest {
+  name: string;
+}
+
+export type NodeFindResponse = {
+  success: boolean;
+  node: Node;
+}
+
 export const NodeApi = {
   List: "/nodes/",
+  Find: "/node/find/"
 } as const;
 
 const list = () => client.get<NodeListResponse>({url: NodeApi.List});
@@ -36,8 +46,13 @@ const listCluster = (clusterId: string) => client.get<NodeListResponse>(
     },
   }
 );
+const find = (data: NodeFindRequest) => client.post<NodeFindResponse>({
+  url: NodeApi.Find,
+  data
+});
 
 export default {
   list,
-  listCluster
+  listCluster,
+  find
 };
