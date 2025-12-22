@@ -237,6 +237,22 @@
           "delete": "Delete"
         }
       },
+      "node": {
+        "tabs": {
+          "overview": "Overview",
+          "workload": "Workload",
+          "pods": "Pods"
+        },
+        "actions": "Actions",
+        "overview": {
+          "general": {
+            "title": "GENERAL"
+          },
+          "events": {
+            "title": "EVENTS"
+          }
+        }
+      },
       "workload": {
         "title": "Workload",
         "nodes.empty": "No nodes available",

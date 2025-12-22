@@ -237,6 +237,22 @@
           "delete": "Löschen"
         }
       },
+      "node": {
+        "tabs": {
+          "overview": "Übersicht",
+          "workload": "Auslastung",
+          "pods": "Pods"
+        },
+        "actions": "Aktionen",
+        "overview": {
+          "general": {
+            "title": "ALLGEMEIN"
+          },
+          "events": {
+            "title": "EREIGNISSE"
+          }
+        }
+      },
       "workload": {
         "title": "Auslastung",
         "nodes.empty": "Keine Knoten verfügbar",
