@@ -2,29 +2,26 @@ import {Tabs, TabsList, TabsTrigger} from "@/components/ui/tabs.tsx";
 import {Link, useSearchParams} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 import {
-  Activity,
   ChevronDown,
-  Clock,
-  Group, RefreshCcw,
-  Rocket, Scale,
-  Trash2
+  Cpu,
+  HardDrive,
+  Layers,
+  MemoryStick,
+  Server
 } from "lucide-react";
 import {Separator} from "@/components/ui/separator.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {
   DropdownMenu,
-  DropdownMenuContent, DropdownMenuItem,
+  DropdownMenuContent,
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
 import {useState} from "react";
-import NodeService, {type Node} from "@/api/services/node-service.ts";
+import {type Node} from "@/api/services/node-service.ts";
 import {Skeleton} from "@/components/ui/skeleton.tsx";
-import {Dialog, DialogTrigger} from "@/components/ui/dialog.tsx";
-import {useRouter} from "@/routes/hooks";
-import {Drawer, DrawerTrigger} from "@/components/ui/drawer.tsx";
-import {toast} from "sonner";
-import {Age} from "@/components/age/age.tsx";
+import {Dialog} from "@/components/ui/dialog.tsx";
+import NodeHeaderStatus from "@/pages/panel/node/status.tsx";
 
 const tabs = [
   {
@@ -54,49 +51,58 @@ export default function NodePageHeader(
   }
 ) {
   const {t} = useTranslation();
-  const {replace} = useRouter();
   const [actionsOpen, setActionsOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [scaleOpen, setScaleOpen] = useState(false);
   const [searchParams] = useSearchParams();
   return (
     <div className="w-full bg-sidebar mb-6">
       <div className="w-[min(1500px,95%)] mx-auto flex flex-col flex-1">
         <div className="flex items-center justify-between pt-10 pb-8">
           <div className="flex items-center">
-            <Rocket size={60} className="ml-2"/>
+            <Server size={60} className="ml-2"/>
             <Separator orientation="vertical" className="mx-5 h-15!"/>
             <div>
               <div className="flex items-center gap-3 mb-2">
                 {node ? (
-                  <span className="text-xl">{node.name}</span>
+                  <>
+                    <NodeHeaderStatus isActive={node.ready}/>
+                    <span className="text-xl">{node.name}</span>
+                  </>
                 ) : (
                   <Skeleton className="w-80 h-8"/>
                 )}
               </div>
               <div className="flex items-center gap-8">
                 <div className="flex items-center gap-2">
-                  <Activity size={16}/>
+                  <Cpu size={16}/>
                   {node ? (
-                    <span>{node.ready_replicas} / {node.replicas}</span>
+                    <span>{node.cpu_cores} {t("panel.page.nodes.cores")}</span>
                   ) : (
                     <Skeleton className="w-15 h-6"/>
                   )}
                 </div>
                 <div className="flex items-center gap-2">
-                  <Group size={16}/>
+                  <MemoryStick size={16}/>
                   {node ? (
-                    <span>{node.namespace}</span>
+                    <span>{node.total_memory.toFixed(2)} GB</span>
                   ) : (
-                    <Skeleton className="w-30 h-6"/>
+                    <Skeleton className="w-15 h-6"/>
                   )}
                 </div>
                 <div className="flex items-center gap-2">
-                  <Clock size={16}/>
+                  <HardDrive size={16}/>
                   {node ? (
-                    <Age age={node!.age}/>
+                    <span>{node.total_storage.toFixed(2)} GB</span>
                   ) : (
-                    <Skeleton className="w-8 h-6"/>
+                    <Skeleton className="w-15 h-6"/>
+                  )}
+                </div>
+                <div className="flex items-center gap-2">
+                  <Layers size={16}/>
+                  {node ? (
+                    <span>{node.version}</span>
+                  ) : (
+                    <Skeleton className="w-30 h-6"/>
                   )}
                 </div>
               </div>
@@ -117,41 +123,8 @@ export default function NodePageHeader(
                 </DropdownMenuTrigger>
                 <DropdownMenuSeparator/>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem
-                    onClick={() => {
-                      NodeService.restart({
-                        namespace: node ? node.namespace : "",
-                        node: node ? node.name : ""
-                      });
-                      toast.success(t("panel.page.nodes.action.restart.successful"), {
-                        position: "top-right",
-                      });
-                    }}
-                    className="text-amber-600 flex items-center gap-2"
-                  >
-                    <RefreshCcw className="text-amber-600" size={16}/>
-                    {t("panel.page.nodes.action.restart")}
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator/>
-                  <DialogTrigger asChild>
-                    <DropdownMenuItem
-                      variant="destructive"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      <div className="text-rose-600 flex items-center gap-2">
-                        <Trash2 className="text-rose-600" size={16}/>
-                        {t("panel.page.nodes.action.delete")}
-                      </div>
-                    </DropdownMenuItem>
-                  </DialogTrigger>
                 </DropdownMenuContent>
               </DropdownMenu>
-              <NodeDeleteDialog
-                namespace={node ? node.namespace : ""}
-                node={node ? node.name : ""}
-                setOpen={setDeleteOpen}
-                onDelete={() => replace("/nodes/")}
-              />
             </Dialog>
           </div>
         </div>
