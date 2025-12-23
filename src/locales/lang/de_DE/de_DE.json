@@ -246,10 +246,17 @@
         "actions": "Aktionen",
         "overview": {
           "general": {
-            "title": "ALLGEMEIN"
+            "title": "ALLGEMEIN",
+            "version": "Version",
+            "age": "Alter",
+            "labels": "Labels",
+            "annotations": "Annotations"
           },
           "events": {
             "title": "EREIGNISSE"
+          },
+          "conditions": {
+            "title": "ZUSTÄNDE"
           }
         }
       },

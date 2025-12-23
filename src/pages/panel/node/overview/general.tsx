@@ -1,6 +1,7 @@
 import {Bolt} from "lucide-react";
 import {useTranslation} from "react-i18next";
 import type {Node} from "@/api/services/node-service.ts";
+import {Age} from "@/components/age/age.tsx";
 
 export default function NodeOverviewGeneral(
   {
@@ -9,8 +10,7 @@ export default function NodeOverviewGeneral(
     node: Node | null
   }
 ) {
-  const {t, i18n} = useTranslation();
-  const language = (i18n.resolvedLanguage || "en_US").replace("_", "-");
+  const {t} = useTranslation();
   return (
     <div className="bg-sidebar aspect-video rounded-xl p-8 pb-9 flex flex-col">
       <span className="flex items-center gap-3 text-xl mb-5">
@@ -19,13 +19,13 @@ export default function NodeOverviewGeneral(
       <div className="overflow-y-auto flex-1 pr-2">
         <div className="flex justify-between mb-1">
           <span
-            className="text-primary/60">{t("panel.page.node.overview.general.namespace")}</span>
-          <span>{node?.namespace}</span>
+            className="text-primary/60">{t("panel.page.node.overview.general.version")}</span>
+          <span>{node?.version}</span>
         </div>
         <div className="flex justify-between mb-1">
           <span
-            className="text-primary/60">{t("panel.page.node.overview.general.start")}</span>
-          <span>{new Date(Date.now() - (node ? node.age : 0)).toLocaleString(language)}</span>
+            className="text-primary/60">{t("panel.page.node.overview.general.age")}</span>
+          <Age age={node ? node.age : 0}/>
         </div>
         <div className="flex justify-between gap-5 mb-2">
           <span

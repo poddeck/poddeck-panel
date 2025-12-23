@@ -246,10 +246,17 @@
         "actions": "Actions",
         "overview": {
           "general": {
-            "title": "GENERAL"
+            "title": "GENERAL",
+            "version": "Version",
+            "age": "Age",
+            "labels": "Labels",
+            "annotations": "Annotations"
           },
           "events": {
             "title": "EVENTS"
+          },
+          "conditions": {
+            "title": "CONDITIONS"
           }
         }
       },
