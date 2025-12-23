@@ -16,6 +16,28 @@ export type Node = {
   storage_ratio: number;
   version: string;
   ready: boolean;
+  age: number;
+  labels: Record<string, string>;
+  annotations: Record<string, string>;
+  conditions: Condition[];
+  events: Event[];
+}
+
+export type Condition = {
+  type: string;
+  status: string;
+  reason: string;
+  message: string;
+  last_heartbeat: number;
+  last_transition: number;
+}
+
+export type Event = {
+  type: string;
+  reason: string;
+  message: string;
+  timestamp: number;
+  source: string;
 }
 
 export type NodeListResponse = {
