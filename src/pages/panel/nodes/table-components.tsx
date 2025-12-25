@@ -1,7 +1,6 @@
 import {type Row} from "@tanstack/react-table";
 import {Button} from "@/components/ui/button.tsx";
 import {
-  Edit2,
   Gauge,
   type LucideIcon,
   MoreHorizontal,
@@ -41,19 +40,13 @@ export function NodesActionDropdown({row}: { row: Row<Node> }) {
         <DropdownMenuContent align="start">
           <DropdownMenuItem
             onClick={() => {
-            }}
-            className="flex items-center gap-2"
-          >
-            <Edit2 size={16}/> {t("panel.page.nodes.action.edit")}
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => {
               replace("/workload/?node=" + row.original.name);
             }}
             className="flex items-center gap-2"
           >
             <Gauge size={16}/> {t("panel.page.nodes.action.workload")}
           </DropdownMenuItem>
+          <DropdownMenuSeparator/>
           <DropdownMenuItem
             onClick={() => {
             }}

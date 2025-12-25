@@ -6,14 +6,14 @@ import {
   Cpu,
   HardDrive,
   Layers,
-  MemoryStick,
-  Server
+  MemoryStick, Power, RefreshCcw,
+  Server, Trash2
 } from "lucide-react";
 import {Separator} from "@/components/ui/separator.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {
   DropdownMenu,
-  DropdownMenuContent,
+  DropdownMenuContent, DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu.tsx";
@@ -123,6 +123,32 @@ export default function NodePageHeader(
                 </DropdownMenuTrigger>
                 <DropdownMenuSeparator/>
                 <DropdownMenuContent align="end">
+                  <DropdownMenuItem
+                    onClick={() => {
+                    }}
+                    className="text-amber-600 flex items-center gap-2"
+                  >
+                    <RefreshCcw className="text-amber-600"
+                                size={16}/> {t("panel.page.nodes.action.restart")}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                    }}
+                    className="text-amber-600 flex items-center gap-2"
+                  >
+                    <Power className="text-amber-600"
+                           size={16}/> {t("panel.page.nodes.action.drain")}
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator/>
+                  <DropdownMenuItem
+                    onClick={() => {
+                    }}
+                    className="text-rose-600 flex items-center gap-2"
+                    variant="destructive"
+                  >
+                    <Trash2 className="text-rose-600"
+                            size={16}/> {t("panel.page.nodes.action.delete")}
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </Dialog>

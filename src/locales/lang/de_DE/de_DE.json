@@ -230,7 +230,6 @@
           "not.ready": "Nicht bereit"
         },
         "action": {
-          "edit": "Bearbeiten",
           "workload": "Auslastung",
           "restart": "Neustarten",
           "drain": "Entleeren",
