@@ -44,12 +44,15 @@ export default function DataTablePagination<T>(
         <span className='text-foreground'>{table.getPageCount()}</span>
       </p>
 
-      <Pagination>
+      <Pagination className="relative z-10">
         <PaginationContent>
           <PaginationItem>
-            <Button size="icon" variant="outline"
-                    onClick={() => table.previousPage()}
-                    disabled={!table.getCanPreviousPage()}>
+            <Button
+              size="icon"
+              variant="outline"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+            >
               <ChevronLeftIcon/>
             </Button>
           </PaginationItem>
@@ -61,8 +64,11 @@ export default function DataTablePagination<T>(
             const active = p === pagination.pageIndex + 1
             return (
               <PaginationItem key={p}>
-                <Button size="icon" variant={active ? 'outline' : 'ghost'}
-                        onClick={() => table.setPageIndex(p - 1)}>
+                <Button
+                  size="icon"
+                  variant={active ? 'outline' : 'ghost'}
+                  onClick={() => table.setPageIndex(p - 1)}
+                >
                   {p}
                 </Button>
               </PaginationItem>
@@ -73,9 +79,12 @@ export default function DataTablePagination<T>(
             <PaginationItem><PaginationEllipsis/></PaginationItem>}
 
           <PaginationItem>
-            <Button size="icon" variant="outline"
-                    onClick={() => table.nextPage()}
-                    disabled={!table.getCanNextPage()}>
+            <Button
+              size="icon"
+              variant="outline"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+            >
               <ChevronRightIcon/>
             </Button>
           </PaginationItem>
@@ -87,8 +96,12 @@ export default function DataTablePagination<T>(
         <SelectTrigger className="w-fit"><SelectValue/></SelectTrigger>
         <SelectContent align="end">
           {[1, 5, 10, 25, 50].map(size => (
-            <SelectItem key={size}
-                        value={size.toString()}>{size} / {t("table.page")}</SelectItem>
+            <SelectItem
+              key={size}
+              value={size.toString()}
+            >
+              {size} / {t("table.page")}
+            </SelectItem>
           ))}
         </SelectContent>
       </Select>
