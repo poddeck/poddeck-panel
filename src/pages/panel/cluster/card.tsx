@@ -187,7 +187,7 @@ export function ClusterCard(
             {cluster.online && (
               <div className="flex items-center gap-1">
                 <Layers size={15}/>
-                <span>{nodes[0]?.version ?? "Unknown"}</span>
+                <span>{nodes[0]?.kubelet_version ?? "Unknown"}</span>
               </div>
             )}
           </CardDescription>

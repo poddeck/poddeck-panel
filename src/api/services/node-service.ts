@@ -14,7 +14,11 @@ export type Node = {
   total_storage: number;
   used_storage: number;
   storage_ratio: number;
-  version: string;
+  architecture: string;
+  os_image: string;
+  operating_system: string;
+  container_runtime_version: string;
+  kubelet_version: string;
   ready: boolean;
   age: number;
   labels: Record<string, string>;

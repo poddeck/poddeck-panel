@@ -247,10 +247,22 @@
         "overview": {
           "general": {
             "title": "ALLGEMEIN",
-            "version": "Version",
+            "runtime.version": "Runtime Version",
+            "kubelet.version": "Kubelet Version",
             "age": "Alter",
             "labels": "Labels",
             "annotations": "Annotations"
+          },
+          "platform": {
+            "title": "Plattform",
+            "architecture": "Architektur",
+            "os": "Betriebssystem",
+            "image": "Image"
+          },
+          "capacity": {
+            "title": "KAPAZITÄT",
+            "cpu": "CPU",
+            "memory": "Memory"
           },
           "events": {
             "title": "EREIGNISSE"

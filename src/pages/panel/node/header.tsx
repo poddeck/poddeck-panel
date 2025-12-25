@@ -100,7 +100,7 @@ export default function NodePageHeader(
                 <div className="flex items-center gap-2">
                   <Layers size={16}/>
                   {node ? (
-                    <span>{node.version}</span>
+                    <span>{node.kubelet_version}</span>
                   ) : (
                     <Skeleton className="w-30 h-6"/>
                   )}

@@ -19,8 +19,13 @@ export default function NodeOverviewGeneral(
       <div className="overflow-y-auto flex-1 pr-2">
         <div className="flex justify-between mb-1">
           <span
-            className="text-primary/60">{t("panel.page.node.overview.general.version")}</span>
-          <span>{node?.version}</span>
+            className="text-primary/60">{t("panel.page.node.overview.general.runtime.version")}</span>
+          <span>{node?.container_runtime_version}</span>
+        </div>
+        <div className="flex justify-between mb-1">
+          <span
+            className="text-primary/60">{t("panel.page.node.overview.general.kubelet.version")}</span>
+          <span>{node?.kubelet_version}</span>
         </div>
         <div className="flex justify-between mb-1">
           <span

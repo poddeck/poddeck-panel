@@ -75,7 +75,7 @@ export const columns: ColumnDef<Node, unknown>[] = [
   },
   {
     header: "panel.page.nodes.column.version",
-    accessorKey: "version",
+    accessorKey: "kubelet_version",
     maxSize: 100,
   },
   {
