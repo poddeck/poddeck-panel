@@ -17,6 +17,7 @@ import {
 import {Badge} from "@/components/ui/badge.tsx";
 import {Link} from "react-router-dom";
 import {useLocation} from "react-use";
+import {cn} from "@/lib/utils.ts";
 
 export function SidebarNavigation({
                                     items,
@@ -31,6 +32,7 @@ export function SidebarNavigation({
       url: string,
       icon: LucideIcon,
       notifications?: number
+      disabled: boolean
     }[]
   }[]
 }) {
@@ -59,18 +61,29 @@ export function SidebarNavigation({
                   <SidebarMenuSub>
                     {item.items?.map((subItem) => (
                       <SidebarMenuSubItem key={subItem.title}>
-                        <SidebarMenuSubButton asChild
-                                              className={(pathname === subItem.url) ? "bg-accent text-accent-foreground" : ""}>
-                          <Link to={subItem.url}>
-                            {subItem.icon && <subItem.icon/>}
-                            <span>{subItem.title}</span>
-                            {subItem.notifications &&
-                              <Badge
-                                className="ml-auto h-5 min-w-5 rounded-full px-1 pt-1 font-mono tabular-nums">
-                                {subItem.notifications}
-                              </Badge>
-                            }
-                          </Link>
+                        <SidebarMenuSubButton
+                          asChild={!subItem.disabled}
+                          className={cn(
+                            pathname === subItem.url && "bg-accent text-accent-foreground",
+                            subItem.disabled && "opacity-50 pointer-events-none"
+                          )}
+                        >
+                          {subItem.disabled ? (
+                            <div className="flex items-center gap-2">
+                              {subItem.icon && <subItem.icon />}
+                              <span>{subItem.title}</span>
+                            </div>
+                          ) : (
+                            <Link to={subItem.url}>
+                              {subItem.icon && <subItem.icon />}
+                              <span>{subItem.title}</span>
+                              {subItem.notifications && (
+                                <Badge className="ml-auto h-5 min-w-5 rounded-full px-1 pt-1 font-mono tabular-nums">
+                                  {subItem.notifications}
+                                </Badge>
+                              )}
+                            </Link>
+                          )}
                         </SidebarMenuSubButton>
                       </SidebarMenuSubItem>
                     ))}

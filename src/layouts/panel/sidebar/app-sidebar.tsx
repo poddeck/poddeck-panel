@@ -89,26 +89,31 @@ export function AppNavigation() {
           title: t("panel.sidebar.daemon.sets"),
           url: "/daemon-sets/",
           icon: VectorSquare,
+          disabled: true
         },
         {
           title: t("panel.sidebar.replica.sets"),
           url: "/replica-sets/",
           icon: Network,
+          disabled: true
         },
         {
           title: t("panel.sidebar.stateful.sets"),
           url: "/stateful-sets/",
           icon: Database,
+          disabled: true
         },
         {
           title: t("panel.sidebar.jobs"),
           url: "/jobs/",
           icon: SquareMousePointer,
+          disabled: true
         },
         {
           title: t("panel.sidebar.cron.jobs"),
           url: "/cron-jobs/",
           icon: AlarmClock,
+          disabled: true
         },
       ],
     },
@@ -121,11 +126,13 @@ export function AppNavigation() {
           title: t("panel.sidebar.config.maps"),
           url: "/config-maps/",
           icon: CreditCard,
+          disabled: true
         },
         {
           title: t("panel.sidebar.secrets"),
           url: "/secrets/",
           icon: Lock,
+          disabled: true
         },
       ],
     },
@@ -150,11 +157,13 @@ export function AppNavigation() {
           title: t("panel.sidebar.pv"),
           url: "/pv/",
           icon: Database,
+          disabled: true
         },
         {
           title: t("panel.sidebar.pvc"),
           url: "/pvc/",
           icon: SquareDashedMousePointer,
+          disabled: true
         },
       ],
     },
@@ -167,12 +176,14 @@ export function AppNavigation() {
           title: t("panel.sidebar.updates"),
           url: "/updates/",
           icon: Download,
-          notifications: 3
+          notifications: 3,
+          disabled: true
         },
         {
           title: t("panel.sidebar.audits"),
           url: "/audits/",
           icon: SearchCheck,
+          disabled: true
         },
       ],
     }
