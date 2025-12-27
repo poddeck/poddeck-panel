@@ -11,6 +11,7 @@ import {GeneralPage} from "@/pages/settings/general";
 import {SecurityPage} from "@/pages/settings/security";
 import {SessionsPage} from "@/pages/settings/sessions";
 import {PersonalizationPage} from "@/pages/settings/personalization";
+import pkg from "@/../package.json";
 
 const pages: SettingsPage[] = [GeneralPage, AccountPage, PersonalizationPage, SecurityPage, SessionsPage];
 
@@ -31,6 +32,9 @@ export function SettingsDialog() {
               onClick={() => setCurrentPageKey(page.key)}
             />
           ))}
+          <div className="text-center text-sm text-muted-foreground mt-auto">
+             <span>Version: {pkg.version}</span>
+          </div>
         </div>
 
         <div className="flex-1 p-6 overflow-auto">
