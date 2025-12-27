@@ -17,13 +17,13 @@ function OverviewLocationBox() {
     { location: [52.5200, 13.4050], size: 0.1 },
   ], []);
   return (
-    <Card className="w-fit">
+    <Card>
       <CardHeader>
         <CardTitle className="flex gap-2">
           <MapPin size={18} className="-translate-y-0.5"/> {t("panel.page.overview.location.title")}
         </CardTitle>
       </CardHeader>
-      <CardContent className="w-fit h-fit">
+      <CardContent>
         <Globe markers={markers}/>
       </CardContent>
     </Card>
