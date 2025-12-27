@@ -36,6 +36,8 @@
   },
   "authentication": {
     "login": {
+      "title": "Login",
+      "description": "Login to your PodDeck account",
       "email": "Email address",
       "email.missing": "Please enter an email address",
       "password": "Password",
