@@ -88,20 +88,17 @@ export function AppNavigation() {
         {
           title: t("panel.sidebar.daemon.sets"),
           url: "/daemon-sets/",
-          icon: VectorSquare,
-          disabled: true
+          icon: VectorSquare
         },
         {
           title: t("panel.sidebar.replica.sets"),
           url: "/replica-sets/",
-          icon: Network,
-          disabled: true
+          icon: Network
         },
         {
           title: t("panel.sidebar.stateful.sets"),
           url: "/stateful-sets/",
-          icon: Database,
-          disabled: true
+          icon: Database
         },
         {
           title: t("panel.sidebar.jobs"),

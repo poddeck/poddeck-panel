@@ -505,6 +505,46 @@
           "copy.successful": "Deployment wurde erfolgreich kopiert"
         }
       },
+      "daemon-sets": {
+        "title": "DaemonSets",
+        "add": "DaemonSet hinzufügen",
+        "add.dialog": {
+          "title": "DaemonSet hinzufügen",
+          "description": "Hier haben Sie die Möglichkeit, ein DaemonSet hinzuzufügen.",
+          "cancel": "Abbrechen",
+          "submit": "Hinzufügen",
+          "successful": "Das DaemonSet wurde erfolgreich hinzugefügt",
+          "failure": "Das Hinzufügen des DaemonSets ist fehlgeschlagen. Bitte überprüfen Sie die Konfiguration"
+        },
+        "empty": {
+          "title": "Keine DaemonSets gefunden",
+          "description": "Im Cluster konnten keine DaemonSets gefunden werden. Klicken Sie auf die Schaltfläche unten, um Ihr erstes DaemonSet hinzuzufügen."
+        },
+        "column": {
+          "namespace": "Namensraum",
+          "name": "Name",
+          "desired": "Gewünscht",
+          "current": "Aktuell",
+          "ready": "Bereit",
+          "up-to-date": "Neuester Stand",
+          "age": "Alter"
+        },
+        "action": {
+          "scale": "Skalieren",
+          "restart": "Neustarten",
+          "restart.successful": "DaemonSet wurde erfolgreich neugestarted",
+          "delete": "Löschen"
+        },
+        "delete.dialog": {
+          "title": "DaemonSet löschen",
+          "description": "Löschen Sie einen DaemonSet, indem Sie den Namen des DaemonSet eingeben.",
+          "confirm.1": "Bitte geben Sie ",
+          "confirm.2": " zur Bestätigung ein.",
+          "name": "Name",
+          "cancel": "Abbrechen",
+          "submit": "Löschen"
+        }
+      },
       "services": {
         "title": "Services",
         "add": "Service hinzufügen",

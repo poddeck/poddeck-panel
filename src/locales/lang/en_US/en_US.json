@@ -505,6 +505,45 @@
           "copy.successful": "Deployment has been successfully copied"
         }
       },
+      "daemon-sets": {
+        "title": "DaemonSets",
+        "add": "Add DaemonSet",
+        "add.dialog": {
+          "title": "Add DaemonSet",
+          "description": "Here you have the option to add a DaemonSet.",
+          "cancel": "Cancel",
+          "submit": "Add",
+          "successful": "DaemonSet has been successfully added",
+          "failure": "Adding the DaemonSet failed. Please check the configuration"
+        },
+        "empty": {
+          "title": "No DaemonSets found",
+          "description": "No DaemonSets could be found in the cluster. Click the button below to add your first DaemonSet."
+        },
+        "column": {
+          "namespace": "Namespace",
+          "name": "Name",
+          "desired": "Desired",
+          "current": "Current",
+          "ready": "Ready",
+          "up-to-date": "Up-To-Date",
+          "age": "Age"
+        },
+        "action": {
+          "restart": "Restart",
+          "restart.successful": "DaemonSet has been successfully restarted",
+          "delete": "Delete"
+        },
+        "delete.dialog": {
+          "title": "Delete DaemonSet",
+          "description": "Here you have the option to delete an existing DaemonSet.",
+          "confirm.1": "Please type ",
+          "confirm.2": " to confirm.",
+          "name": "Name",
+          "cancel": "Cancel",
+          "submit": "Delete"
+        }
+      },
       "services": {
         "title": "Services",
         "add": "Add service",

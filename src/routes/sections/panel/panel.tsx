@@ -24,6 +24,18 @@ const getRoutes = (): RouteObject[] => {
     {path: "deployment/overview", element: Component("/pages/panel/deployment/overview")},
     {path: "deployment/pods", element: Component("/pages/panel/deployment/pods")},
     {path: "deployment/edit", element: Component("/pages/panel/deployment/edit")},
+    {path: "daemon-sets", element: Component("/pages/panel/daemon-sets")},
+    {path: "daemon-set/overview", element: Component("/pages/panel/daemon-set/overview")},
+    {path: "daemon-set/pods", element: Component("/pages/panel/daemon-set/pods")},
+    {path: "daemon-set/edit", element: Component("/pages/panel/daemon-set/edit")},
+    {path: "replica-sets", element: Component("/pages/panel/replica-sets")},
+    {path: "replica-set/overview", element: Component("/pages/panel/replica-set/overview")},
+    {path: "replica-set/pods", element: Component("/pages/panel/replica-set/pods")},
+    {path: "replica-set/edit", element: Component("/pages/panel/replica-set/edit")},
+    {path: "stateful-sets", element: Component("/pages/panel/stateful-sets")},
+    {path: "stateful-set/overview", element: Component("/pages/panel/stateful-set/overview")},
+    {path: "stateful-set/pods", element: Component("/pages/panel/stateful-set/pods")},
+    {path: "stateful-set/edit", element: Component("/pages/panel/stateful-set/edit")},
     {path: "services", element: Component("/pages/panel/services")},
   ];
 };
