@@ -545,6 +545,86 @@
           "submit": "Löschen"
         }
       },
+      "replica-sets": {
+        "title": "ReplicaSets",
+        "add": "ReplicaSet hinzufügen",
+        "add.dialog": {
+          "title": "ReplicaSet hinzufügen",
+          "description": "Hier haben Sie die Möglichkeit, ein ReplicaSet hinzuzufügen.",
+          "cancel": "Abbrechen",
+          "submit": "Hinzufügen",
+          "successful": "Das ReplicaSet wurde erfolgreich hinzugefügt",
+          "failure": "Das Hinzufügen des ReplicaSets ist fehlgeschlagen. Bitte überprüfen Sie die Konfiguration"
+        },
+        "empty": {
+          "title": "Keine ReplicaSets gefunden",
+          "description": "Im Cluster konnten keine ReplicaSets gefunden werden. Klicken Sie auf die Schaltfläche unten, um Ihr erstes ReplicaSet hinzuzufügen."
+        },
+        "column": {
+          "namespace": "Namensraum",
+          "name": "Name",
+          "desired": "Gewünscht",
+          "current": "Aktuell",
+          "ready": "Bereit",
+          "up-to-date": "Neuester Stand",
+          "age": "Alter"
+        },
+        "action": {
+          "scale": "Skalieren",
+          "restart": "Neustarten",
+          "restart.successful": "ReplicaSet wurde erfolgreich neugestarted",
+          "delete": "Löschen"
+        },
+        "delete.dialog": {
+          "title": "ReplicaSet löschen",
+          "description": "Löschen Sie einen ReplicaSet, indem Sie den Namen des ReplicaSet eingeben.",
+          "confirm.1": "Bitte geben Sie ",
+          "confirm.2": " zur Bestätigung ein.",
+          "name": "Name",
+          "cancel": "Abbrechen",
+          "submit": "Löschen"
+        }
+      },
+      "stateful-sets": {
+        "title": "StatefulSets",
+        "add": "StatefulSet hinzufügen",
+        "add.dialog": {
+          "title": "StatefulSet hinzufügen",
+          "description": "Hier haben Sie die Möglichkeit, ein StatefulSet hinzuzufügen.",
+          "cancel": "Abbrechen",
+          "submit": "Hinzufügen",
+          "successful": "Das StatefulSet wurde erfolgreich hinzugefügt",
+          "failure": "Das Hinzufügen des StatefulSets ist fehlgeschlagen. Bitte überprüfen Sie die Konfiguration"
+        },
+        "empty": {
+          "title": "Keine StatefulSets gefunden",
+          "description": "Im Cluster konnten keine StatefulSets gefunden werden. Klicken Sie auf die Schaltfläche unten, um Ihr erstes StatefulSet hinzuzufügen."
+        },
+        "column": {
+          "namespace": "Namensraum",
+          "name": "Name",
+          "desired": "Gewünscht",
+          "current": "Aktuell",
+          "ready": "Bereit",
+          "up-to-date": "Neuester Stand",
+          "age": "Alter"
+        },
+        "action": {
+          "scale": "Skalieren",
+          "restart": "Neustarten",
+          "restart.successful": "StatefulSet wurde erfolgreich neugestarted",
+          "delete": "Löschen"
+        },
+        "delete.dialog": {
+          "title": "StatefulSet löschen",
+          "description": "Löschen Sie einen StatefulSet, indem Sie den Namen des StatefulSet eingeben.",
+          "confirm.1": "Bitte geben Sie ",
+          "confirm.2": " zur Bestätigung ein.",
+          "name": "Name",
+          "cancel": "Abbrechen",
+          "submit": "Löschen"
+        }
+      },
       "services": {
         "title": "Services",
         "add": "Service hinzufügen",

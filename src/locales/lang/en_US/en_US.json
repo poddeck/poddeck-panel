@@ -544,6 +544,84 @@
           "submit": "Delete"
         }
       },
+      "replica-sets": {
+        "title": "ReplicaSets",
+        "add": "Add ReplicaSet",
+        "add.dialog": {
+          "title": "Add ReplicaSet",
+          "description": "Here you have the option to add a ReplicaSet.",
+          "cancel": "Cancel",
+          "submit": "Add",
+          "successful": "ReplicaSet has been successfully added",
+          "failure": "Adding the ReplicaSet failed. Please check the configuration"
+        },
+        "empty": {
+          "title": "No ReplicaSets found",
+          "description": "No ReplicaSets could be found in the cluster. Click the button below to add your first ReplicaSet."
+        },
+        "column": {
+          "namespace": "Namespace",
+          "name": "Name",
+          "desired": "Desired",
+          "current": "Current",
+          "ready": "Ready",
+          "up-to-date": "Up-To-Date",
+          "age": "Age"
+        },
+        "action": {
+          "restart": "Restart",
+          "restart.successful": "ReplicaSet has been successfully restarted",
+          "delete": "Delete"
+        },
+        "delete.dialog": {
+          "title": "Delete ReplicaSet",
+          "description": "Here you have the option to delete an existing ReplicaSet.",
+          "confirm.1": "Please type ",
+          "confirm.2": " to confirm.",
+          "name": "Name",
+          "cancel": "Cancel",
+          "submit": "Delete"
+        }
+      },
+      "stateful-sets": {
+        "title": "StatefulSets",
+        "add": "Add StatefulSet",
+        "add.dialog": {
+          "title": "Add StatefulSet",
+          "description": "Here you have the option to add a StatefulSet.",
+          "cancel": "Cancel",
+          "submit": "Add",
+          "successful": "StatefulSet has been successfully added",
+          "failure": "Adding the StatefulSet failed. Please check the configuration"
+        },
+        "empty": {
+          "title": "No StatefulSets found",
+          "description": "No StatefulSets could be found in the cluster. Click the button below to add your first StatefulSets."
+        },
+        "column": {
+          "namespace": "Namespace",
+          "name": "Name",
+          "desired": "Desired",
+          "current": "Current",
+          "ready": "Ready",
+          "up-to-date": "Up-To-Date",
+          "age": "Age"
+        },
+        "action": {
+          "restart": "Restart",
+          "restart.successful": "StatefulSet has been successfully restarted",
+          "delete": "Delete"
+        },
+        "delete.dialog": {
+          "title": "Delete StatefulSet",
+          "description": "Here you have the option to delete an existing StatefulSet.",
+          "confirm.1": "Please type ",
+          "confirm.2": " to confirm.",
+          "name": "Name",
+          "cancel": "Cancel",
+          "submit": "Delete"
+        }
+      },
       "services": {
         "title": "Services",
         "add": "Add service",
