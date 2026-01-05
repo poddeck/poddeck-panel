@@ -32,7 +32,7 @@ export function SidebarNavigation({
       url: string,
       icon: LucideIcon,
       notifications?: number
-      disabled: boolean
+      disabled?: boolean
     }[]
   }[]
 }) {
