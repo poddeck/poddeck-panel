@@ -687,6 +687,7 @@
           "age": "Age"
         },
         "action": {
+          "scale": "Scale",
           "restart": "Restart",
           "restart.successful": "StatefulSet has been successfully restarted",
           "delete": "Delete"
@@ -699,6 +700,55 @@
           "name": "Name",
           "cancel": "Cancel",
           "submit": "Delete"
+        }
+      },
+      "stateful-set": {
+        "tabs": {
+          "overview": "Overview",
+          "pods": "Pods",
+          "edit": "Edit"
+        },
+        "actions": "Actions",
+        "scale": {
+          "title": "Scale",
+          "description": "Set the desired number of pods and check resource utilization.",
+          "overload": "Overload",
+          "cpu": "CPU",
+          "memory": "Memory",
+          "submit": "Submit",
+          "cancel": "Cancel"
+        },
+        "overview": {
+          "general": {
+            "title": "GENERAL",
+            "namespace": "Namespace",
+            "start": "Start time",
+            "labels": "Labels",
+            "annotations": "Annotations"
+          },
+          "replicas": {
+            "title": "REPLICAS",
+            "desired": "Desired",
+            "current": "Current",
+            "ready": "Ready",
+            "up-to-date": "Up-To-Date"
+          },
+          "container": {
+            "title": "CONTAINER",
+            "name": "Name",
+            "image": "Image"
+          },
+          "conditions": {
+            "title": "CONDITIONS"
+          },
+          "events": {
+            "title": "EVENTS"
+          }
+        },
+        "edit": {
+          "save": "Save",
+          "successful": "StatefulSet has been successfully edited",
+          "copy.successful": "StatefulSet has been successfully copied"
         }
       },
       "services": {
