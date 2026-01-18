@@ -124,7 +124,6 @@
       "daemon.sets": "Daemon Sets",
       "replica.sets": "Replica Sets",
       "stateful.sets": "Stateful Sets",
-      "jobs": "Jobs",
       "cron.jobs": "Cron Jobs",
       "config": "Config",
       "config.maps": "Config maps",
@@ -749,6 +748,42 @@
           "save": "Save",
           "successful": "StatefulSet has been successfully edited",
           "copy.successful": "StatefulSet has been successfully copied"
+        }
+      },
+      "cron-jobs": {
+        "title": "CronJobs",
+        "add": "Add CronJob",
+        "add.dialog": {
+          "title": "Add CronJob",
+          "description": "Here you have the option to add a CronJob.",
+          "cancel": "Cancel",
+          "submit": "Add",
+          "successful": "CronJob has been successfully added",
+          "failure": "Adding the CronJob failed. Please check the configuration"
+        },
+        "empty": {
+          "title": "No CronJobs found",
+          "description": "No CronJobs could be found in the cluster. Click the button below to add your first CronJob."
+        },
+        "column": {
+          "namespace": "Namespace",
+          "name": "Name",
+          "schedule": "Schedule",
+          "timezone": "Timezone",
+          "suspend": "Suspend",
+          "age": "Age"
+        },
+        "action": {
+          "delete": "Delete"
+        },
+        "delete.dialog": {
+          "title": "Delete CronJob",
+          "description": "Here you have the option to delete an existing CronJob.",
+          "confirm.1": "Please type ",
+          "confirm.2": " to confirm.",
+          "name": "Name",
+          "cancel": "Cancel",
+          "submit": "Delete"
         }
       },
       "services": {

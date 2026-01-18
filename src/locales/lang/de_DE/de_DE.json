@@ -124,7 +124,6 @@
       "daemon.sets": "Daemon Sets",
       "replica.sets": "Replica Sets",
       "stateful.sets": "Stateful Sets",
-      "jobs": "Jobs",
       "cron.jobs": "Cron Jobs",
       "config": "Konfiguration",
       "config.maps": "Config maps",
@@ -749,6 +748,43 @@
           "save": "Speichern",
           "successful": "StatefulSet wurde erfolgreich bearbeitet",
           "copy.successful": "StatefulSet wurde erfolgreich kopiert"
+        }
+      },
+      "cron-jobs": {
+        "title": "CronJobs",
+        "add": "CronJob hinzufügen",
+        "add.dialog": {
+          "title": "CronJob hinzufügen",
+          "description": "Hier haben Sie die Möglichkeit, ein CronJob hinzuzufügen.",
+          "cancel": "Abbrechen",
+          "submit": "Hinzufügen",
+          "successful": "Das CronJob wurde erfolgreich hinzugefügt",
+          "failure": "Das Hinzufügen des CronJobs ist fehlgeschlagen. Bitte überprüfen Sie die Konfiguration"
+        },
+        "empty": {
+          "title": "Keine CronJobs gefunden",
+          "description": "Im Cluster konnten keine CronJobs gefunden werden. Klicken Sie auf die Schaltfläche unten, um Ihr erstes CronJob hinzuzufügen."
+        },
+        "column": {
+          "namespace": "Namensraum",
+          "name": "Name",
+          "desired": "Gewünscht",
+          "current": "Aktuell",
+          "ready": "Bereit",
+          "up-to-date": "Neuester Stand",
+          "age": "Alter"
+        },
+        "action": {
+          "delete": "Löschen"
+        },
+        "delete.dialog": {
+          "title": "CronJob löschen",
+          "description": "Löschen Sie einen CronJob, indem Sie den Namen des CronJob eingeben.",
+          "confirm.1": "Bitte geben Sie ",
+          "confirm.2": " zur Bestätigung ein.",
+          "name": "Name",
+          "cancel": "Abbrechen",
+          "submit": "Löschen"
         }
       },
       "services": {

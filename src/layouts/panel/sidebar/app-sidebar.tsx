@@ -13,7 +13,7 @@ import {
   Network,
   Rocket, SearchCheck,
   Server,
-  Settings, Shield, SquareDashedMousePointer, SquareMousePointer,
+  Settings, Shield, SquareDashedMousePointer,
   Unplug,
   VectorSquare,
   Waypoints
@@ -101,16 +101,9 @@ export function AppNavigation() {
           icon: Database
         },
         {
-          title: t("panel.sidebar.jobs"),
-          url: "/jobs/",
-          icon: SquareMousePointer,
-          disabled: true
-        },
-        {
           title: t("panel.sidebar.cron.jobs"),
           url: "/cron-jobs/",
-          icon: AlarmClock,
-          disabled: true
+          icon: AlarmClock
         },
       ],
     },

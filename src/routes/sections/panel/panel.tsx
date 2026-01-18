@@ -36,6 +36,9 @@ const getRoutes = (): RouteObject[] => {
     {path: "stateful-set/overview", element: Component("/pages/panel/stateful-set/overview")},
     {path: "stateful-set/pods", element: Component("/pages/panel/stateful-set/pods")},
     {path: "stateful-set/edit", element: Component("/pages/panel/stateful-set/edit")},
+    {path: "cron-jobs", element: Component("/pages/panel/cron-jobs")},
+    {path: "cron-job/overview", element: Component("/pages/panel/cron-job/overview")},
+    {path: "cron-job/edit", element: Component("/pages/panel/cron-job/edit")},
     {path: "services", element: Component("/pages/panel/services")},
   ];
 };
