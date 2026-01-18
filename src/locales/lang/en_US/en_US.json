@@ -623,6 +623,45 @@
           "submit": "Delete"
         }
       },
+      "replica-set": {
+        "tabs": {
+          "overview": "Overview",
+          "pods": "Pods",
+          "edit": "Edit"
+        },
+        "actions": "Actions",
+        "overview": {
+          "general": {
+            "title": "GENERAL",
+            "namespace": "Namespace",
+            "start": "Start time",
+            "labels": "Labels",
+            "annotations": "Annotations"
+          },
+          "replicas": {
+            "title": "REPLICAS",
+            "desired": "Desired",
+            "current": "Current",
+            "ready": "Ready"
+          },
+          "container": {
+            "title": "CONTAINER",
+            "name": "Name",
+            "image": "Image"
+          },
+          "conditions": {
+            "title": "CONDITIONS"
+          },
+          "events": {
+            "title": "EVENTS"
+          }
+        },
+        "edit": {
+          "save": "Save",
+          "successful": "ReplicaSet has been successfully edited",
+          "copy.successful": "ReplicaSet has been successfully copied"
+        }
+      },
       "stateful-sets": {
         "title": "StatefulSets",
         "add": "Add StatefulSet",

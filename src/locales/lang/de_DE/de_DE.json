@@ -623,6 +623,45 @@
           "submit": "Löschen"
         }
       },
+      "replica-set": {
+        "tabs": {
+          "overview": "Übersicht",
+          "pods": "Pods",
+          "edit": "Bearbeiten"
+        },
+        "actions": "Aktionen",
+        "overview": {
+          "general": {
+            "title": "ALLGEMEIN",
+            "namespace": "Namensraum",
+            "start": "Startzeit",
+            "labels": "Labels",
+            "annotations": "Annotations"
+          },
+          "replicas": {
+            "title": "REPLIKEN",
+            "desired": "Gewünscht",
+            "current": "Aktuell",
+            "ready": "Bereit"
+          },
+          "container": {
+            "title": "CONTAINER",
+            "name": "Name",
+            "image": "Image"
+          },
+          "conditions": {
+            "title": "ZUSTÄNDE"
+          },
+          "events": {
+            "title": "EREIGNISSE"
+          }
+        },
+        "edit": {
+          "save": "Speichern",
+          "successful": "ReplicaSet wurde erfolgreich bearbeitet",
+          "copy.successful": "ReplicaSet wurde erfolgreich kopiert"
+        }
+      },
       "stateful-sets": {
         "title": "StatefulSets",
         "add": "StatefulSet hinzufügen",
