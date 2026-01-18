@@ -530,7 +530,6 @@
           "age": "Alter"
         },
         "action": {
-          "scale": "Skalieren",
           "restart": "Neustarten",
           "restart.successful": "DaemonSet wurde erfolgreich neugestarted",
           "delete": "Löschen"
@@ -543,6 +542,46 @@
           "name": "Name",
           "cancel": "Abbrechen",
           "submit": "Löschen"
+        }
+      },
+      "daemon-set": {
+        "tabs": {
+          "overview": "Übersicht",
+          "pods": "Pods",
+          "edit": "Bearbeiten"
+        },
+        "actions": "Aktionen",
+        "overview": {
+          "general": {
+            "title": "ALLGEMEIN",
+            "namespace": "Namensraum",
+            "start": "Startzeit",
+            "labels": "Labels",
+            "annotations": "Annotations"
+          },
+          "replicas": {
+            "title": "REPLIKEN",
+            "desired": "Gewünscht",
+            "current": "Aktuell",
+            "ready": "Bereit",
+            "up-to-date": "Neuester Stand"
+          },
+          "container": {
+            "title": "CONTAINER",
+            "name": "Name",
+            "image": "Image"
+          },
+          "conditions": {
+            "title": "ZUSTÄNDE"
+          },
+          "events": {
+            "title": "EREIGNISSE"
+          }
+        },
+        "edit": {
+          "save": "Speichern",
+          "successful": "DaemonSet wurde erfolgreich bearbeitet",
+          "copy.successful": "DaemonSet wurde erfolgreich kopiert"
         }
       },
       "replica-sets": {
@@ -570,7 +609,6 @@
           "age": "Alter"
         },
         "action": {
-          "scale": "Skalieren",
           "restart": "Neustarten",
           "restart.successful": "ReplicaSet wurde erfolgreich neugestarted",
           "delete": "Löschen"
@@ -610,7 +648,6 @@
           "age": "Alter"
         },
         "action": {
-          "scale": "Skalieren",
           "restart": "Neustarten",
           "restart.successful": "StatefulSet wurde erfolgreich neugestarted",
           "delete": "Löschen"
