@@ -188,7 +188,7 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
   };
   return (
     <div id="sidebar">
-      <Sidebar collapsible="icon" {...props}>
+      <Sidebar className="z-100" collapsible="icon" {...props}>
         <SidebarHeader>
           <SidebarClusterSwitcher/>
         </SidebarHeader>
