@@ -70,17 +70,17 @@ export default function NotificationAlert(
         <Age age={age} />
       </div>
 
-      <div className="flex-1 flex flex-col justify-center gap-1">
-        <AlertTitle className={`line-clamp-none whitespace-normal break-words ${color}`}>
+      <div className="flex-1 flex flex-col justify-center gap-1 min-w-0">
+        <AlertTitle className={`line-clamp-none whitespace-normal break-words overflow-wrap-anywhere ${color}`}>
           {notification.title}
         </AlertTitle>
-        <AlertDescription className="whitespace-normal break-words">
+        <AlertDescription className="whitespace-normal break-words overflow-wrap-anywhere">
           {notification.description}
         </AlertDescription>
         {!cluster && notification.cluster_found && (
-          <span className="inline-block text-xs font-medium bg-primary/20 text-primary px-2 py-0.5 rounded-full w-fit">
-            {notification.cluster_name}
-          </span>
+          <span className="inline-block text-xs font-medium bg-primary/20 text-primary px-2 py-0.5 rounded-full w-fit max-w-full break-words">
+        {notification.cluster_name}
+      </span>
         )}
       </div>
     </Alert>
