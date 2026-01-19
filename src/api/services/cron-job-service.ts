@@ -9,6 +9,9 @@ export type CronJob = {
   concurrency_policy: string;
   successful_jobs_history_limit: number;
   failed_jobs_history_limit: number;
+  active: number;
+  last_schedule_time: number;
+  last_successful_time: number;
   age: number;
   labels: Record<string, string>;
   annotations: Record<string, string>;
@@ -68,6 +71,15 @@ export type CronJobSuspendResponse = {
   success: boolean;
 };
 
+export interface CronJobRunRequest {
+  namespace: string;
+  cron_job: string;
+}
+
+export type CronJobRunResponse = {
+  success: boolean;
+};
+
 export interface CronJobEditRequest {
   namespace: string;
   cron_job: string;
@@ -84,6 +96,7 @@ export const CronJobApi = {
   Create: "/cron-job/create/",
   Delete: "/cron-job/delete/",
   Suspend: "/cron-job/suspend/",
+  Run: "/cron-job/run/",
   Edit: "/cron-job/edit/",
 } as const;
 
@@ -107,6 +120,9 @@ const remove = (data: CronJobDeleteRequest) =>
 const suspend = (data: CronJobSuspendRequest) =>
   client.post<CronJobSuspendResponse>({ url: CronJobApi.Suspend, data });
 
+const run = (data: CronJobRunRequest) =>
+  client.post<CronJobRunResponse>({ url: CronJobApi.Run, data });
+
 const edit = (data: CronJobEditRequest) =>
   client.post<CronJobEditResponse>({ url: CronJobApi.Edit, data });
 
@@ -117,5 +133,6 @@ export default {
   create,
   remove,
   suspend,
+  run,
   edit,
 };

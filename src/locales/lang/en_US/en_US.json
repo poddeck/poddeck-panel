@@ -771,6 +771,8 @@
           "schedule": "Schedule",
           "timezone": "Timezone",
           "suspend": "Suspend",
+          "active": "Active",
+          "last.schedule": "Last schedule",
           "age": "Age"
         },
         "action": {
@@ -784,6 +786,57 @@
           "name": "Name",
           "cancel": "Cancel",
           "submit": "Delete"
+        }
+      },
+      "cron-job": {
+        "tabs": {
+          "overview": "Overview",
+          "edit": "Edit"
+        },
+        "run": {
+          "label": "Run",
+          "successful": "CronJob has been successfully executed",
+          "failed": "CronJob execution has failed. Please try again"
+        },
+        "running": {
+          "label": "Running",
+          "description": "The CronJob will be executed as planned at the next interval."
+        },
+        "suspended": {
+          "label": "Suspended",
+          "description": "The execution of the CronJob is suspended until further notice."
+        },
+        "actions": "Actions",
+        "overview": {
+          "general": {
+            "title": "GENERAL",
+            "namespace": "Namespace",
+            "start": "Start time",
+            "labels": "Labels",
+            "annotations": "Annotations"
+          },
+          "schedule": {
+            "title": "SCHEDULE",
+            "schedule": "Schedule",
+            "timezone": "Timezone",
+            "active": "Active",
+            "last.schedule": "Last schedule",
+            "last.successful": "Last successful"
+          },
+          "limits": {
+            "title": "LIMITS",
+            "concurrency.policy": "Concurrency policy",
+            "successful.jobs.history.limit": "Successful jobs limit",
+            "failed.jobs.history.limit": "Failed jobs limit"
+          },
+          "events": {
+            "title": "EVENTS"
+          }
+        },
+        "edit": {
+          "save": "Save",
+          "successful": "CronJob has been successfully edited",
+          "copy.successful": "CronJob has been successfully copied"
         }
       },
       "services": {

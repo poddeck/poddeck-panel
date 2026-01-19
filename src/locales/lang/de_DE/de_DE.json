@@ -768,10 +768,11 @@
         "column": {
           "namespace": "Namensraum",
           "name": "Name",
-          "desired": "Gewünscht",
-          "current": "Aktuell",
-          "ready": "Bereit",
-          "up-to-date": "Neuester Stand",
+          "schedule": "Zeitplan",
+          "timezone": "Zeitzone",
+          "suspend": "Aussetzen",
+          "active": "Aktiv",
+          "last.schedule": "Letzte Ausführung",
           "age": "Alter"
         },
         "action": {
@@ -785,6 +786,57 @@
           "name": "Name",
           "cancel": "Abbrechen",
           "submit": "Löschen"
+        }
+      },
+      "cron-job": {
+        "tabs": {
+          "overview": "Übersicht",
+          "edit": "Bearbeiten"
+        },
+        "run": {
+          "label": "Ausführen",
+          "successful": "CronJob wurde erfolgreich ausgeführt",
+          "failed": "Die Ausführung von CronJob ist fehlgeschlagen. Bitte versuchen Sie es erneut"
+        },
+        "running": {
+          "label": "Läuft",
+          "description": "Der CronJob wird wie geplant beim nächsten Intervall ausgeführt."
+        },
+        "suspended": {
+          "label": "Ausgesetzt",
+          "description": "Die Ausführung des CronJob wird bis auf Weiteres ausgesetzt."
+        },
+        "actions": "Aktionen",
+        "overview": {
+          "general": {
+            "title": "ALLGEMEIN",
+            "namespace": "Namensraum",
+            "start": "Startzeit",
+            "labels": "Labels",
+            "annotations": "Annotations"
+          },
+          "schedule": {
+            "title": "ZEITPLAN",
+            "schedule": "Zeitplan",
+            "timezone": "Zeitzone",
+            "active": "Aktiv",
+            "last.schedule": "Letzte Ausführung",
+            "last.successful": "Letzter Erfolg"
+          },
+          "limits": {
+            "title": "LIMITS",
+            "concurrency.policy": "Parallelitätsrichtlinie",
+            "successful.jobs.history.limit": "Erfolgreiche Jobs Limits",
+            "failed.jobs.history.limit": "Fehlgeschlagene Jobs Limits"
+          },
+          "events": {
+            "title": "EREIGNISSE"
+          }
+        },
+        "edit": {
+          "save": "Speichern",
+          "successful": "CronJob wurde erfolgreich bearbeitet",
+          "copy.successful": "CronJob wurde erfolgreich kopiert"
         }
       },
       "services": {
