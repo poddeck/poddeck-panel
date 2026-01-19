@@ -27,7 +27,7 @@ export default function DataTableBottomBar<T>(
   return (
     <div
       className={`
-        fixed z-50 inset-x-0 bottom-0
+        fixed z-30 inset-x-0 bottom-0
         bg-sidebar shadow-lg
         transition-transform duration-300
         ${selectedCount > 0 ? "translate-y-0" : "translate-y-full"}
