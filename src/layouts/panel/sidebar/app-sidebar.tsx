@@ -172,8 +172,7 @@ export function AppNavigation() {
         {
           title: t("panel.sidebar.audits"),
           url: "/audits/",
-          icon: SearchCheck,
-          disabled: true
+          icon: SearchCheck
         },
       ],
     }

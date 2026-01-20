@@ -40,6 +40,7 @@ const getRoutes = (): RouteObject[] => {
     {path: "cron-job/overview", element: Component("/pages/panel/cron-job/overview")},
     {path: "cron-job/edit", element: Component("/pages/panel/cron-job/edit")},
     {path: "services", element: Component("/pages/panel/services")},
+    {path: "audits", element: Component("/pages/panel/audits")},
   ];
 };
 
