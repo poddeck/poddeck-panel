@@ -1,14 +1,9 @@
 "use client"
 
 import {useClusters} from "@/hooks/use-cluster.ts";
-import {Lightbulb, Rocket} from "lucide-react";
+import {Lightbulb, Rocket, Wifi, WifiOff} from "lucide-react";
 import {CLUSTER_ICON_LIST} from "@/layouts/panel/sidebar/cluster/icon-list.tsx";
 import clusterStore from "@/store/cluster-store.ts";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger
-} from "@/components/ui/tooltip.tsx";
 import {useTranslation} from "react-i18next";
 import {
   Card,
@@ -31,48 +26,85 @@ export default function OverviewStatusBox() {
     <Card>
       <CardHeader>
         <CardTitle className="flex gap-2">
-          <Lightbulb size={18} className="-translate-y-0.5"/> {t("panel.page.overview.status.title")}
+          <Lightbulb size={18} className="-tranneutral-y-0.5"/> {t("panel.page.overview.status.title")}
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex justify-center items-center mt-3">
-          <Tooltip>
-            <TooltipTrigger asChild>
+        <div className="flex flex-col items-center gap-6">
+          <div className="relative">
+            {cluster.online && (
+              <div className="absolute inset-0 -m-4 rounded-full bg-gradient-to-tr from-emerald-500/20 to-emerald-400/20 blur-2xl animate-pulse" />
+            )}
+
+            <div
+              className={`
+                relative w-44 h-44 rounded-full flex items-center justify-center
+                transition-all duration-500
+                ${cluster.online
+                ? 'bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-950/40 dark:to-emerald-900/40'
+                : 'bg-gradient-to-br from-neutral-100 to-neutral-200 dark:from-neutral-900/40 dark:to-neutral-800/40'
+              }
+              `}
+            >
               <div
                 className={`
-                  w-48 h-48 rounded-full flex items-center justify-center relative
-                  ${cluster.online ? 'bg-emerald-400/20' : 'bg-red-400/20'}
+                  absolute inset-0 rounded-full
+                  ${cluster.online
+                  ? 'bg-gradient-to-tr from-emerald-400 via-emerald-500 to-emerald-400 opacity-60'
+                  : 'bg-gradient-to-tr from-red-400 via-red-500 to-red-400 opacity-40'}
+                  ${cluster.online ? 'animate-spin-slow' : ''}
                 `}
-              >
-                <div
-                  className={`
-                    absolute w-full h-full rounded-full border-8
-                    ${cluster.online
-                    ? 'border-emerald-400 border-opacity-75 animate-pulse'
-                    : 'border-red-500 border-opacity-90'}
-                  `}
-                ></div>
-                <div
-                  className={`
-                    absolute w-full h-full rounded-full
-                    ${cluster.online
-                    ? 'shadow-[0_0_50px_rgba(16,185,129,0.5)] animate-pulse'
-                    : 'shadow-[0_0_50px_rgba(239,68,68,0.5)]'}
-                  `}
-                ></div>
-                <div className="flex flex-col items-center justify-center relative z-10">
-                  <ActiveClusterIcon className="w-12 h-12"/>
-                  <span className="mt-5 text-xl">{cluster.name}</span>
+                style={{
+                  padding: '3px',
+                  WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                  WebkitMaskComposite: 'xor',
+                  maskComposite: 'exclude'
+                }}
+              />
+
+              <div className="absolute inset-[3px] rounded-full bg-card/75" />
+
+              <div className="relative z-10 flex flex-col items-center gap-3">
+                <div className={`
+                  p-4 rounded-2xl transition-colors duration-500
+                  ${cluster.online
+                  ? 'bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400'
+                  : 'bg-neutral-200 dark:bg-neutral-800 text-neutral-500 dark:text-neutral-400'
+                }
+                `}>
+                  <ActiveClusterIcon className="w-8 h-8" strokeWidth={1.5} />
                 </div>
+                <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                  {cluster.name}
+                </span>
               </div>
-            </TooltipTrigger>
-            <TooltipContent className='max-w-64 text-pretty'>
-              <p>
-                {cluster.online ? t("panel.page.overview.status.online") :
-                  t("panel.page.overview.status.offline")}
-              </p>
-            </TooltipContent>
-          </Tooltip>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-6">
+            <div
+              className={`
+                flex items-center gap-2 px-4 py-2 rounded-full font-medium text-sm
+                transition-all duration-300
+                ${cluster.online
+                ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 shadow-emerald-200/50 dark:shadow-emerald-900/30'
+                : 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 shadow-red-200/50 dark:shadow-red-900/30'
+              }
+              `}
+            >
+              {cluster.online ? (
+                <>
+                  <Wifi size={16} className="animate-pulse" />
+                  <span>Online</span>
+                </>
+              ) : (
+                <>
+                  <WifiOff size={16} />
+                  <span>Offline</span>
+                </>
+              )}
+            </div>
+          </div>
         </div>
       </CardContent>
     </Card>

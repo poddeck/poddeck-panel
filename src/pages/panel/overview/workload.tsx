@@ -74,14 +74,14 @@ export function WorkloadRadialChart(
           startAngle={90}
           endAngle={endAngle}
           innerRadius={80}
-          outerRadius={110}
+          outerRadius={100}
         >
           <PolarGrid
             gridType="circle"
             radialLines={false}
             stroke="none"
             className="first:fill-muted last:fill-card"
-            polarRadius={[86, 74]}
+            polarRadius={[84, 76]}
           />
 
           <RadialBar
@@ -151,7 +151,7 @@ export default function OverviewWorkloadBox({nodes}: { nodes: Node[] }) {
                  className="-translate-y-0.5"/> {t("panel.page.overview.workload.title")}
         </CardTitle>
       </CardHeader>
-      <CardContent className="w-full">
+      <CardContent className="w-full -mt-3">
         <div className="flex flex-col sm:flex-row gap-4 justify-around w-full">
 
           <WorkloadRadialChart
