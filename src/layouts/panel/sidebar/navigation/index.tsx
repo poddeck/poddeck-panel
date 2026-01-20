@@ -70,7 +70,7 @@ export function SidebarNavigation({
                         >
                           {subItem.disabled ? (
                             <div className="flex items-center gap-2">
-                              {subItem.icon && <subItem.icon />}
+                              {subItem.icon && <subItem.icon className="size-4" />}
                               <span>{subItem.title}</span>
                             </div>
                           ) : (
