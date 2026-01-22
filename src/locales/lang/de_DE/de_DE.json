@@ -881,7 +881,8 @@
           "title": "Keine aktuelle Prüfung gefunden",
           "description": "Es konnte keine aktuelle Prüfung gefunden werden. Sie können eine neue Prüfung starten, indem Sie auf die Schaltfläche unten klicken."
         },
-        "run": "Ausführen"
+        "run": "Ausführen",
+        "running": "Wird ausgeführt"
       }
     }
   },

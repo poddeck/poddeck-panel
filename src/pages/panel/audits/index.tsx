@@ -5,24 +5,13 @@ import {
   EmptyMedia,
   EmptyTitle
 } from "@/components/ui/empty.tsx";
-import {Play, SearchCheck} from "lucide-react";
+import {SearchCheck} from "lucide-react";
 import {useTranslation} from "react-i18next";
-import {Button} from "@/components/ui/button.tsx";
+import AuditRunButton from "@/pages/panel/audits/run-button.tsx";
+import {useEffect, useState} from "react";
+import auditService, {type Audit} from "@/api/services/audit-service.ts";
 
-function AuditRunButton() {
-  const {t} = useTranslation();
-  return (
-    <Button
-      size='lg'
-      className='bg-primary'
-    >
-      <Play/>
-      {t("panel.page.audits.run")}
-    </Button>
-  )
-}
-
-export default function AuditPage() {
+function AuditPageEmpty() {
   const {t} = useTranslation();
   return (
     <PanelPage title="panel.page.audits.title">
@@ -40,6 +29,42 @@ export default function AuditPage() {
           <AuditRunButton/>
         </EmptyContent>
       </Empty>
+    </PanelPage>
+  )
+}
+
+export default function AuditPage() {
+  const [audit, setAudit] = useState<Audit>();
+  const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    async function loadAudit() {
+      try {
+        const response = await auditService.find();
+        if (response.success) {
+          setAudit(response.audit);
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadAudit();
+    const interval = window.setInterval(loadAudit, 1000);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+  if (!isLoading && audit == null) {
+    return <AuditPageEmpty/>
+  }
+  return (
+    <PanelPage title="panel.page.audits.title">
+      <div className="mt-[4vh]">
+        <div className="flex items-center justify-end mb-[4vh]">
+          <AuditRunButton/>
+        </div>
+
+      </div>
     </PanelPage>
   )
 }

@@ -881,7 +881,8 @@
           "title": "No current audit found",
           "description": "No current audit could be found. You can initiate a new audit by clicking the button below"
         },
-        "run": "Run"
+        "run": "Run",
+        "running": "Running"
       }
     }
   },
