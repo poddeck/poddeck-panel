@@ -882,7 +882,26 @@
           "description": "No current audit could be found. You can initiate a new audit by clicking the button below"
         },
         "run": "Run",
-        "running": "Running"
+        "running": "Running",
+        "column": {
+          "number": "Number",
+          "type": "Type",
+          "status": "Status",
+          "description": "Description"
+        },
+        "action": {
+          "view": "View"
+        },
+        "status": {
+          "pass": "Pass",
+          "fail": "Fail",
+          "warn": "Warn",
+          "info": "Info"
+        },
+        "powered.by": "Powered by KubeBench",
+        "sheet": {
+          "title": "Audit"
+        }
       }
     }
   },

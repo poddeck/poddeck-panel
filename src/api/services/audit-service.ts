@@ -48,6 +48,12 @@ export type AuditTotals = {
   total_info: number;
 };
 
+export type AuditEntry = {
+  control: AuditControl;
+  test: AuditTest;
+  result: AuditResult;
+}
+
 export type AuditPerformResponse = {
   success: boolean;
   audit: Audit;
