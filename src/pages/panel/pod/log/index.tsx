@@ -90,7 +90,7 @@ export default function PodLogsPage() {
           <div
             ref={logRef}
             onScroll={handleScroll}
-            className="bg-white dark:bg-black p-4 rounded-xl overflow-auto h-full whitespace-pre-wrap font-mono select-text"
+            className="bg-white dark:bg-black p-4 rounded-xl overflow-auto h-full whitespace-pre-wrap font-mono select-text break-all"
             dangerouslySetInnerHTML={{ __html: htmlLogs }}
           />
         </div>
