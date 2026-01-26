@@ -23,7 +23,7 @@ import {
 import {Sheet} from "@/components/ui/sheet.tsx";
 import AuditSheet from "@/pages/panel/audits/sheet.tsx";
 
-function AuditPageEmpty() {
+function AuditPageEmpty({ onAuditComplete }: { onAuditComplete: () => void }) {
   const {t} = useTranslation();
   return (
     <PanelPage title="panel.page.audits.title">
@@ -38,7 +38,7 @@ function AuditPageEmpty() {
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
-          <AuditRunButton/>
+          <AuditRunButton onAuditComplete={onAuditComplete}/>
         </EmptyContent>
       </Empty>
     </PanelPage>
@@ -51,26 +51,24 @@ export default function AuditPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [currentEntry, setCurrentEntry] = useState<AuditEntry>();
-  useEffect(() => {
-    async function loadAudit() {
-      try {
-        const response = await auditService.find();
-        if (response.success) {
-          setAudit(response.audit);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    }
 
+  const loadAudit = async () => {
+    setIsLoading(true);
+    try {
+      const response = await auditService.find();
+      if (response.success) {
+        setAudit(response.audit);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
     loadAudit();
-    const interval = window.setInterval(loadAudit, 1000);
-    return () => {
-      clearInterval(interval);
-    };
   }, []);
+
   if (!isLoading && audit == null) {
-    return <AuditPageEmpty/>
+    return <AuditPageEmpty onAuditComplete={loadAudit}/>
   }
   const entries = audit == null ? [] : audit.controls.flatMap(control =>
     control.tests.flatMap(test =>
@@ -85,7 +83,7 @@ export default function AuditPage() {
     <PanelPage title="panel.page.audits.title">
       <div className="mt-[4vh]">
         <div className="flex items-center justify-end mb-[4vh]">
-          <AuditRunButton/>
+          <AuditRunButton onAuditComplete={loadAudit}/>
         </div>
         <div className="flex items-center gap-2 w-full mb-[4vh]">
           <Card className="w-full gap-0 pb-2 pt-4">
@@ -95,9 +93,9 @@ export default function AuditPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-                <span className="text-2xl">
-                  {audit?.totals.total_pass}
-                </span>
+              <span className="text-2xl">
+                {audit?.totals.total_pass}
+              </span>
             </CardContent>
           </Card>
           <Card className="w-full gap-0 pb-2 pt-4">
@@ -107,9 +105,9 @@ export default function AuditPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-                <span className="text-2xl">
-                  {audit?.totals.total_fail}
-                </span>
+              <span className="text-2xl">
+                {audit?.totals.total_fail}
+              </span>
             </CardContent>
           </Card>
           <Card className="w-full gap-0 pb-2 pt-4">
@@ -119,9 +117,9 @@ export default function AuditPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-                <span className="text-2xl">
-                  {audit?.totals.total_warn}
-                </span>
+              <span className="text-2xl">
+                {audit?.totals.total_warn}
+              </span>
             </CardContent>
           </Card>
           <Card className="w-full gap-0 pb-2 pt-4">
@@ -131,9 +129,9 @@ export default function AuditPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-                <span className="text-2xl">
-                  {audit?.totals.total_info}
-                </span>
+              <span className="text-2xl">
+                {audit?.totals.total_info}
+              </span>
             </CardContent>
           </Card>
         </div>
@@ -153,7 +151,7 @@ export default function AuditPage() {
           <AuditSheet entry={currentEntry}/>
         </Sheet>
       </div>
-      <div className="flex justify-center mt-6">
+      <div className="flex justify-center my-6">
         <span className="text-sm text-muted-foreground">
           {t("panel.page.audits.powered.by")}
         </span>

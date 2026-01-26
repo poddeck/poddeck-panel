@@ -898,9 +898,18 @@
           "warn": "Warnung",
           "info": "Info"
         },
-        "powered.by": "Angetrieben von KubeBench",
+        "powered.by": "Powered by KubeBench",
         "sheet": {
-          "title": "Prüfung"
+          "title": "Prüfung",
+          "detected.version": "Erkannte Version",
+          "benchmark.version": "Benchmark Version",
+          "number": "Prüfungsnummer",
+          "section": "Abschnitt",
+          "test.description": "Testbeschreibung",
+          "audit": "Prüfung",
+          "expected.result": "Erwartetes Ergebnis",
+          "reason": "Grund",
+          "remediation": "Behebung"
         }
       }
     }

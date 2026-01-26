@@ -900,7 +900,16 @@
         },
         "powered.by": "Powered by KubeBench",
         "sheet": {
-          "title": "Audit"
+          "title": "Audit",
+          "detected.version": "Detected version",
+          "benchmark.version": "Benchmark version",
+          "number": "Audit number",
+          "section": "Section",
+          "test.description": "Test description",
+          "audit": "Audit",
+          "expected.result": "Expected result",
+          "reason": "Reason",
+          "remediation": "Remediation"
         }
       }
     }

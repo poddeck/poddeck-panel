@@ -4,7 +4,7 @@ import AuditService from "@/api/services/audit-service.ts";
 import {Button} from "@/components/ui/button.tsx";
 import {Loader2, Play} from "lucide-react";
 
-export default function AuditRunButton() {
+export default function AuditRunButton({ onAuditComplete }: { onAuditComplete: () => void }) {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
 
@@ -13,7 +13,7 @@ export default function AuditRunButton() {
       setLoading(true);
       const response = await AuditService.perform();
       if (response.success) {
-
+        onAuditComplete();
       }
     } finally {
       setLoading(false);

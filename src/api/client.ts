@@ -13,7 +13,7 @@ export interface AuthenticationRequestConfig extends AxiosRequestConfig {
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:8080/v1/",
-  timeout: 50000,
+  timeout: 60000,
   headers: {"Content-Type": "application/json;charset=utf-8"},
 });
 
