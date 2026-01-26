@@ -4,6 +4,7 @@ export type Audit = {
   raw: string;
   controls: AuditControl[];
   totals: AuditTotals;
+  time: number;
 };
 
 export type AuditControl = {

@@ -898,6 +898,7 @@
           "warn": "Warnung",
           "info": "Info"
         },
+        "date": "Zeitpunkt",
         "powered.by": "Powered by KubeBench",
         "sheet": {
           "title": "Prüfung",

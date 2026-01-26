@@ -85,7 +85,7 @@ export default function AuditPage() {
         <div className="flex items-center justify-end mb-[4vh]">
           <AuditRunButton onAuditComplete={loadAudit}/>
         </div>
-        <div className="flex items-center gap-2 w-full mb-[4vh]">
+        <div className="flex items-center gap-2 w-full mb-4">
           <Card className="w-full gap-0 pb-2 pt-4">
             <CardHeader>
               <CardTitle className="flex gap-2 text-green-600">
@@ -134,6 +134,11 @@ export default function AuditPage() {
               </span>
             </CardContent>
           </Card>
+        </div>
+        <div className="mb-[4vh]">
+          <span className="text-muted-foreground">
+            {t("panel.page.audits.date")}: {new Date(audit?.time).toLocaleString()}
+          </span>
         </div>
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
           <DataTable<AuditEntry>

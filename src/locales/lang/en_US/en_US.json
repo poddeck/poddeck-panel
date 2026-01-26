@@ -898,6 +898,7 @@
           "warn": "Warn",
           "info": "Info"
         },
+        "date": "Date",
         "powered.by": "Powered by KubeBench",
         "sheet": {
           "title": "Audit",
