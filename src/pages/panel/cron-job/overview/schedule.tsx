@@ -34,12 +34,12 @@ export default function CronJobOverviewSchedule(
         <div className="flex justify-between mb-1">
           <span
             className="text-primary/60">{t("panel.page.cron-job.overview.schedule.last.schedule")}</span>
-          <span>{new Date(cronJob?.last_schedule_time).toLocaleString()}</span>
+          <span>{cronJob ? new Date(cronJob.last_schedule_time).toLocaleString() : ""}</span>
         </div>
         <div className="flex justify-between mb-1">
           <span
             className="text-primary/60">{t("panel.page.cron-job.overview.schedule.last.successful")}</span>
-          <span>{new Date(cronJob?.last_successful_time).toLocaleString()}</span>
+          <span>{cronJob ? new Date(cronJob.last_successful_time).toLocaleString() : ""}</span>
         </div>
       </div>
     </div>
