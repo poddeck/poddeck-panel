@@ -23,7 +23,15 @@ import {
 import {Sheet} from "@/components/ui/sheet.tsx";
 import AuditSheet from "@/pages/panel/audits/sheet.tsx";
 
-function AuditPageEmpty({ onAuditComplete }: { onAuditComplete: () => void }) {
+function AuditPageEmpty(
+  {
+    isUpdating,
+    onAuditComplete
+  }: {
+    isUpdating: boolean;
+    onAuditComplete: () => void
+  }
+) {
   const {t} = useTranslation();
   return (
     <PanelPage title="panel.page.audits.title">
@@ -38,7 +46,7 @@ function AuditPageEmpty({ onAuditComplete }: { onAuditComplete: () => void }) {
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
-          <AuditRunButton onAuditComplete={onAuditComplete}/>
+          <AuditRunButton isUpdating={isUpdating} onAuditComplete={onAuditComplete}/>
         </EmptyContent>
       </Empty>
     </PanelPage>
@@ -49,6 +57,7 @@ export default function AuditPage() {
   const { t } = useTranslation();
   const [audit, setAudit] = useState<Audit>();
   const [isLoading, setIsLoading] = useState(true);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [currentEntry, setCurrentEntry] = useState<AuditEntry>();
 
@@ -67,8 +76,37 @@ export default function AuditPage() {
     loadAudit();
   }, []);
 
+  const pollForAudit = () => {
+    setIsUpdating(true);
+    let attempts = 0;
+    const interval = setInterval(async () => {
+      attempts++;
+      const response = await auditService.find();
+
+      if (response.success) {
+        const newAudit = response.audit;
+        const shouldStop = (!audit && newAudit) ||
+          (audit && newAudit && audit.time !== newAudit.time);
+
+        if (shouldStop) {
+          setAudit(newAudit);
+          clearInterval(interval);
+          setIsUpdating(false);
+        }
+      }
+
+      if (attempts >= 30) {
+        clearInterval(interval);
+        setIsUpdating(false);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  };
+
+
   if (!isLoading && audit == null) {
-    return <AuditPageEmpty onAuditComplete={loadAudit}/>
+    return <AuditPageEmpty isUpdating={isUpdating} onAuditComplete={pollForAudit}/>
   }
   const entries = audit == null ? [] : audit.controls.flatMap(control =>
     control.tests.flatMap(test =>
@@ -83,7 +121,7 @@ export default function AuditPage() {
     <PanelPage title="panel.page.audits.title">
       <div className="mt-[4vh]">
         <div className="flex items-center justify-end mb-[4vh]">
-          <AuditRunButton onAuditComplete={loadAudit}/>
+          <AuditRunButton isUpdating={isUpdating} onAuditComplete={pollForAudit}/>
         </div>
         <div className="flex items-center gap-2 w-full mb-4">
           <Card className="w-full gap-0 pb-2 pt-4">
