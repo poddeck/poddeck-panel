@@ -44,7 +44,7 @@ export default function NodeOverviewGeneral(
                 >
                   <span className="px-2">{key}</span>
                   <span
-                    className="bg-background px-2 rounded-r-sm">{value}</span>
+                    className="bg-background px-2 rounded-r-sm break-all">{value}</span>
                 </div>
               ))}
           </div>
@@ -57,7 +57,7 @@ export default function NodeOverviewGeneral(
               Object.entries(node.annotations).map(([key]) => (
                 <div
                   key={key}
-                  className="flex items-center bg-muted py-0.5 pr-0.5 rounded-lg"
+                  className="flex items-center bg-muted py-0.5 pr-0.5 rounded-lg break-all"
                 >
                   <span className="px-2">{key}</span>
                 </div>
