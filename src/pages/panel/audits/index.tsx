@@ -137,7 +137,7 @@ export default function AuditPage() {
         </div>
         <div className="mb-[4vh]">
           <span className="text-muted-foreground">
-            {t("panel.page.audits.date")}: {new Date(audit?.time).toLocaleString()}
+            {t("panel.page.audits.date")}: {audit ? new Date(audit.time).toLocaleString() : ""}
           </span>
         </div>
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
