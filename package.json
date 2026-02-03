@@ -69,7 +69,7 @@
     "react-helmet": "^6.1.0",
     "react-hook-form": "^7.71.1",
     "react-i18next": "^16.5.3",
-    "react-resizable-panels": "^4.2.2",
+    "react-resizable-panels": "^4.5.8",
     "react-router-dom": "^7.13.0",
     "react-scan": "^0.4.3",
     "react-spring": "^10.0.3",
