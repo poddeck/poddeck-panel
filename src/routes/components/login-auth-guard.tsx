@@ -1,6 +1,6 @@
-import {useCallback, useEffect} from "react";
+import {useEffect} from "react";
 import {useRouter} from "../hooks";
-import {useUserToken} from "@/store/user-store";
+import useUserStore, {useUserToken} from "@/store/user-store";
 
 type Props = {
   children: React.ReactNode;
@@ -9,15 +9,17 @@ export default function LoginAuthGuard({children}: Props) {
   const router = useRouter();
   const {authentication_token} = useUserToken();
 
-  const check = useCallback(() => {
-    if (!authentication_token) {
-      router.replace("/login/");
-    }
-  }, [router, authentication_token]);
+  const hasHydrated = useUserStore.persist.hasHydrated();
 
   useEffect(() => {
-    check();
-  }, [check]);
+    if (hasHydrated && !authentication_token) {
+      router.replace("/login/");
+    }
+  }, [hasHydrated, authentication_token, router]);
+
+  if (!hasHydrated) {
+    return null;
+  }
 
   return <>{children}</>;
 }
