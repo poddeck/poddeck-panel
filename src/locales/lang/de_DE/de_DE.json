@@ -118,6 +118,7 @@
       "workload": "Auslastung",
       "namespaces": "Namensräume",
       "events": "Ereignisse",
+      "apps": "Anwendungen",
       "units": "Einheiten",
       "pods": "Pods",
       "deployments": "Deployments",
@@ -343,6 +344,9 @@
           "placeholder": "Ende auswählen",
           "label": "Ende"
         }
+      },
+      "apps": {
+        "title": "Anwendungen"
       },
       "pods": {
         "title": "Pods",

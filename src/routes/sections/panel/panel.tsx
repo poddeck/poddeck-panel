@@ -16,6 +16,7 @@ const getRoutes = (): RouteObject[] => {
     {path: "workload", element: Component("/pages/panel/workload")},
     {path: "namespaces", element: Component("/pages/panel/namespaces")},
     {path: "events", element: Component("/pages/panel/events")},
+    {path: "apps", element: Component("/pages/panel/apps")},
     {path: "pods", element: Component("/pages/panel/pods")},
     {path: "pod/overview", element: Component("/pages/panel/pod/overview")},
     {path: "pod/logs", element: Component("/pages/panel/pod/log")},

@@ -118,6 +118,7 @@
       "workload": "Workload",
       "namespaces": "Namespaces",
       "events": "Events",
+      "apps": "Apps",
       "units": "Units",
       "pods": "Pods",
       "deployments": "Deployments",
@@ -343,6 +344,9 @@
           "placeholder": "Select end",
           "label": "End"
         }
+      },
+      "apps": {
+        "title": "Apps"
       },
       "pods": {
         "title": "Pods",

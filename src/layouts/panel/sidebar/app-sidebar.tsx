@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import {
-  AlarmClock,
+  AlarmClock, BookImage,
   Box,
   CalendarClock,
   CreditCard, Cylinder,
@@ -67,6 +67,13 @@ export function AppNavigation() {
       title: t("panel.sidebar.events"),
       url: "/events/",
       icon: CalendarClock,
+      isActive: false,
+      items: [],
+    },
+    {
+      title: t("panel.sidebar.apps"),
+      url: "/apps/",
+      icon: BookImage,
       isActive: false,
       items: [],
     },
