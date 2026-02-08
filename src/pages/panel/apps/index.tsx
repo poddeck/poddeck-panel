@@ -30,9 +30,11 @@ import {
   Download,
   Funnel,
   Package,
-  Search
+  Search,
+  Settings
 } from 'lucide-react'
 import {usePagination} from '@/hooks/use-pagination'
+import {AppInstallDialog} from "@/pages/panel/apps/install-dialog.tsx";
 
 export default function AppsPage() {
   const [apps, setApps] = useState<App[]>([])
@@ -45,19 +47,23 @@ export default function AppsPage() {
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
   const [showInstalledOnly, setShowInstalledOnly] = useState(false)
 
+  const [installDialogOpen, setInstallDialogOpen] = useState(false)
+  const [selectedApp, setSelectedApp] = useState<App | null>(null)
+
   useEffect(() => {
-    async function loadApps() {
-      try {
-        const response = await appService.list()
-        if (response.success != false) {
-          setApps(response.apps)
-        }
-      } finally {
-        setIsLoading(false)
-      }
-    }
     loadApps()
   }, [])
+
+  async function loadApps() {
+    try {
+      const response = await appService.list()
+      if (response.success != false) {
+        setApps(response.apps)
+      }
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   const { repositories, keywords } = useMemo(() => {
     const repoSet = new Set<string>()
@@ -140,6 +146,21 @@ export default function AppsPage() {
     setSelectedRepositories([])
     setSelectedKeywords([])
     setShowInstalledOnly(false)
+  }
+
+  const handleAppAction = (app: App) => {
+    if (app.installed) {
+      // TODO: Navigate to manage page or open manage dialog
+      console.log('Manage app:', app)
+    } else {
+      setSelectedApp(app)
+      setInstallDialogOpen(true)
+    }
+  }
+
+  const handleInstallSuccess = () => {
+    // Reload apps to update installation status
+    loadApps()
   }
 
   const AppCardSkeleton = () => (
@@ -417,9 +438,22 @@ export default function AppsPage() {
                             {app.versions[0]?.chart_version || 'N/A'}
                           </span>
                         </div>
-                        <Button size="sm" className="gap-2">
-                          <Download className="h-4 w-4" />
-                          {app.installed ? 'Verwalten' : 'Installieren'}
+                        <Button
+                          size="sm"
+                          className="gap-2"
+                          onClick={() => handleAppAction(app)}
+                        >
+                          {app.installed ? (
+                            <>
+                              <Settings className="h-4 w-4" />
+                              Verwalten
+                            </>
+                          ) : (
+                            <>
+                              <Download className="h-4 w-4" />
+                              Installieren
+                            </>
+                          )}
                         </Button>
                       </CardFooter>
                     </Card>
@@ -487,6 +521,13 @@ export default function AppsPage() {
           </main>
         </div>
       </div>
+
+      <AppInstallDialog
+        app={selectedApp}
+        open={installDialogOpen}
+        onOpenChange={setInstallDialogOpen}
+        onInstallSuccess={handleInstallSuccess}
+      />
     </PanelPage>
   )
 }

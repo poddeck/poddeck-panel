@@ -19,8 +19,22 @@ export type AppListResponse = {
   success?: boolean;
 }
 
+export interface AppInstallRequest {
+  name: string;
+  chart: string;
+  namespace: string;
+  version: string;
+}
+
+export type AppInstallResponse = {
+  success: boolean;
+  status: string;
+  output: string;
+}
+
 export const AppApi = {
   List: "/apps/",
+  Install: "/app/install/",
 } as const;
 
 const list = () => client.get<AppListResponse>({url: AppApi.List});
@@ -32,8 +46,13 @@ const listCluster = (clusterId: string) => client.get<AppListResponse>(
     },
   }
 );
+const install = (data: AppInstallRequest) => client.post<AppInstallResponse>({
+  url: AppApi.Install,
+  data
+});
 
 export default {
   list,
-  listCluster
+  listCluster,
+  install
 };
