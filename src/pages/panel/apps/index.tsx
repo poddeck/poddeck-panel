@@ -35,8 +35,10 @@ import {
 } from 'lucide-react'
 import {usePagination} from '@/hooks/use-pagination'
 import {AppInstallDialog} from "@/pages/panel/apps/install-dialog.tsx";
+import {useTranslation} from "react-i18next";
 
 export default function AppsPage() {
+  const { t } = useTranslation();
   const [apps, setApps] = useState<App[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [currentPage, setCurrentPage] = useState(1)
@@ -159,7 +161,6 @@ export default function AppsPage() {
   }
 
   const handleInstallSuccess = () => {
-    // Reload apps to update installation status
     loadApps()
   }
 
@@ -255,7 +256,7 @@ export default function AppsPage() {
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg flex items-center gap-2">
-                      <Funnel size={20}/> Filter
+                      <Funnel size={20}/> {t("panel.page.apps.filter.title")}
                     </CardTitle>
                     {(searchQuery || selectedRepositories.length > 0 || selectedKeywords.length > 0 || showInstalledOnly) && (
                       <Button
@@ -264,19 +265,19 @@ export default function AppsPage() {
                         className="h-7"
                         onClick={clearFilters}
                       >
-                        Reset
+                        {t("panel.page.apps.filter.reset")}
                       </Button>
                     )}
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="space-y-2">
-                    <Label htmlFor="search">Suche</Label>
+                    <Label htmlFor="search">{t("panel.page.apps.filter.search")}</Label>
                     <div className="relative">
                       <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="search"
-                        placeholder="Chart suchen..."
+                        placeholder={t("panel.page.apps.filter.search.placeholder")}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="pl-8"
@@ -288,63 +289,69 @@ export default function AppsPage() {
 
                   <div className="space-y-2">
                     <Label className="text-sm font-medium">
-                      Repository ({repositories.length})
+                      {t("panel.page.apps.filter.repositories")} ({repositories.length})
                     </Label>
-                    <ScrollArea className="h-32">
-                      <div className="space-y-2">
-                        {repositories.map(repo => {
-                          const count = apps.filter(app => app.repository === repo).length
-                          return (
-                            <div key={repo} className="flex items-center justify-between space-x-2">
-                              <div className="flex items-center space-x-2 flex-1 min-w-0">
-                                <Checkbox
-                                  id={`repo-${repo}`}
-                                  checked={selectedRepositories.includes(repo)}
-                                  onCheckedChange={() => toggleRepository(repo)}
-                                />
-                                <Label
-                                  htmlFor={`repo-${repo}`}
-                                  className="text-sm font-normal cursor-pointer truncate"
-                                  title={repo}
-                                >
-                                  {repo}
-                                </Label>
+                    <div className="relative">
+                      <ScrollArea className="h-32">
+                        <div className="space-y-2 pr-4">
+                          {repositories.map(repo => {
+                            const count = apps.filter(app => app.repository === repo).length
+                            return (
+                              <div key={repo} className="flex items-center justify-between space-x-2">
+                                <div className="flex items-center space-x-2 flex-1 min-w-0">
+                                  <Checkbox
+                                    id={`repo-${repo}`}
+                                    checked={selectedRepositories.includes(repo)}
+                                    onCheckedChange={() => toggleRepository(repo)}
+                                  />
+                                  <Label
+                                    htmlFor={`repo-${repo}`}
+                                    className="text-sm font-normal cursor-pointer truncate"
+                                    title={repo}
+                                  >
+                                    {repo}
+                                  </Label>
+                                </div>
+                                <Badge variant="secondary" className="text-xs flex-shrink-0">
+                                  {count}
+                                </Badge>
                               </div>
-                              <Badge variant="secondary" className="text-xs flex-shrink-0">
-                                {count}
-                              </Badge>
-                            </div>
-                          )
-                        })}
-                      </div>
-                    </ScrollArea>
+                            )
+                          })}
+                        </div>
+                      </ScrollArea>
+                      <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-card to-transparent pointer-events-none" />
+                    </div>
                   </div>
 
                   <Separator />
 
                   <div className="space-y-2">
                     <Label className="text-sm font-medium">
-                      Keywords ({keywords.length})
+                      {t("panel.page.apps.filter.keywords")} ({keywords.length})
                     </Label>
-                    <ScrollArea className="h-64">
-                      <div className="space-y-2">
-                        {keywords.map(keyword => (
-                          <div key={keyword} className="flex items-center space-x-2">
-                            <Checkbox
-                              id={`kw-${keyword}`}
-                              checked={selectedKeywords.includes(keyword)}
-                              onCheckedChange={() => toggleKeyword(keyword)}
-                            />
-                            <Label
-                              htmlFor={`kw-${keyword}`}
-                              className="text-sm font-normal cursor-pointer"
-                            >
-                              {keyword}
-                            </Label>
-                          </div>
-                        ))}
-                      </div>
-                    </ScrollArea>
+                    <div className="relative">
+                      <ScrollArea className="h-64">
+                        <div className="space-y-2 pr-4">
+                          {keywords.map(keyword => (
+                            <div key={keyword} className="flex items-center space-x-2">
+                              <Checkbox
+                                id={`kw-${keyword}`}
+                                checked={selectedKeywords.includes(keyword)}
+                                onCheckedChange={() => toggleKeyword(keyword)}
+                              />
+                              <Label
+                                htmlFor={`kw-${keyword}`}
+                                className="text-sm font-normal cursor-pointer"
+                              >
+                                {keyword}
+                              </Label>
+                            </div>
+                          ))}
+                        </div>
+                      </ScrollArea>
+                      <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-card to-transparent pointer-events-none" />
+                    </div>
                   </div>
 
                   <Separator />
@@ -359,7 +366,7 @@ export default function AppsPage() {
                       htmlFor="installed"
                       className="text-sm font-normal cursor-pointer"
                     >
-                      Nur installierte anzeigen
+                      {t("panel.page.apps.filter.installed.only")}
                     </Label>
                   </div>
 
@@ -383,9 +390,9 @@ export default function AppsPage() {
             ) : filteredApps.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-64 space-y-2">
                 <Package className="h-12 w-12 text-muted-foreground" />
-                <p className="text-muted-foreground">Keine Charts gefunden</p>
+                <p className="text-muted-foreground">{t("panel.page.apps.empty")}</p>
                 <Button variant="link" onClick={clearFilters}>
-                  Filter zurücksetzen
+                  {t("panel.page.apps.filter.reset")}
                 </Button>
               </div>
             ) : (
@@ -432,7 +439,7 @@ export default function AppsPage() {
                       <CardFooter className="flex justify-between items-center">
                         <div className="flex flex-col">
                           <span className="text-xs text-muted-foreground">
-                            Version
+                            {t("panel.page.apps.version")}
                           </span>
                           <span className="text-sm">
                             {app.versions[0]?.chart_version || 'N/A'}
@@ -451,7 +458,7 @@ export default function AppsPage() {
                           ) : (
                             <>
                               <Download className="h-4 w-4" />
-                              Installieren
+                              {t("panel.page.apps.install")}
                             </>
                           )}
                         </Button>

@@ -126,7 +126,7 @@ export default function AuditPage() {
         <div className="flex items-center gap-2 w-full mb-4">
           <Card className="w-full gap-0 pb-2 pt-4">
             <CardHeader>
-              <CardTitle className="flex gap-2 text-green-600">
+              <CardTitle className="flex gap-2 text-green-400">
                 <Check size={18} className="-translate-y-0.5"/> {t("panel.page.audits.status.pass")}
               </CardTitle>
             </CardHeader>
@@ -138,7 +138,7 @@ export default function AuditPage() {
           </Card>
           <Card className="w-full gap-0 pb-2 pt-4">
             <CardHeader>
-              <CardTitle className="flex gap-2 text-red-600">
+              <CardTitle className="flex gap-2 text-red-400">
                 <X size={18} className="-translate-y-0.5"/> {t("panel.page.audits.status.fail")}
               </CardTitle>
             </CardHeader>
@@ -150,7 +150,7 @@ export default function AuditPage() {
           </Card>
           <Card className="w-full gap-0 pb-2 pt-4">
             <CardHeader>
-              <CardTitle className="flex gap-2 text-yellow-600">
+              <CardTitle className="flex gap-2 text-yellow-400">
                 <TriangleAlert size={18} className="-translate-y-0.5"/> {t("panel.page.audits.status.warn")}
               </CardTitle>
             </CardHeader>

@@ -346,7 +346,19 @@
         }
       },
       "apps": {
-        "title": "Anwendungen"
+        "title": "Anwendungen",
+        "empty": "Keine Anwendungen gefunden.",
+        "filter": {
+          "title": "Filter",
+          "reset": "Zurücksetzen",
+          "search": "Suche",
+          "search.placeholder": "Nach App suchen...",
+          "repositories": "Repositories",
+          "keywords": "Schlüsselwörter",
+          "installed.only": "Nur installierte Apps"
+        },
+        "version": "Version",
+        "install": "Installieren"
       },
       "pods": {
         "title": "Pods",
