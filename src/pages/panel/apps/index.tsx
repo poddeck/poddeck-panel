@@ -83,7 +83,7 @@ export default function AppsPage() {
   }, [apps])
 
   const { filteredApps, totalPages } = useMemo(() => {
-    let filtered = apps.filter(app => {
+    const filtered = apps.filter(app => {
       if (searchQuery) {
         const query = searchQuery.toLowerCase()
         const matchesSearch =

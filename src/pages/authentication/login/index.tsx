@@ -23,7 +23,7 @@ import {
 
 import { Navigate, useNavigate } from "react-router"
 import { useTranslation } from "react-i18next"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useLogin, useUserToken } from "@/store/user-store"
 import { toast } from "sonner"
@@ -52,10 +52,6 @@ export default function LoginForm() {
   const [recoveryCode, setRecoveryCode] = useState("")
   const [rememberMe, setRememberMe] = useState(false)
 
-  if (token.authentication_token) {
-    return <Navigate to="/cluster/" replace />
-  }
-
   useEffect(() => {
     const rememberedEmail = localStorage.getItem("remembered_email")
     if (rememberedEmail) {
@@ -65,14 +61,16 @@ export default function LoginForm() {
     } else {
       setTimeout(() => setFocus("email"), 0)
     }
-  }, [setFocus])
+  }, [form, setFocus])
 
   const handleFinish = async (values: LoginRequest) => {
     setLoading(true)
     try {
-      rememberMe
-        ? localStorage.setItem("remembered_email", values.email)
-        : localStorage.removeItem("remembered_email")
+      if (rememberMe) {
+        localStorage.setItem("remembered_email", values.email)
+      } else {
+        localStorage.removeItem("remembered_email")
+      }
 
       const response = await login({
         ...values,
@@ -91,7 +89,7 @@ export default function LoginForm() {
     }
   }
 
-  const handleOtpSubmit = async () => {
+  const handleOtpSubmit = useCallback(async () => {
     const { email, password } = getValues()
     if (!email || !password) return
 
@@ -104,15 +102,17 @@ export default function LoginForm() {
       })
 
       setOtp("")
-      response.success
-        ? navigate("/cluster/", { replace: true })
-        : toast.error(t("authentication.login.otp.failed"))
+      if (response.success) {
+        navigate("/cluster/", { replace: true })
+      } else {
+        toast.error(t("authentication.login.otp.failed"))
+      }
     } finally {
       setLoading(false)
     }
-  }
+  }, [getValues, login, navigate, otp, t])
 
-  const handleRecoverySubmit = async () => {
+  const handleRecoverySubmit = useCallback(async () => {
     const { email, password } = getValues()
     if (!email || !password) return
 
@@ -124,21 +124,27 @@ export default function LoginForm() {
         multi_factor_code: recoveryCode,
       })
 
-      response.success
-        ? navigate("/cluster/", { replace: true })
-        : toast.error(t("authentication.login.recovery.failed"))
+      if (response.success) {
+        navigate("/cluster/", { replace: true })
+      } else {
+        toast.error(t("authentication.login.recovery.failed"))
+      }
     } finally {
       setLoading(false)
     }
-  }
+  }, [getValues, login, navigate, recoveryCode, t])
 
   useEffect(() => {
     if (otp.length === 6 && !loading) handleOtpSubmit()
-  }, [otp])
+  }, [otp, loading, handleOtpSubmit])
 
   useEffect(() => {
     if (recoveryCode.length === 16 && !loading) handleRecoverySubmit()
-  }, [recoveryCode])
+  }, [recoveryCode, loading, handleRecoverySubmit])
+
+  if (token.authentication_token) {
+    return <Navigate to="/cluster/" replace />
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center flex-col px-4">

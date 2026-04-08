@@ -26,7 +26,7 @@ export default function StatefulSetEditPage() {
     if (statefulSet && code === "") {
       setCode(statefulSet.raw);
     }
-  }, [statefulSet]);
+  }, [statefulSet, code]);
 
   async function save() {
     setLoading(true);

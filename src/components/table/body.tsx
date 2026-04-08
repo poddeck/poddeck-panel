@@ -59,7 +59,7 @@ function DataRow<T>(
         />
       </TableCell>
 
-      {row.getVisibleCells().map((cell: any, index: number) => {
+      {row.getVisibleCells().map((cell, index) => {
         const isFirst = index === 0;
         const isLast = index === row.getVisibleCells().length - 1;
         const selectedEdgeClasses = selected

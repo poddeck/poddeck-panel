@@ -26,7 +26,7 @@ export default function CronJobEditPage() {
     if (cronJob && code === "") {
       setCode(cronJob.raw);
     }
-  }, [cronJob]);
+  }, [cronJob, code]);
 
   async function save() {
     setLoading(true);

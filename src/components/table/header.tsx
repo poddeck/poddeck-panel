@@ -12,14 +12,16 @@ import {useTranslation} from "react-i18next"
 import {Checkbox} from '@/components/ui/checkbox'
 import {useEffect, useRef} from "react";
 
-function DataTableSelectAll({ table }: { table: any }) {
+function DataTableSelectAll<T>({ table }: { table: Table<T> }) {
   const ref = useRef<HTMLInputElement>(null)
+  const isSome = table.getIsSomePageRowsSelected()
+  const isAll = table.getIsAllPageRowsSelected()
 
   useEffect(() => {
     if (ref.current) {
-      ref.current.indeterminate = table.getIsSomePageRowsSelected() && !table.getIsAllPageRowsSelected()
+      ref.current.indeterminate = isSome && !isAll
     }
-  }, [table.getIsSomePageRowsSelected(), table.getIsAllPageRowsSelected()])
+  }, [isSome, isAll])
 
   return (
     <Checkbox
@@ -45,7 +47,7 @@ export default function DataTableHeader<T>(
 
   return (
     <TableHeader>
-      {table.getHeaderGroups().map((headerGroup: any) => (
+      {table.getHeaderGroups().map((headerGroup) => (
         <TableRow key={headerGroup.id}
                   className="hover:bg-transparent border-none">
           <TableHead
@@ -58,7 +60,7 @@ export default function DataTableHeader<T>(
           >
             <DataTableSelectAll table={table} />
           </TableHead>
-          {headerGroup.headers.map((header: any) => {
+          {headerGroup.headers.map((header) => {
             return (
               <TableHead
                 key={header.id}

@@ -149,8 +149,8 @@ export default function OverviewActivityBox() {
   const getBarFillColor = (data: ActivityData) =>
     chartConfig[data.status].color;
 
-  const CustomBarShape = (props: any) => {
-    const { x, y, width, height, payload } = props;
+  const CustomBarShape = (props: Record<string, unknown>) => {
+    const { x, y, width, height, payload } = props as { x: number, y: number, width: number, height: number, payload: ActivityData };
 
     return (
       <Rectangle

@@ -26,7 +26,7 @@ export default function ReplicaSetEditPage() {
     if (replicaSet && code === "") {
       setCode(replicaSet.raw);
     }
-  }, [replicaSet]);
+  }, [replicaSet, code]);
 
   async function save() {
     setLoading(true);
