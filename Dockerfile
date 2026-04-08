@@ -21,4 +21,7 @@ USER 1000
 
 EXPOSE 8081
 
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+  CMD wget -qO /dev/null http://localhost:8081/ || exit 1
+
 ENTRYPOINT ["/docker-entrypoint.sh"]
