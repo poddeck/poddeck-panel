@@ -17,7 +17,7 @@ COPY nginx.conf /etc/nginx/templates/default.conf.template
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 
 RUN chmod +x /docker-entrypoint.sh && \
-    chown -R 1000:1000 /usr/share/nginx/html /etc/nginx/conf.d /var/cache/nginx /var/run
+    chown -R 1000:1000 /usr/share/nginx/html /etc/nginx/conf.d /var/cache/nginx /var/run /run /tmp
 
 USER 1000
 
