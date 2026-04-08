@@ -93,6 +93,14 @@
         "submit": "Hinzufügen"
       },
       "cluster.add.successful": "Cluster erfolgreich hinzugefügt",
+      "cluster.deploy.dialog": {
+        "title": "Agent bereitstellen",
+        "description": "Stellen Sie den PodDeck-Agent in Ihrem Cluster bereit.",
+        "helm.title": "Helm Install",
+        "kubectl.title": "kubectl Apply",
+        "copied": "In die Zwischenablage kopiert",
+        "close": "Schließen"
+      },
       "cluster.settings": {
         "edit": "Bearbeiten",
         "delete": "Löschen"

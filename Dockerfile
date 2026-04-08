@@ -8,7 +8,9 @@ RUN npm ci
 COPY . .
 RUN VITE_API_BASE_URL=/v1/ npm run build
 
-FROM nginx:1.29.8
+FROM nginx:1.29.8-alpine
+
+RUN apk upgrade --no-cache
 
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/templates/default.conf.template

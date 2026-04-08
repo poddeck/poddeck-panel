@@ -93,6 +93,14 @@
         "submit": "Add"
       },
       "cluster.add.successful": "Cluster successfully added",
+      "cluster.deploy.dialog": {
+        "title": "Deploy Agent",
+        "description": "Deploy the PodDeck agent to your cluster using one of the methods below.",
+        "helm.title": "Helm Install",
+        "kubectl.title": "kubectl Apply",
+        "copied": "Copied to clipboard",
+        "close": "Close"
+      },
       "cluster.settings": {
         "edit": "Edit",
         "delete": "Delete"

@@ -89,7 +89,7 @@ export default function DataTableColumnSelection<T>(
           <CheckCheck/> {t("table.columns.all")}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => {
-          table.setColumnVisibility(visibilityState);
+          table.setColumnVisibility(visibilityState ?? {});
           setSearchQuery("")
         }}>
           <RefreshCcwIcon/> {t("table.columns.reset")}

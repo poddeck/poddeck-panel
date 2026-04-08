@@ -12,7 +12,7 @@ export interface AuthenticationRequestConfig extends AxiosRequestConfig {
 }
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8080/v1/",
+  baseURL: import.meta.env.VITE_API_BASE_URL || "/v1/",
   timeout: 60000,
   headers: {"Content-Type": "application/json;charset=utf-8"},
 });
