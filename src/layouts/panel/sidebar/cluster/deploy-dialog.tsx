@@ -24,7 +24,7 @@ export default function ClusterDeployDialog({clusterId, agentKey, onClose}: Depl
   const {t} = useTranslation();
   const [copiedHelm, setCopiedHelm] = React.useState(false);
 
-  const helmCommand = `helm repo add poddeck https://poddeck.github.io/poddeck-charts
+  const helmCommand = `helm repo add poddeck https://poddeck.github.io/poddeck
 helm install poddeck-agent poddeck/poddeck-agent \\
   --set core.hostname=<YOUR_CORE_HOSTNAME> \\
   --set core.port=10101 \\
