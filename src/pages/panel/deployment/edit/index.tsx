@@ -26,7 +26,7 @@ export default function DeploymentEditPage() {
     if (deployment && code === "") {
       setCode(deployment.raw);
     }
-  }, [deployment]);
+  }, [deployment, code]);
 
   async function save() {
     setLoading(true);

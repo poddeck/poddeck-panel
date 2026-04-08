@@ -18,15 +18,21 @@ import {
 } from "@/components/ui/dropdown-menu.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {useTranslation} from "react-i18next";
-import {useState} from "react";
+import {type Dispatch, type SetStateAction, useState} from "react";
+import type {Table, VisibilityState} from "@tanstack/react-table";
 
-export default function DataTableColumnSelection(
+export default function DataTableColumnSelection<T>(
   {
     table,
     searchQuery,
     setSearchQuery,
     visibilityState
-  }: any
+  }: {
+    table: Table<T>,
+    searchQuery: string,
+    setSearchQuery: Dispatch<SetStateAction<string>>,
+    visibilityState?: VisibilityState
+  }
 ) {
   const {t} = useTranslation();
   const [open, setOpen] = useState(false);
@@ -58,14 +64,14 @@ export default function DataTableColumnSelection(
         </div>
         <DropdownMenuSeparator/>
         {table.getAllColumns()
-          .filter((column: any) => column.getCanHide())
-          .filter((column: any) => {
+          .filter((column) => column.getCanHide())
+          .filter((column) => {
             if (!searchQuery) return true
             const header = column.columnDef.header
             if (typeof header !== "string") return false
             return t(header).toLowerCase().includes(searchQuery.toLowerCase())
           })
-          .map((column: any) => (
+          .map((column) => (
             <DropdownMenuCheckboxItem
               key={column.id}
               checked={column.getIsVisible()}

@@ -80,7 +80,7 @@ export default function CronJobPageHeader(
       namespace: cronJob.namespace,
       suspend: !checked
     });
-  }, [checked]);
+  }, [checked, cronJob]);
 
   const runCronJob = async () => {
     if (!cronJob) {

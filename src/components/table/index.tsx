@@ -76,7 +76,7 @@ export function DataTable<T>(
     if (typeof window !== "undefined") {
       localStorage.setItem("table_" + name + "_page_size", pagination.pageSize.toString())
     }
-  }, [pagination.pageSize])
+  }, [name, pagination.pageSize])
   const [sorting, setSorting] = useState<SortingState>(initialSorting ?? [])
   const loadColumnVisibility = (): VisibilityState => {
     if (typeof window === "undefined") return visibilityState ?? {}
@@ -92,7 +92,7 @@ export function DataTable<T>(
     if (typeof window !== "undefined") {
       localStorage.setItem("table_" + name + "_column_visibility", JSON.stringify(columnVisibility))
     }
-  }, [columnVisibility])
+  }, [name, columnVisibility])
   const [globalFilter, setGlobalFilter] = useState('')
   const [searchQuery, setSearchQuery] = useState<string>("")
   const table = useReactTable({

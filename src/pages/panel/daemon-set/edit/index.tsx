@@ -26,7 +26,7 @@ export default function DaemonSetEditPage() {
     if (daemonSet && code === "") {
       setCode(daemonSet.raw);
     }
-  }, [daemonSet]);
+  }, [daemonSet, code]);
 
   async function save() {
     setLoading(true);

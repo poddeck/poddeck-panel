@@ -42,7 +42,15 @@ function ClusterUsageItem(
     icon: Icon,
     color,
     unit
-  }: any
+  }: {
+    label: string,
+    value: number,
+    usage: number,
+    total: string,
+    icon: LucideIcon,
+    color: string,
+    unit: string
+  }
 ) {
   return (
     <div className="flex flex-col gap-2 w-full">
