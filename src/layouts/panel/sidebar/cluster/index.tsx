@@ -61,6 +61,7 @@ export function SidebarClusterSwitcher() {
         return;
       }
       setActiveCluster(clusters[0]);
+      setClusterId(clusters[0].id);
       return;
     }
     if (!loading && (!clusters || clusters.length === 0)) {
