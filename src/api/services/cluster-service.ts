@@ -16,6 +16,7 @@ export interface ClusterCreateRequest {
 export type ClusterCreateResponse = {
   success: boolean;
   cluster: string;
+  agent_key: string;
 }
 
 export interface ClusterEditRequest {
@@ -40,11 +41,22 @@ export type ClusterListResponse = {
   clusters: Cluster[];
 }
 
+export type ClusterAgentInstallRequest = {
+  id: string;
+}
+
+export type ClusterAgentInstallResponse = {
+  success: boolean;
+  cluster_id: string;
+  agent_key: string;
+}
+
 export const ClusterApi = {
   Create: "/cluster/create/",
   Edit: "/cluster/edit/",
   Delete: "/cluster/delete/",
   List: "/clusters/",
+  AgentInstall: "/cluster/agent-install/",
 } as const;
 
 const create = (data: ClusterCreateRequest) => client.post<ClusterCreateResponse>({
@@ -60,10 +72,15 @@ const remove = (data: ClusterDeleteRequest) => client.post<ClusterDeleteResponse
   data
 });
 const list = () => client.get<ClusterListResponse>({url: ClusterApi.List});
+const agentInstall = (data: ClusterAgentInstallRequest) => client.post<ClusterAgentInstallResponse>({
+  url: ClusterApi.AgentInstall,
+  data
+});
 
 export default {
   create,
   edit,
   remove,
   list,
+  agentInstall,
 };

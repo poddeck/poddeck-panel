@@ -15,6 +15,7 @@ import {Spinner} from "@/components/ui/spinner.tsx";
 import * as React from "react";
 import ClusterService, {type Cluster} from "@/api/services/cluster-service.ts";
 import {toast} from "sonner";
+import ClusterDeployDialog from "@/layouts/panel/sidebar/cluster/deploy-dialog.tsx";
 
 export default function ClusterAddDialog({ onCreation }: {
   onCreation?: (cluster: Cluster) => void;
@@ -23,6 +24,7 @@ export default function ClusterAddDialog({ onCreation }: {
   const [newClusterName, setNewClusterName] = React.useState("");
   const [newClusterIcon, setNewClusterIcon] = React.useState("");
   const [loading, setLoading] = React.useState(false);
+  const [deployInfo, setDeployInfo] = React.useState<{clusterId: string, agentKey: string, cluster: Cluster} | null>(null);
   const handleCreateCluster = async () => {
     if (!newClusterName.trim() || !newClusterIcon.trim()) {
       return;
@@ -32,16 +34,34 @@ export default function ClusterAddDialog({ onCreation }: {
       const createResponse = await ClusterService.create({name: newClusterName, icon: newClusterIcon});
       const listResponse = await ClusterService.list();
       const cluster = listResponse.clusters.filter((entry: Cluster) => entry.id === createResponse.cluster)[0];
-      onCreation?.(cluster);
+      setDeployInfo({
+        clusterId: createResponse.cluster,
+        agentKey: createResponse.agent_key,
+        cluster,
+      });
       setNewClusterName("");
       setNewClusterIcon("");
-    } finally {
-      setLoading(false);
       toast.success(t("panel.sidebar.cluster.add.successful"), {
         position: "top-right",
       });
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (deployInfo) {
+    return (
+      <ClusterDeployDialog
+        clusterId={deployInfo.clusterId}
+        agentKey={deployInfo.agentKey}
+        onClose={() => {
+          onCreation?.(deployInfo.cluster);
+          setDeployInfo(null);
+        }}
+      />
+    );
+  }
+
   return (
     <DialogContent className="sm:max-w-[425px]">
       <DialogHeader>
