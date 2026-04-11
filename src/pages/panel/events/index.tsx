@@ -107,7 +107,7 @@ export default function EventsPage() {
     }
 
     loadEvents();
-    const interval = setInterval(loadEvents, 1000);
+    const interval = setInterval(loadEvents, 3000);
     return () => clearInterval(interval);
   }, [startDate, endDate, limit, selectedValues, search]);
 

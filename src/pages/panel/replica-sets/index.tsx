@@ -90,7 +90,7 @@ export default function ReplicaSetsPage() {
 
     loadReplicaSets();
     loadNamespaces();
-    const interval = window.setInterval(loadReplicaSets, 1000);
+    const interval = window.setInterval(loadReplicaSets, 3000);
     return () => {
       clearInterval(interval);
     };

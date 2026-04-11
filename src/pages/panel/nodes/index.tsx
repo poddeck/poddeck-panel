@@ -81,7 +81,7 @@ export default function NodesPage() {
       }
     }
     loadNodes();
-    const interval = window.setInterval(loadNodes, 1000);
+    const interval = window.setInterval(loadNodes, 3000);
     return () => {
       clearInterval(interval);
     };

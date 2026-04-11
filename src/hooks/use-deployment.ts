@@ -26,7 +26,7 @@ export default function useDeployment() {
     }
 
     loadDeployment();
-    const interval = window.setInterval(loadDeployment, 1000);
+    const interval = window.setInterval(loadDeployment, 3000);
     return () => { isMounted = false; clearInterval(interval); };
   }, [searchParams]);
 

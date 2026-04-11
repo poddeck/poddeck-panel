@@ -88,7 +88,7 @@ export default function CronJobsPage() {
 
     loadCronJobs();
     loadNamespaces();
-    const interval = window.setInterval(loadCronJobs, 1000);
+    const interval = window.setInterval(loadCronJobs, 3000);
     return () => {
       clearInterval(interval);
     };

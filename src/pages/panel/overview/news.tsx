@@ -48,7 +48,7 @@ export default function OverviewNewsBox() {
     };
 
     fetchNotifications();
-    const interval = setInterval(fetchNotifications, 1000);
+    const interval = setInterval(fetchNotifications, 3000);
     return () => clearInterval(interval);
   }, []);
 

@@ -26,7 +26,7 @@ export default function useReplicaSet() {
     }
 
     loadReplicaSet();
-    const interval = window.setInterval(loadReplicaSet, 1000);
+    const interval = window.setInterval(loadReplicaSet, 3000);
     return () => { isMounted = false; clearInterval(interval); };
   }, [searchParams]);
 

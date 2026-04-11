@@ -85,7 +85,7 @@ export default function DeploymentsPage() {
 
     loadDeployments();
     loadNamespaces();
-    const interval = window.setInterval(loadDeployments, 1000);
+    const interval = window.setInterval(loadDeployments, 3000);
     return () => {
       clearInterval(interval);
     };

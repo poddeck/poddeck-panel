@@ -26,7 +26,7 @@ export default function useStatefulSet() {
     }
 
     loadStatefulSet();
-    const interval = window.setInterval(loadStatefulSet, 1000);
+    const interval = window.setInterval(loadStatefulSet, 3000);
     return () => { isMounted = false; clearInterval(interval); };
   }, [searchParams]);
 

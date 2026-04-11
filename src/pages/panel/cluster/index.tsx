@@ -95,7 +95,7 @@ export default function ClusterPage() {
         })
       );
       setClusters(updatedClusters);
-    }, 1000);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [clusters]);

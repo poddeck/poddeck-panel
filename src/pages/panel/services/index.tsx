@@ -87,7 +87,7 @@ export default function ServicesPage() {
 
     loadServices();
     loadNamespaces();
-    const interval = window.setInterval(loadServices, 1000);
+    const interval = window.setInterval(loadServices, 3000);
     return () => {
       clearInterval(interval);
     };
