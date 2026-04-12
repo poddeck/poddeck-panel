@@ -67,7 +67,7 @@ export default function PodsList(
 
     loadPods();
     loadNamespaces();
-    const interval = window.setInterval(loadPods, 1000);
+    const interval = window.setInterval(loadPods, 3000);
     return () => {
       clearInterval(interval);
     };

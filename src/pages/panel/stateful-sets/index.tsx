@@ -85,7 +85,7 @@ export default function StatefulSetsPage() {
 
     loadStatefulSets();
     loadNamespaces();
-    const interval = window.setInterval(loadStatefulSets, 1000);
+    const interval = window.setInterval(loadStatefulSets, 3000);
     return () => {
       clearInterval(interval);
     };

@@ -26,7 +26,7 @@ export default function useCronJob() {
     }
 
     loadCronJob();
-    const interval = window.setInterval(loadCronJob, 1000);
+    const interval = window.setInterval(loadCronJob, 3000);
     return () => { isMounted = false; clearInterval(interval); };
   }, [searchParams]);
 

@@ -55,7 +55,7 @@ export default function NamespacesPage() {
   };
   useEffect(() => {
     loadNamespaces();
-    const interval = window.setInterval(loadNamespaces, 1000);
+    const interval = window.setInterval(loadNamespaces, 3000);
     return () => clearInterval(interval);
   }, []);
   if (!isLoading && namespaces.length === 0) {

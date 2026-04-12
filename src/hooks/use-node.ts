@@ -25,7 +25,7 @@ export default function useNode() {
     }
 
     loadNode();
-    const interval = window.setInterval(loadNode, 1000);
+    const interval = window.setInterval(loadNode, 3000);
     return () => { isMounted = false; clearInterval(interval); };
   }, [searchParams]);
 

@@ -32,7 +32,7 @@ export default function NotificationSheet({cluster}: {cluster: boolean}) {
     };
 
     fetchNotifications();
-    const interval = setInterval(fetchNotifications, 1000);
+    const interval = setInterval(fetchNotifications, 3000);
     return () => clearInterval(interval);
   }, [cluster]);
 

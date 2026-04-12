@@ -142,7 +142,7 @@ export default function OverviewActivityBox() {
 
     loadEvents();
 
-    const interval = setInterval(loadEvents, 1000);
+    const interval = setInterval(loadEvents, 3000);
     return () => clearInterval(interval);
   }, []);
 

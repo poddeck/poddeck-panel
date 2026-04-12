@@ -26,7 +26,7 @@ export default function useDaemonSet() {
     }
 
     loadDaemonSet();
-    const interval = window.setInterval(loadDaemonSet, 1000);
+    const interval = window.setInterval(loadDaemonSet, 3000);
     return () => { isMounted = false; clearInterval(interval); };
   }, [searchParams]);
 

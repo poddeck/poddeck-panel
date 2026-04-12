@@ -85,7 +85,7 @@ export default function DaemonSetsPage() {
 
     loadDaemonSets();
     loadNamespaces();
-    const interval = window.setInterval(loadDaemonSets, 1000);
+    const interval = window.setInterval(loadDaemonSets, 3000);
     return () => {
       clearInterval(interval);
     };

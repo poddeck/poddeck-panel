@@ -26,7 +26,7 @@ export default function usePod() {
     }
 
     loadPod();
-    const interval = window.setInterval(loadPod, 1000);
+    const interval = window.setInterval(loadPod, 3000);
     return () => { isMounted = false; clearInterval(interval); };
   }, [searchParams]);
 
