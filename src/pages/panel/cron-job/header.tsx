@@ -64,13 +64,14 @@ export default function CronJobPageHeader(
   const [actionsOpen, setActionsOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [checked, setChecked] = useState<boolean>(true);
+  const [initialized, setInitialized] = useState(false);
   const [searchParams] = useSearchParams();
 
-  React.useEffect(() => {
-    if (cronJob) {
-      setChecked(!cronJob.suspend);
-    }
-  }, [cronJob]);
+  if (cronJob && !initialized) {
+    setInitialized(true);
+    setChecked(!cronJob.suspend);
+  }
+
   React.useEffect(() => {
     if (!cronJob) {
       return;

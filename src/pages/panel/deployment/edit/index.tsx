@@ -21,12 +21,12 @@ export default function DeploymentEditPage() {
   const {theme} = useTheme();
   const [code, setCode] = useState("");
   const [loading, setLoading] = React.useState(false);
+  const [initialized, setInitialized] = useState(false);
 
-  React.useEffect(() => {
-    if (deployment && code === "") {
-      setCode(deployment.raw);
-    }
-  }, [deployment, code]);
+  if (deployment && !initialized) {
+    setInitialized(true);
+    setCode(deployment.raw);
+  }
 
   async function save() {
     setLoading(true);

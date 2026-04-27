@@ -37,6 +37,56 @@ import {usePagination} from '@/hooks/use-pagination'
 import {AppInstallDialog} from "@/pages/panel/apps/install-dialog.tsx";
 import {useTranslation} from "react-i18next";
 
+const FilterSkeleton = () => (
+  <Card className="h-full">
+    <CardHeader>
+      <Skeleton className="h-6 w-24" />
+    </CardHeader>
+    <CardContent className="space-y-6">
+      <div className="space-y-2">
+        <Skeleton className="h-4 w-12" />
+        <Skeleton className="h-10 w-full" />
+      </div>
+      <Separator />
+      <div className="space-y-2 h-32">
+        <Skeleton className="h-4 w-32" />
+        <div className="space-y-2">
+          {[1, 2, 3].map(i => (
+            <div key={i} className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-4 w-4" />
+                <Skeleton className="h-4 w-24" />
+              </div>
+              <Skeleton className="h-5 w-8" />
+            </div>
+          ))}
+        </div>
+      </div>
+      <Separator />
+      <div className="space-y-2 h-64">
+        <Skeleton className="h-4 w-32" />
+        <div className="space-y-2">
+          {[1, 2, 3, 4, 5].map(i => (
+            <div key={i} className="flex items-center gap-2">
+              <Skeleton className="h-4 w-4" />
+              <Skeleton className="h-4 w-20" />
+            </div>
+          ))}
+        </div>
+      </div>
+      <Separator />
+      <div className="space-y-2">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-4 w-4" />
+            <Skeleton className="h-4 w-20" />
+          </div>
+        </div>
+      </div>
+    </CardContent>
+  </Card>
+)
+
 export default function AppsPage() {
   const { t } = useTranslation();
   const [apps, setApps] = useState<App[]>([])
@@ -123,9 +173,12 @@ export default function AppsPage() {
     paginationItemsToDisplay: 5
   })
 
-  useEffect(() => {
+  const filterKey = `${searchQuery}|${selectedRepositories.join(",")}|${selectedKeywords.join(",")}|${showInstalledOnly}|${itemsPerPage}`
+  const [lastFilterKey, setLastFilterKey] = useState(filterKey)
+  if (lastFilterKey !== filterKey) {
+    setLastFilterKey(filterKey)
     setCurrentPage(1)
-  }, [searchQuery, selectedRepositories, selectedKeywords, showInstalledOnly, itemsPerPage])
+  }
 
   const toggleRepository = (repo: string) => {
     setSelectedRepositories(prev =>
@@ -191,56 +244,6 @@ export default function AppsPage() {
         </div>
         <Skeleton className="h-9 w-28" />
       </CardFooter>
-    </Card>
-  )
-
-  const FilterSkeleton = () => (
-    <Card className="h-full">
-      <CardHeader>
-        <Skeleton className="h-6 w-24" />
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="space-y-2">
-          <Skeleton className="h-4 w-12" />
-          <Skeleton className="h-10 w-full" />
-        </div>
-        <Separator />
-        <div className="space-y-2 h-32">
-          <Skeleton className="h-4 w-32" />
-          <div className="space-y-2">
-            {[1, 2, 3].map(i => (
-              <div key={i} className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Skeleton className="h-4 w-4" />
-                  <Skeleton className="h-4 w-24" />
-                </div>
-                <Skeleton className="h-5 w-8" />
-              </div>
-            ))}
-          </div>
-        </div>
-        <Separator />
-        <div className="space-y-2 h-64">
-          <Skeleton className="h-4 w-32" />
-          <div className="space-y-2">
-            {[1, 2, 3, 4, 5].map(i => (
-              <div key={i} className="flex items-center gap-2">
-                <Skeleton className="h-4 w-4" />
-                <Skeleton className="h-4 w-20" />
-              </div>
-            ))}
-          </div>
-        </div>
-        <Separator />
-        <div className="space-y-2">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <Skeleton className="h-4 w-4" />
-              <Skeleton className="h-4 w-20" />
-            </div>
-          </div>
-        </div>
-      </CardContent>
     </Card>
   )
 
