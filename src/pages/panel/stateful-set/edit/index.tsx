@@ -21,12 +21,12 @@ export default function StatefulSetEditPage() {
   const {theme} = useTheme();
   const [code, setCode] = useState("");
   const [loading, setLoading] = React.useState(false);
+  const [initialized, setInitialized] = useState(false);
 
-  React.useEffect(() => {
-    if (statefulSet && code === "") {
-      setCode(statefulSet.raw);
-    }
-  }, [statefulSet, code]);
+  if (statefulSet && !initialized) {
+    setInitialized(true);
+    setCode(statefulSet.raw);
+  }
 
   async function save() {
     setLoading(true);

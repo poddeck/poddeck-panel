@@ -30,7 +30,7 @@ import {CLUSTER_ICON_LIST} from "./icon-list";
 import ClusterAddDialog from "./add-dialog.tsx";
 import SidebarClusterStatus from "./status.tsx";
 import SidebarClusterLoader from "./loader.tsx";
-import clusterStore, {useClusterActions} from "@/store/cluster-store.ts";
+import {useClusterActions, useClusterId} from "@/store/cluster-store.ts";
 import {useRouter} from "@/routes/hooks";
 import SidebarClusterSettings
   from "@/layouts/panel/sidebar/cluster/settings.tsx";
@@ -45,23 +45,23 @@ export function SidebarClusterSwitcher() {
   const {t} = useTranslation();
   const {isMobile} = useSidebar()
   const {clusters, setClusters, loading} = useClusters();
-  const [activeCluster, setActiveCluster] = React.useState<Cluster | null>(null);
   const [clickedCluster, setClickedCluster] = React.useState<Cluster | null>(null);
   const [open, setOpen] = React.useState(false);
   const [dialogMode, setDialogMode] = React.useState("add");
   const {setClusterId} = useClusterActions();
+  const clusterId = useClusterId();
   const {replace} = useRouter();
+
+  const activeCluster: Cluster | null = clusters && clusters.length > 0
+    ? (clusters.find(c => c.id === clusterId) ?? clusters[0])
+    : null;
 
   React.useEffect(() => {
     if (clusters && clusters.length > 0) {
-      const selectedClusterId = clusterStore.getState().clusterId;
-      const match = selectedClusterId ? clusters.find(c => c.id === selectedClusterId) : null;
-      if (match) {
-        setActiveCluster(match);
-        return;
+      const stored = clusterId ? clusters.find(c => c.id === clusterId) : null;
+      if (!stored) {
+        setClusterId(clusters[0].id);
       }
-      setActiveCluster(clusters[0]);
-      setClusterId(clusters[0].id);
       return;
     }
     if (!loading && (!clusters || clusters.length === 0)) {
@@ -74,9 +74,8 @@ export function SidebarClusterSwitcher() {
         window.location.reload();
       })();
     }
-  }, [clusters, loading, replace, setClusters, setClusterId]);
+  }, [clusters, clusterId, loading, replace, setClusters, setClusterId]);
   const updateCluster = (cluster: Cluster) => {
-    setActiveCluster(cluster);
     setClusterId(cluster.id);
     replace("/overview/");
   };

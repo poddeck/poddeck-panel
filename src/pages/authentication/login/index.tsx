@@ -50,13 +50,12 @@ export default function LoginForm() {
   const [otp, setOtp] = useState("")
   const [recoveryOpen, setRecoveryOpen] = useState(false)
   const [recoveryCode, setRecoveryCode] = useState("")
-  const [rememberMe, setRememberMe] = useState(false)
+  const [rememberMe, setRememberMe] = useState(() => !!localStorage.getItem("remembered_email"))
 
   useEffect(() => {
     const rememberedEmail = localStorage.getItem("remembered_email")
     if (rememberedEmail) {
       form.setValue("email", rememberedEmail)
-      setRememberMe(true)
       setTimeout(() => setFocus("password"), 0)
     } else {
       setTimeout(() => setFocus("email"), 0)
@@ -89,7 +88,7 @@ export default function LoginForm() {
     }
   }
 
-  const handleOtpSubmit = useCallback(async () => {
+  const handleOtpSubmit = useCallback(async (code: string) => {
     const { email, password } = getValues()
     if (!email || !password) return
 
@@ -98,7 +97,7 @@ export default function LoginForm() {
       const response = await login({
         email,
         password,
-        multi_factor_code: otp,
+        multi_factor_code: code,
       })
 
       setOtp("")
@@ -110,9 +109,9 @@ export default function LoginForm() {
     } finally {
       setLoading(false)
     }
-  }, [getValues, login, navigate, otp, t])
+  }, [getValues, login, navigate, t])
 
-  const handleRecoverySubmit = useCallback(async () => {
+  const handleRecoverySubmit = useCallback(async (code: string) => {
     const { email, password } = getValues()
     if (!email || !password) return
 
@@ -121,7 +120,7 @@ export default function LoginForm() {
       const response = await login({
         email,
         password,
-        multi_factor_code: recoveryCode,
+        multi_factor_code: code,
       })
 
       if (response.success) {
@@ -132,15 +131,17 @@ export default function LoginForm() {
     } finally {
       setLoading(false)
     }
-  }, [getValues, login, navigate, recoveryCode, t])
+  }, [getValues, login, navigate, t])
 
-  useEffect(() => {
-    if (otp.length === 6 && !loading) handleOtpSubmit()
-  }, [otp, loading, handleOtpSubmit])
+  const handleOtpChange = (value: string) => {
+    setOtp(value)
+    if (value.length === 6 && !loading) handleOtpSubmit(value)
+  }
 
-  useEffect(() => {
-    if (recoveryCode.length === 16 && !loading) handleRecoverySubmit()
-  }, [recoveryCode, loading, handleRecoverySubmit])
+  const handleRecoveryChange = (value: string) => {
+    setRecoveryCode(value)
+    if (value.length === 16 && !loading) handleRecoverySubmit(value)
+  }
 
   if (token.authentication_token) {
     return <Navigate to="/cluster/" replace />
@@ -248,7 +249,7 @@ export default function LoginForm() {
           </DialogHeader>
 
           <div className="flex justify-center my-4">
-            <InputOTP maxLength={6} value={otp} onChange={setOtp}>
+            <InputOTP maxLength={6} value={otp} onChange={handleOtpChange}>
               <InputOTPGroup>
                 {[0, 1, 2].map((i) => (
                   <InputOTPSlot key={i} index={i} />
@@ -263,7 +264,7 @@ export default function LoginForm() {
           </div>
 
           <DialogFooter>
-            <Button onClick={handleOtpSubmit} disabled={loading}>
+            <Button onClick={() => handleOtpSubmit(otp)} disabled={loading}>
               {t("authentication.login.otp.submit")}
             </Button>
           </DialogFooter>
@@ -284,7 +285,7 @@ export default function LoginForm() {
           <InputOTP
             maxLength={16}
             value={recoveryCode}
-            onChange={setRecoveryCode}
+            onChange={handleRecoveryChange}
           >
             {[0, 4, 8, 12].map((start) => (
               <InputOTPGroup key={start}>
@@ -297,7 +298,7 @@ export default function LoginForm() {
 
           <DialogFooter>
             <Button
-              onClick={handleRecoverySubmit}
+              onClick={() => handleRecoverySubmit(recoveryCode)}
               disabled={loading || recoveryCode.length !== 16}
             >
               {t("authentication.login.recovery.confirm")}

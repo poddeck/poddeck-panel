@@ -276,24 +276,23 @@ const MultipleSelector = ({
     }
   }, [open])
 
-  useEffect(() => {
+  const [lastValue, setLastValue] = React.useState(value)
+  if (value !== lastValue) {
+    setLastValue(value)
     if (value) {
       setSelected(value)
     }
-  }, [value])
+  }
 
-  useEffect(() => {
-    /** If `onSearch` is provided, do not trigger options updated. */
-    if (!arrayOptions || onSearch) {
-      return
-    }
-
-    const newOption = transToGroupOption(arrayOptions || [], groupBy)
-
-    if (JSON.stringify(newOption) !== JSON.stringify(options)) {
-      setOptions(newOption)
-    }
-  }, [arrayDefaultOptions, arrayOptions, groupBy, onSearch, options])
+  const incomingOptions = !arrayOptions || onSearch
+    ? null
+    : transToGroupOption(arrayOptions, groupBy)
+  const incomingOptionsKey = incomingOptions ? JSON.stringify(incomingOptions) : null
+  const [lastOptionsKey, setLastOptionsKey] = React.useState<string | null>(null)
+  if (incomingOptions && incomingOptionsKey !== lastOptionsKey) {
+    setLastOptionsKey(incomingOptionsKey)
+    setOptions(incomingOptions)
+  }
 
   useEffect(() => {
     /** sync search */
@@ -414,7 +413,7 @@ const MultipleSelector = ({
   const selectables = React.useMemo<GroupOption>(() => removePickedOption(options, selected), [options, selected])
 
   /** Avoid Creatable Selector freezing or lagging when paste a long string. */
-  const commandFilter = React.useCallback(() => {
+  const commandFilter = () => {
     if (commandProps?.filter) {
       return commandProps.filter
     }
@@ -425,9 +424,8 @@ const MultipleSelector = ({
       }
     }
 
-    // Using default filter in `cmdk`. We don&lsquo;t have to provide it.
     return undefined
-  }, [creatable, commandProps?.filter])
+  }
 
   return (
     <Command

@@ -85,12 +85,10 @@ export function DeploymentScaleDrawer(
   const [nodes, setNodes] = useState<Node[] | null>(null);
   const [loadingNodes, setLoadingNodes] = useState(false);
 
-  useEffect(() => {
-    if (!initialized && deployment) {
-      setPods(deployment.replicas);
-      setInitialized(true);
-    }
-  }, [deployment, initialized]);
+  if (!initialized && deployment) {
+    setInitialized(true);
+    setPods(deployment.replicas);
+  }
 
   useEffect(() => {
     async function fetchNodes() {
