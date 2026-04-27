@@ -90,7 +90,7 @@
     "@types/react-dom": "^19.2.2",
     "@types/react-helmet": "^6.1.11",
     "@vitejs/plugin-react": "^6.0.1",
-    "eslint": "^9.39.1",
+    "eslint": "^10.2.1",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^17.4.0",
