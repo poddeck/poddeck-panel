@@ -21,12 +21,12 @@ export default function CronJobEditPage() {
   const {theme} = useTheme();
   const [code, setCode] = useState("");
   const [loading, setLoading] = React.useState(false);
+  const [initialized, setInitialized] = useState(false);
 
-  React.useEffect(() => {
-    if (cronJob && code === "") {
-      setCode(cronJob.raw);
-    }
-  }, [cronJob, code]);
+  if (cronJob && !initialized) {
+    setInitialized(true);
+    setCode(cronJob.raw);
+  }
 
   async function save() {
     setLoading(true);

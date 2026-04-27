@@ -21,12 +21,12 @@ export default function DaemonSetEditPage() {
   const {theme} = useTheme();
   const [code, setCode] = useState("");
   const [loading, setLoading] = React.useState(false);
+  const [initialized, setInitialized] = useState(false);
 
-  React.useEffect(() => {
-    if (daemonSet && code === "") {
-      setCode(daemonSet.raw);
-    }
-  }, [daemonSet, code]);
+  if (daemonSet && !initialized) {
+    setInitialized(true);
+    setCode(daemonSet.raw);
+  }
 
   async function save() {
     setLoading(true);

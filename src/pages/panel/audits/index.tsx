@@ -61,19 +61,18 @@ export default function AuditPage() {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [currentEntry, setCurrentEntry] = useState<AuditEntry>();
 
-  const loadAudit = async () => {
-    setIsLoading(true);
-    try {
-      const response = await auditService.find();
-      if (response.success) {
-        setAudit(response.audit);
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
   useEffect(() => {
-    loadAudit();
+    let cancelled = false;
+    (async () => {
+      try {
+        const response = await auditService.find();
+        if (cancelled) return;
+        if (response.success) setAudit(response.audit);
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
+    })();
+    return () => { cancelled = true; };
   }, []);
 
   const pollForAudit = () => {

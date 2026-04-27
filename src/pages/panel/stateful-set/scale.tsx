@@ -85,12 +85,10 @@ export function StatefulSetScaleDrawer(
   const [nodes, setNodes] = useState<Node[] | null>(null);
   const [loadingNodes, setLoadingNodes] = useState(false);
 
-  useEffect(() => {
-    if (!initialized && statefulSet) {
-      setPods(statefulSet.replicas);
-      setInitialized(true);
-    }
-  }, [statefulSet, initialized]);
+  if (!initialized && statefulSet) {
+    setInitialized(true);
+    setPods(statefulSet.replicas);
+  }
 
   useEffect(() => {
     async function fetchNodes() {

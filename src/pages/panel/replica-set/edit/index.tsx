@@ -21,12 +21,12 @@ export default function ReplicaSetEditPage() {
   const {theme} = useTheme();
   const [code, setCode] = useState("");
   const [loading, setLoading] = React.useState(false);
+  const [initialized, setInitialized] = useState(false);
 
-  React.useEffect(() => {
-    if (replicaSet && code === "") {
-      setCode(replicaSet.raw);
-    }
-  }, [replicaSet, code]);
+  if (replicaSet && !initialized) {
+    setInitialized(true);
+    setCode(replicaSet.raw);
+  }
 
   async function save() {
     setLoading(true);
