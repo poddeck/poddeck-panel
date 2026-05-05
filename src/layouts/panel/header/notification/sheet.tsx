@@ -1,3 +1,4 @@
+import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
 import {
   Sheet,
   SheetContent,
@@ -34,7 +35,7 @@ export default function NotificationSheet({cluster}: {cluster: boolean}) {
     };
 
     fetchNotifications();
-    const interval = setInterval(fetchNotifications, 3000);
+    const interval = setInterval(fetchNotifications, POLL_INTERVAL_MS);
     return () => clearInterval(interval);
   }, [cluster]);
 

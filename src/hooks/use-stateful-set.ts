@@ -1,3 +1,4 @@
+import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
 import {useSearchParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import statefulSetService, {type StatefulSet} from "@/api/services/stateful-set-service.ts";
@@ -26,7 +27,7 @@ export default function useStatefulSet() {
     }
 
     loadStatefulSet();
-    const interval = window.setInterval(loadStatefulSet, 3000);
+    const interval = window.setInterval(loadStatefulSet, POLL_INTERVAL_MS);
     return () => { isMounted = false; clearInterval(interval); };
   }, [searchParams]);
 

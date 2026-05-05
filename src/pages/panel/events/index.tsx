@@ -1,3 +1,4 @@
+import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
 import PanelPage from "@/layouts/panel"
 import {useEffect, useState} from "react";
 import EventService, {type Event} from "@/api/services/event-service.ts";
@@ -107,7 +108,7 @@ export default function EventsPage() {
     }
 
     loadEvents();
-    const interval = setInterval(loadEvents, 3000);
+    const interval = setInterval(loadEvents, POLL_INTERVAL_MS);
     return () => clearInterval(interval);
   }, [startDate, endDate, limit, selectedValues, search]);
 

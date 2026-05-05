@@ -1,3 +1,4 @@
+import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
 import {useEffect, useState} from "react";
 import {DataTable} from "@/components/table";
 import PanelPage from "@/layouts/panel";
@@ -55,7 +56,7 @@ export default function NamespacesPage() {
   };
   useEffect(() => {
     loadNamespaces();
-    const interval = window.setInterval(loadNamespaces, 3000);
+    const interval = window.setInterval(loadNamespaces, POLL_INTERVAL_MS);
     return () => clearInterval(interval);
   }, []);
   if (!isLoading && namespaces.length === 0) {

@@ -1,3 +1,4 @@
+import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
 import PanelPage from "@/layouts/panel"
 import OverviewStatusBox from "@/pages/panel/overview/status.tsx";
 import OverviewWorkloadBox from "@/pages/panel/overview/workload.tsx";
@@ -21,7 +22,7 @@ export default function OverviewPage() {
       }
     }
     loadNodes();
-    const interval = window.setInterval(loadNodes, 3000);
+    const interval = window.setInterval(loadNodes, POLL_INTERVAL_MS);
     return () => {
       clearInterval(interval);
     };

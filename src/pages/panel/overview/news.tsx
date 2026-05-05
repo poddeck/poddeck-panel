@@ -1,5 +1,6 @@
 "use client"
 
+import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
 import {startTransition, useEffect, useRef, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useVirtualizer} from "@tanstack/react-virtual";
@@ -50,7 +51,7 @@ export default function OverviewNewsBox() {
     };
 
     fetchNotifications();
-    const interval = setInterval(fetchNotifications, 3000);
+    const interval = setInterval(fetchNotifications, POLL_INTERVAL_MS);
     return () => clearInterval(interval);
   }, []);
 

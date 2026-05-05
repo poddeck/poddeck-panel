@@ -1,3 +1,4 @@
+import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
 import {useSearchParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import daemonSetService, {type DaemonSet} from "@/api/services/daemon-set-service.ts";
@@ -26,7 +27,7 @@ export default function useDaemonSet() {
     }
 
     loadDaemonSet();
-    const interval = window.setInterval(loadDaemonSet, 3000);
+    const interval = window.setInterval(loadDaemonSet, POLL_INTERVAL_MS);
     return () => { isMounted = false; clearInterval(interval); };
   }, [searchParams]);
 

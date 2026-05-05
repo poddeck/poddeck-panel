@@ -1,3 +1,4 @@
+import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
 import {useSearchParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import cronJobService, {type CronJob} from "@/api/services/cron-job-service.ts";
@@ -26,7 +27,7 @@ export default function useCronJob() {
     }
 
     loadCronJob();
-    const interval = window.setInterval(loadCronJob, 3000);
+    const interval = window.setInterval(loadCronJob, POLL_INTERVAL_MS);
     return () => { isMounted = false; clearInterval(interval); };
   }, [searchParams]);
 
