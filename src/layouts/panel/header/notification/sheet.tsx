@@ -10,6 +10,7 @@ import {AvatarFallback} from "@radix-ui/react-avatar";
 import {Bell} from "lucide-react";
 import {Badge} from "@/components/ui/badge.tsx";
 import * as React from "react";
+import {useVirtualizer} from "@tanstack/react-virtual";
 import NotificationService, {
   type Notification
 } from "@/api/services/notification-service.ts";
@@ -19,6 +20,7 @@ import NotificationAlert from "@/layouts/panel/header/notification/alert.tsx";
 export default function NotificationSheet({cluster}: {cluster: boolean}) {
   const {t} = useTranslation();
   const [notifications, setNotifications] = React.useState<Notification[]>([]);
+  const scrollRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     const fetchNotifications = () => {
@@ -35,6 +37,21 @@ export default function NotificationSheet({cluster}: {cluster: boolean}) {
     const interval = setInterval(fetchNotifications, 3000);
     return () => clearInterval(interval);
   }, [cluster]);
+
+  const virtualizer = useVirtualizer({
+    count: notifications.length,
+    getScrollElement: () => scrollRef.current,
+    estimateSize: () => 120,
+    overscan: 5,
+  });
+
+  const handleSeen = React.useCallback((id: string) => {
+    setNotifications(prev =>
+      prev.map(n =>
+        n.id === id ? { ...n, state: "SEEN" } : n
+      )
+    );
+  }, []);
 
   const unseenCount = notifications.filter(n => n.state !== "SEEN").length;
 
@@ -62,29 +79,36 @@ export default function NotificationSheet({cluster}: {cluster: boolean}) {
         <SheetHeader>
           <SheetTitle>{t("panel.header.notifications.title")}</SheetTitle>
         </SheetHeader>
-        <div className="relative flex-1 overflow-y-auto">
-          <ul className="px-4">
-            {notifications.length === 0 && (
-              <p className="text-sm text-muted-foreground py-6 text-center">
-                {t("panel.header.notifications.empty")}
-              </p>
-            )}
-
-            {notifications.map(notification => (
-              <NotificationAlert
-                key={notification.id}
-                cluster={cluster}
-                notification={notification}
-                onSeen={(id) =>
-                  setNotifications(prev =>
-                    prev.map(n =>
-                      n.id === id ? { ...n, state: "SEEN" } : n
-                    )
-                  )
-                }
-              />
-            ))}
-          </ul>
+        <div ref={scrollRef} className="relative flex-1 overflow-y-auto">
+          {notifications.length === 0 ? (
+            <p className="text-sm text-muted-foreground py-6 text-center">
+              {t("panel.header.notifications.empty")}
+            </p>
+          ) : (
+            <div
+              className="relative w-full"
+              style={{ height: virtualizer.getTotalSize() }}
+            >
+              {virtualizer.getVirtualItems().map(virtualItem => {
+                const notification = notifications[virtualItem.index];
+                return (
+                  <div
+                    key={notification.id}
+                    data-index={virtualItem.index}
+                    ref={virtualizer.measureElement}
+                    className="absolute top-0 left-0 right-0 px-4 pb-4"
+                    style={{ transform: `translateY(${virtualItem.start}px)` }}
+                  >
+                    <NotificationAlert
+                      cluster={cluster}
+                      notification={notification}
+                      onSeen={handleSeen}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          )}
           <div
             className="
               pointer-events-none
