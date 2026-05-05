@@ -155,21 +155,21 @@ export default function OverviewWorkloadBox({nodes}: { nodes: Node[] }) {
         <div className="flex flex-col sm:flex-row gap-4 justify-around w-full">
 
           <WorkloadRadialChart
-            label={t("CPU")}
+            label={t("panel.page.overview.workload.cpu")}
             color={CPU_COLOR}
             percentage={cpuUsagePercentage}
             Icon={Cpu}
           />
 
           <WorkloadRadialChart
-            label={t("Memory")}
+            label={t("panel.page.overview.workload.memory")}
             color={MEMORY_COLOR}
             percentage={memoryUsagePercentage}
             Icon={MemoryStick}
           />
 
           <WorkloadRadialChart
-            label={t("Storage")}
+            label={t("panel.page.overview.workload.storage")}
             color={STORAGE_COLOR}
             percentage={storageUsagePercentage}
             Icon={HardDrive}
