@@ -1,16 +1,12 @@
 import type {StateStorage} from 'zustand/middleware';
 import {getCookie, removeCookie, setCookie} from 'typescript-cookie';
 
-const cookiesStorage: StateStorage = {
-  getItem: (name: string) => {
-    return getCookie(name) ?? null;
+export const cookieStorage = (expiry: number): StateStorage => ({
+  getItem: (name) => getCookie(name) ?? null,
+  setItem: (name, value) => {
+    setCookie(name, value, {expires: expiry, secure: true});
   },
-  setItem: (name: string, value: string) => {
-    setCookie(name, value, {expires: 1, secure: true});
-  },
-  removeItem: (name: string) => {
+  removeItem: (name) => {
     removeCookie(name);
-  }
-}
-
-export default cookiesStorage;
+  },
+});
