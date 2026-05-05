@@ -27,7 +27,7 @@ export default function NotificationSheet({cluster}: {cluster: boolean}) {
         : NotificationService.listAll();
 
       result.then(({ notifications }) => {
-        setNotifications(notifications);
+        setNotifications(notifications ?? []);
       });
     };
 

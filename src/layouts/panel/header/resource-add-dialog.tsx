@@ -11,7 +11,8 @@ import {Spinner} from "@/components/ui/spinner.tsx";
 import * as ReactAce from "react-ace";
 import "ace-builds/src-noconflict/mode-yaml";
 
-const AceEditor = ((ReactAce as unknown as {default?: unknown}).default ?? ReactAce) as typeof import("react-ace").default;
+const ReactAceModule = ReactAce as unknown as { default?: { default?: unknown } & unknown };
+const AceEditor = (ReactAceModule.default?.default ?? ReactAceModule.default ?? ReactAce) as typeof import("react-ace").default;
 import "ace-builds/src-noconflict/theme-tomorrow";
 import "ace-builds/src-noconflict/theme-tomorrow_night";
 import {useTheme} from "next-themes";
