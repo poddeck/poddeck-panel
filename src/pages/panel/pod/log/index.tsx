@@ -31,7 +31,7 @@ export default function PodLogsPage() {
       const logResponse: PodLogResponse = await podService.log({
         namespace: pod.namespace,
         pod: pod.name,
-        since_seconds: firstRunRef.current ? 3600 : 2,
+        since_seconds: firstRunRef.current ? -1 : 2,
       });
       if (!logResponse.success || !isMounted) {
         return;
