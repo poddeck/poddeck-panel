@@ -21,6 +21,7 @@ export function Globe({ className, markers }: GlobeProps) {
   useEffect(() => {
     let phi = 4.5;
     let width = 0;
+    let frame = 0;
 
     const onResize = () => canvasRef.current && (width = canvasRef.current.offsetWidth);
     window.addEventListener('resize', onResize);
@@ -43,23 +44,22 @@ export function Globe({ className, markers }: GlobeProps) {
       glowColor: [0.5, 0.5, 0.5],
       scale: 1.1,
       markers: markers,
-      onRender: (state) => {
-        if (!pointerInteracting.current) {
-          phi += 0.005;
-        }
-
-        phi += pointerInteractionMovement.current;
-
-        pointerInteractionMovement.current *= 0.9;
-
-        state.phi = phi;
-
-        state.width = width * 2;
-        state.height = width * 2;
-      },
     });
 
+    const tick = () => {
+      if (!pointerInteracting.current) {
+        phi += 0.005;
+      }
+      phi += pointerInteractionMovement.current;
+      pointerInteractionMovement.current *= 0.9;
+
+      globe.update({ phi, width: width * 2, height: width * 2 });
+      frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+
     return () => {
+      cancelAnimationFrame(frame);
       globe.destroy();
       window.removeEventListener('resize', onResize);
     };
