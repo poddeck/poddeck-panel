@@ -1,3 +1,4 @@
+import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
 import {useSearchParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import deploymentService, {type Deployment} from "@/api/services/deployment-service.ts";
@@ -26,7 +27,7 @@ export default function useDeployment() {
     }
 
     loadDeployment();
-    const interval = window.setInterval(loadDeployment, 3000);
+    const interval = window.setInterval(loadDeployment, POLL_INTERVAL_MS);
     return () => { isMounted = false; clearInterval(interval); };
   }, [searchParams]);
 

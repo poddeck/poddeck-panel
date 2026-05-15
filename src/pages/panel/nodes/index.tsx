@@ -1,3 +1,4 @@
+import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
 import {useEffect, useState} from "react";
 import {DataTable} from "@/components/table";
 import PanelPage from "@/layouts/panel";
@@ -81,7 +82,7 @@ export default function NodesPage() {
       }
     }
     loadNodes();
-    const interval = window.setInterval(loadNodes, 3000);
+    const interval = window.setInterval(loadNodes, POLL_INTERVAL_MS);
     return () => {
       clearInterval(interval);
     };

@@ -1,3 +1,4 @@
+import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
 import {useEffect, useState} from "react";
 import {DataTable} from "@/components/table";
 import PanelPage from "@/layouts/panel";
@@ -85,7 +86,7 @@ export default function StatefulSetsPage() {
 
     loadStatefulSets();
     loadNamespaces();
-    const interval = window.setInterval(loadStatefulSets, 3000);
+    const interval = window.setInterval(loadStatefulSets, POLL_INTERVAL_MS);
     return () => {
       clearInterval(interval);
     };

@@ -1,3 +1,4 @@
+import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
 import {Box, Trash2} from "lucide-react";
 import {DataTable} from "@/components/table";
 import {useEffect, useState} from "react";
@@ -67,7 +68,7 @@ export default function PodsList(
 
     loadPods();
     loadNamespaces();
-    const interval = window.setInterval(loadPods, 3000);
+    const interval = window.setInterval(loadPods, POLL_INTERVAL_MS);
     return () => {
       clearInterval(interval);
     };

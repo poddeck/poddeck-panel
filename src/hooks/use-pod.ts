@@ -1,3 +1,4 @@
+import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
 import {useSearchParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import podService, {type Pod} from "@/api/services/pod-service.ts";
@@ -26,7 +27,7 @@ export default function usePod() {
     }
 
     loadPod();
-    const interval = window.setInterval(loadPod, 3000);
+    const interval = window.setInterval(loadPod, POLL_INTERVAL_MS);
     return () => { isMounted = false; clearInterval(interval); };
   }, [searchParams]);
 

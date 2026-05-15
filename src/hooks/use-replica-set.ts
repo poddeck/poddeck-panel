@@ -1,3 +1,4 @@
+import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
 import {useSearchParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import replicaSetService, {type ReplicaSet} from "@/api/services/replica-set-service.ts";
@@ -26,7 +27,7 @@ export default function useReplicaSet() {
     }
 
     loadReplicaSet();
-    const interval = window.setInterval(loadReplicaSet, 3000);
+    const interval = window.setInterval(loadReplicaSet, POLL_INTERVAL_MS);
     return () => { isMounted = false; clearInterval(interval); };
   }, [searchParams]);
 

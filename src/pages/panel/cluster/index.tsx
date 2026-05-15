@@ -1,3 +1,4 @@
+import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
 import {AppHeader} from "@/layouts/panel/header";
 import {SidebarProvider} from "@/components/ui/sidebar.tsx";
 import React, {useEffect, useState} from "react";
@@ -95,7 +96,7 @@ export default function ClusterPage() {
         })
       );
       setClusters(updatedClusters);
-    }, 3000);
+    }, POLL_INTERVAL_MS);
 
     return () => clearInterval(interval);
   }, [clusters]);

@@ -215,6 +215,10 @@
     @apply border-border outline-ring/50;
   }
 
+  html {
+    font-size: 85%;
+  }
+
   body {
     @apply bg-background text-foreground;
   }

@@ -57,12 +57,8 @@ axiosInstance.interceptors.response.use(
   },
   async (error: AxiosError) => {
     const originalRequest = error.config as AuthenticationRequestConfig;
-    const {response} = error || {};
-    if (response?.status === 401) {
-      userStore.getState().actions.clearUserToken();
-      return Promise.reject(error);
-    }
-    if (response?.status === 417 && !originalRequest._retry) {
+    const status = error?.response?.status;
+    if ((status === 401 || status === 417) && !originalRequest._retry) {
       return refresh(originalRequest, error);
     }
     return Promise.reject(error);

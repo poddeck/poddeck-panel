@@ -1,5 +1,6 @@
 "use client";
 
+import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
 import {startTransition, useEffect, useState} from "react";
 import { useTranslation } from "react-i18next";
 import { Bar, BarChart, CartesianGrid, Rectangle, XAxis } from "recharts";
@@ -142,7 +143,7 @@ export default function OverviewActivityBox() {
 
     loadEvents();
 
-    const interval = setInterval(loadEvents, 3000);
+    const interval = setInterval(loadEvents, POLL_INTERVAL_MS);
     return () => clearInterval(interval);
   }, []);
 
