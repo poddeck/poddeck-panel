@@ -1,39 +1,47 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
-  AlarmClock, BookImage,
+  AlarmClock,
+  BookImage,
   Box,
   CalendarClock,
-  CreditCard, Cylinder,
-  Database, Download, Gauge, Group,
+  CreditCard,
+  Cylinder,
+  Database,
+  Download,
+  Gauge,
+  Group,
   House,
   LayoutGrid,
   Lock,
   Network,
-  Rocket, SearchCheck,
+  Rocket,
+  SearchCheck,
   Server,
-  Settings, Shield, SquareDashedMousePointer,
+  Settings,
+  Shield,
+  SquareDashedMousePointer,
   Unplug,
   VectorSquare,
-  Waypoints
-} from "lucide-react"
+  Waypoints,
+} from "lucide-react";
 
-import {SidebarClusterSwitcher} from "./cluster"
-import {SidebarNavigation} from "./navigation"
-import {SidebarUser} from "./user"
+import { SidebarClusterSwitcher } from "./cluster";
+import { SidebarNavigation } from "./navigation";
+import { SidebarUser } from "./user";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
-import {useTranslation} from "react-i18next";
-import {useUserInformation} from "@/store/user-store.ts";
+} from "@/components/ui/sidebar";
+import { useTranslation } from "react-i18next";
+import { useUserInformation } from "@/store/user-store.ts";
 
 export function AppNavigation() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return [
     {
       title: t("panel.sidebar.overview"),
@@ -95,22 +103,22 @@ export function AppNavigation() {
         {
           title: t("panel.sidebar.daemon.sets"),
           url: "/daemon-sets/",
-          icon: VectorSquare
+          icon: VectorSquare,
         },
         {
           title: t("panel.sidebar.replica.sets"),
           url: "/replica-sets/",
-          icon: Network
+          icon: Network,
         },
         {
           title: t("panel.sidebar.stateful.sets"),
           url: "/stateful-sets/",
-          icon: Database
+          icon: Database,
         },
         {
           title: t("panel.sidebar.cron.jobs"),
           url: "/cron-jobs/",
-          icon: AlarmClock
+          icon: AlarmClock,
         },
       ],
     },
@@ -123,13 +131,13 @@ export function AppNavigation() {
           title: t("panel.sidebar.config.maps"),
           url: "/config-maps/",
           icon: CreditCard,
-          disabled: true
+          disabled: true,
         },
         {
           title: t("panel.sidebar.secrets"),
           url: "/secrets/",
           icon: Lock,
-          disabled: true
+          disabled: true,
         },
       ],
     },
@@ -154,13 +162,13 @@ export function AppNavigation() {
           title: t("panel.sidebar.pv"),
           url: "/pv/",
           icon: Database,
-          disabled: true
+          disabled: true,
         },
         {
           title: t("panel.sidebar.pvc"),
           url: "/pvc/",
           icon: SquareDashedMousePointer,
-          disabled: true
+          disabled: true,
         },
       ],
     },
@@ -174,19 +182,19 @@ export function AppNavigation() {
           url: "/updates/",
           icon: Download,
           notifications: 3,
-          disabled: true
+          disabled: true,
         },
         {
           title: t("panel.sidebar.audits"),
           url: "/audits/",
-          icon: SearchCheck
+          icon: SearchCheck,
         },
       ],
-    }
+    },
   ];
 }
 
-export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const userInformation = useUserInformation();
   const user = {
     name: userInformation?.name ?? "",
@@ -196,16 +204,16 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
     <div id="sidebar">
       <Sidebar className="z-40" collapsible="icon" {...props}>
         <SidebarHeader>
-          <SidebarClusterSwitcher/>
+          <SidebarClusterSwitcher />
         </SidebarHeader>
         <SidebarContent>
-          <SidebarNavigation items={AppNavigation()}/>
+          <SidebarNavigation items={AppNavigation()} />
         </SidebarContent>
         <SidebarFooter>
-          <SidebarUser user={user}/>
+          <SidebarUser user={user} />
         </SidebarFooter>
-        <SidebarRail/>
+        <SidebarRail />
       </Sidebar>
     </div>
-  )
+  );
 }

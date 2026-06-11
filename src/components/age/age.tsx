@@ -1,4 +1,4 @@
-export function Age({age}: { age: number }) {
+export function Age({ age }: { age: number }) {
   function convertTime(age: number) {
     const abs = Math.abs(age);
     if (abs < 1000 * 60) {
@@ -12,7 +12,5 @@ export function Age({age}: { age: number }) {
     }
     return Math.round(age / (1000 * 60 * 60 * 24)) + "d";
   }
-  return (
-    <span>{convertTime(age)}</span>
-  );
+  return <span>{convertTime(age)}</span>;
 }

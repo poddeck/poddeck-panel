@@ -1,32 +1,32 @@
-"use client"
+"use client";
 
-import {Input} from "@/components/ui/input"
-import {useTranslation} from "react-i18next";
+import { Input } from "@/components/ui/input";
+import { useTranslation } from "react-i18next";
 import {
-  DialogClose, DialogContent,
-  DialogDescription, DialogFooter,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {Spinner} from "@/components/ui/spinner.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Spinner } from "@/components/ui/spinner.tsx";
 import * as React from "react";
 import StatefulSetService from "@/api/services/stateful-set-service";
 
-export default function StatefulSetDeleteDialog(
-  {
-    namespace,
-    statefulSet,
-    setOpen,
-    onDelete,
-  }: {
-    namespace?: string;
-    statefulSet?: string;
-    setOpen: (open: boolean) => void;
-    onDelete?: () => void;
-  }
-) {
-  const {t} = useTranslation();
+export default function StatefulSetDeleteDialog({
+  namespace,
+  statefulSet,
+  setOpen,
+  onDelete,
+}: {
+  namespace?: string;
+  statefulSet?: string;
+  setOpen: (open: boolean) => void;
+  onDelete?: () => void;
+}) {
+  const { t } = useTranslation();
   const [newStatefulSetName, setNewStatefulSetName] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const handleDeleteStatefulSet = async () => {
@@ -36,7 +36,7 @@ export default function StatefulSetDeleteDialog(
     setLoading(true);
     await StatefulSetService.remove({
       namespace: namespace ? namespace : "",
-      stateful_set: statefulSet ? statefulSet : ""
+      stateful_set: statefulSet ? statefulSet : "",
     });
     setLoading(false);
     setNewStatefulSetName("");
@@ -44,10 +44,15 @@ export default function StatefulSetDeleteDialog(
     onDelete?.();
   };
   return (
-    <DialogContent className="sm:max-w-[425px]" onClick={(e) => e.stopPropagation()}
-                   onMouseDown={(e) => e.stopPropagation()}>
+    <DialogContent
+      className="sm:max-w-[425px]"
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
       <DialogHeader>
-        <DialogTitle>{t("panel.page.stateful-sets.delete.dialog.title")}</DialogTitle>
+        <DialogTitle>
+          {t("panel.page.stateful-sets.delete.dialog.title")}
+        </DialogTitle>
         <DialogDescription>
           {t("panel.page.stateful-sets.delete.dialog.description")}
         </DialogDescription>
@@ -72,10 +77,15 @@ export default function StatefulSetDeleteDialog(
       </div>
       <DialogFooter>
         <DialogClose asChild>
-          <Button
-            variant="outline">{t("panel.page.stateful-sets.delete.dialog.cancel")}</Button>
+          <Button variant="outline">
+            {t("panel.page.stateful-sets.delete.dialog.cancel")}
+          </Button>
         </DialogClose>
-        <Button variant="destructive" onClick={handleDeleteStatefulSet} disabled={loading || newStatefulSetName !== statefulSet}>
+        <Button
+          variant="destructive"
+          onClick={handleDeleteStatefulSet}
+          disabled={loading || newStatefulSetName !== statefulSet}
+        >
           {t("panel.page.stateful-sets.delete.dialog.submit")}
           {loading && <Spinner className="ml-2"></Spinner>}
         </Button>

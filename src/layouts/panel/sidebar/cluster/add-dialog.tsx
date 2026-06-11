@@ -1,39 +1,54 @@
-"use client"
+"use client";
 
-import {Input} from "@/components/ui/input"
-import {useTranslation} from "react-i18next";
+import { Input } from "@/components/ui/input";
+import { useTranslation } from "react-i18next";
 import {
-  DialogClose, DialogContent,
-  DialogDescription, DialogFooter,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog.tsx";
-import {Label} from "@/components/ui/label.tsx";
+import { Label } from "@/components/ui/label.tsx";
 import ClusterIconSelect from "@/layouts/panel/sidebar/cluster/icon-select.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {Spinner} from "@/components/ui/spinner.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Spinner } from "@/components/ui/spinner.tsx";
 import * as React from "react";
-import ClusterService, {type Cluster} from "@/api/services/cluster-service.ts";
-import {toast} from "sonner";
+import ClusterService, {
+  type Cluster,
+} from "@/api/services/cluster-service.ts";
+import { toast } from "sonner";
 import ClusterDeployDialog from "@/layouts/panel/sidebar/cluster/deploy-dialog.tsx";
 
-export default function ClusterAddDialog({ onCreation }: {
+export default function ClusterAddDialog({
+  onCreation,
+}: {
   onCreation?: (cluster: Cluster) => void;
 }) {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [newClusterName, setNewClusterName] = React.useState("");
   const [newClusterIcon, setNewClusterIcon] = React.useState("");
   const [loading, setLoading] = React.useState(false);
-  const [deployInfo, setDeployInfo] = React.useState<{clusterId: string, agentKey: string, cluster: Cluster} | null>(null);
+  const [deployInfo, setDeployInfo] = React.useState<{
+    clusterId: string;
+    agentKey: string;
+    cluster: Cluster;
+  } | null>(null);
   const handleCreateCluster = async () => {
     if (!newClusterName.trim() || !newClusterIcon.trim()) {
       return;
     }
     try {
       setLoading(true);
-      const createResponse = await ClusterService.create({name: newClusterName, icon: newClusterIcon});
+      const createResponse = await ClusterService.create({
+        name: newClusterName,
+        icon: newClusterIcon,
+      });
       const listResponse = await ClusterService.list();
-      const cluster = listResponse.clusters.filter((entry: Cluster) => entry.id === createResponse.cluster)[0];
+      const cluster = listResponse.clusters.filter(
+        (entry: Cluster) => entry.id === createResponse.cluster,
+      )[0];
       setDeployInfo({
         clusterId: createResponse.cluster,
         agentKey: createResponse.agent_key,
@@ -72,8 +87,9 @@ export default function ClusterAddDialog({ onCreation }: {
       </DialogHeader>
       <div className="grid gap-4">
         <div className="grid gap-3">
-          <Label
-            htmlFor="name">{t("panel.sidebar.cluster.add.dialog.name")}</Label>
+          <Label htmlFor="name">
+            {t("panel.sidebar.cluster.add.dialog.name")}
+          </Label>
           <Input
             id="name"
             name="name"
@@ -84,13 +100,14 @@ export default function ClusterAddDialog({ onCreation }: {
         </div>
         <div className="grid gap-3">
           <Label>{t("panel.sidebar.cluster.icon.label")}</Label>
-          <ClusterIconSelect onChange={(value) => setNewClusterIcon(value)}/>
+          <ClusterIconSelect onChange={(value) => setNewClusterIcon(value)} />
         </div>
       </div>
       <DialogFooter>
         <DialogClose asChild>
-          <Button
-            variant="outline">{t("panel.sidebar.cluster.add.dialog.cancel")}</Button>
+          <Button variant="outline">
+            {t("panel.sidebar.cluster.add.dialog.cancel")}
+          </Button>
         </DialogClose>
         <Button onClick={handleCreateCluster} disabled={loading}>
           {t("panel.sidebar.cluster.add.dialog.submit")}

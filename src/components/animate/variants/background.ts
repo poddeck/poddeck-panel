@@ -1,4 +1,4 @@
-import type {BackgroundType} from "../types";
+import type { BackgroundType } from "../types";
 
 export const varBgColor = (props?: BackgroundType) => {
   const colors = props?.colors || ["#19dcea", "#b22cff"];
@@ -8,7 +8,7 @@ export const varBgColor = (props?: BackgroundType) => {
   return {
     animate: {
       background: colors,
-      transition: {duration, ease},
+      transition: { duration, ease },
     },
   };
 };
@@ -25,7 +25,7 @@ export const varBgKenburns = (props?: BackgroundType) => {
         scale: [1, 1.25],
         y: [0, -15],
         transformOrigin: ["50% 16%", "50% top"],
-        transition: {duration, ease},
+        transition: { duration, ease },
       },
     },
     bottom: {
@@ -33,7 +33,7 @@ export const varBgKenburns = (props?: BackgroundType) => {
         scale: [1, 1.25],
         y: [0, 15],
         transformOrigin: ["50% 84%", "50% bottom"],
-        transition: {duration, ease},
+        transition: { duration, ease },
       },
     },
     left: {
@@ -42,7 +42,7 @@ export const varBgKenburns = (props?: BackgroundType) => {
         x: [0, 20],
         y: [0, 15],
         transformOrigin: ["16% 50%", "0% left"],
-        transition: {duration, ease},
+        transition: { duration, ease },
       },
     },
     right: {
@@ -51,7 +51,7 @@ export const varBgKenburns = (props?: BackgroundType) => {
         x: [0, -20],
         y: [0, -15],
         transformOrigin: ["84% 50%", "0% right"],
-        transition: {duration, ease},
+        transition: { duration, ease },
       },
     },
   };
@@ -72,7 +72,7 @@ export const varBgPan = (props?: BackgroundType) => {
         backgroundImage: [gradient(0), gradient(0)],
         backgroundPosition: ["center 99%", "center 1%"],
         backgroundSize: ["100% 600%", "100% 600%"],
-        transition: {duration, ease},
+        transition: { duration, ease },
       },
     },
     right: {
@@ -80,7 +80,7 @@ export const varBgPan = (props?: BackgroundType) => {
         backgroundPosition: ["1% center", "99% center"],
         backgroundImage: [gradient(270), gradient(270)],
         backgroundSize: ["600% 100%", "600% 100%"],
-        transition: {duration, ease},
+        transition: { duration, ease },
       },
     },
     bottom: {
@@ -88,7 +88,7 @@ export const varBgPan = (props?: BackgroundType) => {
         backgroundImage: [gradient(0), gradient(0)],
         backgroundPosition: ["center 1%", "center 99%"],
         backgroundSize: ["100% 600%", "100% 600%"],
-        transition: {duration, ease},
+        transition: { duration, ease },
       },
     },
     left: {
@@ -96,7 +96,7 @@ export const varBgPan = (props?: BackgroundType) => {
         backgroundPosition: ["99% center", "1% center"],
         backgroundImage: [gradient(270), gradient(270)],
         backgroundSize: ["600% 100%", "600% 100%"],
-        transition: {duration, ease},
+        transition: { duration, ease },
       },
     },
   };

@@ -1,7 +1,7 @@
-import {LineLoading} from "@/components/loading";
+import { LineLoading } from "@/components/loading";
 import SimpleLayout from "@/layouts/simple";
-import {lazy, Suspense} from "react";
-import {Outlet, type RouteObject} from "react-router";
+import { lazy, Suspense } from "react";
+import { Outlet, type RouteObject } from "react-router";
 
 const Page403 = lazy(() => import("@/pages/error/Page403"));
 const Page404 = lazy(() => import("@/pages/error/Page404"));
@@ -12,15 +12,15 @@ export const mainRoutes: RouteObject[] = [
     path: "/",
     element: (
       <SimpleLayout>
-        <Suspense fallback={<LineLoading/>}>
-          <Outlet/>
+        <Suspense fallback={<LineLoading />}>
+          <Outlet />
         </Suspense>
       </SimpleLayout>
     ),
     children: [
-      {path: "500", element: <Page500/>},
-      {path: "404", element: <Page404/>},
-      {path: "403", element: <Page403/>},
+      { path: "500", element: <Page500 /> },
+      { path: "404", element: <Page404 /> },
+      { path: "403", element: <Page403 /> },
     ],
   },
 ];

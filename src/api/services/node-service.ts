@@ -25,7 +25,7 @@ export type Node = {
   annotations: Record<string, string>;
   conditions: Condition[];
   events: Event[];
-}
+};
 
 export type Condition = {
   type: string;
@@ -34,7 +34,7 @@ export type Condition = {
   message: string;
   last_heartbeat: number;
   last_transition: number;
-}
+};
 
 export type Event = {
   type: string;
@@ -42,12 +42,12 @@ export type Event = {
   message: string;
   timestamp: number;
   source: string;
-}
+};
 
 export type NodeListResponse = {
   nodes: Node[];
   success?: boolean;
-}
+};
 
 export interface NodeFindRequest {
   name: string;
@@ -56,29 +56,29 @@ export interface NodeFindRequest {
 export type NodeFindResponse = {
   success: boolean;
   node: Node;
-}
+};
 
 export const NodeApi = {
   List: "/nodes/",
-  Find: "/node/find/"
+  Find: "/node/find/",
 } as const;
 
-const list = () => client.get<NodeListResponse>({url: NodeApi.List});
-const listCluster = (clusterId: string) => client.get<NodeListResponse>(
-  {
+const list = () => client.get<NodeListResponse>({ url: NodeApi.List });
+const listCluster = (clusterId: string) =>
+  client.get<NodeListResponse>({
     url: NodeApi.List,
     headers: {
       Cluster: clusterId,
     },
-  }
-);
-const find = (data: NodeFindRequest) => client.post<NodeFindResponse>({
-  url: NodeApi.Find,
-  data
-});
+  });
+const find = (data: NodeFindRequest) =>
+  client.post<NodeFindResponse>({
+    url: NodeApi.Find,
+    data,
+  });
 
 export default {
   list,
   listCluster,
-  find
+  find,
 };

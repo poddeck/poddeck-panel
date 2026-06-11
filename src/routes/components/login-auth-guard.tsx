@@ -1,13 +1,13 @@
-import {useEffect} from "react";
-import {useRouter} from "../hooks";
-import {useHasUserHydrated, useUserToken} from "@/store/user-store";
+import { useEffect } from "react";
+import { useRouter } from "../hooks";
+import { useHasUserHydrated, useUserToken } from "@/store/user-store";
 
 type Props = {
   children: React.ReactNode;
 };
-export default function LoginAuthGuard({children}: Props) {
+export default function LoginAuthGuard({ children }: Props) {
   const router = useRouter();
-  const {authentication_token} = useUserToken();
+  const { authentication_token } = useUserToken();
 
   const hasHydrated = useHasUserHydrated();
 

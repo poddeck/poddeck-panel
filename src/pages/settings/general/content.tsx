@@ -4,11 +4,11 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Save, UserIcon } from "lucide-react";
 import SettingsService from "@/api/services/settings-service.ts";
-import {useUserActions, useUserInformation} from "@/store/user-store.ts";
-import {useTranslation} from "react-i18next";
+import { useUserActions, useUserInformation } from "@/store/user-store.ts";
+import { useTranslation } from "react-i18next";
 
 export default function GeneralPageContent() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [username, setUsername] = useState("");
   const [initialUsername, setInitialUsername] = useState("");
   const [loading, setLoading] = useState(false);
@@ -39,8 +39,7 @@ export default function GeneralPageContent() {
     };
   }, []);
 
-  const hasChanges =
-    username.trim().length > 0 && username !== initialUsername;
+  const hasChanges = username.trim().length > 0 && username !== initialUsername;
 
   const handleSave = async () => {
     if (!hasChanges) return;
@@ -80,12 +79,11 @@ export default function GeneralPageContent() {
       </div>
 
       <div>
-        <Button
-          onClick={handleSave}
-          disabled={!hasChanges || saving}
-        >
+        <Button onClick={handleSave} disabled={!hasChanges || saving}>
           <Save className="mr-1 size-4" />
-          {saving ? t("settings.general.saving") + "…" : t("settings.general.save")}
+          {saving
+            ? t("settings.general.saving") + "…"
+            : t("settings.general.save")}
         </Button>
       </div>
     </div>

@@ -1,5 +1,5 @@
-import type {SettingsPage} from "../settings-page.tsx";
-import {CircleUserRound} from "lucide-react";
+import type { SettingsPage } from "../settings-page.tsx";
+import { CircleUserRound } from "lucide-react";
 import AccountPageContent from "./content.tsx";
 
 export const AccountPage: SettingsPage = {

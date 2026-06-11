@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import {ShieldPlus, ShieldOff, Copy, Check} from "lucide-react";
+import { ShieldPlus, ShieldOff, Copy, Check } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -18,13 +18,13 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import {toast} from "sonner";
-import {useTranslation} from "react-i18next";
+import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
 
 type Step = "password" | "qr" | "recovery" | "confirm" | "deactivate";
 
 export default function SecurityPageContent() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [enabled, setEnabled] = React.useState<boolean | null>(null);
   const [open, setOpen] = React.useState(false);
   const [step, setStep] = React.useState<Step>("password");
@@ -39,7 +39,7 @@ export default function SecurityPageContent() {
 
   React.useEffect(() => {
     SettingsService.getTwoFactorStatus().then((response) =>
-      setEnabled(response.enabled)
+      setEnabled(response.enabled),
     );
   }, []);
 
@@ -146,10 +146,7 @@ export default function SecurityPageContent() {
           )}
 
           {enabled && (
-            <Button
-              variant="destructive"
-              onClick={deactivateTwoFactor}
-            >
+            <Button variant="destructive" onClick={deactivateTwoFactor}>
               <ShieldOff className="mr-1 size-4" />
               {t("settings.security.2fa.deactivate")}
             </Button>
@@ -162,7 +159,9 @@ export default function SecurityPageContent() {
           {step === "password" && (
             <>
               <DialogHeader>
-                <DialogTitle>{t("settings.security.2fa.password.title")}</DialogTitle>
+                <DialogTitle>
+                  {t("settings.security.2fa.password.title")}
+                </DialogTitle>
                 <DialogDescription>
                   {t("settings.security.2fa.password.description")}
                 </DialogDescription>
@@ -177,10 +176,7 @@ export default function SecurityPageContent() {
               />
 
               <DialogFooter>
-                <Button
-                  onClick={startSetup}
-                  disabled={!password || loading}
-                >
+                <Button onClick={startSetup} disabled={!password || loading}>
                   {t("settings.security.2fa.continue")}
                 </Button>
               </DialogFooter>
@@ -208,12 +204,8 @@ export default function SecurityPageContent() {
               </div>
 
               <ol className="list-decimal space-y-1 pl-5 text-sm text-muted-foreground">
-                <li>
-                  {t("settings.security.2fa.qr.instructions.1")}
-                </li>
-                <li>
-                  {t("settings.security.2fa.qr.instructions.2")}
-                </li>
+                <li>{t("settings.security.2fa.qr.instructions.1")}</li>
+                <li>{t("settings.security.2fa.qr.instructions.2")}</li>
               </ol>
 
               <DialogFooter>
@@ -227,7 +219,9 @@ export default function SecurityPageContent() {
           {step === "recovery" && (
             <>
               <DialogHeader>
-                <DialogTitle>{t("settings.security.2fa.recovery.title")}</DialogTitle>
+                <DialogTitle>
+                  {t("settings.security.2fa.recovery.title")}
+                </DialogTitle>
                 <DialogDescription>
                   {t("settings.security.2fa.recovery.description")}
                 </DialogDescription>
@@ -240,9 +234,11 @@ export default function SecurityPageContent() {
                   className={`absolute right-2 top-2`}
                   onClick={handleCopyRecoveryCodes}
                 >
-                  {copied
-                    ? <Check className="mr-1 h-4 w-4" />
-                    : <Copy className="mr-1 h-4 w-4" />}
+                  {copied ? (
+                    <Check className="mr-1 h-4 w-4" />
+                  ) : (
+                    <Copy className="mr-1 h-4 w-4" />
+                  )}
                   {copied
                     ? t("settings.security.2fa.recovery.copied")
                     : t("settings.security.2fa.recovery.copy")}
@@ -270,7 +266,9 @@ export default function SecurityPageContent() {
           {step === "confirm" && (
             <>
               <DialogHeader>
-                <DialogTitle>{t("settings.security.2fa.confirmation.title")}</DialogTitle>
+                <DialogTitle>
+                  {t("settings.security.2fa.confirmation.title")}
+                </DialogTitle>
                 <DialogDescription>
                   {t("settings.security.2fa.confirmation.description")}
                 </DialogDescription>
@@ -305,7 +303,9 @@ export default function SecurityPageContent() {
           {step === "deactivate" && (
             <>
               <DialogHeader>
-                <DialogTitle>{t("settings.security.2fa.deactivation.title")}</DialogTitle>
+                <DialogTitle>
+                  {t("settings.security.2fa.deactivation.title")}
+                </DialogTitle>
                 <DialogDescription>
                   {t("settings.security.2fa.deactivation.description")}
                 </DialogDescription>

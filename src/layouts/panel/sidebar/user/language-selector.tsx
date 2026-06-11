@@ -1,4 +1,4 @@
-import {BookA, ChevronRight} from "lucide-react";
+import { BookA, ChevronRight } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,21 +7,21 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {useTranslation} from "react-i18next";
-import {useSidebar} from "@/components/ui/sidebar.tsx";
+import { useTranslation } from "react-i18next";
+import { useSidebar } from "@/components/ui/sidebar.tsx";
 
 export function SidebarLanguageSelector() {
-  const {t, i18n} = useTranslation();
-  const language = (i18n.resolvedLanguage || "en_US");
-  const {isMobile} = useSidebar()
+  const { t, i18n } = useTranslation();
+  const language = i18n.resolvedLanguage || "en_US";
+  const { isMobile } = useSidebar();
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <DropdownMenuItem>
-          <BookA/>
+          <BookA />
           {t("panel.sidebar.language")}
-          <ChevronRight className="ml-auto"/>
+          <ChevronRight className="ml-auto" />
         </DropdownMenuItem>
       </DropdownMenuTrigger>
       <DropdownMenuContent
@@ -30,8 +30,10 @@ export function SidebarLanguageSelector() {
         align="start"
         sideOffset={4}
       >
-        <DropdownMenuRadioGroup onValueChange={i18n.changeLanguage}
-                                value={language}>
+        <DropdownMenuRadioGroup
+          onValueChange={i18n.changeLanguage}
+          value={language}
+        >
           <DropdownMenuRadioItem value="en_US">
             <span className="flex items-center gap-2">
               <span>🇺🇸</span>

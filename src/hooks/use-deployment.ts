@@ -1,7 +1,9 @@
-import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
-import {useSearchParams} from "react-router-dom";
-import {useEffect, useState} from "react";
-import deploymentService, {type Deployment} from "@/api/services/deployment-service.ts";
+import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
+import { useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import deploymentService, {
+  type Deployment,
+} from "@/api/services/deployment-service.ts";
 
 const deploymentCache: Record<string, Deployment> = {};
 
@@ -19,7 +21,10 @@ export default function useDeployment() {
       if (deploymentCache[cacheKey]) {
         setDeployment(deploymentCache[cacheKey]);
       }
-      const response = await deploymentService.find({ namespace: queryNamespace, deployment: queryDeployment });
+      const response = await deploymentService.find({
+        namespace: queryNamespace,
+        deployment: queryDeployment,
+      });
       if (response.success && isMounted) {
         deploymentCache[cacheKey] = response.deployment;
         setDeployment(response.deployment);
@@ -28,7 +33,10 @@ export default function useDeployment() {
 
     loadDeployment();
     const interval = window.setInterval(loadDeployment, POLL_INTERVAL_MS);
-    return () => { isMounted = false; clearInterval(interval); };
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, [searchParams]);
 
   return deployment;

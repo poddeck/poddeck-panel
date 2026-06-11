@@ -1,29 +1,25 @@
-import type {
-  Table,
-} from "@tanstack/react-table";
-import {useSidebar} from "@/components/ui/sidebar.tsx";
-import {useTranslation} from "react-i18next";
-import type {LucideIcon} from "lucide-react";
+import type { Table } from "@tanstack/react-table";
+import { useSidebar } from "@/components/ui/sidebar.tsx";
+import { useTranslation } from "react-i18next";
+import type { LucideIcon } from "lucide-react";
 
 export interface DataTableBottomBarAction<T> {
   name: string;
   icon: LucideIcon;
-  onClick?: (entries: T[]) => void
+  onClick?: (entries: T[]) => void;
 }
 
-export default function DataTableBottomBar<T>(
-  {
-    table,
-    actions,
-  }: {
-    table: Table<T>
-    actions: DataTableBottomBarAction<T>[]
-  }
-) {
+export default function DataTableBottomBar<T>({
+  table,
+  actions,
+}: {
+  table: Table<T>;
+  actions: DataTableBottomBarAction<T>[];
+}) {
   const selectedRows = table.getSelectedRowModel().rows;
   const selectedCount = selectedRows.length;
-  const {t} = useTranslation();
-  const {open} = useSidebar()
+  const { t } = useTranslation();
+  const { open } = useSidebar();
   return (
     <div
       className={`
@@ -35,8 +31,10 @@ export default function DataTableBottomBar<T>(
     >
       <div
         style={{
-          paddingLeft: open ? "var(--sidebar-width)" : "var(--sidebar-width-icon)",
-          transition: "padding-left 300ms ease"
+          paddingLeft: open
+            ? "var(--sidebar-width)"
+            : "var(--sidebar-width-icon)",
+          transition: "padding-left 300ms ease",
         }}
       >
         <div className="w-[min(1500px,95%)] mx-auto">
@@ -49,7 +47,7 @@ export default function DataTableBottomBar<T>(
                 <button
                   key={idx}
                   onClick={() => {
-                    onClick?.(selectedRows.map(entry => entry.original));
+                    onClick?.(selectedRows.map((entry) => entry.original));
                     table.resetRowSelection(true);
                   }}
                   className="

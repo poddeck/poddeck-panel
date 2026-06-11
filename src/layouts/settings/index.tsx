@@ -1,22 +1,30 @@
 import {
-  DialogContent, DialogHeader, DialogTitle
-} from "@/components/ui/dialog"
-import {useState} from "react";
-import {Button} from "@/components/ui/button.tsx";
-import type {SettingsPage} from "@/pages/settings/settings-page.tsx";
-import {useTranslation} from "react-i18next";
-import type {LucideIcon} from "lucide-react";
-import {AccountPage} from "@/pages/settings/account";
-import {GeneralPage} from "@/pages/settings/general";
-import {SecurityPage} from "@/pages/settings/security";
-import {SessionsPage} from "@/pages/settings/sessions";
-import {PersonalizationPage} from "@/pages/settings/personalization";
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { useState } from "react";
+import { Button } from "@/components/ui/button.tsx";
+import type { SettingsPage } from "@/pages/settings/settings-page.tsx";
+import { useTranslation } from "react-i18next";
+import type { LucideIcon } from "lucide-react";
+import { AccountPage } from "@/pages/settings/account";
+import { GeneralPage } from "@/pages/settings/general";
+import { SecurityPage } from "@/pages/settings/security";
+import { SessionsPage } from "@/pages/settings/sessions";
+import { PersonalizationPage } from "@/pages/settings/personalization";
 import pkg from "@/../package.json";
 
-const pages: SettingsPage[] = [GeneralPage, AccountPage, PersonalizationPage, SecurityPage, SessionsPage];
+const pages: SettingsPage[] = [
+  GeneralPage,
+  AccountPage,
+  PersonalizationPage,
+  SecurityPage,
+  SessionsPage,
+];
 
 export function SettingsDialog() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [currentPageKey, setCurrentPageKey] = useState(pages[0].key);
   const currentPage = pages.find((p) => p.key === currentPageKey)!;
   return (
@@ -33,7 +41,7 @@ export function SettingsDialog() {
             />
           ))}
           <div className="text-center text-sm text-muted-foreground mt-auto">
-             <span>Version: {pkg.version}</span>
+            <span>Version: {pkg.version}</span>
           </div>
         </div>
 
@@ -57,7 +65,12 @@ interface SidebarItemProps {
   onClick: () => void;
 }
 
-export function SidebarItem({ title, icon: Icon, isActive, onClick }: SidebarItemProps) {
+export function SidebarItem({
+  title,
+  icon: Icon,
+  isActive,
+  onClick,
+}: SidebarItemProps) {
   return (
     <Button
       variant={isActive ? "secondary" : "ghost"}

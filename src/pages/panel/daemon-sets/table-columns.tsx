@@ -1,13 +1,13 @@
-import {type ColumnDef} from "@tanstack/react-table";
-import {type DaemonSet} from "@/api/services/daemon-set-service"
-import {DaemonSetsActionDropdown} from "./table-components.tsx";
-import {Age} from "@/components/age/age.tsx";
+import { type ColumnDef } from "@tanstack/react-table";
+import { type DaemonSet } from "@/api/services/daemon-set-service";
+import { DaemonSetsActionDropdown } from "./table-components.tsx";
+import { Age } from "@/components/age/age.tsx";
 
 export const columns: ColumnDef<DaemonSet, unknown>[] = [
   {
     header: "panel.page.daemon-sets.column.namespace",
     accessorKey: "namespace",
-    filterFn: 'equals',
+    filterFn: "equals",
   },
   {
     header: "panel.page.daemon-sets.column.name",
@@ -32,8 +32,8 @@ export const columns: ColumnDef<DaemonSet, unknown>[] = [
   {
     header: "panel.page.daemon-sets.column.age",
     accessorKey: "age",
-    cell: ({row}) => {
-      return <Age age={row.original.age}/>
+    cell: ({ row }) => {
+      return <Age age={row.original.age} />;
     },
   },
   {
@@ -41,8 +41,8 @@ export const columns: ColumnDef<DaemonSet, unknown>[] = [
     header: "",
     maxSize: 60,
     enableHiding: false,
-    cell: ({row}) => {
-      return <DaemonSetsActionDropdown daemonSet={row.original}/>
+    cell: ({ row }) => {
+      return <DaemonSetsActionDropdown daemonSet={row.original} />;
     },
   },
 ];

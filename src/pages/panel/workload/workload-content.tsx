@@ -1,30 +1,28 @@
-import {WorkloadChart} from "@/pages/panel/workload/workload-chart.tsx";
-import {useEffect, useMemo, useRef, useState} from "react";
+import { WorkloadChart } from "@/pages/panel/workload/workload-chart.tsx";
+import { useEffect, useMemo, useRef, useState } from "react";
 import workloadService, {
   type Metric,
-  type WorkloadRequest
+  type WorkloadRequest,
 } from "@/api/services/workload-service.ts";
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 const RANGE_MAP: Record<string, { ms: number; accuracy: string }> = {
-  "minute": { ms: 1 * 60 * 1000, accuracy: "second" },
-  "hour": { ms: 60 * 60 * 1000, accuracy: "minute" },
-  "day": { ms: 24 * 60 * 60 * 1000, accuracy: "hour" },
-  "week": { ms: 7 * 24 * 60 * 60 * 1000, accuracy: "day" },
-  "month": { ms: 30 * 24 * 60 * 60 * 1000, accuracy: "day" },
-  "year": { ms: 365 * 24 * 60 * 60 * 1000, accuracy: "month" },
+  minute: { ms: 1 * 60 * 1000, accuracy: "second" },
+  hour: { ms: 60 * 60 * 1000, accuracy: "minute" },
+  day: { ms: 24 * 60 * 60 * 1000, accuracy: "hour" },
+  week: { ms: 7 * 24 * 60 * 60 * 1000, accuracy: "day" },
+  month: { ms: 30 * 24 * 60 * 60 * 1000, accuracy: "day" },
+  year: { ms: 365 * 24 * 60 * 60 * 1000, accuracy: "month" },
 };
 
-export default function WorkloadContent(
-  {
-    selectedNode,
-    timeRange
-  }: {
-    selectedNode: string;
-    timeRange: string;
-  }
-) {
-  const {t} = useTranslation();
+export default function WorkloadContent({
+  selectedNode,
+  timeRange,
+}: {
+  selectedNode: string;
+  timeRange: string;
+}) {
+  const { t } = useTranslation();
   const [metrics, setMetrics] = useState<Metric[]>([]);
   const latestTimestampReference = useRef<number>(0);
   useEffect(() => {
@@ -78,19 +76,33 @@ export default function WorkloadContent(
     return () => clearInterval(interval);
   }, [selectedNode, timeRange]);
   const cpuData = useMemo(
-    () => metrics.map((m) => ({ date: new Date(m.timestamp).toISOString(), data: m.cpu_ratio.toFixed(2) })),
-    [metrics]
+    () =>
+      metrics.map((m) => ({
+        date: new Date(m.timestamp).toISOString(),
+        data: m.cpu_ratio.toFixed(2),
+      })),
+    [metrics],
   );
   const memoryData = useMemo(
-    () => metrics.map((m) => ({ date: new Date(m.timestamp).toISOString(), data: m.used_memory.toFixed(2) })),
-    [metrics]
+    () =>
+      metrics.map((m) => ({
+        date: new Date(m.timestamp).toISOString(),
+        data: m.used_memory.toFixed(2),
+      })),
+    [metrics],
   );
   const storageData = useMemo(
-    () => metrics.map((m) => ({ date: new Date(m.timestamp).toISOString(), data: m.used_storage.toFixed(2) })),
-    [metrics]
+    () =>
+      metrics.map((m) => ({
+        date: new Date(m.timestamp).toISOString(),
+        data: m.used_storage.toFixed(2),
+      })),
+    [metrics],
   );
   const latestMetric = metrics[metrics.length - 1];
-  const cpuUsage = latestMetric ? `${Math.round(latestMetric.cpu_ratio)}%` : "-";
+  const cpuUsage = latestMetric
+    ? `${Math.round(latestMetric.cpu_ratio)}%`
+    : "-";
   const memoryUsage = latestMetric
     ? `${Math.round((latestMetric.used_memory / latestMetric.total_memory) * 100)}%`
     : "-";

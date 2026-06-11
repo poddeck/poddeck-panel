@@ -1,18 +1,18 @@
-"use client"
+"use client";
 
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import {
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogClose
+  DialogClose,
 } from "@/components/ui/dialog.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {Copy, Check} from "lucide-react";
+import { Button } from "@/components/ui/button.tsx";
+import { Copy, Check } from "lucide-react";
 import * as React from "react";
-import {toast} from "sonner";
+import { toast } from "sonner";
 
 interface DeployDialogProps {
   clusterId: string;
@@ -20,8 +20,12 @@ interface DeployDialogProps {
   onClose?: () => void;
 }
 
-export default function ClusterDeployDialog({clusterId, agentKey, onClose}: DeployDialogProps) {
-  const {t} = useTranslation();
+export default function ClusterDeployDialog({
+  clusterId,
+  agentKey,
+  onClose,
+}: DeployDialogProps) {
+  const { t } = useTranslation();
   const [copiedHelm, setCopiedHelm] = React.useState(false);
 
   const helmCommand = `helm repo add poddeck https://poddeck.github.io/poddeck
@@ -43,7 +47,9 @@ helm install poddeck-agent poddeck/poddeck-agent \\
   return (
     <DialogContent className="sm:max-w-[600px]">
       <DialogHeader>
-        <DialogTitle>{t("panel.sidebar.cluster.deploy.dialog.title")}</DialogTitle>
+        <DialogTitle>
+          {t("panel.sidebar.cluster.deploy.dialog.title")}
+        </DialogTitle>
         <DialogDescription>
           {t("panel.sidebar.cluster.deploy.dialog.description")}
         </DialogDescription>
@@ -59,7 +65,11 @@ helm install poddeck-agent poddeck/poddeck-agent \\
               size="sm"
               onClick={() => copyToClipboard(helmCommand)}
             >
-              {copiedHelm ? <Check className="h-4 w-4"/> : <Copy className="h-4 w-4"/>}
+              {copiedHelm ? (
+                <Check className="h-4 w-4" />
+              ) : (
+                <Copy className="h-4 w-4" />
+              )}
             </Button>
           </div>
           <pre className="bg-muted rounded-md p-3 text-xs overflow-x-auto whitespace-pre-wrap break-all font-mono">
@@ -69,7 +79,9 @@ helm install poddeck-agent poddeck/poddeck-agent \\
       </div>
       <DialogFooter>
         <DialogClose asChild>
-          <Button onClick={onClose}>{t("panel.sidebar.cluster.deploy.dialog.close")}</Button>
+          <Button onClick={onClose}>
+            {t("panel.sidebar.cluster.deploy.dialog.close")}
+          </Button>
         </DialogClose>
       </DialogFooter>
     </DialogContent>

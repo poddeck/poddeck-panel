@@ -1,32 +1,32 @@
-"use client"
+"use client";
 
-import {Input} from "@/components/ui/input"
-import {useTranslation} from "react-i18next";
+import { Input } from "@/components/ui/input";
+import { useTranslation } from "react-i18next";
 import {
-  DialogClose, DialogContent,
-  DialogDescription, DialogFooter,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {Spinner} from "@/components/ui/spinner.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Spinner } from "@/components/ui/spinner.tsx";
 import * as React from "react";
 import PodService from "@/api/services/pod-service.ts";
 
-export default function PodDeleteDialog(
-  {
-    namespace,
-    pod,
-    setOpen,
-    onDelete,
-  }: {
-    namespace?: string;
-    pod?: string;
-    setOpen: (open: boolean) => void;
-    onDelete?: () => void;
-  }
-) {
-  const {t} = useTranslation();
+export default function PodDeleteDialog({
+  namespace,
+  pod,
+  setOpen,
+  onDelete,
+}: {
+  namespace?: string;
+  pod?: string;
+  setOpen: (open: boolean) => void;
+  onDelete?: () => void;
+}) {
+  const { t } = useTranslation();
   const [newPodName, setNewPodName] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const handleEditPod = async () => {
@@ -36,7 +36,7 @@ export default function PodDeleteDialog(
     setLoading(true);
     await PodService.remove({
       namespace: namespace ? namespace : "",
-      pod: pod ? pod : ""
+      pod: pod ? pod : "",
     });
     setLoading(false);
     setNewPodName("");
@@ -44,8 +44,11 @@ export default function PodDeleteDialog(
     onDelete?.();
   };
   return (
-    <DialogContent className="sm:max-w-[425px]" onClick={(e) => e.stopPropagation()}
-                   onMouseDown={(e) => e.stopPropagation()}>
+    <DialogContent
+      className="sm:max-w-[425px]"
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
       <DialogHeader>
         <DialogTitle>{t("panel.page.pods.delete.dialog.title")}</DialogTitle>
         <DialogDescription>
@@ -72,10 +75,15 @@ export default function PodDeleteDialog(
       </div>
       <DialogFooter>
         <DialogClose asChild>
-          <Button
-            variant="outline">{t("panel.page.pods.delete.dialog.cancel")}</Button>
+          <Button variant="outline">
+            {t("panel.page.pods.delete.dialog.cancel")}
+          </Button>
         </DialogClose>
-        <Button variant="destructive" onClick={handleEditPod} disabled={loading || newPodName !== pod}>
+        <Button
+          variant="destructive"
+          onClick={handleEditPod}
+          disabled={loading || newPodName !== pod}
+        >
           {t("panel.page.pods.delete.dialog.submit")}
           {loading && <Spinner className="ml-2"></Spinner>}
         </Button>

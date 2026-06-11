@@ -1,50 +1,55 @@
-import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
-import {AppHeader} from "@/layouts/panel/header";
-import {SidebarProvider} from "@/components/ui/sidebar.tsx";
-import React, {useEffect, useState} from "react";
-import ClusterService, {type Cluster} from "@/api/services/cluster-service.ts";
-import useClusterStore, {useClusterActions} from "@/store/cluster-store.ts";
-import {useRouter} from "@/routes/hooks";
-import {Dialog, DialogTrigger} from "@/components/ui/dialog.tsx";
+import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
+import { AppHeader } from "@/layouts/panel/header";
+import { SidebarProvider } from "@/components/ui/sidebar.tsx";
+import React, { useEffect, useState } from "react";
+import ClusterService, {
+  type Cluster,
+} from "@/api/services/cluster-service.ts";
+import useClusterStore, { useClusterActions } from "@/store/cluster-store.ts";
+import { useRouter } from "@/routes/hooks";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog.tsx";
 import ClusterAddDialog from "@/layouts/panel/sidebar/cluster/add-dialog.tsx";
 import ClusterEditDialog from "@/layouts/panel/sidebar/cluster/edit-dialog.tsx";
-import ClusterDeleteDialog
-  from "@/layouts/panel/sidebar/cluster/delete-dialog.tsx";
-import NodeService, {type Node} from "@/api/services/node-service.ts";
-import PodService, {type Pod} from "@/api/services/pod-service.ts";
+import ClusterDeleteDialog from "@/layouts/panel/sidebar/cluster/delete-dialog.tsx";
+import NodeService, { type Node } from "@/api/services/node-service.ts";
+import PodService, { type Pod } from "@/api/services/pod-service.ts";
 import DeploymentService, {
-  type Deployment
+  type Deployment,
 } from "@/api/services/deployment-service.ts";
 import NamespaceService, {
-  type Namespace
+  type Namespace,
 } from "@/api/services/namespace-service.ts";
 import ClusterCardSkeleton from "@/pages/panel/cluster/skeleton.tsx";
-import {ClusterCard} from "@/pages/panel/cluster/card.tsx";
-import {useTranslation} from "react-i18next";
+import { ClusterCard } from "@/pages/panel/cluster/card.tsx";
+import { useTranslation } from "react-i18next";
 import NotificationService, {
-  type Notification
+  type Notification,
 } from "@/api/services/notification-service.ts";
-import ServiceService, {type Service} from "@/api/services/service-service.ts";
+import ServiceService, {
+  type Service,
+} from "@/api/services/service-service.ts";
 
 export type ExtendedCluster = Cluster & {
-  nodes: Node[],
-  pods: Pod[],
-  deployments: Deployment[],
-  namespaces: Namespace[],
-  notifications: Notification[],
-  services: Service[]
+  nodes: Node[];
+  pods: Pod[];
+  deployments: Deployment[];
+  namespaces: Namespace[];
+  notifications: Notification[];
+  services: Service[];
 };
 
 export default function ClusterPage() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [clusters, setClusters] = useState<ExtendedCluster[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogMode, setDialogMode] = React.useState("add");
-  const [clickedCluster, setClickedCluster] = React.useState<Cluster | null>(null);
+  const [clickedCluster, setClickedCluster] = React.useState<Cluster | null>(
+    null,
+  );
   const [open, setOpen] = React.useState(false);
-  const {setClusterId} = useClusterActions();
-  const currentClusterId = useClusterStore(state => state.clusterId);
-  const {replace} = useRouter();
+  const { setClusterId } = useClusterActions();
+  const currentClusterId = useClusterStore((state) => state.clusterId);
+  const { replace } = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,21 +61,30 @@ export default function ClusterPage() {
           rawClusters.map(async (cluster) => {
             const nodeResponse = await NodeService.listCluster(cluster.id);
             const podResponse = await PodService.listCluster(cluster.id);
-            const deployResponse = await DeploymentService.listCluster(cluster.id);
-            const namespaceResponse = await NamespaceService.listCluster(cluster.id);
-            const notificationResponse = await NotificationService.listSpecificCluster(cluster.id);
-            const serviceResponse = await ServiceService.listCluster(cluster.id);
+            const deployResponse = await DeploymentService.listCluster(
+              cluster.id,
+            );
+            const namespaceResponse = await NamespaceService.listCluster(
+              cluster.id,
+            );
+            const notificationResponse =
+              await NotificationService.listSpecificCluster(cluster.id);
+            const serviceResponse = await ServiceService.listCluster(
+              cluster.id,
+            );
             return {
               ...cluster,
               nodes: nodeResponse.nodes ?? [],
               pods: podResponse.pods ?? [],
               deployments: deployResponse.deployments ?? [],
               namespaces: namespaceResponse.namespaces ?? [],
-              notifications: notificationResponse.notifications
-                .filter(n => n.state !== "SEEN") ?? [],
-              services: serviceResponse.services ?? []
+              notifications:
+                notificationResponse.notifications.filter(
+                  (n) => n.state !== "SEEN",
+                ) ?? [],
+              services: serviceResponse.services ?? [],
             };
-          })
+          }),
         );
 
         setClusters(extended);
@@ -91,9 +105,9 @@ export default function ClusterPage() {
           const nodeResponse = await NodeService.listCluster(cluster.id);
           return {
             ...cluster,
-            nodes: nodeResponse.nodes ?? cluster.nodes
+            nodes: nodeResponse.nodes ?? cluster.nodes,
           };
-        })
+        }),
       );
       setClusters(updatedClusters);
     }, POLL_INTERVAL_MS);
@@ -123,18 +137,21 @@ export default function ClusterPage() {
   return (
     <SidebarProvider>
       <div className="w-full">
-        <AppHeader title="panel.page.cluster.title" cluster={false}/>
+        <AppHeader title="panel.page.cluster.title" cluster={false} />
         <Dialog open={open} onOpenChange={setOpen}>
           <div
-            className={"w-[min(1350px,95%)] mx-auto flex flex-wrap gap-4 flex-col flex-1"}>
+            className={
+              "w-[min(1350px,95%)] mx-auto flex flex-wrap gap-4 flex-col flex-1"
+            }
+          >
             <div className="grid grid-cols-2 gap-8 my-[4vh]">
               {loading ? (
                 <>
-                  <ClusterCardSkeleton/>
+                  <ClusterCardSkeleton />
                 </>
               ) : (
                 <>
-                  {sortedClusters.map(cluster => (
+                  {sortedClusters.map((cluster) => (
                     <ClusterCard
                       key={cluster.id}
                       cluster={cluster}
@@ -146,17 +163,14 @@ export default function ClusterPage() {
                 </>
               )}
               <DialogTrigger asChild>
-                <div
-                  className="aspect-video border-2 border-dashed border-zinc-600 rounded-xl p-4 flex justify-center items-center text-zinc-600 cursor-pointer hover:bg-zinc-600/10 hover:text-zinc-500 transition">
+                <div className="aspect-video border-2 border-dashed border-zinc-600 rounded-xl p-4 flex justify-center items-center text-zinc-600 cursor-pointer hover:bg-zinc-600/10 hover:text-zinc-500 transition">
                   + {t("panel.page.cluster.add")}
                 </div>
               </DialogTrigger>
             </div>
           </div>
           {open && dialogMode === "add" && (
-            <ClusterAddDialog
-              onCreation={handleClusterCreation}
-            />
+            <ClusterAddDialog onCreation={handleClusterCreation} />
           )}
           {open && dialogMode === "edit" && (
             <ClusterEditDialog
@@ -174,5 +188,5 @@ export default function ClusterPage() {
         </Dialog>
       </div>
     </SidebarProvider>
-  )
+  );
 }

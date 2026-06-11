@@ -1,34 +1,32 @@
-"use client"
+"use client";
 
-import {Input} from "@/components/ui/input"
-import {useTranslation} from "react-i18next";
+import { Input } from "@/components/ui/input";
+import { useTranslation } from "react-i18next";
 import {
   DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {Spinner} from "@/components/ui/spinner.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Spinner } from "@/components/ui/spinner.tsx";
 import * as React from "react";
 import ServiceService from "@/api/services/service-service";
 
-export default function ServiceDeleteDialog(
-  {
-    namespace,
-    service,
-    setOpen,
-    onDelete,
-  }: {
-    namespace?: string;
-    service?: string;
-    setOpen: (open: boolean) => void;
-    onDelete?: () => void;
-  }
-) {
-  const {t} = useTranslation();
+export default function ServiceDeleteDialog({
+  namespace,
+  service,
+  setOpen,
+  onDelete,
+}: {
+  namespace?: string;
+  service?: string;
+  setOpen: (open: boolean) => void;
+  onDelete?: () => void;
+}) {
+  const { t } = useTranslation();
   const [newServiceName, setNewServiceName] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const handleDeleteService = async () => {
@@ -38,7 +36,7 @@ export default function ServiceDeleteDialog(
     setLoading(true);
     await ServiceService.remove({
       namespace: namespace ? namespace : "",
-      service: service ? service : ""
+      service: service ? service : "",
     });
     setLoading(false);
     setNewServiceName("");
@@ -46,10 +44,15 @@ export default function ServiceDeleteDialog(
     onDelete?.();
   };
   return (
-    <DialogContent className="sm:max-w-[425px]" onClick={(e) => e.stopPropagation()}
-                   onMouseDown={(e) => e.stopPropagation()}>
+    <DialogContent
+      className="sm:max-w-[425px]"
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
       <DialogHeader>
-        <DialogTitle>{t("panel.page.services.delete.dialog.title")}</DialogTitle>
+        <DialogTitle>
+          {t("panel.page.services.delete.dialog.title")}
+        </DialogTitle>
         <DialogDescription>
           {t("panel.page.services.delete.dialog.description")}
         </DialogDescription>
@@ -74,10 +77,15 @@ export default function ServiceDeleteDialog(
       </div>
       <DialogFooter>
         <DialogClose asChild>
-          <Button
-            variant="outline">{t("panel.page.services.delete.dialog.cancel")}</Button>
+          <Button variant="outline">
+            {t("panel.page.services.delete.dialog.cancel")}
+          </Button>
         </DialogClose>
-        <Button variant="destructive" onClick={handleDeleteService} disabled={loading || newServiceName !== service}>
+        <Button
+          variant="destructive"
+          onClick={handleDeleteService}
+          disabled={loading || newServiceName !== service}
+        >
           {t("panel.page.services.delete.dialog.submit")}
           {loading && <Spinner className="ml-2"></Spinner>}
         </Button>

@@ -1,26 +1,31 @@
-"use client"
+"use client";
 
-import {Input} from "@/components/ui/input"
-import {useTranslation} from "react-i18next";
+import { Input } from "@/components/ui/input";
+import { useTranslation } from "react-i18next";
 import {
   Dialog,
-  DialogClose, DialogContent,
-  DialogDescription, DialogFooter,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
-  DialogTitle, DialogTrigger
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog.tsx";
-import {Label} from "@/components/ui/label.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {Spinner} from "@/components/ui/spinner.tsx";
+import { Label } from "@/components/ui/label.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Spinner } from "@/components/ui/spinner.tsx";
 import * as React from "react";
 import NamespaceService from "@/api/services/namespace-service.ts";
-import {toast} from "sonner";
-import {PlusIcon} from "lucide-react";
+import { toast } from "sonner";
+import { PlusIcon } from "lucide-react";
 
-export default function NamespaceAddButton({ onCreation }: {
+export default function NamespaceAddButton({
+  onCreation,
+}: {
   onCreation?: () => void;
 }) {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [open, setOpen] = React.useState(false);
   const [newNamespaceName, setNewNamespaceName] = React.useState("");
   const [loading, setLoading] = React.useState(false);
@@ -30,7 +35,7 @@ export default function NamespaceAddButton({ onCreation }: {
     }
     try {
       setLoading(true);
-      await NamespaceService.create({name: newNamespaceName});
+      await NamespaceService.create({ name: newNamespaceName });
       onCreation?.();
     } finally {
       setLoading(false);
@@ -44,22 +49,25 @@ export default function NamespaceAddButton({ onCreation }: {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Button size='lg' className='bg-primary'>
-          <PlusIcon/>
+        <Button size="lg" className="bg-primary">
+          <PlusIcon />
           {t("panel.page.namespaces.add")}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{t("panel.page.namespaces.add.dialog.title")}</DialogTitle>
+          <DialogTitle>
+            {t("panel.page.namespaces.add.dialog.title")}
+          </DialogTitle>
           <DialogDescription>
             {t("panel.page.namespaces.add.dialog.description")}
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4">
           <div className="grid gap-3">
-            <Label
-              htmlFor="name">{t("panel.page.namespaces.add.dialog.name")}</Label>
+            <Label htmlFor="name">
+              {t("panel.page.namespaces.add.dialog.name")}
+            </Label>
             <Input
               id="name"
               name="name"
@@ -71,8 +79,9 @@ export default function NamespaceAddButton({ onCreation }: {
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button
-              variant="outline">{t("panel.page.namespaces.add.dialog.cancel")}</Button>
+            <Button variant="outline">
+              {t("panel.page.namespaces.add.dialog.cancel")}
+            </Button>
           </DialogClose>
           <Button onClick={handleCreateNamespace} disabled={loading}>
             {t("panel.page.namespaces.add.dialog.submit")}

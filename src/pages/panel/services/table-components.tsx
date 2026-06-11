@@ -1,18 +1,18 @@
-import {Button} from "@/components/ui/button.tsx";
-import {MoreHorizontal, Trash2} from "lucide-react";
+import { Button } from "@/components/ui/button.tsx";
+import { MoreHorizontal, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
-import {type Service} from "@/api/services/service-service"
-import {t} from "@/locales/i18n";
+import { type Service } from "@/api/services/service-service";
+import { t } from "@/locales/i18n";
 import ServiceDeleteDialog from "@/pages/panel/services/delete-dialog.tsx";
 import React from "react";
-import {Dialog} from "@radix-ui/react-dialog";
+import { Dialog } from "@radix-ui/react-dialog";
 
-export function ServicesActionDropdown({service}: { service: Service }) {
+export function ServicesActionDropdown({ service }: { service: Service }) {
   const [deleteOpen, setDeleteOpen] = React.useState(false);
 
   return (
@@ -24,7 +24,7 @@ export function ServicesActionDropdown({service}: { service: Service }) {
             size="sm"
             className="h-fit hover:bg-black/10 dark:hover:bg-white/10 py-2 -my-2 rounded-full"
           >
-            <MoreHorizontal/>
+            <MoreHorizontal />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
@@ -36,7 +36,7 @@ export function ServicesActionDropdown({service}: { service: Service }) {
             }}
           >
             <div className="text-rose-600 flex items-center gap-2">
-              <Trash2 className="text-rose-600" size={16}/>
+              <Trash2 className="text-rose-600" size={16} />
               {t("panel.page.services.action.delete")}
             </div>
           </DropdownMenuItem>

@@ -20,7 +20,7 @@ export type ReplicaSet = {
   conditions: Condition[];
   events: Event[];
   raw: string;
-}
+};
 
 export type Condition = {
   type: string;
@@ -28,7 +28,7 @@ export type Condition = {
   reason: string;
   message: string;
   last_transition: number;
-}
+};
 
 export type Event = {
   type: string;
@@ -36,12 +36,12 @@ export type Event = {
   message: string;
   timestamp: number;
   source: string;
-}
+};
 
 export type ReplicaSetListResponse = {
   replica_sets: ReplicaSet[];
   success?: boolean;
-}
+};
 
 export interface ReplicaSetFindRequest {
   namespace: string;
@@ -51,7 +51,7 @@ export interface ReplicaSetFindRequest {
 export type ReplicaSetFindResponse = {
   success: boolean;
   replica_set: ReplicaSet;
-}
+};
 
 export interface ReplicaSetCreateRequest {
   raw: string;
@@ -61,7 +61,7 @@ export type ReplicaSetCreateResponse = {
   success: boolean;
   namespace: string;
   replica_set: string;
-}
+};
 
 export interface ReplicaSetDeleteRequest {
   namespace: string;
@@ -70,7 +70,7 @@ export interface ReplicaSetDeleteRequest {
 
 export type ReplicaSetDeleteResponse = {
   success: boolean;
-}
+};
 
 export interface ReplicaSetScaleRequest {
   namespace: string;
@@ -80,7 +80,7 @@ export interface ReplicaSetScaleRequest {
 
 export type ReplicaSetScaleResponse = {
   success: boolean;
-}
+};
 
 export interface ReplicaSetEditRequest {
   namespace: string;
@@ -90,7 +90,7 @@ export interface ReplicaSetEditRequest {
 
 export type ReplicaSetEditResponse = {
   success: boolean;
-}
+};
 
 export const ReplicaSetApi = {
   List: "/replica-sets/",
@@ -101,35 +101,40 @@ export const ReplicaSetApi = {
   Edit: "/replica-set/edit/",
 } as const;
 
-const list = () => client.get<ReplicaSetListResponse>({url: ReplicaSetApi.List});
-const listCluster = (clusterId: string) => client.get<ReplicaSetListResponse>(
-  {
+const list = () =>
+  client.get<ReplicaSetListResponse>({ url: ReplicaSetApi.List });
+const listCluster = (clusterId: string) =>
+  client.get<ReplicaSetListResponse>({
     url: ReplicaSetApi.List,
     headers: {
       Cluster: clusterId,
     },
-  }
-);
-const find = (data: ReplicaSetFindRequest) => client.post<ReplicaSetFindResponse>({
-  url: ReplicaSetApi.Find,
-  data
-});
-const create = (data: ReplicaSetCreateRequest) => client.post<ReplicaSetCreateResponse>({
-  url: ReplicaSetApi.Create,
-  data
-});
-const remove = (data: ReplicaSetDeleteRequest) => client.post<ReplicaSetDeleteResponse>({
-  url: ReplicaSetApi.Delete,
-  data
-});
-const scale = (data: ReplicaSetScaleRequest) => client.post<ReplicaSetScaleResponse>({
-  url: ReplicaSetApi.Scale,
-  data
-});
-const edit = (data: ReplicaSetEditRequest) => client.post<ReplicaSetEditResponse>({
-  url: ReplicaSetApi.Edit,
-  data
-});
+  });
+const find = (data: ReplicaSetFindRequest) =>
+  client.post<ReplicaSetFindResponse>({
+    url: ReplicaSetApi.Find,
+    data,
+  });
+const create = (data: ReplicaSetCreateRequest) =>
+  client.post<ReplicaSetCreateResponse>({
+    url: ReplicaSetApi.Create,
+    data,
+  });
+const remove = (data: ReplicaSetDeleteRequest) =>
+  client.post<ReplicaSetDeleteResponse>({
+    url: ReplicaSetApi.Delete,
+    data,
+  });
+const scale = (data: ReplicaSetScaleRequest) =>
+  client.post<ReplicaSetScaleResponse>({
+    url: ReplicaSetApi.Scale,
+    data,
+  });
+const edit = (data: ReplicaSetEditRequest) =>
+  client.post<ReplicaSetEditResponse>({
+    url: ReplicaSetApi.Edit,
+    data,
+  });
 
 export default {
   list,
@@ -138,5 +143,5 @@ export default {
   create,
   remove,
   scale,
-  edit
+  edit,
 };

@@ -1,44 +1,45 @@
-import PanelPage from "@/layouts/panel"
+import PanelPage from "@/layouts/panel";
 import {
-  Empty, EmptyContent, EmptyDescription,
+  Empty,
+  EmptyContent,
+  EmptyDescription,
   EmptyHeader,
   EmptyMedia,
-  EmptyTitle
+  EmptyTitle,
 } from "@/components/ui/empty.tsx";
-import {Check, Info, SearchCheck, TriangleAlert, X} from "lucide-react";
-import {useTranslation} from "react-i18next";
+import { Check, Info, SearchCheck, TriangleAlert, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import AuditRunButton from "@/pages/panel/audits/run-button.tsx";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import auditService, {
-  type Audit, type AuditEntry
+  type Audit,
+  type AuditEntry,
 } from "@/api/services/audit-service.ts";
-import {columns} from "@/pages/panel/audits/table-columns.tsx";
-import {DataTable} from "@/components/table";
+import { columns } from "@/pages/panel/audits/table-columns.tsx";
+import { DataTable } from "@/components/table";
 import {
   Card,
   CardContent,
   CardHeader,
-  CardTitle
+  CardTitle,
 } from "@/components/ui/card.tsx";
-import {Sheet} from "@/components/ui/sheet.tsx";
+import { Sheet } from "@/components/ui/sheet.tsx";
 import AuditSheet from "@/pages/panel/audits/sheet.tsx";
 
-function AuditPageEmpty(
-  {
-    isUpdating,
-    onAuditComplete
-  }: {
-    isUpdating: boolean;
-    onAuditComplete: () => void
-  }
-) {
-  const {t} = useTranslation();
+function AuditPageEmpty({
+  isUpdating,
+  onAuditComplete,
+}: {
+  isUpdating: boolean;
+  onAuditComplete: () => void;
+}) {
+  const { t } = useTranslation();
   return (
     <PanelPage title="panel.page.audits.title">
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <SearchCheck/>
+            <SearchCheck />
           </EmptyMedia>
           <EmptyTitle>{t("panel.page.audits.empty.title")}</EmptyTitle>
           <EmptyDescription>
@@ -46,11 +47,14 @@ function AuditPageEmpty(
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
-          <AuditRunButton isUpdating={isUpdating} onAuditComplete={onAuditComplete}/>
+          <AuditRunButton
+            isUpdating={isUpdating}
+            onAuditComplete={onAuditComplete}
+          />
         </EmptyContent>
       </Empty>
     </PanelPage>
-  )
+  );
 }
 
 export default function AuditPage() {
@@ -72,7 +76,9 @@ export default function AuditPage() {
         if (!cancelled) setIsLoading(false);
       }
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const pollForAudit = () => {
@@ -84,7 +90,8 @@ export default function AuditPage() {
 
       if (response.success) {
         const newAudit = response.audit;
-        const shouldStop = (!audit && newAudit) ||
+        const shouldStop =
+          (!audit && newAudit) ||
           (audit && newAudit && audit.time !== newAudit.time);
 
         if (shouldStop) {
@@ -103,78 +110,82 @@ export default function AuditPage() {
     return () => clearInterval(interval);
   };
 
-
   if (!isLoading && audit == null) {
-    return <AuditPageEmpty isUpdating={isUpdating} onAuditComplete={pollForAudit}/>
+    return (
+      <AuditPageEmpty isUpdating={isUpdating} onAuditComplete={pollForAudit} />
+    );
   }
-  const entries = audit == null ? [] : audit.controls.flatMap(control =>
-    control.tests.flatMap(test =>
-      test.results.map(result => ({
-        control,
-        test,
-        result
-      }))
-    )
-  );
+  const entries =
+    audit == null
+      ? []
+      : audit.controls.flatMap((control) =>
+          control.tests.flatMap((test) =>
+            test.results.map((result) => ({
+              control,
+              test,
+              result,
+            })),
+          ),
+        );
   return (
     <PanelPage title="panel.page.audits.title">
       <div className="mt-[4vh]">
         <div className="flex items-center justify-end mb-[4vh]">
-          <AuditRunButton isUpdating={isUpdating} onAuditComplete={pollForAudit}/>
+          <AuditRunButton
+            isUpdating={isUpdating}
+            onAuditComplete={pollForAudit}
+          />
         </div>
         <div className="flex items-center gap-2 w-full mb-4">
           <Card className="w-full gap-0 pb-2 pt-4">
             <CardHeader>
               <CardTitle className="flex gap-2 text-green-400">
-                <Check size={18} className="-translate-y-0.5"/> {t("panel.page.audits.status.pass")}
+                <Check size={18} className="-translate-y-0.5" />{" "}
+                {t("panel.page.audits.status.pass")}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <span className="text-2xl">
-                {audit?.totals.total_pass}
-              </span>
+              <span className="text-2xl">{audit?.totals.total_pass}</span>
             </CardContent>
           </Card>
           <Card className="w-full gap-0 pb-2 pt-4">
             <CardHeader>
               <CardTitle className="flex gap-2 text-red-400">
-                <X size={18} className="-translate-y-0.5"/> {t("panel.page.audits.status.fail")}
+                <X size={18} className="-translate-y-0.5" />{" "}
+                {t("panel.page.audits.status.fail")}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <span className="text-2xl">
-                {audit?.totals.total_fail}
-              </span>
+              <span className="text-2xl">{audit?.totals.total_fail}</span>
             </CardContent>
           </Card>
           <Card className="w-full gap-0 pb-2 pt-4">
             <CardHeader>
               <CardTitle className="flex gap-2 text-yellow-400">
-                <TriangleAlert size={18} className="-translate-y-0.5"/> {t("panel.page.audits.status.warn")}
+                <TriangleAlert size={18} className="-translate-y-0.5" />{" "}
+                {t("panel.page.audits.status.warn")}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <span className="text-2xl">
-                {audit?.totals.total_warn}
-              </span>
+              <span className="text-2xl">{audit?.totals.total_warn}</span>
             </CardContent>
           </Card>
           <Card className="w-full gap-0 pb-2 pt-4">
             <CardHeader>
               <CardTitle className="flex gap-2 text-zinc-400">
-                <Info size={18} className="-translate-y-0.5"/> {t("panel.page.audits.status.info")}
+                <Info size={18} className="-translate-y-0.5" />{" "}
+                {t("panel.page.audits.status.info")}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <span className="text-2xl">
-                {audit?.totals.total_info}
-              </span>
+              <span className="text-2xl">{audit?.totals.total_info}</span>
             </CardContent>
           </Card>
         </div>
         <div className="mb-[4vh]">
           <span className="text-muted-foreground">
-            {t("panel.page.audits.date")}: {audit ? new Date(audit.time).toLocaleString() : ""}
+            {t("panel.page.audits.date")}:{" "}
+            {audit ? new Date(audit.time).toLocaleString() : ""}
           </span>
         </div>
         <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
@@ -183,14 +194,14 @@ export default function AuditPage() {
             columns={columns}
             data={entries}
             pageSize={5}
-            initialSorting={[{id: "result.test_number", desc: false}]}
+            initialSorting={[{ id: "result.test_number", desc: false }]}
             isLoading={isLoading}
-            onClick={entry => {
+            onClick={(entry) => {
               setCurrentEntry(entry);
               setSheetOpen(true);
             }}
           />
-          <AuditSheet entry={currentEntry}/>
+          <AuditSheet entry={currentEntry} />
         </Sheet>
       </div>
       <div className="flex justify-center my-6">
@@ -199,5 +210,5 @@ export default function AuditPage() {
         </span>
       </div>
     </PanelPage>
-  )
+  );
 }

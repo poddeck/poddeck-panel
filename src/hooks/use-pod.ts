@@ -1,7 +1,7 @@
-import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
-import {useSearchParams} from "react-router-dom";
-import {useEffect, useState} from "react";
-import podService, {type Pod} from "@/api/services/pod-service.ts";
+import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
+import { useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import podService, { type Pod } from "@/api/services/pod-service.ts";
 
 const podCache: Record<string, Pod> = {};
 
@@ -19,7 +19,10 @@ export default function usePod() {
       if (podCache[cacheKey]) {
         setPod(podCache[cacheKey]);
       }
-      const response = await podService.find({ namespace: queryNamespace, pod: queryPod });
+      const response = await podService.find({
+        namespace: queryNamespace,
+        pod: queryPod,
+      });
       if (response.success && isMounted) {
         podCache[cacheKey] = response.pod;
         setPod(response.pod);
@@ -28,7 +31,10 @@ export default function usePod() {
 
     loadPod();
     const interval = window.setInterval(loadPod, POLL_INTERVAL_MS);
-    return () => { isMounted = false; clearInterval(interval); };
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, [searchParams]);
 
   return pod;

@@ -1,32 +1,32 @@
-"use client"
+"use client";
 
-import {Input} from "@/components/ui/input"
-import {useTranslation} from "react-i18next";
+import { Input } from "@/components/ui/input";
+import { useTranslation } from "react-i18next";
 import {
-  DialogClose, DialogContent,
-  DialogDescription, DialogFooter,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {Spinner} from "@/components/ui/spinner.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Spinner } from "@/components/ui/spinner.tsx";
 import * as React from "react";
 import DaemonSetService from "@/api/services/daemon-set-service";
 
-export default function DaemonSetDeleteDialog(
-  {
-    namespace,
-    daemonSet,
-    setOpen,
-    onDelete,
-  }: {
-    namespace?: string;
-    daemonSet?: string;
-    setOpen: (open: boolean) => void;
-    onDelete?: () => void;
-  }
-) {
-  const {t} = useTranslation();
+export default function DaemonSetDeleteDialog({
+  namespace,
+  daemonSet,
+  setOpen,
+  onDelete,
+}: {
+  namespace?: string;
+  daemonSet?: string;
+  setOpen: (open: boolean) => void;
+  onDelete?: () => void;
+}) {
+  const { t } = useTranslation();
   const [newDaemonSetName, setNewDaemonSetName] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const handleDeleteDaemonSet = async () => {
@@ -36,7 +36,7 @@ export default function DaemonSetDeleteDialog(
     setLoading(true);
     await DaemonSetService.remove({
       namespace: namespace ? namespace : "",
-      daemon_set: daemonSet ? daemonSet : ""
+      daemon_set: daemonSet ? daemonSet : "",
     });
     setLoading(false);
     setNewDaemonSetName("");
@@ -44,10 +44,15 @@ export default function DaemonSetDeleteDialog(
     onDelete?.();
   };
   return (
-    <DialogContent className="sm:max-w-[425px]" onClick={(e) => e.stopPropagation()}
-                   onMouseDown={(e) => e.stopPropagation()}>
+    <DialogContent
+      className="sm:max-w-[425px]"
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
       <DialogHeader>
-        <DialogTitle>{t("panel.page.daemon-sets.delete.dialog.title")}</DialogTitle>
+        <DialogTitle>
+          {t("panel.page.daemon-sets.delete.dialog.title")}
+        </DialogTitle>
         <DialogDescription>
           {t("panel.page.daemon-sets.delete.dialog.description")}
         </DialogDescription>
@@ -72,10 +77,15 @@ export default function DaemonSetDeleteDialog(
       </div>
       <DialogFooter>
         <DialogClose asChild>
-          <Button
-            variant="outline">{t("panel.page.daemon-sets.delete.dialog.cancel")}</Button>
+          <Button variant="outline">
+            {t("panel.page.daemon-sets.delete.dialog.cancel")}
+          </Button>
         </DialogClose>
-        <Button variant="destructive" onClick={handleDeleteDaemonSet} disabled={loading || newDaemonSetName !== daemonSet}>
+        <Button
+          variant="destructive"
+          onClick={handleDeleteDaemonSet}
+          disabled={loading || newDaemonSetName !== daemonSet}
+        >
           {t("panel.page.daemon-sets.delete.dialog.submit")}
           {loading && <Spinner className="ml-2"></Spinner>}
         </Button>

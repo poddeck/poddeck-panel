@@ -1,29 +1,29 @@
-import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
-import {Box, Trash2} from "lucide-react";
-import {DataTable} from "@/components/table";
-import {useEffect, useState} from "react";
+import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
+import { Box, Trash2 } from "lucide-react";
+import { DataTable } from "@/components/table";
+import { useEffect, useState } from "react";
 import namespaceService, {
-  type Namespace
+  type Namespace,
 } from "@/api/services/namespace-service.ts";
-import {useRouter} from "@/routes/hooks";
-import {useTranslation} from "react-i18next";
-import podService, {type Pod} from "@/api/services/pod-service"
-import {columns} from "./table-columns";
+import { useRouter } from "@/routes/hooks";
+import { useTranslation } from "react-i18next";
+import podService, { type Pod } from "@/api/services/pod-service";
+import { columns } from "./table-columns";
 import {
   Empty,
   EmptyDescription,
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/components/ui/empty"
+} from "@/components/ui/empty";
 
 function PodListEmpty() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
     <Empty>
       <EmptyHeader>
         <EmptyMedia variant="icon">
-          <Box/>
+          <Box />
         </EmptyMedia>
         <EmptyTitle>{t("panel.page.pods.empty.title")}</EmptyTitle>
         <EmptyDescription>
@@ -31,22 +31,20 @@ function PodListEmpty() {
         </EmptyDescription>
       </EmptyHeader>
     </Empty>
-  )
+  );
 }
 
-export default function PodsList(
-  {
-    controller,
-    node
-  }: {
-    controller?: string,
-    node?: string
-  },
-) {
+export default function PodsList({
+  controller,
+  node,
+}: {
+  controller?: string;
+  node?: string;
+}) {
   const [pods, setPods] = useState<Pod[]>([]);
   const [namespaces, setNamespaces] = useState<Namespace[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const {replace} = useRouter();
+  const { replace } = useRouter();
   useEffect(() => {
     async function loadPods() {
       try {
@@ -76,9 +74,9 @@ export default function PodsList(
   const defaultFilters = {
     ...(controller && { controlled_by: controller }),
     ...(node && { node }),
-  }
+  };
   if (!isLoading && pods.length === 0) {
-    return <PodListEmpty/>
+    return <PodListEmpty />;
   }
   return (
     <DataTable<Pod>
@@ -86,32 +84,35 @@ export default function PodsList(
       columns={columns}
       data={pods}
       pageSize={5}
-      initialSorting={[{id: "namespace", desc: false}]}
+      initialSorting={[{ id: "namespace", desc: false }]}
       isLoading={isLoading}
-      visibilityState={{node: false, pod_ip: false, controlled_by: false}}
+      visibilityState={{ node: false, pod_ip: false, controlled_by: false }}
       filters={[
         {
-          column: 'namespace',
-          options: namespaces.map(namespace => namespace.name)
+          column: "namespace",
+          options: namespaces.map((namespace) => namespace.name),
         },
       ]}
       defaultFilters={defaultFilters}
-      onClick={pod => replace("/pod/overview/?pod=" + pod.name +
-        "&namespace=" + pod.namespace)}
+      onClick={(pod) =>
+        replace(
+          "/pod/overview/?pod=" + pod.name + "&namespace=" + pod.namespace,
+        )
+      }
       bulkActions={[
         {
           name: "panel.page.pods.action.delete",
           icon: Trash2,
           onClick: (entries) => {
-            entries.forEach(entry => {
+            entries.forEach((entry) => {
               podService.remove({
                 namespace: entry.namespace,
-                pod: entry.name
+                pod: entry.name,
               });
-            })
-          }
-        }
+            });
+          },
+        },
       ]}
     />
-  )
+  );
 }

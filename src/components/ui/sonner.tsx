@@ -3,14 +3,14 @@ import {
   InfoIcon,
   Loader2Icon,
   TriangleAlertIcon,
-} from "lucide-react"
-import {useTheme} from "next-themes"
-import {Toaster as Sonner, type ToasterProps} from "sonner"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTriangleExclamation} from "@fortawesome/free-solid-svg-icons";
+} from "lucide-react";
+import { useTheme } from "next-themes";
+import { Toaster as Sonner, type ToasterProps } from "sonner";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 
-const Toaster = ({...props}: ToasterProps) => {
-  const {theme = "system"} = useTheme()
+const Toaster = ({ ...props }: ToasterProps) => {
+  const { theme = "system" } = useTheme();
 
   return (
     <Sonner
@@ -28,11 +28,11 @@ const Toaster = ({...props}: ToasterProps) => {
         },
       }}
       icons={{
-        success: <CircleCheckIcon className="size-4"/>,
-        info: <InfoIcon className="size-4"/>,
-        warning: <TriangleAlertIcon className="size-4"/>,
-        error: <FontAwesomeIcon icon={faTriangleExclamation}/>,
-        loading: <Loader2Icon className="size-4 animate-spin"/>,
+        success: <CircleCheckIcon className="size-4" />,
+        info: <InfoIcon className="size-4" />,
+        warning: <TriangleAlertIcon className="size-4" />,
+        error: <FontAwesomeIcon icon={faTriangleExclamation} />,
+        loading: <Loader2Icon className="size-4 animate-spin" />,
       }}
       style={
         {
@@ -44,7 +44,7 @@ const Toaster = ({...props}: ToasterProps) => {
       }
       {...props}
     />
-  )
-}
+  );
+};
 
-export {Toaster}
+export { Toaster };

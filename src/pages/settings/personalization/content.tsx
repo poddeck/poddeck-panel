@@ -1,26 +1,24 @@
-import {MonitorCog, Moon, Sun} from "lucide-react";
-import {useTranslation} from "react-i18next";
-import {useTheme} from "next-themes";
+import { MonitorCog, Moon, Sun } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { useTheme } from "next-themes";
 
-import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
-import {Label} from "@/components/ui/label";
-import {cn} from "@/lib/utils.ts";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
+import { cn } from "@/lib/utils.ts";
 
-function LanguageOption(
-  {
-    id,
-    value,
-    flag,
-    label,
-    selected,
-  }: {
-    id: string;
-    value: string;
-    flag: string;
-    label: string;
-    selected: boolean;
-  }
-) {
+function LanguageOption({
+  id,
+  value,
+  flag,
+  label,
+  selected,
+}: {
+  id: string;
+  value: string;
+  flag: string;
+  label: string;
+  selected: boolean;
+}) {
   return (
     <Label
       htmlFor={id}
@@ -28,33 +26,29 @@ function LanguageOption(
         "cursor-pointer rounded-2xl border p-6 transition-all",
         "flex flex-col items-center justify-center gap-3",
         "hover:border-primary",
-        selected && "border-primary ring-2 ring-primary/30"
+        selected && "border-primary ring-2 ring-primary/30",
       )}
     >
-      <RadioGroupItem value={value} id={id} className="sr-only"/>
+      <RadioGroupItem value={value} id={id} className="sr-only" />
       <span className="text-5xl leading-none">{flag}</span>
-      <span className="text-sm font-medium text-muted-foreground">
-        {label}
-      </span>
+      <span className="text-sm font-medium text-muted-foreground">{label}</span>
     </Label>
   );
 }
 
-
-function ThemeOption(
-  {
-    id,
-    value,
-    icon: Icon,
-    label,
-    selected,
-  }: {
-    id: string;
-    value: string;
-    icon: React.ElementType;
-    label: string;
-    selected: boolean;
-  }) {
+function ThemeOption({
+  id,
+  value,
+  icon: Icon,
+  label,
+  selected,
+}: {
+  id: string;
+  value: string;
+  icon: React.ElementType;
+  label: string;
+  selected: boolean;
+}) {
   return (
     <Label
       htmlFor={id}
@@ -62,21 +56,19 @@ function ThemeOption(
         "cursor-pointer rounded-2xl border p-6 transition-all",
         "flex flex-col items-center justify-center gap-3",
         "hover:border-primary",
-        selected && "border-primary ring-2 ring-primary/30"
+        selected && "border-primary ring-2 ring-primary/30",
       )}
     >
-      <RadioGroupItem value={value} id={id} className="sr-only"/>
-      <Icon className="size-15"/>
-      <span className="text-sm font-medium text-muted-foreground">
-        {label}
-      </span>
+      <RadioGroupItem value={value} id={id} className="sr-only" />
+      <Icon className="size-15" />
+      <span className="text-sm font-medium text-muted-foreground">{label}</span>
     </Label>
   );
 }
 
 export default function PersonalizationPageContent() {
-  const {t, i18n} = useTranslation();
-  const {theme, setTheme} = useTheme();
+  const { t, i18n } = useTranslation();
+  const { theme, setTheme } = useTheme();
 
   const language = i18n.resolvedLanguage || "en_US";
 

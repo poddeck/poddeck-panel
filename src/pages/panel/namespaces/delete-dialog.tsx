@@ -1,28 +1,28 @@
-"use client"
+"use client";
 
-import {Input} from "@/components/ui/input"
-import {useTranslation} from "react-i18next";
+import { Input } from "@/components/ui/input";
+import { useTranslation } from "react-i18next";
 import {
-  DialogClose, DialogContent,
-  DialogDescription, DialogFooter,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {Spinner} from "@/components/ui/spinner.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Spinner } from "@/components/ui/spinner.tsx";
 import * as React from "react";
 import NamespaceService from "@/api/services/namespace-service.ts";
 
-export default function NamespaceDeleteDialog(
-  {
-    name,
-    setOpen,
-  }: {
-    name?: string;
-    setOpen: (open: boolean) => void;
-  }
-) {
-  const {t} = useTranslation();
+export default function NamespaceDeleteDialog({
+  name,
+  setOpen,
+}: {
+  name?: string;
+  setOpen: (open: boolean) => void;
+}) {
+  const { t } = useTranslation();
   const [newNamespaceName, setNewNamespaceName] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const handleEditNamespace = async () => {
@@ -38,9 +38,14 @@ export default function NamespaceDeleteDialog(
     setOpen(false);
   };
   return (
-    <DialogContent className="sm:max-w-[425px]" onClick={(e) => e.stopPropagation()}>
+    <DialogContent
+      className="sm:max-w-[425px]"
+      onClick={(e) => e.stopPropagation()}
+    >
       <DialogHeader>
-        <DialogTitle>{t("panel.page.namespaces.delete.dialog.title")}</DialogTitle>
+        <DialogTitle>
+          {t("panel.page.namespaces.delete.dialog.title")}
+        </DialogTitle>
         <DialogDescription>
           {t("panel.page.namespaces.delete.dialog.description")}
         </DialogDescription>
@@ -65,10 +70,15 @@ export default function NamespaceDeleteDialog(
       </div>
       <DialogFooter>
         <DialogClose asChild>
-          <Button
-            variant="outline">{t("panel.page.namespaces.delete.dialog.cancel")}</Button>
+          <Button variant="outline">
+            {t("panel.page.namespaces.delete.dialog.cancel")}
+          </Button>
         </DialogClose>
-        <Button variant="destructive" onClick={handleEditNamespace} disabled={loading || newNamespaceName !== name}>
+        <Button
+          variant="destructive"
+          onClick={handleEditNamespace}
+          disabled={loading || newNamespaceName !== name}
+        >
           {t("panel.page.namespaces.delete.dialog.submit")}
           {loading && <Spinner className="ml-2"></Spinner>}
         </Button>

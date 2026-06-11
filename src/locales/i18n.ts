@@ -1,6 +1,6 @@
 import i18n from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
-import {initReactI18next} from "react-i18next";
+import { initReactI18next } from "react-i18next";
 import en_US from "./lang/en_US";
 import de_DE from "./lang/de_DE";
 
@@ -18,9 +18,9 @@ i18n
       escapeValue: false,
     },
     resources: {
-      en_US: {translation: en_US},
-      de_DE: {translation: de_DE},
+      en_US: { translation: en_US },
+      de_DE: { translation: de_DE },
     },
   });
 
-export const {t} = i18n;
+export const { t } = i18n;

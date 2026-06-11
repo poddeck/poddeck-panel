@@ -1,7 +1,9 @@
-import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
-import {useSearchParams} from "react-router-dom";
-import {useEffect, useState} from "react";
-import cronJobService, {type CronJob} from "@/api/services/cron-job-service.ts";
+import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
+import { useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import cronJobService, {
+  type CronJob,
+} from "@/api/services/cron-job-service.ts";
 
 const cronJobCache: Record<string, CronJob> = {};
 
@@ -19,7 +21,10 @@ export default function useCronJob() {
       if (cronJobCache[cacheKey]) {
         setCronJob(cronJobCache[cacheKey]);
       }
-      const response = await cronJobService.find({ namespace: queryNamespace, cron_job: queryCronJob });
+      const response = await cronJobService.find({
+        namespace: queryNamespace,
+        cron_job: queryCronJob,
+      });
       if (response.success && isMounted) {
         cronJobCache[cacheKey] = response.cron_job;
         setCronJob(response.cron_job);
@@ -28,7 +33,10 @@ export default function useCronJob() {
 
     loadCronJob();
     const interval = window.setInterval(loadCronJob, POLL_INTERVAL_MS);
-    return () => { isMounted = false; clearInterval(interval); };
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, [searchParams]);
 
   return cronJob;

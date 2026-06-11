@@ -1,28 +1,28 @@
-import PanelPage from "@/layouts/panel"
-import {useEffect, useMemo, useState} from "react"
-import appService, {type App} from "@/api/services/app-service.ts"
+import PanelPage from "@/layouts/panel";
+import { useEffect, useMemo, useState } from "react";
+import appService, { type App } from "@/api/services/app-service.ts";
 import {
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle
-} from '@/components/ui/card'
-import {Button} from '@/components/ui/button'
-import {Badge} from '@/components/ui/badge'
-import {Input} from '@/components/ui/input'
-import {Label} from '@/components/ui/label'
-import {Checkbox} from '@/components/ui/checkbox'
-import {ScrollArea} from '@/components/ui/scroll-area'
-import {Separator} from '@/components/ui/separator'
-import {Skeleton} from '@/components/ui/skeleton'
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
-  PaginationItem
-} from '@/components/ui/pagination'
+  PaginationItem,
+} from "@/components/ui/pagination";
 import {
   CheckCircle2,
   ChevronLeft,
@@ -31,11 +31,11 @@ import {
   Funnel,
   Package,
   Search,
-  Settings
-} from 'lucide-react'
-import {usePagination} from '@/hooks/use-pagination'
-import {AppInstallDialog} from "@/pages/panel/apps/install-dialog.tsx";
-import {useTranslation} from "react-i18next";
+  Settings,
+} from "lucide-react";
+import { usePagination } from "@/hooks/use-pagination";
+import { AppInstallDialog } from "@/pages/panel/apps/install-dialog.tsx";
+import { useTranslation } from "react-i18next";
 
 const FilterSkeleton = () => (
   <Card className="h-full">
@@ -51,7 +51,7 @@ const FilterSkeleton = () => (
       <div className="space-y-2 h-32">
         <Skeleton className="h-4 w-32" />
         <div className="space-y-2">
-          {[1, 2, 3].map(i => (
+          {[1, 2, 3].map((i) => (
             <div key={i} className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Skeleton className="h-4 w-4" />
@@ -66,7 +66,7 @@ const FilterSkeleton = () => (
       <div className="space-y-2 h-64">
         <Skeleton className="h-4 w-32" />
         <div className="space-y-2">
-          {[1, 2, 3, 4, 5].map(i => (
+          {[1, 2, 3, 4, 5].map((i) => (
             <div key={i} className="flex items-center gap-2">
               <Skeleton className="h-4 w-4" />
               <Skeleton className="h-4 w-20" />
@@ -85,137 +85,147 @@ const FilterSkeleton = () => (
       </div>
     </CardContent>
   </Card>
-)
+);
 
 export default function AppsPage() {
   const { t } = useTranslation();
-  const [apps, setApps] = useState<App[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage] = useState(9)
+  const [apps, setApps] = useState<App[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(9);
 
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedRepositories, setSelectedRepositories] = useState<string[]>([])
-  const [selectedKeywords, setSelectedKeywords] = useState<string[]>([])
-  const [showInstalledOnly, setShowInstalledOnly] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedRepositories, setSelectedRepositories] = useState<string[]>(
+    [],
+  );
+  const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
+  const [showInstalledOnly, setShowInstalledOnly] = useState(false);
 
-  const [installDialogOpen, setInstallDialogOpen] = useState(false)
-  const [selectedApp, setSelectedApp] = useState<App | null>(null)
+  const [installDialogOpen, setInstallDialogOpen] = useState(false);
+  const [selectedApp, setSelectedApp] = useState<App | null>(null);
 
   useEffect(() => {
-    loadApps()
-  }, [])
+    loadApps();
+  }, []);
 
   async function loadApps() {
     try {
-      const response = await appService.list()
+      const response = await appService.list();
       if (response.success != false) {
-        setApps(response.apps)
+        setApps(response.apps);
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
   const { repositories, keywords } = useMemo(() => {
-    const repoSet = new Set<string>()
-    const keywordSet = new Set<string>()
+    const repoSet = new Set<string>();
+    const keywordSet = new Set<string>();
 
-    apps.forEach(app => {
-      repoSet.add(app.repository)
-      app.keywords.forEach(kw => keywordSet.add(kw))
-    })
+    apps.forEach((app) => {
+      repoSet.add(app.repository);
+      app.keywords.forEach((kw) => keywordSet.add(kw));
+    });
 
     return {
       repositories: Array.from(repoSet).sort(),
-      keywords: Array.from(keywordSet).sort()
-    }
-  }, [apps])
+      keywords: Array.from(keywordSet).sort(),
+    };
+  }, [apps]);
 
   const { filteredApps, totalPages } = useMemo(() => {
-    const filtered = apps.filter(app => {
+    const filtered = apps.filter((app) => {
       if (searchQuery) {
-        const query = searchQuery.toLowerCase()
+        const query = searchQuery.toLowerCase();
         const matchesSearch =
           app.name.toLowerCase().includes(query) ||
-          app.description.toLowerCase().includes(query)
-        if (!matchesSearch) return false
+          app.description.toLowerCase().includes(query);
+        if (!matchesSearch) return false;
       }
 
       if (selectedRepositories.length > 0) {
-        if (!selectedRepositories.includes(app.repository)) return false
+        if (!selectedRepositories.includes(app.repository)) return false;
       }
 
       if (selectedKeywords.length > 0) {
-        const hasKeyword = selectedKeywords.some(kw => app.keywords.includes(kw))
-        if (!hasKeyword) return false
+        const hasKeyword = selectedKeywords.some((kw) =>
+          app.keywords.includes(kw),
+        );
+        if (!hasKeyword) return false;
       }
 
-      if (showInstalledOnly && !app.installed) return false
+      if (showInstalledOnly && !app.installed) return false;
 
-      return true
-    })
+      return true;
+    });
 
-    const total = Math.ceil(filtered.length / itemsPerPage)
+    const total = Math.ceil(filtered.length / itemsPerPage);
 
     return {
       filteredApps: filtered.slice(
         (currentPage - 1) * itemsPerPage,
-        currentPage * itemsPerPage
+        currentPage * itemsPerPage,
       ),
-      totalPages: total
-    }
-  }, [apps, searchQuery, selectedRepositories, selectedKeywords, showInstalledOnly, currentPage, itemsPerPage])
+      totalPages: total,
+    };
+  }, [
+    apps,
+    searchQuery,
+    selectedRepositories,
+    selectedKeywords,
+    showInstalledOnly,
+    currentPage,
+    itemsPerPage,
+  ]);
 
   const { pages, showLeftEllipsis, showRightEllipsis } = usePagination({
     currentPage,
     totalPages,
-    paginationItemsToDisplay: 5
-  })
+    paginationItemsToDisplay: 5,
+  });
 
-  const filterKey = `${searchQuery}|${selectedRepositories.join(",")}|${selectedKeywords.join(",")}|${showInstalledOnly}|${itemsPerPage}`
-  const [lastFilterKey, setLastFilterKey] = useState(filterKey)
+  const filterKey = `${searchQuery}|${selectedRepositories.join(",")}|${selectedKeywords.join(",")}|${showInstalledOnly}|${itemsPerPage}`;
+  const [lastFilterKey, setLastFilterKey] = useState(filterKey);
   if (lastFilterKey !== filterKey) {
-    setLastFilterKey(filterKey)
-    setCurrentPage(1)
+    setLastFilterKey(filterKey);
+    setCurrentPage(1);
   }
 
   const toggleRepository = (repo: string) => {
-    setSelectedRepositories(prev =>
-      prev.includes(repo)
-        ? prev.filter(r => r !== repo)
-        : [...prev, repo]
-    )
-  }
+    setSelectedRepositories((prev) =>
+      prev.includes(repo) ? prev.filter((r) => r !== repo) : [...prev, repo],
+    );
+  };
 
   const toggleKeyword = (keyword: string) => {
-    setSelectedKeywords(prev =>
+    setSelectedKeywords((prev) =>
       prev.includes(keyword)
-        ? prev.filter(k => k !== keyword)
-        : [...prev, keyword]
-    )
-  }
+        ? prev.filter((k) => k !== keyword)
+        : [...prev, keyword],
+    );
+  };
 
   const clearFilters = () => {
-    setSearchQuery("")
-    setSelectedRepositories([])
-    setSelectedKeywords([])
-    setShowInstalledOnly(false)
-  }
+    setSearchQuery("");
+    setSelectedRepositories([]);
+    setSelectedKeywords([]);
+    setShowInstalledOnly(false);
+  };
 
   const handleAppAction = (app: App) => {
     if (app.installed) {
       // TODO: Navigate to manage page or open manage dialog
-      console.log('Manage app:', app)
+      console.log("Manage app:", app);
     } else {
-      setSelectedApp(app)
-      setInstallDialogOpen(true)
+      setSelectedApp(app);
+      setInstallDialogOpen(true);
     }
-  }
+  };
 
   const handleInstallSuccess = () => {
-    loadApps()
-  }
+    loadApps();
+  };
 
   const AppCardSkeleton = () => (
     <Card className="flex flex-col">
@@ -245,7 +255,7 @@ export default function AppsPage() {
         <Skeleton className="h-9 w-28" />
       </CardFooter>
     </Card>
-  )
+  );
 
   return (
     <PanelPage title="panel.page.apps.title" layout={false}>
@@ -259,9 +269,12 @@ export default function AppsPage() {
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-lg flex items-center gap-2">
-                      <Funnel size={20}/> {t("panel.page.apps.filter.title")}
+                      <Funnel size={20} /> {t("panel.page.apps.filter.title")}
                     </CardTitle>
-                    {(searchQuery || selectedRepositories.length > 0 || selectedKeywords.length > 0 || showInstalledOnly) && (
+                    {(searchQuery ||
+                      selectedRepositories.length > 0 ||
+                      selectedKeywords.length > 0 ||
+                      showInstalledOnly) && (
                       <Button
                         variant="ghost"
                         size="sm"
@@ -275,12 +288,16 @@ export default function AppsPage() {
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="space-y-2">
-                    <Label htmlFor="search">{t("panel.page.apps.filter.search")}</Label>
+                    <Label htmlFor="search">
+                      {t("panel.page.apps.filter.search")}
+                    </Label>
                     <div className="relative">
                       <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
                       <Input
                         id="search"
-                        placeholder={t("panel.page.apps.filter.search.placeholder")}
+                        placeholder={t(
+                          "panel.page.apps.filter.search.placeholder",
+                        )}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="pl-8"
@@ -292,20 +309,30 @@ export default function AppsPage() {
 
                   <div className="space-y-2">
                     <Label className="text-sm font-medium">
-                      {t("panel.page.apps.filter.repositories")} ({repositories.length})
+                      {t("panel.page.apps.filter.repositories")} (
+                      {repositories.length})
                     </Label>
                     <div className="relative">
                       <ScrollArea className="h-32">
                         <div className="space-y-2 pr-4">
-                          {repositories.map(repo => {
-                            const count = apps.filter(app => app.repository === repo).length
+                          {repositories.map((repo) => {
+                            const count = apps.filter(
+                              (app) => app.repository === repo,
+                            ).length;
                             return (
-                              <div key={repo} className="flex items-center justify-between space-x-2">
+                              <div
+                                key={repo}
+                                className="flex items-center justify-between space-x-2"
+                              >
                                 <div className="flex items-center space-x-2 flex-1 min-w-0">
                                   <Checkbox
                                     id={`repo-${repo}`}
-                                    checked={selectedRepositories.includes(repo)}
-                                    onCheckedChange={() => toggleRepository(repo)}
+                                    checked={selectedRepositories.includes(
+                                      repo,
+                                    )}
+                                    onCheckedChange={() =>
+                                      toggleRepository(repo)
+                                    }
                                   />
                                   <Label
                                     htmlFor={`repo-${repo}`}
@@ -315,11 +342,14 @@ export default function AppsPage() {
                                     {repo}
                                   </Label>
                                 </div>
-                                <Badge variant="secondary" className="text-xs flex-shrink-0">
+                                <Badge
+                                  variant="secondary"
+                                  className="text-xs flex-shrink-0"
+                                >
                                   {count}
                                 </Badge>
                               </div>
-                            )
+                            );
                           })}
                         </div>
                       </ScrollArea>
@@ -336,8 +366,11 @@ export default function AppsPage() {
                     <div className="relative">
                       <ScrollArea className="h-64">
                         <div className="space-y-2 pr-4">
-                          {keywords.map(keyword => (
-                            <div key={keyword} className="flex items-center space-x-2">
+                          {keywords.map((keyword) => (
+                            <div
+                              key={keyword}
+                              className="flex items-center space-x-2"
+                            >
                               <Checkbox
                                 id={`kw-${keyword}`}
                                 checked={selectedKeywords.includes(keyword)}
@@ -363,7 +396,9 @@ export default function AppsPage() {
                     <Checkbox
                       id="installed"
                       checked={showInstalledOnly}
-                      onCheckedChange={(checked) => setShowInstalledOnly(checked as boolean)}
+                      onCheckedChange={(checked) =>
+                        setShowInstalledOnly(checked as boolean)
+                      }
                     />
                     <Label
                       htmlFor="installed"
@@ -393,7 +428,9 @@ export default function AppsPage() {
             ) : filteredApps.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-64 space-y-2">
                 <Package className="h-12 w-12 text-muted-foreground" />
-                <p className="text-muted-foreground">{t("panel.page.apps.empty")}</p>
+                <p className="text-muted-foreground">
+                  {t("panel.page.apps.empty")}
+                </p>
                 <Button variant="link" onClick={clearFilters}>
                   {t("panel.page.apps.filter.reset")}
                 </Button>
@@ -401,18 +438,23 @@ export default function AppsPage() {
             ) : (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {filteredApps.map(app => (
-                    <Card key={`${app.repository}-${app.name}`} className="flex flex-col">
+                  {filteredApps.map((app) => (
+                    <Card
+                      key={`${app.repository}-${app.name}`}
+                      className="flex flex-col"
+                    >
                       <CardHeader>
                         <div className="flex items-center gap-3">
-                          <Package size={50}/>
+                          <Package size={50} />
                           <div>
                             <div className="flex items-start justify-between gap-2">
                               <CardTitle className="text-base line-clamp-1">
                                 <span className="text-muted-foreground">
                                   {app.repository}
                                 </span>
-                                <span className="text-muted-foreground px-2">/</span>
+                                <span className="text-muted-foreground px-2">
+                                  /
+                                </span>
                                 {app.name}
                               </CardTitle>
                               {app.installed && (
@@ -420,8 +462,12 @@ export default function AppsPage() {
                               )}
                             </div>
                             <CardDescription className="flex flex-wrap gap-1 pt-1">
-                              {app.keywords.slice(0, 3).map(kw => (
-                                <Badge key={kw} variant="outline" className="text-xs">
+                              {app.keywords.slice(0, 3).map((kw) => (
+                                <Badge
+                                  key={kw}
+                                  variant="outline"
+                                  className="text-xs"
+                                >
                                   {kw}
                                 </Badge>
                               ))}
@@ -445,7 +491,7 @@ export default function AppsPage() {
                             {t("panel.page.apps.version")}
                           </span>
                           <span className="text-sm">
-                            {app.versions[0]?.chart_version || 'N/A'}
+                            {app.versions[0]?.chart_version || "N/A"}
                           </span>
                         </div>
                         <Button
@@ -478,7 +524,9 @@ export default function AppsPage() {
                           <Button
                             size="icon"
                             variant="outline"
-                            onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                            onClick={() =>
+                              setCurrentPage((p) => Math.max(1, p - 1))
+                            }
                             disabled={currentPage === 1}
                           >
                             <ChevronLeft className="h-4 w-4" />
@@ -492,18 +540,18 @@ export default function AppsPage() {
                         )}
 
                         {pages.map((page: number) => {
-                          const active = page === currentPage
+                          const active = page === currentPage;
                           return (
                             <PaginationItem key={page}>
                               <Button
                                 size="icon"
-                                variant={active ? 'outline' : 'ghost'}
+                                variant={active ? "outline" : "ghost"}
                                 onClick={() => setCurrentPage(page)}
                               >
                                 {page}
                               </Button>
                             </PaginationItem>
-                          )
+                          );
                         })}
 
                         {showRightEllipsis && (
@@ -516,7 +564,9 @@ export default function AppsPage() {
                           <Button
                             size="icon"
                             variant="outline"
-                            onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                            onClick={() =>
+                              setCurrentPage((p) => Math.min(totalPages, p + 1))
+                            }
                             disabled={currentPage === totalPages}
                           >
                             <ChevronRight className="h-4 w-4" />
@@ -539,5 +589,5 @@ export default function AppsPage() {
         onInstallSuccess={handleInstallSuccess}
       />
     </PanelPage>
-  )
+  );
 }

@@ -1,5 +1,5 @@
-import type {CSSProperties} from "react";
-import {isRouteErrorResponse, useRouteError} from "react-router";
+import type { CSSProperties } from "react";
+import { isRouteErrorResponse, useRouteError } from "react-router";
 
 export default function ErrorBoundary() {
   const error = useRouteError();
@@ -12,7 +12,7 @@ export default function ErrorBoundary() {
 }
 
 function parseStackTrace(stack?: string) {
-  if (!stack) return {filePath: null, functionName: null};
+  if (!stack) return { filePath: null, functionName: null };
 
   const filePathMatch = stack.match(/\/src\/[^?]+/);
   const functionNameMatch = stack.match(/at (\S+)/);
@@ -36,7 +36,7 @@ function renderErrorMessage(error: unknown) {
   }
 
   if (error instanceof Error) {
-    const {filePath, functionName} = parseStackTrace(error.stack);
+    const { filePath, functionName } = parseStackTrace(error.stack);
 
     return (
       <>

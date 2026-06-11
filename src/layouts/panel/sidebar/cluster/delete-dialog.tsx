@@ -1,23 +1,28 @@
-"use client"
+"use client";
 
-import {Input} from "@/components/ui/input"
-import {useTranslation} from "react-i18next";
+import { Input } from "@/components/ui/input";
+import { useTranslation } from "react-i18next";
 import {
-  DialogClose, DialogContent,
-  DialogDescription, DialogFooter,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {Spinner} from "@/components/ui/spinner.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Spinner } from "@/components/ui/spinner.tsx";
 import * as React from "react";
 import ClusterService from "@/api/services/cluster-service.ts";
 
-export default function ClusterDeleteDialog({id, name}: {
+export default function ClusterDeleteDialog({
+  id,
+  name,
+}: {
   id?: string;
   name?: string;
 }) {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [newClusterName, setNewClusterName] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const handleEditCluster = async () => {
@@ -33,7 +38,9 @@ export default function ClusterDeleteDialog({id, name}: {
   return (
     <DialogContent className="sm:max-w-[425px]">
       <DialogHeader>
-        <DialogTitle>{t("panel.sidebar.cluster.delete.dialog.title")}</DialogTitle>
+        <DialogTitle>
+          {t("panel.sidebar.cluster.delete.dialog.title")}
+        </DialogTitle>
         <DialogDescription>
           {t("panel.sidebar.cluster.delete.dialog.description")}
         </DialogDescription>
@@ -58,10 +65,15 @@ export default function ClusterDeleteDialog({id, name}: {
       </div>
       <DialogFooter>
         <DialogClose asChild>
-          <Button
-            variant="outline">{t("panel.sidebar.cluster.delete.dialog.cancel")}</Button>
+          <Button variant="outline">
+            {t("panel.sidebar.cluster.delete.dialog.cancel")}
+          </Button>
         </DialogClose>
-        <Button variant="destructive" onClick={handleEditCluster} disabled={loading || newClusterName !== name}>
+        <Button
+          variant="destructive"
+          onClick={handleEditCluster}
+          disabled={loading || newClusterName !== name}
+        >
           {t("panel.sidebar.cluster.delete.dialog.submit")}
           {loading && <Spinner className="ml-2"></Spinner>}
         </Button>

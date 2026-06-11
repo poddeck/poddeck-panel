@@ -1,34 +1,32 @@
-"use client"
+"use client";
 
-import {Input} from "@/components/ui/input"
-import {useTranslation} from "react-i18next";
+import { Input } from "@/components/ui/input";
+import { useTranslation } from "react-i18next";
 import {
   DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {Spinner} from "@/components/ui/spinner.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Spinner } from "@/components/ui/spinner.tsx";
 import * as React from "react";
 import ReplicaSetService from "@/api/services/replica-set-service";
 
-export default function ReplicaSetDeleteDialog(
-  {
-    namespace,
-    replicaSet,
-    setOpen,
-    onDelete,
-  }: {
-    namespace?: string;
-    replicaSet?: string;
-    setOpen: (open: boolean) => void;
-    onDelete?: () => void;
-  }
-) {
-  const {t} = useTranslation();
+export default function ReplicaSetDeleteDialog({
+  namespace,
+  replicaSet,
+  setOpen,
+  onDelete,
+}: {
+  namespace?: string;
+  replicaSet?: string;
+  setOpen: (open: boolean) => void;
+  onDelete?: () => void;
+}) {
+  const { t } = useTranslation();
   const [newReplicaSetName, setNewReplicaSetName] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const handleDeleteReplicaSet = async () => {
@@ -38,7 +36,7 @@ export default function ReplicaSetDeleteDialog(
     setLoading(true);
     await ReplicaSetService.remove({
       namespace: namespace ? namespace : "",
-      replica_set: replicaSet ? replicaSet : ""
+      replica_set: replicaSet ? replicaSet : "",
     });
     setLoading(false);
     setNewReplicaSetName("");
@@ -46,10 +44,15 @@ export default function ReplicaSetDeleteDialog(
     onDelete?.();
   };
   return (
-    <DialogContent className="sm:max-w-[425px]" onClick={(e) => e.stopPropagation()}
-                   onMouseDown={(e) => e.stopPropagation()}>
+    <DialogContent
+      className="sm:max-w-[425px]"
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
       <DialogHeader>
-        <DialogTitle>{t("panel.page.replica-sets.delete.dialog.title")}</DialogTitle>
+        <DialogTitle>
+          {t("panel.page.replica-sets.delete.dialog.title")}
+        </DialogTitle>
         <DialogDescription>
           {t("panel.page.replica-sets.delete.dialog.description")}
         </DialogDescription>
@@ -74,10 +77,15 @@ export default function ReplicaSetDeleteDialog(
       </div>
       <DialogFooter>
         <DialogClose asChild>
-          <Button
-            variant="outline">{t("panel.page.replica-sets.delete.dialog.cancel")}</Button>
+          <Button variant="outline">
+            {t("panel.page.replica-sets.delete.dialog.cancel")}
+          </Button>
         </DialogClose>
-        <Button variant="destructive" onClick={handleDeleteReplicaSet} disabled={loading || newReplicaSetName !== replicaSet}>
+        <Button
+          variant="destructive"
+          onClick={handleDeleteReplicaSet}
+          disabled={loading || newReplicaSetName !== replicaSet}
+        >
           {t("panel.page.replica-sets.delete.dialog.submit")}
           {loading && <Spinner className="ml-2"></Spinner>}
         </Button>

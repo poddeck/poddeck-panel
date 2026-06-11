@@ -1,24 +1,27 @@
-import {Button} from "@/components/ui/button.tsx";
-import {MoreHorizontal, RefreshCcw, Scale, Trash2} from "lucide-react";
+import { Button } from "@/components/ui/button.tsx";
+import { MoreHorizontal, RefreshCcw, Scale, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu.tsx";
-import {type Deployment} from "@/api/services/deployment-service"
-import {t} from "@/locales/i18n";
-import DeploymentDeleteDialog
-  from "@/pages/panel/deployments/delete-dialog.tsx";
+import { type Deployment } from "@/api/services/deployment-service";
+import { t } from "@/locales/i18n";
+import DeploymentDeleteDialog from "@/pages/panel/deployments/delete-dialog.tsx";
 import React from "react";
-import {Dialog} from "@radix-ui/react-dialog";
-import {Drawer} from "@/components/ui/drawer.tsx";
-import {DeploymentScaleDrawer} from "@/pages/panel/deployment/scale.tsx";
+import { Dialog } from "@radix-ui/react-dialog";
+import { Drawer } from "@/components/ui/drawer.tsx";
+import { DeploymentScaleDrawer } from "@/pages/panel/deployment/scale.tsx";
 import DeploymentService from "@/api/services/deployment-service.ts";
-import {toast} from "sonner";
+import { toast } from "sonner";
 
-export function DeploymentsActionDropdown({deployment}: { deployment: Deployment }) {
+export function DeploymentsActionDropdown({
+  deployment,
+}: {
+  deployment: Deployment;
+}) {
   const [deleteOpen, setDeleteOpen] = React.useState(false);
   const [scaleOpen, setScaleOpen] = React.useState(false);
 
@@ -32,7 +35,7 @@ export function DeploymentsActionDropdown({deployment}: { deployment: Deployment
               size="sm"
               className="h-fit hover:bg-black/10 dark:hover:bg-white/10 py-2 -my-2 rounded-full"
             >
-              <MoreHorizontal/>
+              <MoreHorizontal />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
@@ -43,7 +46,7 @@ export function DeploymentsActionDropdown({deployment}: { deployment: Deployment
               }}
             >
               <div className="flex items-center gap-2">
-                <Scale size={16}/>
+                <Scale size={16} />
                 {t("panel.page.deployments.action.scale")}
               </div>
             </DropdownMenuItem>
@@ -53,16 +56,19 @@ export function DeploymentsActionDropdown({deployment}: { deployment: Deployment
                   namespace: deployment ? deployment.namespace : "",
                   deployment: deployment ? deployment.name : "",
                 });
-                toast.success(t("panel.page.deployments.action.restart.successful"), {
-                  position: "top-right",
-                });
+                toast.success(
+                  t("panel.page.deployments.action.restart.successful"),
+                  {
+                    position: "top-right",
+                  },
+                );
               }}
               className="text-amber-600 flex items-center gap-2"
             >
-              <RefreshCcw className="text-amber-600" size={16}/>
+              <RefreshCcw className="text-amber-600" size={16} />
               {t("panel.page.deployments.action.restart")}
             </DropdownMenuItem>
-            <DropdownMenuSeparator/>
+            <DropdownMenuSeparator />
             <DropdownMenuItem
               variant="destructive"
               onClick={(e) => {
@@ -71,13 +77,17 @@ export function DeploymentsActionDropdown({deployment}: { deployment: Deployment
               }}
             >
               <div className="text-rose-600 flex items-center gap-2">
-                <Trash2 className="text-rose-600" size={16}/>
+                <Trash2 className="text-rose-600" size={16} />
                 {t("panel.page.deployments.action.delete")}
               </div>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-        <DeploymentScaleDrawer deployment={deployment} open={scaleOpen} setOpen={setScaleOpen}/>
+        <DeploymentScaleDrawer
+          deployment={deployment}
+          open={scaleOpen}
+          setOpen={setScaleOpen}
+        />
       </Drawer>
       <Dialog open={deleteOpen} onOpenChange={setDeleteOpen}>
         <DeploymentDeleteDialog

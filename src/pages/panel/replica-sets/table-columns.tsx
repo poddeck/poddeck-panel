@@ -1,13 +1,13 @@
-import {type ColumnDef} from "@tanstack/react-table";
-import {type ReplicaSet} from "@/api/services/replica-set-service"
-import {ReplicaSetsActionDropdown} from "./table-components.tsx";
-import {Age} from "@/components/age/age.tsx";
+import { type ColumnDef } from "@tanstack/react-table";
+import { type ReplicaSet } from "@/api/services/replica-set-service";
+import { ReplicaSetsActionDropdown } from "./table-components.tsx";
+import { Age } from "@/components/age/age.tsx";
 
 export const columns: ColumnDef<ReplicaSet, unknown>[] = [
   {
     header: "panel.page.replica-sets.column.namespace",
     accessorKey: "namespace",
-    filterFn: 'equals',
+    filterFn: "equals",
   },
   {
     header: "panel.page.replica-sets.column.name",
@@ -28,8 +28,8 @@ export const columns: ColumnDef<ReplicaSet, unknown>[] = [
   {
     header: "panel.page.replica-sets.column.age",
     accessorKey: "age",
-    cell: ({row}) => {
-      return <Age age={row.original.age}/>
+    cell: ({ row }) => {
+      return <Age age={row.original.age} />;
     },
   },
   {
@@ -37,8 +37,8 @@ export const columns: ColumnDef<ReplicaSet, unknown>[] = [
     header: "",
     maxSize: 60,
     enableHiding: false,
-    cell: ({row}) => {
-      return <ReplicaSetsActionDropdown replicaSet={row.original}/>
+    cell: ({ row }) => {
+      return <ReplicaSetsActionDropdown replicaSet={row.original} />;
     },
   },
 ];

@@ -1,5 +1,5 @@
-import createGlobe from 'cobe';
-import { useEffect, useRef } from 'react';
+import createGlobe from "cobe";
+import { useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
 
 export interface GlobeMarker {
@@ -23,8 +23,9 @@ export function Globe({ className, markers }: GlobeProps) {
     let width = 0;
     let frame = 0;
 
-    const onResize = () => canvasRef.current && (width = canvasRef.current.offsetWidth);
-    window.addEventListener('resize', onResize);
+    const onResize = () =>
+      canvasRef.current && (width = canvasRef.current.offsetWidth);
+    window.addEventListener("resize", onResize);
     onResize();
 
     if (!canvasRef.current) return;
@@ -61,7 +62,7 @@ export function Globe({ className, markers }: GlobeProps) {
     return () => {
       cancelAnimationFrame(frame);
       globe.destroy();
-      window.removeEventListener('resize', onResize);
+      window.removeEventListener("resize", onResize);
     };
   }, [theme, markers]);
 
@@ -70,18 +71,18 @@ export function Globe({ className, markers }: GlobeProps) {
       <canvas
         ref={canvasRef}
         className="duration-500"
-        style={{ width: 500, maxWidth: '100%', aspectRatio: 1, cursor: 'grab' }}
+        style={{ width: 500, maxWidth: "100%", aspectRatio: 1, cursor: "grab" }}
         onPointerDown={() => {
           pointerInteracting.current = true;
-          canvasRef.current!.style.cursor = 'grabbing';
+          canvasRef.current!.style.cursor = "grabbing";
         }}
         onPointerUp={() => {
           pointerInteracting.current = false;
-          canvasRef.current!.style.cursor = 'grab';
+          canvasRef.current!.style.cursor = "grab";
         }}
         onPointerOut={() => {
           pointerInteracting.current = false;
-          canvasRef.current!.style.cursor = 'grab';
+          canvasRef.current!.style.cursor = "grab";
         }}
         onMouseMove={(e) => {
           if (pointerInteracting.current) {

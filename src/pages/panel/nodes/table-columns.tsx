@@ -1,9 +1,12 @@
-import {type ColumnDef} from "@tanstack/react-table";
-import {Badge} from "@/components/ui/badge";
-import {Cpu, HardDrive, MemoryStick} from "lucide-react";
-import {type Node} from "@/api/services/node-service"
-import {t} from "@/locales/i18n";
-import {NodesActionProgress, NodesActionDropdown} from "./table-components.tsx";
+import { type ColumnDef } from "@tanstack/react-table";
+import { Badge } from "@/components/ui/badge";
+import { Cpu, HardDrive, MemoryStick } from "lucide-react";
+import { type Node } from "@/api/services/node-service";
+import { t } from "@/locales/i18n";
+import {
+  NodesActionProgress,
+  NodesActionDropdown,
+} from "./table-components.tsx";
 
 export const columns: ColumnDef<Node, unknown>[] = [
   {
@@ -13,7 +16,7 @@ export const columns: ColumnDef<Node, unknown>[] = [
   {
     header: "panel.page.nodes.column.cpu",
     accessorKey: "cpu_cores",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       const cores = row.original.cpu_cores;
       const usage = row.original.cpu_ratio;
       return (
@@ -26,7 +29,9 @@ export const columns: ColumnDef<Node, unknown>[] = [
             value={usage}
             unit="%"
           />
-          <span>{cores} {t("panel.page.nodes.cores")}</span>
+          <span>
+            {cores} {t("panel.page.nodes.cores")}
+          </span>
         </div>
       );
     },
@@ -34,7 +39,7 @@ export const columns: ColumnDef<Node, unknown>[] = [
   {
     header: "panel.page.nodes.column.memory",
     accessorKey: "total_memory",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       const memory = row.original.total_memory;
       const usage = row.original.memory_ratio;
       return (
@@ -55,7 +60,7 @@ export const columns: ColumnDef<Node, unknown>[] = [
   {
     header: "panel.page.nodes.column.storage",
     accessorKey: "total_storage",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       const storage = row.original.total_storage;
       const usage = row.original.storage_ratio;
       return (
@@ -82,16 +87,19 @@ export const columns: ColumnDef<Node, unknown>[] = [
     header: "panel.page.nodes.column.status",
     accessorKey: "ready",
     maxSize: 120,
-    cell: ({row}) => {
+    cell: ({ row }) => {
       if (row.original.ready) {
-        return <Badge
-          className="px-4 py-2 -my-2 bg-green-600/10 text-green-600">
-          {t("panel.page.nodes.status.ready")}
-        </Badge>;
+        return (
+          <Badge className="px-4 py-2 -my-2 bg-green-600/10 text-green-600">
+            {t("panel.page.nodes.status.ready")}
+          </Badge>
+        );
       } else {
-        return <Badge className="px-4 py-2 -my-2 bg-rose-600/10 text-rose-600">
-          {t("panel.page.nodes.status.not.ready")}
-        </Badge>;
+        return (
+          <Badge className="px-4 py-2 -my-2 bg-rose-600/10 text-rose-600">
+            {t("panel.page.nodes.status.not.ready")}
+          </Badge>
+        );
       }
     },
   },
@@ -100,8 +108,8 @@ export const columns: ColumnDef<Node, unknown>[] = [
     header: "",
     maxSize: 60,
     enableHiding: false,
-    cell: ({row}) => {
-      return <NodesActionDropdown row={row}/>
+    cell: ({ row }) => {
+      return <NodesActionDropdown row={row} />;
     },
   },
 ];

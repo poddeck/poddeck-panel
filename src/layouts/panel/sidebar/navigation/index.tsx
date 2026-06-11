@@ -1,10 +1,10 @@
-import {ChevronRight, type LucideIcon} from "lucide-react"
+import { ChevronRight, type LucideIcon } from "lucide-react";
 
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+} from "@/components/ui/collapsible";
 import {
   SidebarGroup,
   SidebarMenu,
@@ -13,30 +13,30 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@/components/ui/sidebar"
-import {Badge} from "@/components/ui/badge.tsx";
-import {Link} from "react-router-dom";
-import {useLocation} from "react-use";
-import {cn} from "@/lib/utils.ts";
+} from "@/components/ui/sidebar";
+import { Badge } from "@/components/ui/badge.tsx";
+import { Link } from "react-router-dom";
+import { useLocation } from "react-use";
+import { cn } from "@/lib/utils.ts";
 
 export function SidebarNavigation({
-                                    items,
-                                  }: {
+  items,
+}: {
   items: {
-    title: string
-    url?: string
-    icon?: LucideIcon
-    isActive?: boolean
+    title: string;
+    url?: string;
+    icon?: LucideIcon;
+    isActive?: boolean;
     items: {
-      title: string
-      url: string,
-      icon: LucideIcon,
-      notifications?: number
-      disabled?: boolean
-    }[]
-  }[]
+      title: string;
+      url: string;
+      icon: LucideIcon;
+      notifications?: number;
+      disabled?: boolean;
+    }[];
+  }[];
 }) {
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
   return (
     <SidebarGroup>
       <SidebarMenu>
@@ -51,10 +51,9 @@ export function SidebarNavigation({
               <SidebarMenuItem>
                 <CollapsibleTrigger asChild>
                   <SidebarMenuButton tooltip={item.title}>
-                    {item.icon && <item.icon/>}
+                    {item.icon && <item.icon />}
                     <span>{item.title}</span>
-                    <ChevronRight
-                      className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"/>
+                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                   </SidebarMenuButton>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
@@ -64,13 +63,17 @@ export function SidebarNavigation({
                         <SidebarMenuSubButton
                           asChild={!subItem.disabled}
                           className={cn(
-                            pathname === subItem.url && "bg-accent text-accent-foreground",
-                            subItem.disabled && "opacity-50 pointer-events-none"
+                            pathname === subItem.url &&
+                              "bg-accent text-accent-foreground",
+                            subItem.disabled &&
+                              "opacity-50 pointer-events-none",
                           )}
                         >
                           {subItem.disabled ? (
                             <div className="flex items-center gap-2">
-                              {subItem.icon && <subItem.icon className="size-4" />}
+                              {subItem.icon && (
+                                <subItem.icon className="size-4" />
+                              )}
                               <span>{subItem.title}</span>
                             </div>
                           ) : (
@@ -93,15 +96,22 @@ export function SidebarNavigation({
             </Collapsible>
           ) : (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild tooltip={item.title}
-                                 className={(pathname === item.url) ? "bg-accent text-accent-foreground" : ""}>
+              <SidebarMenuButton
+                asChild
+                tooltip={item.title}
+                className={
+                  pathname === item.url
+                    ? "bg-accent text-accent-foreground"
+                    : ""
+                }
+              >
                 <Link to={item.url!}>
-                  {item.icon && <item.icon/>}
+                  {item.icon && <item.icon />}
                   <span>{item.title}</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
-          )
+          ),
         )}
       </SidebarMenu>
     </SidebarGroup>

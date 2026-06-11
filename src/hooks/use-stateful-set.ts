@@ -1,7 +1,9 @@
-import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
-import {useSearchParams} from "react-router-dom";
-import {useEffect, useState} from "react";
-import statefulSetService, {type StatefulSet} from "@/api/services/stateful-set-service.ts";
+import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
+import { useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import statefulSetService, {
+  type StatefulSet,
+} from "@/api/services/stateful-set-service.ts";
 
 const statefulSetCache: Record<string, StatefulSet> = {};
 
@@ -19,7 +21,10 @@ export default function useStatefulSet() {
       if (statefulSetCache[cacheKey]) {
         setStatefulSet(statefulSetCache[cacheKey]);
       }
-      const response = await statefulSetService.find({ namespace: queryNamespace, stateful_set: queryStatefulSet });
+      const response = await statefulSetService.find({
+        namespace: queryNamespace,
+        stateful_set: queryStatefulSet,
+      });
       if (response.success && isMounted) {
         statefulSetCache[cacheKey] = response.stateful_set;
         setStatefulSet(response.stateful_set);
@@ -28,7 +33,10 @@ export default function useStatefulSet() {
 
     loadStatefulSet();
     const interval = window.setInterval(loadStatefulSet, POLL_INTERVAL_MS);
-    return () => { isMounted = false; clearInterval(interval); };
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, [searchParams]);
 
   return statefulSet;
