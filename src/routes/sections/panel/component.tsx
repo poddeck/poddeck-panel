@@ -1,5 +1,5 @@
 import * as React from "react";
-import {lazy} from "react";
+import { lazy } from "react";
 
 export type PageComponent = React.ComponentType<Record<string, unknown>>;
 
@@ -8,11 +8,14 @@ const Pages = import.meta.glob("/src/pages/**/*.tsx") as Record<
   () => Promise<{ default: PageComponent }>
 >;
 
-const lazyComponentCache = new Map<string, React.LazyExoticComponent<PageComponent>>();
+const lazyComponentCache = new Map<
+  string,
+  React.LazyExoticComponent<PageComponent>
+>();
 
 export const Component = (
   path = "",
-  props?: Record<string, unknown>
+  props?: Record<string, unknown>,
 ): React.ReactNode => {
   if (!path) return null;
 

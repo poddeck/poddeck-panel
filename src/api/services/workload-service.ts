@@ -11,7 +11,7 @@ export type Metric = {
   used_storage: number;
   storage_ratio: number;
   timestamp: number;
-}
+};
 
 export interface WorkloadRequest {
   node: string;
@@ -22,16 +22,17 @@ export interface WorkloadRequest {
 
 export type WorkloadResponse = {
   workload: Metric[];
-}
+};
 
 export const WorkloadApi = {
   Find: "/workload/",
 } as const;
 
-const find = (data: WorkloadRequest) => client.post<WorkloadResponse>({
-  url: WorkloadApi.Find,
-  data
-});
+const find = (data: WorkloadRequest) =>
+  client.post<WorkloadResponse>({
+    url: WorkloadApi.Find,
+    data,
+  });
 
 export default {
   find,

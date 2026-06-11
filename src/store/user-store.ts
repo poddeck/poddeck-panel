@@ -1,12 +1,12 @@
-import {useMemo} from "react";
-import {useMutation} from "@tanstack/react-query";
-import {create} from "zustand";
-import {createJSONStorage, persist} from "zustand/middleware";
-import userService, {type LoginRequest} from "@/api/services/user-service";
-import {cookieStorage} from "@/store/cookie-store.ts";
-import {toast} from "sonner";
-import {useTranslation} from "react-i18next";
-import {useRouter} from "@/routes/hooks";
+import { useMemo } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { create } from "zustand";
+import { createJSONStorage, persist } from "zustand/middleware";
+import userService, { type LoginRequest } from "@/api/services/user-service";
+import { cookieStorage } from "@/store/cookie-store.ts";
+import { toast } from "sonner";
+import { useTranslation } from "react-i18next";
+import { useRouter } from "@/routes/hooks";
 
 const AUTH_COOKIE_EXPIRY = 1;
 const REFRESH_COOKIE_EXPIRY = 30;
@@ -46,10 +46,11 @@ const useAuthStore = create<AuthStore>()(
       authentication_token: undefined,
       information: {},
       actions: {
-        setAuthenticationToken: (token) => set({authentication_token: token}),
-        clearAuthenticationToken: () => set({authentication_token: undefined}),
-        setInformation: (info) => set({information: info}),
-        clearInformation: () => set({information: {}}),
+        setAuthenticationToken: (token) => set({ authentication_token: token }),
+        clearAuthenticationToken: () =>
+          set({ authentication_token: undefined }),
+        setInformation: (info) => set({ information: info }),
+        clearInformation: () => set({ information: {} }),
       },
     }),
     {
@@ -68,14 +69,14 @@ const useRefreshStore = create<RefreshStore>()(
     (set) => ({
       refresh_token: undefined,
       actions: {
-        setRefreshToken: (token) => set({refresh_token: token}),
-        clearRefreshToken: () => set({refresh_token: undefined}),
+        setRefreshToken: (token) => set({ refresh_token: token }),
+        clearRefreshToken: () => set({ refresh_token: undefined }),
       },
     }),
     {
       name: "user-refresh",
       storage: createJSONStorage(() => cookieStorage(REFRESH_COOKIE_EXPIRY)),
-      partialize: (s) => ({refresh_token: s.refresh_token}),
+      partialize: (s) => ({ refresh_token: s.refresh_token }),
     },
   ),
 );
@@ -83,7 +84,7 @@ const useRefreshStore = create<RefreshStore>()(
 export const useUserToken = (): UserToken => {
   const authentication_token = useAuthStore((s) => s.authentication_token);
   const refresh_token = useRefreshStore((s) => s.refresh_token);
-  return {authentication_token, refresh_token};
+  return { authentication_token, refresh_token };
 };
 
 export const useUserInformation = () => useAuthStore((s) => s.information);
@@ -150,7 +151,7 @@ export const useLogin = () => {
   return async (data: LoginRequest) => {
     const response = await loginMutation.mutateAsync(data);
     if (!response.success) {
-      return response
+      return response;
     }
     const { authentication_token, refresh_token, email, name } = response;
 

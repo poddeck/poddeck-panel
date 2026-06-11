@@ -1,28 +1,28 @@
-"use client"
+"use client";
 
-import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
-import {startTransition, useEffect, useRef, useState} from "react";
-import {useTranslation} from "react-i18next";
-import {useVirtualizer} from "@tanstack/react-virtual";
+import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
+import { startTransition, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useVirtualizer } from "@tanstack/react-virtual";
 import {
   Card,
   CardContent,
   CardHeader,
-  CardTitle
+  CardTitle,
 } from "@/components/ui/card.tsx";
 import {
   CheckCircle,
   Newspaper,
   ScrollText,
   Siren,
-  TriangleAlert
+  TriangleAlert,
 } from "lucide-react";
 import NotificationService, {
-  type Notification
+  type Notification,
 } from "@/api/services/notification-service.ts";
-import {Age} from "@/components/age/age.tsx";
+import { Age } from "@/components/age/age.tsx";
 
-const getNotificationIconAndColor = (type: Notification['type']) => {
+const getNotificationIconAndColor = (type: Notification["type"]) => {
   switch (type) {
     case "WARNING":
       return { icon: <TriangleAlert size={16} />, color: "text-amber-500" };
@@ -36,7 +36,7 @@ const getNotificationIconAndColor = (type: Notification['type']) => {
 };
 
 export default function OverviewNewsBox() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -66,7 +66,7 @@ export default function OverviewNewsBox() {
     <Card>
       <CardHeader>
         <CardTitle className="flex gap-2">
-          <Newspaper size={18} className="-translate-y-0.5"/>
+          <Newspaper size={18} className="-translate-y-0.5" />
           {t("panel.page.overview.news.title")}
         </CardTitle>
       </CardHeader>
@@ -81,9 +81,11 @@ export default function OverviewNewsBox() {
                 className="relative w-full"
                 style={{ height: virtualizer.getTotalSize() }}
               >
-                {virtualizer.getVirtualItems().map(virtualItem => {
+                {virtualizer.getVirtualItems().map((virtualItem) => {
                   const notification = notifications[virtualItem.index];
-                  const { icon, color } = getNotificationIconAndColor(notification.type);
+                  const { icon, color } = getNotificationIconAndColor(
+                    notification.type,
+                  );
                   const age = Date.now() - notification.created_at;
 
                   return (
@@ -92,14 +94,18 @@ export default function OverviewNewsBox() {
                       data-index={virtualItem.index}
                       ref={virtualizer.measureElement}
                       className="absolute top-0 left-0 w-full"
-                      style={{ transform: `translateY(${virtualItem.start}px)` }}
+                      style={{
+                        transform: `translateY(${virtualItem.start}px)`,
+                      }}
                     >
                       <div className="flex items-start gap-2 py-1.5">
                         <div className={`mt-0.5 flex-shrink-0 ${color}`}>
                           {icon}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className={`text-sm font-medium truncate ${color}`}>
+                          <p
+                            className={`text-sm font-medium truncate ${color}`}
+                          >
                             {notification.title}
                           </p>
                           <p className="text-xs text-muted-foreground truncate">
@@ -116,7 +122,8 @@ export default function OverviewNewsBox() {
               </div>
             </div>
 
-            <div className="absolute bottom-0 left-0 right-0 h-10 pointer-events-none
+            <div
+              className="absolute bottom-0 left-0 right-0 h-10 pointer-events-none
               bg-gradient-to-t from-card to-transparent"
             />
           </div>

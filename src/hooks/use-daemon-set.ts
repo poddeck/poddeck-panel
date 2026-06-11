@@ -1,7 +1,9 @@
-import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
-import {useSearchParams} from "react-router-dom";
-import {useEffect, useState} from "react";
-import daemonSetService, {type DaemonSet} from "@/api/services/daemon-set-service.ts";
+import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
+import { useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import daemonSetService, {
+  type DaemonSet,
+} from "@/api/services/daemon-set-service.ts";
 
 const daemonSetCache: Record<string, DaemonSet> = {};
 
@@ -19,7 +21,10 @@ export default function useDaemonSet() {
       if (daemonSetCache[cacheKey]) {
         setDaemonSet(daemonSetCache[cacheKey]);
       }
-      const response = await daemonSetService.find({ namespace: queryNamespace, daemon_set: queryDaemonSet });
+      const response = await daemonSetService.find({
+        namespace: queryNamespace,
+        daemon_set: queryDaemonSet,
+      });
       if (response.success && isMounted) {
         daemonSetCache[cacheKey] = response.daemon_set;
         setDaemonSet(response.daemon_set);
@@ -28,7 +33,10 @@ export default function useDaemonSet() {
 
     loadDaemonSet();
     const interval = window.setInterval(loadDaemonSet, POLL_INTERVAL_MS);
-    return () => { isMounted = false; clearInterval(interval); };
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, [searchParams]);
 
   return daemonSet;

@@ -1,17 +1,15 @@
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import AuditService from "@/api/services/audit-service.ts";
-import {Button} from "@/components/ui/button.tsx";
-import {Loader2, Play} from "lucide-react";
+import { Button } from "@/components/ui/button.tsx";
+import { Loader2, Play } from "lucide-react";
 
-export default function AuditRunButton(
-  {
-    isUpdating,
-    onAuditComplete
-  }: {
-    isUpdating: boolean;
-    onAuditComplete: () => void
-  }
-) {
+export default function AuditRunButton({
+  isUpdating,
+  onAuditComplete,
+}: {
+  isUpdating: boolean;
+  onAuditComplete: () => void;
+}) {
   const { t } = useTranslation();
 
   const handleRunAudit = () => {

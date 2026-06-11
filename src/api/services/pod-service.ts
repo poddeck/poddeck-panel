@@ -16,7 +16,7 @@ export type Pod = {
   controlled_by: string;
   containers: Container[];
   events: Event[];
-}
+};
 
 export type Container = {
   name: string;
@@ -24,7 +24,7 @@ export type Container = {
   ready: boolean;
   state: string;
   restarts: number;
-}
+};
 
 export type Event = {
   type: string;
@@ -32,12 +32,12 @@ export type Event = {
   message: string;
   timestamp: number;
   source: string;
-}
+};
 
 export type PodListResponse = {
   pods: Pod[];
   success?: boolean;
-}
+};
 
 export interface PodFindRequest {
   namespace: string;
@@ -47,7 +47,7 @@ export interface PodFindRequest {
 export type PodFindResponse = {
   success: boolean;
   pod: Pod;
-}
+};
 
 export interface PodDeleteRequest {
   namespace: string;
@@ -56,7 +56,7 @@ export interface PodDeleteRequest {
 
 export type PodDeleteResponse = {
   success: boolean;
-}
+};
 
 export interface PodLogRequest {
   namespace: string;
@@ -67,7 +67,7 @@ export interface PodLogRequest {
 export type PodLogResponse = {
   success: boolean;
   logs: string;
-}
+};
 
 export const PodApi = {
   List: "/pods/",
@@ -76,27 +76,29 @@ export const PodApi = {
   Log: "/pod/log/",
 } as const;
 
-const list = () => client.get<PodListResponse>({url: PodApi.List});
-const listCluster = (clusterId: string) => client.get<PodListResponse>(
-  {
+const list = () => client.get<PodListResponse>({ url: PodApi.List });
+const listCluster = (clusterId: string) =>
+  client.get<PodListResponse>({
     url: PodApi.List,
     headers: {
       Cluster: clusterId,
     },
-  }
-);
-const find = (data: PodFindRequest) => client.post<PodFindResponse>({
-  url: PodApi.Find,
-  data
-});
-const remove = (data: PodDeleteRequest) => client.post<PodDeleteResponse>({
-  url: PodApi.Delete,
-  data
-});
-const log = (data: PodLogRequest) => client.post<PodLogResponse>({
-  url: PodApi.Log,
-  data
-});
+  });
+const find = (data: PodFindRequest) =>
+  client.post<PodFindResponse>({
+    url: PodApi.Find,
+    data,
+  });
+const remove = (data: PodDeleteRequest) =>
+  client.post<PodDeleteResponse>({
+    url: PodApi.Delete,
+    data,
+  });
+const log = (data: PodLogRequest) =>
+  client.post<PodLogResponse>({
+    url: PodApi.Log,
+    data,
+  });
 
 export default {
   list,

@@ -1,34 +1,32 @@
-"use client"
+"use client";
 
-import {Input} from "@/components/ui/input"
-import {useTranslation} from "react-i18next";
+import { Input } from "@/components/ui/input";
+import { useTranslation } from "react-i18next";
 import {
   DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {Spinner} from "@/components/ui/spinner.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Spinner } from "@/components/ui/spinner.tsx";
 import * as React from "react";
 import CronJobService from "@/api/services/cron-job-service";
 
-export default function CronJobDeleteDialog(
-  {
-    namespace,
-    cronJob,
-    setOpen,
-    onDelete,
-  }: {
-    namespace?: string;
-    cronJob?: string;
-    setOpen: (open: boolean) => void;
-    onDelete?: () => void;
-  }
-) {
-  const {t} = useTranslation();
+export default function CronJobDeleteDialog({
+  namespace,
+  cronJob,
+  setOpen,
+  onDelete,
+}: {
+  namespace?: string;
+  cronJob?: string;
+  setOpen: (open: boolean) => void;
+  onDelete?: () => void;
+}) {
+  const { t } = useTranslation();
   const [newCronJobName, setNewCronJobName] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const handleDeleteCronJob = async () => {
@@ -38,7 +36,7 @@ export default function CronJobDeleteDialog(
     setLoading(true);
     await CronJobService.remove({
       namespace: namespace ? namespace : "",
-      cron_job: cronJob ? cronJob : ""
+      cron_job: cronJob ? cronJob : "",
     });
     setLoading(false);
     setNewCronJobName("");
@@ -46,10 +44,15 @@ export default function CronJobDeleteDialog(
     onDelete?.();
   };
   return (
-    <DialogContent className="sm:max-w-[425px]" onClick={(e) => e.stopPropagation()}
-                   onMouseDown={(e) => e.stopPropagation()}>
+    <DialogContent
+      className="sm:max-w-[425px]"
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
       <DialogHeader>
-        <DialogTitle>{t("panel.page.cron-jobs.delete.dialog.title")}</DialogTitle>
+        <DialogTitle>
+          {t("panel.page.cron-jobs.delete.dialog.title")}
+        </DialogTitle>
         <DialogDescription>
           {t("panel.page.cron-jobs.delete.dialog.description")}
         </DialogDescription>
@@ -74,10 +77,15 @@ export default function CronJobDeleteDialog(
       </div>
       <DialogFooter>
         <DialogClose asChild>
-          <Button
-            variant="outline">{t("panel.page.cron-jobs.delete.dialog.cancel")}</Button>
+          <Button variant="outline">
+            {t("panel.page.cron-jobs.delete.dialog.cancel")}
+          </Button>
         </DialogClose>
-        <Button variant="destructive" onClick={handleDeleteCronJob} disabled={loading || newCronJobName !== cronJob}>
+        <Button
+          variant="destructive"
+          onClick={handleDeleteCronJob}
+          disabled={loading || newCronJobName !== cronJob}
+        >
           {t("panel.page.cron-jobs.delete.dialog.submit")}
           {loading && <Spinner className="ml-2"></Spinner>}
         </Button>

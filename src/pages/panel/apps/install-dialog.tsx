@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -6,106 +6,106 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog'
+} from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Loader2, AlertCircle, CheckCircle2, Search } from 'lucide-react'
-import appService, { type App } from '@/api/services/app-service'
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Loader2, AlertCircle, CheckCircle2, Search } from "lucide-react";
+import appService, { type App } from "@/api/services/app-service";
 
 interface AppInstallDialogProps {
-  app: App | null
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  onInstallSuccess?: () => void
+  app: App | null;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  onInstallSuccess?: () => void;
 }
 
 export function AppInstallDialog({
-                                   app,
-                                   open,
-                                   onOpenChange,
-                                   onInstallSuccess
-                                 }: AppInstallDialogProps) {
-  const [selectedVersion, setSelectedVersion] = useState('')
-  const [namespace, setNamespace] = useState('default')
-  const [isInstalling, setIsInstalling] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [success, setSuccess] = useState(false)
-  const [versionSearch, setVersionSearch] = useState('')
+  app,
+  open,
+  onOpenChange,
+  onInstallSuccess,
+}: AppInstallDialogProps) {
+  const [selectedVersion, setSelectedVersion] = useState("");
+  const [namespace, setNamespace] = useState("default");
+  const [isInstalling, setIsInstalling] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+  const [versionSearch, setVersionSearch] = useState("");
 
   const handleInstall = async () => {
-    if (!app || !selectedVersion) return
+    if (!app || !selectedVersion) return;
 
-    setIsInstalling(true)
-    setError(null)
-    setSuccess(false)
+    setIsInstalling(true);
+    setError(null);
+    setSuccess(false);
 
     try {
       const response = await appService.install({
         name: app.name,
         chart: `${app.repository}/${app.name}`,
         namespace: namespace,
-        version: selectedVersion
-      })
+        version: selectedVersion,
+      });
 
       if (response.success) {
-        setSuccess(true)
+        setSuccess(true);
         setTimeout(() => {
-          onOpenChange(false)
-          onInstallSuccess?.()
-          resetForm()
-        }, 1500)
+          onOpenChange(false);
+          onInstallSuccess?.();
+          resetForm();
+        }, 1500);
       } else {
-        setError(response.output || 'Installation fehlgeschlagen')
+        setError(response.output || "Installation fehlgeschlagen");
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Ein Fehler ist aufgetreten')
+      setError(
+        err instanceof Error ? err.message : "Ein Fehler ist aufgetreten",
+      );
     } finally {
-      setIsInstalling(false)
+      setIsInstalling(false);
     }
-  }
+  };
 
   const resetForm = () => {
-    setSelectedVersion('')
-    setNamespace('default')
-    setError(null)
-    setSuccess(false)
-    setVersionSearch('')
-  }
+    setSelectedVersion("");
+    setNamespace("default");
+    setError(null);
+    setSuccess(false);
+    setVersionSearch("");
+  };
 
   const handleOpenChange = (open: boolean) => {
     if (!open && !isInstalling) {
-      resetForm()
+      resetForm();
     }
-    onOpenChange(open)
-  }
+    onOpenChange(open);
+  };
 
-  if (!app) return null
+  if (!app) return null;
 
   // Filter versions based on search
   const filteredVersions = app.versions.filter((version) => {
-    const searchLower = versionSearch.toLowerCase()
+    const searchLower = versionSearch.toLowerCase();
     return (
       version.chart_version.toLowerCase().includes(searchLower) ||
       version.app_version?.toLowerCase().includes(searchLower)
-    )
-  })
+    );
+  });
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>
-            {app.name} installieren
-          </DialogTitle>
+          <DialogTitle>{app.name} installieren</DialogTitle>
           <DialogDescription>
             Wähle eine Version und einen Namespace für die Installation.
           </DialogDescription>
@@ -205,10 +205,10 @@ export function AppInstallDialog({
             disabled={!selectedVersion || !namespace || isInstalling || success}
           >
             {isInstalling && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {isInstalling ? 'Installiere...' : 'Installieren'}
+            {isInstalling ? "Installiere..." : "Installieren"}
           </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

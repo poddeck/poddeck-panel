@@ -1,22 +1,22 @@
-'use client'
+"use client";
 
-import {useEffect, useState} from 'react';
-import {type Table} from '@tanstack/react-table';
-import {Button} from '@/components/ui/button';
+import { useEffect, useState } from "react";
+import { type Table } from "@tanstack/react-table";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
-} from '@/components/ui/select';
-import {Filter} from 'lucide-react';
-import {useTranslation} from 'react-i18next';
+  SelectValue,
+} from "@/components/ui/select";
+import { Filter } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export interface DataTableFilterOption {
   column: string;
@@ -27,35 +27,37 @@ interface DataTableFiltersProps<T> {
   table: Table<T>;
   name: string;
   filters: DataTableFilterOption[];
-  defaultFilters?: Record<string, string>
+  defaultFilters?: Record<string, string>;
 }
 
-export function DataTableFilters<T>(
-  {
-    table,
-    name,
-    filters,
-    defaultFilters = {},
-  }: DataTableFiltersProps<T>
-) {
-  const {t} = useTranslation();
+export function DataTableFilters<T>({
+  table,
+  name,
+  filters,
+  defaultFilters = {},
+}: DataTableFiltersProps<T>) {
+  const { t } = useTranslation();
 
   const loadFilters = (): Record<string, string | undefined> => {
-    if (typeof window === 'undefined') return defaultFilters;
+    if (typeof window === "undefined") return defaultFilters;
     try {
       const stored = localStorage.getItem(`table_${name}_filters`);
       const saved = stored ? JSON.parse(stored) : {};
-      return {...defaultFilters, ...saved};
+      return { ...defaultFilters, ...saved };
     } catch {
       return defaultFilters;
     }
   };
 
-  const [selectedValues, setSelectedValues] = useState<Record<string, string | undefined>>(loadFilters);
+  const [selectedValues, setSelectedValues] =
+    useState<Record<string, string | undefined>>(loadFilters);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    localStorage.setItem(`table_${name}_filters`, JSON.stringify(selectedValues));
+    if (typeof window === "undefined") return;
+    localStorage.setItem(
+      `table_${name}_filters`,
+      JSON.stringify(selectedValues),
+    );
   }, [selectedValues, name]);
 
   useEffect(() => {
@@ -75,11 +77,11 @@ export function DataTableFilters<T>(
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon" className="mr-3">
-          <Filter/>
+          <Filter />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="p-2 space-y-2 w-64">
-        {filters.map(filter => {
+        {filters.map((filter) => {
           const column = table.getColumn(filter.column);
           if (!column) {
             return null;
@@ -87,18 +89,22 @@ export function DataTableFilters<T>(
           return (
             <div key={filter.column} className="flex flex-col gap-1">
               <span className="text-sm font-medium">
-                {typeof column.columnDef.header === "string" ?
-                  t(column.columnDef.header) : null}
+                {typeof column.columnDef.header === "string"
+                  ? t(column.columnDef.header)
+                  : null}
               </span>
               <Select
                 value={selectedValues[filter.column]}
                 onValueChange={(val) => {
-                  setSelectedValues(prev => ({ ...prev, [filter.column]: val }));
+                  setSelectedValues((prev) => ({
+                    ...prev,
+                    [filter.column]: val,
+                  }));
                   const column = table.getColumn(filter.column);
                   if (!column) {
                     return;
                   }
-                  if (!val || val === 'EMPTY') {
+                  if (!val || val === "EMPTY") {
                     column.setFilterValue(undefined);
                   } else {
                     column.setFilterValue(val);
@@ -106,15 +112,14 @@ export function DataTableFilters<T>(
                 }}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue placeholder={t('table.filter.placeholder')}/>
+                  <SelectValue placeholder={t("table.filter.placeholder")} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="EMPTY">{t('table.filter.empty')}</SelectItem>
-                  {filter.options.map(option => (
-                    <SelectItem
-                      key={option}
-                      value={option}
-                    >
+                  <SelectItem value="EMPTY">
+                    {t("table.filter.empty")}
+                  </SelectItem>
+                  {filter.options.map((option) => (
+                    <SelectItem key={option} value={option}>
                       {option}
                     </SelectItem>
                   ))}

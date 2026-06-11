@@ -19,7 +19,7 @@ export type Service = {
   endpoints: ServiceEndpoint[];
   events: Event[];
   raw: string;
-}
+};
 
 export type ServicePort = {
   name: string;
@@ -27,12 +27,12 @@ export type ServicePort = {
   protocol: string;
   target_port: string;
   node_port: number;
-}
+};
 
 export type ServiceEndpoint = {
   ip: string;
   port: number;
-}
+};
 
 export type Event = {
   type: string;
@@ -40,12 +40,12 @@ export type Event = {
   message: string;
   timestamp: number;
   source: string;
-}
+};
 
 export type ServiceListResponse = {
   services: Service[];
   success?: boolean;
-}
+};
 
 export interface ServiceFindRequest {
   namespace: string;
@@ -55,7 +55,7 @@ export interface ServiceFindRequest {
 export type ServiceFindResponse = {
   success: boolean;
   service: Service;
-}
+};
 
 export interface ServiceCreateRequest {
   raw: string;
@@ -65,7 +65,7 @@ export type ServiceCreateResponse = {
   success: boolean;
   namespace: string;
   service: string;
-}
+};
 
 export interface ServiceDeleteRequest {
   namespace: string;
@@ -74,41 +74,43 @@ export interface ServiceDeleteRequest {
 
 export type ServiceDeleteResponse = {
   success: boolean;
-}
+};
 
 export const ServiceApi = {
   List: "/services/",
   Find: "/service/find/",
   Create: "/service/create/",
-  Delete: "/service/delete/"
+  Delete: "/service/delete/",
 } as const;
 
-const list = () => client.get<ServiceListResponse>({url: ServiceApi.List});
-const listCluster = (clusterId: string) => client.get<ServiceListResponse>(
-  {
+const list = () => client.get<ServiceListResponse>({ url: ServiceApi.List });
+const listCluster = (clusterId: string) =>
+  client.get<ServiceListResponse>({
     url: ServiceApi.List,
     headers: {
       Cluster: clusterId,
     },
-  }
-);
-const find = (data: ServiceFindRequest) => client.post<ServiceFindResponse>({
-  url: ServiceApi.Find,
-  data
-});
-const create = (data: ServiceCreateRequest) => client.post<ServiceCreateResponse>({
-  url: ServiceApi.Create,
-  data
-});
-const remove = (data: ServiceDeleteRequest) => client.post<ServiceDeleteResponse>({
-  url: ServiceApi.Delete,
-  data
-});
+  });
+const find = (data: ServiceFindRequest) =>
+  client.post<ServiceFindResponse>({
+    url: ServiceApi.Find,
+    data,
+  });
+const create = (data: ServiceCreateRequest) =>
+  client.post<ServiceCreateResponse>({
+    url: ServiceApi.Create,
+    data,
+  });
+const remove = (data: ServiceDeleteRequest) =>
+  client.post<ServiceDeleteResponse>({
+    url: ServiceApi.Delete,
+    data,
+  });
 
 export default {
   list,
   listCluster,
   find,
   create,
-  remove
+  remove,
 };

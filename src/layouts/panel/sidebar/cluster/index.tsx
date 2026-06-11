@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
 import {
   DropdownMenu,
@@ -9,16 +9,18 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar"
-import {Dialog, DialogTrigger,} from "@/components/ui/dialog"
-import {useTranslation} from "react-i18next";
-import ClusterService, {type Cluster} from "@/api/services/cluster-service.ts";
+} from "@/components/ui/sidebar";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { useTranslation } from "react-i18next";
+import ClusterService, {
+  type Cluster,
+} from "@/api/services/cluster-service.ts";
 import {
   ChevronRight,
   ChevronsUpDown,
@@ -26,39 +28,42 @@ import {
   Plus,
   Rocket,
 } from "lucide-react";
-import {CLUSTER_ICON_LIST} from "./icon-list";
+import { CLUSTER_ICON_LIST } from "./icon-list";
 import ClusterAddDialog from "./add-dialog.tsx";
 import SidebarClusterStatus from "./status.tsx";
 import SidebarClusterLoader from "./loader.tsx";
-import {useClusterActions, useClusterId} from "@/store/cluster-store.ts";
-import {useRouter} from "@/routes/hooks";
-import SidebarClusterSettings
-  from "@/layouts/panel/sidebar/cluster/settings.tsx";
+import { useClusterActions, useClusterId } from "@/store/cluster-store.ts";
+import { useRouter } from "@/routes/hooks";
+import SidebarClusterSettings from "@/layouts/panel/sidebar/cluster/settings.tsx";
 import ClusterEditDialog from "@/layouts/panel/sidebar/cluster/edit-dialog.tsx";
-import ClusterDeleteDialog
-  from "@/layouts/panel/sidebar/cluster/delete-dialog.tsx";
-import {useClusters} from "@/hooks/use-cluster.ts";
-import {Link} from "react-router-dom";
-import {Button} from "@/components/ui/button.tsx";
+import ClusterDeleteDialog from "@/layouts/panel/sidebar/cluster/delete-dialog.tsx";
+import { useClusters } from "@/hooks/use-cluster.ts";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button.tsx";
 
 export function SidebarClusterSwitcher() {
-  const {t} = useTranslation();
-  const {isMobile} = useSidebar()
-  const {clusters, setClusters, loading} = useClusters();
-  const [clickedCluster, setClickedCluster] = React.useState<Cluster | null>(null);
+  const { t } = useTranslation();
+  const { isMobile } = useSidebar();
+  const { clusters, setClusters, loading } = useClusters();
+  const [clickedCluster, setClickedCluster] = React.useState<Cluster | null>(
+    null,
+  );
   const [open, setOpen] = React.useState(false);
   const [dialogMode, setDialogMode] = React.useState("add");
-  const {setClusterId} = useClusterActions();
+  const { setClusterId } = useClusterActions();
   const clusterId = useClusterId();
-  const {replace} = useRouter();
+  const { replace } = useRouter();
 
-  const activeCluster: Cluster | null = clusters && clusters.length > 0
-    ? (clusters.find(c => c.id === clusterId) ?? clusters[0])
-    : null;
+  const activeCluster: Cluster | null =
+    clusters && clusters.length > 0
+      ? (clusters.find((c) => c.id === clusterId) ?? clusters[0])
+      : null;
 
   React.useEffect(() => {
     if (clusters && clusters.length > 0) {
-      const stored = clusterId ? clusters.find(c => c.id === clusterId) : null;
+      const stored = clusterId
+        ? clusters.find((c) => c.id === clusterId)
+        : null;
       if (!stored) {
         setClusterId(clusters[0].id);
       }
@@ -68,7 +73,7 @@ export function SidebarClusterSwitcher() {
       (async () => {
         const createResponse = await ClusterService.create({
           name: "Test",
-          icon: "rocket"
+          icon: "rocket",
         });
         setClusterId(createResponse.cluster);
         window.location.reload();
@@ -85,9 +90,11 @@ export function SidebarClusterSwitcher() {
     setOpen(false);
   };
   if (activeCluster == null) {
-    return <SidebarClusterLoader/>
+    return <SidebarClusterLoader />;
   }
-  const ActiveClusterIcon = CLUSTER_ICON_LIST.find(item => item.id === activeCluster?.icon)?.icon || Rocket;
+  const ActiveClusterIcon =
+    CLUSTER_ICON_LIST.find((item) => item.id === activeCluster?.icon)?.icon ||
+    Rocket;
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -98,21 +105,23 @@ export function SidebarClusterSwitcher() {
                 size="lg"
                 className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
               >
-                <div
-                  className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                  <ActiveClusterIcon className="size-4"/>
+                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                  <ActiveClusterIcon className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <div className="flex items-center">
-                    <span
-                      className="truncate font-medium me-2">{activeCluster?.name}</span>
+                    <span className="truncate font-medium me-2">
+                      {activeCluster?.name}
+                    </span>
                     <SidebarClusterStatus
-                      isOnline={!activeCluster ? false : activeCluster.online}/>
+                      isOnline={!activeCluster ? false : activeCluster.online}
+                    />
                   </div>
-                  <span
-                    className="truncate text-xs">{t("panel.sidebar.cluster")}</span>
+                  <span className="truncate text-xs">
+                    {t("panel.sidebar.cluster")}
+                  </span>
                 </div>
-                <ChevronsUpDown className="ml-auto"/>
+                <ChevronsUpDown className="ml-auto" />
               </SidebarMenuButton>
             </DropdownMenuTrigger>
             <DropdownMenuContent
@@ -128,25 +137,29 @@ export function SidebarClusterSwitcher() {
                 <DropdownMenuLabel className="text-muted-foreground text-xs">
                   <Link to="/cluster/" className="flex items-center">
                     <span>{t("panel.sidebar.cluster.overview")}</span>
-                    <ChevronRight size={15}/>
+                    <ChevronRight size={15} />
                   </Link>
                 </DropdownMenuLabel>
               </div>
               {clusters.map((cluster) => {
-                const Icon = CLUSTER_ICON_LIST.find(item => item.id === cluster.icon)?.icon || Rocket;
+                const Icon =
+                  CLUSTER_ICON_LIST.find((item) => item.id === cluster.icon)
+                    ?.icon || Rocket;
                 return (
                   <DropdownMenuItem
                     key={cluster.name}
                     onClick={() => updateCluster(cluster)}
                     className="gap-2 p-2"
                   >
-                    <div
-                      className="flex size-6 items-center justify-center rounded-md border">
-                      <Icon className="size-3.5 shrink-0"/>
+                    <div className="flex size-6 items-center justify-center rounded-md border">
+                      <Icon className="size-3.5 shrink-0" />
                     </div>
                     {cluster.name}
-                    <SidebarClusterStatus isOnline={cluster.online}/>
-                    <div className="flex items-center ml-auto" onClick={(e) => e.stopPropagation()}>
+                    <SidebarClusterStatus isOnline={cluster.online} />
+                    <div
+                      className="flex items-center ml-auto"
+                      onClick={(e) => e.stopPropagation()}
+                    >
                       <SidebarClusterSettings
                         cluster={cluster}
                         setClickedCluster={setClickedCluster}
@@ -157,33 +170,33 @@ export function SidebarClusterSwitcher() {
                           size="sm"
                           className="p-1 h-6 w-6 ml-auto hover:bg-black/10 dark:hover:bg-white/10 py-2 -my-2 rounded-full"
                         >
-                          <EllipsisVertical/>
+                          <EllipsisVertical />
                         </Button>
                       </SidebarClusterSettings>
                     </div>
                   </DropdownMenuItem>
                 );
               })}
-              <DropdownMenuSeparator/>
+              <DropdownMenuSeparator />
               <DialogTrigger asChild>
                 <DropdownMenuItem
                   className="gap-2 p-2"
-                  onClick={() => {setDialogMode("add")}}
+                  onClick={() => {
+                    setDialogMode("add");
+                  }}
                 >
-                  <div
-                    className="flex size-6 items-center justify-center rounded-md border bg-transparent">
-                    <Plus className="size-4"/>
+                  <div className="flex size-6 items-center justify-center rounded-md border bg-transparent">
+                    <Plus className="size-4" />
                   </div>
-                  <div
-                    className="text-muted-foreground font-medium">{t("panel.sidebar.cluster.add")}</div>
+                  <div className="text-muted-foreground font-medium">
+                    {t("panel.sidebar.cluster.add")}
+                  </div>
                 </DropdownMenuItem>
               </DialogTrigger>
             </DropdownMenuContent>
           </DropdownMenu>
           {open && dialogMode === "add" && (
-            <ClusterAddDialog
-              onCreation={handleClusterCreation}
-            />
+            <ClusterAddDialog onCreation={handleClusterCreation} />
           )}
           {open && dialogMode === "edit" && (
             <ClusterEditDialog
@@ -201,5 +214,5 @@ export function SidebarClusterSwitcher() {
         </Dialog>
       </SidebarMenuItem>
     </SidebarMenu>
-  )
+  );
 }

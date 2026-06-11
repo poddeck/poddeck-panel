@@ -1,13 +1,13 @@
-import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
-import {useEffect, useState} from "react";
-import {DataTable} from "@/components/table";
+import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
+import { useEffect, useState } from "react";
+import { DataTable } from "@/components/table";
 import PanelPage from "@/layouts/panel";
-import {useTranslation} from "react-i18next";
-import {ServerIcon, Trash2} from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { ServerIcon, Trash2 } from "lucide-react";
 import namespaceService, {
-  type Namespace
-} from "@/api/services/namespace-service"
-import {columns} from "./table-columns";
+  type Namespace,
+} from "@/api/services/namespace-service";
+import { columns } from "./table-columns";
 import {
   Empty,
   EmptyContent,
@@ -15,18 +15,18 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/components/ui/empty"
+} from "@/components/ui/empty";
 import NamespaceAddButton from "./add-button.tsx";
 import NamespaceService from "@/api/services/namespace-service";
 
 function NamespaceListEmpty() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
     <PanelPage title="panel.page.namespaces.title">
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <ServerIcon/>
+            <ServerIcon />
           </EmptyMedia>
           <EmptyTitle>{t("panel.page.namespaces.empty.title")}</EmptyTitle>
           <EmptyDescription>
@@ -34,11 +34,11 @@ function NamespaceListEmpty() {
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
-          <NamespaceAddButton onCreation={() => window.location.reload()}/>
+          <NamespaceAddButton onCreation={() => window.location.reload()} />
         </EmptyContent>
       </Empty>
     </PanelPage>
-  )
+  );
 }
 
 export default function NamespacesPage() {
@@ -60,36 +60,36 @@ export default function NamespacesPage() {
     return () => clearInterval(interval);
   }, []);
   if (!isLoading && namespaces.length === 0) {
-    return <NamespaceListEmpty/>
+    return <NamespaceListEmpty />;
   }
   return (
     <PanelPage title="panel.page.namespaces.title">
       <div className="mt-[4vh]">
         <div className="flex items-center justify-end mb-[4vh]">
-          <NamespaceAddButton onCreation={loadNamespaces}/>
+          <NamespaceAddButton onCreation={loadNamespaces} />
         </div>
         <DataTable<Namespace>
           name="namespaces"
           columns={columns}
           data={namespaces}
           pageSize={5}
-          initialSorting={[{id: "name", desc: false}]}
+          initialSorting={[{ id: "name", desc: false }]}
           isLoading={isLoading}
           bulkActions={[
             {
               name: "panel.page.namespaces.action.delete",
               icon: Trash2,
               onClick: (entries) => {
-                entries.forEach(entry => {
+                entries.forEach((entry) => {
                   NamespaceService.remove({
-                    name: entry.name
+                    name: entry.name,
                   });
-                })
-              }
-            }
+                });
+              },
+            },
           ]}
         />
       </div>
     </PanelPage>
-  )
+  );
 }

@@ -1,12 +1,12 @@
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import {Helmet} from "react-helmet";
-import {Toaster} from "@/components/ui/sonner"
-import {MotionLazy} from "./components/animate/motion-lazy";
-import {RouteLoading} from "./components/loading";
-import {ThemeProvider} from "next-themes";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Helmet } from "react-helmet";
+import { Toaster } from "@/components/ui/sonner";
+import { MotionLazy } from "./components/animate/motion-lazy";
+import { RouteLoading } from "./components/loading";
+import { ThemeProvider } from "next-themes";
 
 if (import.meta.env.DEV) {
-  import("react-scan").then(({scan}) => {
+  import("react-scan").then(({ scan }) => {
     scan({
       enabled: false,
       showToolbar: true,
@@ -16,7 +16,7 @@ if (import.meta.env.DEV) {
   });
 }
 
-function App({children}: { children: React.ReactNode }) {
+function App({ children }: { children: React.ReactNode }) {
   return (
     <QueryClientProvider client={new QueryClient()}>
       <ThemeProvider
@@ -26,11 +26,11 @@ function App({children}: { children: React.ReactNode }) {
         disableTransitionOnChange
       >
         <Helmet>
-          <link rel="icon" sizes="64x64" href="favicon.ico"/>
+          <link rel="icon" sizes="64x64" href="favicon.ico" />
           <title>PodDeck</title>
         </Helmet>
-        <RouteLoading/>
-        <Toaster/>
+        <RouteLoading />
+        <Toaster />
         <MotionLazy>{children}</MotionLazy>
       </ThemeProvider>
     </QueryClientProvider>

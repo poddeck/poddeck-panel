@@ -1,16 +1,16 @@
-import {useTranslation} from "react-i18next";
-import {Link, useSearchParams} from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { Link, useSearchParams } from "react-router-dom";
 import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
-  BreadcrumbSeparator
+  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb.tsx";
 
 export default function CronJobPageBreadcrumb() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const queryCronJob = searchParams.get("cron-job");
   return (
@@ -27,5 +27,5 @@ export default function CronJobPageBreadcrumb() {
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
-  )
+  );
 }

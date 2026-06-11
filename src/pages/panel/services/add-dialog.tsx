@@ -1,6 +1,6 @@
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import * as React from "react";
-import {useState} from "react";
+import { useState } from "react";
 import ServiceService from "@/api/services/service-service";
 import {
   DialogClose,
@@ -8,31 +8,29 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {Spinner} from "@/components/ui/spinner.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Spinner } from "@/components/ui/spinner.tsx";
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-yaml";
 import "ace-builds/src-noconflict/theme-tomorrow";
 import "ace-builds/src-noconflict/theme-tomorrow_night";
-import {useTheme} from "next-themes";
-import {toast} from "sonner";
+import { useTheme } from "next-themes";
+import { toast } from "sonner";
 
-export default function ServiceAddDialog(
-  {
-    setOpen,
-  }: {
-    setOpen: (open: boolean) => void;
-  }
-) {
-  const {t} = useTranslation();
-  const {theme} = useTheme();
+export default function ServiceAddDialog({
+  setOpen,
+}: {
+  setOpen: (open: boolean) => void;
+}) {
+  const { t } = useTranslation();
+  const { theme } = useTheme();
   const [code, setCode] = useState("");
   const [loading, setLoading] = React.useState(false);
   const handleCreateService = async () => {
     setLoading(true);
-    const response = await ServiceService.create({raw: code});
+    const response = await ServiceService.create({ raw: code });
     setLoading(false);
     if (!response.success) {
       toast.error(t("panel.page.services.add.dialog.failure"), {
@@ -46,8 +44,11 @@ export default function ServiceAddDialog(
     setOpen(false);
   };
   return (
-    <DialogContent className="sm:max-w-[1000px]" onClick={(e) => e.stopPropagation()}
-                   onMouseDown={(e) => e.stopPropagation()}>
+    <DialogContent
+      className="sm:max-w-[1000px]"
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
       <DialogHeader>
         <DialogTitle>{t("panel.page.services.add.dialog.title")}</DialogTitle>
         <DialogDescription>
@@ -59,7 +60,9 @@ export default function ServiceAddDialog(
           mode="yaml"
           theme={theme === "light" ? "tomorrow" : "tomorrow_night"}
           value={code}
-          onChange={(newValue: React.SetStateAction<string>) => setCode(newValue)}
+          onChange={(newValue: React.SetStateAction<string>) =>
+            setCode(newValue)
+          }
           name="yaml_editor"
           editorProps={{ $blockScrolling: true }}
           width="100%"

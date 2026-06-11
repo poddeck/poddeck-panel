@@ -1,12 +1,13 @@
-import type { LoginRequest } from "@/api/services/user-service"
-import { Spinner } from "@/components/ui/spinner"
-import { Button } from "@/components/ui/button"
+import type { LoginRequest } from "@/api/services/user-service";
+import { Spinner } from "@/components/ui/spinner";
+import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardContent, CardDescription,
+  CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -14,137 +15,146 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
-} from "@/components/ui/input-otp"
+} from "@/components/ui/input-otp";
 
-import { Navigate, useNavigate } from "react-router"
-import { useTranslation } from "react-i18next"
-import { useCallback, useEffect, useState } from "react"
-import { useForm } from "react-hook-form"
-import { useLogin, useUserToken } from "@/store/user-store"
-import { toast } from "sonner"
+import { Navigate, useNavigate } from "react-router";
+import { useTranslation } from "react-i18next";
+import { useCallback, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useLogin, useUserToken } from "@/store/user-store";
+import { toast } from "sonner";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel, FormMessage
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/form.tsx";
 
 export default function LoginForm() {
-  const { t } = useTranslation()
-  const navigate = useNavigate()
+  const { t } = useTranslation();
+  const navigate = useNavigate();
 
-  const login = useLogin()
-  const token = useUserToken()
+  const login = useLogin();
+  const token = useUserToken();
 
-  const form = useForm<LoginRequest>()
-  const { setFocus, getValues } = form
+  const form = useForm<LoginRequest>();
+  const { setFocus, getValues } = form;
 
-  const [loading, setLoading] = useState(false)
-  const [otpRequired, setOtpRequired] = useState(false)
-  const [otp, setOtp] = useState("")
-  const [recoveryOpen, setRecoveryOpen] = useState(false)
-  const [recoveryCode, setRecoveryCode] = useState("")
-  const [rememberMe, setRememberMe] = useState(() => !!localStorage.getItem("remembered_email"))
+  const [loading, setLoading] = useState(false);
+  const [otpRequired, setOtpRequired] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [recoveryOpen, setRecoveryOpen] = useState(false);
+  const [recoveryCode, setRecoveryCode] = useState("");
+  const [rememberMe, setRememberMe] = useState(
+    () => !!localStorage.getItem("remembered_email"),
+  );
 
   useEffect(() => {
-    const rememberedEmail = localStorage.getItem("remembered_email")
+    const rememberedEmail = localStorage.getItem("remembered_email");
     if (rememberedEmail) {
-      form.setValue("email", rememberedEmail)
-      setTimeout(() => setFocus("password"), 0)
+      form.setValue("email", rememberedEmail);
+      setTimeout(() => setFocus("password"), 0);
     } else {
-      setTimeout(() => setFocus("email"), 0)
+      setTimeout(() => setFocus("email"), 0);
     }
-  }, [form, setFocus])
+  }, [form, setFocus]);
 
   const handleFinish = async (values: LoginRequest) => {
-    setLoading(true)
+    setLoading(true);
     try {
       if (rememberMe) {
-        localStorage.setItem("remembered_email", values.email)
+        localStorage.setItem("remembered_email", values.email);
       } else {
-        localStorage.removeItem("remembered_email")
+        localStorage.removeItem("remembered_email");
       }
 
       const response = await login({
         ...values,
         multi_factor_code: "",
-      })
+      });
 
       if (!response.success && response.error === 1001) {
-        setOtpRequired(true)
+        setOtpRequired(true);
       } else if (response.success) {
-        navigate("/cluster/", { replace: true })
+        navigate("/cluster/", { replace: true });
       } else {
-        toast.error(t("authentication.login.failed"))
+        toast.error(t("authentication.login.failed"));
       }
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
-  const handleOtpSubmit = useCallback(async (code: string) => {
-    const { email, password } = getValues()
-    if (!email || !password) return
+  const handleOtpSubmit = useCallback(
+    async (code: string) => {
+      const { email, password } = getValues();
+      if (!email || !password) return;
 
-    setLoading(true)
-    try {
-      const response = await login({
-        email,
-        password,
-        multi_factor_code: code,
-      })
+      setLoading(true);
+      try {
+        const response = await login({
+          email,
+          password,
+          multi_factor_code: code,
+        });
 
-      setOtp("")
-      if (response.success) {
-        navigate("/cluster/", { replace: true })
-      } else {
-        toast.error(t("authentication.login.otp.failed"))
+        setOtp("");
+        if (response.success) {
+          navigate("/cluster/", { replace: true });
+        } else {
+          toast.error(t("authentication.login.otp.failed"));
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false)
-    }
-  }, [getValues, login, navigate, t])
+    },
+    [getValues, login, navigate, t],
+  );
 
-  const handleRecoverySubmit = useCallback(async (code: string) => {
-    const { email, password } = getValues()
-    if (!email || !password) return
+  const handleRecoverySubmit = useCallback(
+    async (code: string) => {
+      const { email, password } = getValues();
+      if (!email || !password) return;
 
-    setLoading(true)
-    try {
-      const response = await login({
-        email,
-        password,
-        multi_factor_code: code,
-      })
+      setLoading(true);
+      try {
+        const response = await login({
+          email,
+          password,
+          multi_factor_code: code,
+        });
 
-      if (response.success) {
-        navigate("/cluster/", { replace: true })
-      } else {
-        toast.error(t("authentication.login.recovery.failed"))
+        if (response.success) {
+          navigate("/cluster/", { replace: true });
+        } else {
+          toast.error(t("authentication.login.recovery.failed"));
+        }
+      } finally {
+        setLoading(false);
       }
-    } finally {
-      setLoading(false)
-    }
-  }, [getValues, login, navigate, t])
+    },
+    [getValues, login, navigate, t],
+  );
 
   const handleOtpChange = (value: string) => {
-    setOtp(value)
-    if (value.length === 6 && !loading) handleOtpSubmit(value)
-  }
+    setOtp(value);
+    if (value.length === 6 && !loading) handleOtpSubmit(value);
+  };
 
   const handleRecoveryChange = (value: string) => {
-    setRecoveryCode(value)
-    if (value.length === 16 && !loading) handleRecoverySubmit(value)
-  }
+    setRecoveryCode(value);
+    if (value.length === 16 && !loading) handleRecoverySubmit(value);
+  };
 
   if (token.authentication_token) {
-    return <Navigate to="/cluster/" replace />
+    return <Navigate to="/cluster/" replace />;
   }
 
   return (
@@ -152,20 +162,22 @@ export default function LoginForm() {
       <span className="font-bold mb-5 text-3xl">PodDeck</span>
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">{t("authentication.login.title")}</CardTitle>
-          <CardDescription>{t("authentication.login.description")}</CardDescription>
+          <CardTitle className="text-xl">
+            {t("authentication.login.title")}
+          </CardTitle>
+          <CardDescription>
+            {t("authentication.login.description")}
+          </CardDescription>
         </CardHeader>
 
         <CardContent>
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(handleFinish)}
-            >
+            <form onSubmit={form.handleSubmit(handleFinish)}>
               <FormField
                 control={form.control}
                 name="email"
-                rules={{required: t("authentication.login.email.missing")}}
-                render={({field}) => (
+                rules={{ required: t("authentication.login.email.missing") }}
+                render={({ field }) => (
                   <FormItem className="mb-5">
                     <FormLabel>{t("authentication.login.email")}</FormLabel>
                     <FormControl>
@@ -184,11 +196,13 @@ export default function LoginForm() {
               <FormField
                 control={form.control}
                 name="password"
-                rules={{required: t("authentication.login.password.missing")}}
-                render={({field}) => (
+                rules={{ required: t("authentication.login.password.missing") }}
+                render={({ field }) => (
                   <FormItem className="mb-5">
                     <div className="flex items-center justify-between">
-                      <FormLabel>{t("authentication.login.password")}</FormLabel>
+                      <FormLabel>
+                        {t("authentication.login.password")}
+                      </FormLabel>
                       <a
                         id="forgot-password"
                         href="/password/reset/request/"
@@ -240,9 +254,7 @@ export default function LoginForm() {
       <Dialog open={otpRequired} onOpenChange={setOtpRequired}>
         <DialogContent className="bg-white/10 backdrop-blur-md">
           <DialogHeader>
-            <DialogTitle>
-              {t("authentication.login.otp.title")}
-            </DialogTitle>
+            <DialogTitle>{t("authentication.login.otp.title")}</DialogTitle>
             <DialogDescription>
               {t("authentication.login.otp.description")}
             </DialogDescription>
@@ -307,5 +319,5 @@ export default function LoginForm() {
         </DialogContent>
       </Dialog>
     </div>
-  )
+  );
 }

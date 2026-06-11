@@ -1,32 +1,32 @@
-"use client"
+"use client";
 
-import {Input} from "@/components/ui/input"
-import {useTranslation} from "react-i18next";
+import { Input } from "@/components/ui/input";
+import { useTranslation } from "react-i18next";
 import {
-  DialogClose, DialogContent,
-  DialogDescription, DialogFooter,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {Spinner} from "@/components/ui/spinner.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Spinner } from "@/components/ui/spinner.tsx";
 import * as React from "react";
 import DeploymentService from "@/api/services/deployment-service";
 
-export default function DeploymentDeleteDialog(
-  {
-    namespace,
-    deployment,
-    setOpen,
-    onDelete,
-  }: {
-    namespace?: string;
-    deployment?: string;
-    setOpen: (open: boolean) => void;
-    onDelete?: () => void;
-  }
-) {
-  const {t} = useTranslation();
+export default function DeploymentDeleteDialog({
+  namespace,
+  deployment,
+  setOpen,
+  onDelete,
+}: {
+  namespace?: string;
+  deployment?: string;
+  setOpen: (open: boolean) => void;
+  onDelete?: () => void;
+}) {
+  const { t } = useTranslation();
   const [newDeploymentName, setNewDeploymentName] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const handleDeleteDeployment = async () => {
@@ -36,7 +36,7 @@ export default function DeploymentDeleteDialog(
     setLoading(true);
     await DeploymentService.remove({
       namespace: namespace ? namespace : "",
-      deployment: deployment ? deployment : ""
+      deployment: deployment ? deployment : "",
     });
     setLoading(false);
     setNewDeploymentName("");
@@ -44,10 +44,15 @@ export default function DeploymentDeleteDialog(
     onDelete?.();
   };
   return (
-    <DialogContent className="sm:max-w-[425px]" onClick={(e) => e.stopPropagation()}
-                   onMouseDown={(e) => e.stopPropagation()}>
+    <DialogContent
+      className="sm:max-w-[425px]"
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
       <DialogHeader>
-        <DialogTitle>{t("panel.page.deployments.delete.dialog.title")}</DialogTitle>
+        <DialogTitle>
+          {t("panel.page.deployments.delete.dialog.title")}
+        </DialogTitle>
         <DialogDescription>
           {t("panel.page.deployments.delete.dialog.description")}
         </DialogDescription>
@@ -72,10 +77,15 @@ export default function DeploymentDeleteDialog(
       </div>
       <DialogFooter>
         <DialogClose asChild>
-          <Button
-            variant="outline">{t("panel.page.deployments.delete.dialog.cancel")}</Button>
+          <Button variant="outline">
+            {t("panel.page.deployments.delete.dialog.cancel")}
+          </Button>
         </DialogClose>
-        <Button variant="destructive" onClick={handleDeleteDeployment} disabled={loading || newDeploymentName !== deployment}>
+        <Button
+          variant="destructive"
+          onClick={handleDeleteDeployment}
+          disabled={loading || newDeploymentName !== deployment}
+        >
           {t("panel.page.deployments.delete.dialog.submit")}
           {loading && <Spinner className="ml-2"></Spinner>}
         </Button>

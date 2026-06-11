@@ -1,13 +1,13 @@
-import {type ColumnDef} from "@tanstack/react-table";
-import {type Deployment} from "@/api/services/deployment-service"
-import {DeploymentsActionDropdown} from "./table-components.tsx";
-import {Age} from "@/components/age/age.tsx";
+import { type ColumnDef } from "@tanstack/react-table";
+import { type Deployment } from "@/api/services/deployment-service";
+import { DeploymentsActionDropdown } from "./table-components.tsx";
+import { Age } from "@/components/age/age.tsx";
 
 export const columns: ColumnDef<Deployment, unknown>[] = [
   {
     header: "panel.page.deployments.column.namespace",
     accessorKey: "namespace",
-    filterFn: 'equals',
+    filterFn: "equals",
   },
   {
     header: "panel.page.deployments.column.name",
@@ -16,9 +16,11 @@ export const columns: ColumnDef<Deployment, unknown>[] = [
   {
     header: "panel.page.deployments.column.ready",
     accessorKey: "ready_replicas",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return (
-        <span>{row.original.ready_replicas} / {row.original.replicas}</span>
+        <span>
+          {row.original.ready_replicas} / {row.original.replicas}
+        </span>
       );
     },
   },
@@ -33,8 +35,8 @@ export const columns: ColumnDef<Deployment, unknown>[] = [
   {
     header: "panel.page.deployments.column.age",
     accessorKey: "age",
-    cell: ({row}) => {
-      return <Age age={row.original.age}/>
+    cell: ({ row }) => {
+      return <Age age={row.original.age} />;
     },
   },
   {
@@ -42,8 +44,8 @@ export const columns: ColumnDef<Deployment, unknown>[] = [
     header: "",
     maxSize: 60,
     enableHiding: false,
-    cell: ({row}) => {
-      return <DeploymentsActionDropdown deployment={row.original}/>
+    cell: ({ row }) => {
+      return <DeploymentsActionDropdown deployment={row.original} />;
     },
   },
 ];

@@ -1,33 +1,35 @@
-"use client"
+"use client";
 
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import {
   Card,
   CardContent,
   CardHeader,
-  CardTitle
+  CardTitle,
 } from "@/components/ui/card.tsx";
-import {Globe, type GlobeMarker} from "@/components/ui/globe.tsx";
-import {MapPin} from "lucide-react";
-import {memo, useMemo} from "react";
+import { Globe, type GlobeMarker } from "@/components/ui/globe.tsx";
+import { MapPin } from "lucide-react";
+import { memo, useMemo } from "react";
 
 function OverviewLocationBox() {
-  const {t} = useTranslation();
-  const markers: GlobeMarker[] = useMemo(() => [
-    { location: [52.5200, 13.4050], size: 0.1 },
-  ], []);
+  const { t } = useTranslation();
+  const markers: GlobeMarker[] = useMemo(
+    () => [{ location: [52.52, 13.405], size: 0.1 }],
+    [],
+  );
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex gap-2">
-          <MapPin size={18} className="-translate-y-0.5"/> {t("panel.page.overview.location.title")}
+          <MapPin size={18} className="-translate-y-0.5" />{" "}
+          {t("panel.page.overview.location.title")}
         </CardTitle>
       </CardHeader>
       <CardContent>
-        <Globe markers={markers}/>
+        <Globe markers={markers} />
       </CardContent>
     </Card>
-  )
+  );
 }
 
 export default memo(OverviewLocationBox);

@@ -1,12 +1,12 @@
-import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
-import {useEffect, useState} from "react";
-import {DataTable} from "@/components/table";
+import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
+import { useEffect, useState } from "react";
+import { DataTable } from "@/components/table";
 import PanelPage from "@/layouts/panel";
-import {useTranslation} from "react-i18next";
-import {Box, PlusIcon, Trash2} from "lucide-react";
-import serviceService from "@/api/services/service-service"
-import ServiceService, {type Service} from "@/api/services/service-service"
-import {columns} from "./table-columns";
+import { useTranslation } from "react-i18next";
+import { Box, PlusIcon, Trash2 } from "lucide-react";
+import serviceService from "@/api/services/service-service";
+import ServiceService, { type Service } from "@/api/services/service-service";
+import { columns } from "./table-columns";
 import {
   Empty,
   EmptyContent,
@@ -14,41 +14,38 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/components/ui/empty"
+} from "@/components/ui/empty";
 import namespaceService, {
-  type Namespace
+  type Namespace,
 } from "@/api/services/namespace-service.ts";
-import {Button} from "@/components/ui/button.tsx";
-import {Dialog, DialogTrigger} from "@/components/ui/dialog.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog.tsx";
 import ServiceAddDialog from "@/pages/panel/services/add-dialog.tsx";
 
 function ServiceAddButton() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger>
-        <Button
-          size='lg'
-          className='bg-primary'
-        >
-          <PlusIcon/>
+        <Button size="lg" className="bg-primary">
+          <PlusIcon />
           {t("panel.page.services.add")}
         </Button>
       </DialogTrigger>
-      <ServiceAddDialog setOpen={setOpen}/>
+      <ServiceAddDialog setOpen={setOpen} />
     </Dialog>
-  )
+  );
 }
 
 function ServiceListEmpty() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
     <PanelPage title="panel.page.services.title">
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <Box/>
+            <Box />
           </EmptyMedia>
           <EmptyTitle>{t("panel.page.services.empty.title")}</EmptyTitle>
           <EmptyDescription>
@@ -56,11 +53,11 @@ function ServiceListEmpty() {
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
-          <ServiceAddButton/>
+          <ServiceAddButton />
         </EmptyContent>
       </Empty>
     </PanelPage>
-  )
+  );
 }
 
 export default function ServicesPage() {
@@ -94,26 +91,26 @@ export default function ServicesPage() {
     };
   }, []);
   if (!isLoading && services.length === 0) {
-    return <ServiceListEmpty/>
+    return <ServiceListEmpty />;
   }
   return (
     <PanelPage title="panel.page.services.title">
       <div className="mt-[4vh]">
         <div className="flex items-center justify-end mb-[4vh]">
-          <ServiceAddButton/>
+          <ServiceAddButton />
         </div>
         <DataTable<Service>
           name="services"
           columns={columns}
           data={services}
           pageSize={5}
-          initialSorting={[{id: "namespace", desc: false}]}
+          initialSorting={[{ id: "namespace", desc: false }]}
           isLoading={isLoading}
-          visibilityState={{node: false, ip: false}}
+          visibilityState={{ node: false, ip: false }}
           filters={[
             {
-              column: 'namespace',
-              options: namespaces.map(namespace => namespace.name)
+              column: "namespace",
+              options: namespaces.map((namespace) => namespace.name),
             },
           ]}
           bulkActions={[
@@ -121,17 +118,17 @@ export default function ServicesPage() {
               name: "panel.page.services.action.delete",
               icon: Trash2,
               onClick: (entries) => {
-                entries.forEach(entry => {
+                entries.forEach((entry) => {
                   ServiceService.remove({
                     namespace: entry.namespace,
-                    service: entry.name
+                    service: entry.name,
                   });
-                })
-              }
-            }
+                });
+              },
+            },
           ]}
         />
       </div>
     </PanelPage>
-  )
+  );
 }

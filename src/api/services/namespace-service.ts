@@ -4,7 +4,7 @@ export type Namespace = {
   name: string;
   status: string;
   age: number;
-}
+};
 
 export interface NamespaceCreateRequest {
   name: string;
@@ -12,7 +12,7 @@ export interface NamespaceCreateRequest {
 
 export type NamespaceCreateResponse = {
   success: boolean;
-}
+};
 
 export interface NamespaceDeleteRequest {
   name: string;
@@ -20,12 +20,12 @@ export interface NamespaceDeleteRequest {
 
 export type NamespaceDeleteResponse = {
   success: boolean;
-}
+};
 
 export type NamespaceListResponse = {
   namespaces: Namespace[];
   success?: boolean;
-}
+};
 
 export const NamespaceApi = {
   Create: "/namespace/create/",
@@ -33,27 +33,29 @@ export const NamespaceApi = {
   List: "/namespaces/",
 } as const;
 
-const create = (data: NamespaceCreateRequest) => client.post<NamespaceCreateResponse>({
-  url: NamespaceApi.Create,
-  data
-});
-const remove = (data: NamespaceDeleteRequest) => client.post<NamespaceDeleteResponse>({
-  url: NamespaceApi.Delete,
-  data
-});
-const list = () => client.get<NamespaceListResponse>({url: NamespaceApi.List});
-const listCluster = (clusterId: string) => client.get<NamespaceListResponse>(
-  {
+const create = (data: NamespaceCreateRequest) =>
+  client.post<NamespaceCreateResponse>({
+    url: NamespaceApi.Create,
+    data,
+  });
+const remove = (data: NamespaceDeleteRequest) =>
+  client.post<NamespaceDeleteResponse>({
+    url: NamespaceApi.Delete,
+    data,
+  });
+const list = () =>
+  client.get<NamespaceListResponse>({ url: NamespaceApi.List });
+const listCluster = (clusterId: string) =>
+  client.get<NamespaceListResponse>({
     url: NamespaceApi.List,
     headers: {
       Cluster: clusterId,
     },
-  }
-);
+  });
 
 export default {
   create,
   remove,
   list,
-  listCluster
+  listCluster,
 };

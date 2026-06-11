@@ -1,6 +1,6 @@
-import type {MotionValue} from "motion/react";
-import {useScroll} from "motion/react";
-import {useMemo, useRef} from "react";
+import type { MotionValue } from "motion/react";
+import { useScroll } from "motion/react";
+import { useMemo, useRef } from "react";
 
 /**
  * 返回类型定义，包含滚动进度值和元素引用
@@ -36,18 +36,19 @@ export type UseScrollProgress = "document" | "container";
  * const { scrollYProgress, elementRef } = useScrollProgress("container");
  * // 将 elementRef 绑定到容器元素
  */
-export function useScrollProgress(target: UseScrollProgress = "document"): UseScrollProgressReturn {
+export function useScrollProgress(
+  target: UseScrollProgress = "document",
+): UseScrollProgressReturn {
   const elementRef = useRef<HTMLDivElement>(null);
 
-  const options = {container: elementRef};
+  const options = { container: elementRef };
 
-  const {
-    scrollYProgress,
-    scrollXProgress
-  } = useScroll(target === "container" ? options : undefined);
+  const { scrollYProgress, scrollXProgress } = useScroll(
+    target === "container" ? options : undefined,
+  );
 
   const memoizedValue = useMemo(
-    () => ({elementRef, scrollXProgress, scrollYProgress}),
+    () => ({ elementRef, scrollXProgress, scrollYProgress }),
     [scrollXProgress, scrollYProgress],
   );
 

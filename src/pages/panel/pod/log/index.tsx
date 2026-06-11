@@ -1,11 +1,9 @@
-import {useEffect, useRef, useState} from "react";
+import { useEffect, useRef, useState } from "react";
 import PanelPage from "@/layouts/panel";
 import PodPageBreadcrumb from "@/pages/panel/pod/breadcrumb.tsx";
 import PodPageHeader from "@/pages/panel/pod/header.tsx";
-import podService, {
-  type PodLogResponse
-} from "@/api/services/pod-service.ts";
-import {AnsiUp} from "ansi_up";
+import podService, { type PodLogResponse } from "@/api/services/pod-service.ts";
+import { AnsiUp } from "ansi_up";
 import usePod from "@/hooks/use-pod.ts";
 
 type LogEntry = {
@@ -40,7 +38,9 @@ export default function PodLogsPage() {
         .split("\n")
         .map((l) => l.trim())
         .filter((l) => l !== "")
-        .filter((l) => !logsRef.current.some((existing) => existing.original === l));
+        .filter(
+          (l) => !logsRef.current.some((existing) => existing.original === l),
+        );
       if (lines.length > 0) {
         updateLogs(lines);
       }
@@ -62,7 +62,10 @@ export default function PodLogsPage() {
 
     fetchPodLogs();
     const interval = setInterval(fetchPodLogs, 1000);
-    return () => { isMounted = false; clearInterval(interval); };
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, [pod]);
 
   const handleScroll = () => {
@@ -80,7 +83,7 @@ export default function PodLogsPage() {
 
   const ansi = new AnsiUp();
   ansi.use_classes = false;
-  const htmlLogs = logs.map(l => ansi.ansi_to_html(l)).join("<br/>");
+  const htmlLogs = logs.map((l) => ansi.ansi_to_html(l)).join("<br/>");
 
   return (
     <PanelPage breadcrumb={PodPageBreadcrumb()} layout={false}>

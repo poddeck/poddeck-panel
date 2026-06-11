@@ -1,13 +1,13 @@
-import {type ColumnDef} from "@tanstack/react-table";
-import {type Pod} from "@/api/services/pod-service"
-import {PodsStatus, PodsActionDropdown} from "./table-components.tsx";
-import {Age} from "@/components/age/age.tsx";
+import { type ColumnDef } from "@tanstack/react-table";
+import { type Pod } from "@/api/services/pod-service";
+import { PodsStatus, PodsActionDropdown } from "./table-components.tsx";
+import { Age } from "@/components/age/age.tsx";
 
 export const columns: ColumnDef<Pod, unknown>[] = [
   {
     header: "panel.page.pods.column.namespace",
     accessorKey: "namespace",
-    filterFn: 'equals',
+    filterFn: "equals",
   },
   {
     header: "panel.page.pods.column.name",
@@ -16,17 +16,19 @@ export const columns: ColumnDef<Pod, unknown>[] = [
   {
     header: "panel.page.pods.column.containers",
     accessorKey: "container",
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return (
-        <span>{row.original.ready_containers} / {row.original.total_containers}</span>
+        <span>
+          {row.original.ready_containers} / {row.original.total_containers}
+        </span>
       );
     },
   },
   {
     header: "panel.page.pods.column.status",
     accessorKey: "status",
-    cell: ({row}) => {
-      return <PodsStatus status={row.original.status.toLowerCase()}/>
+    cell: ({ row }) => {
+      return <PodsStatus status={row.original.status.toLowerCase()} />;
     },
   },
   {
@@ -36,8 +38,8 @@ export const columns: ColumnDef<Pod, unknown>[] = [
   {
     header: "panel.page.pods.column.age",
     accessorKey: "age",
-    cell: ({row}) => {
-      return <Age age={row.original.age}/>
+    cell: ({ row }) => {
+      return <Age age={row.original.age} />;
     },
   },
   {
@@ -57,8 +59,8 @@ export const columns: ColumnDef<Pod, unknown>[] = [
     header: "",
     maxSize: 60,
     enableHiding: false,
-    cell: ({row}) => {
-      return <PodsActionDropdown pod={row.original}/>
+    cell: ({ row }) => {
+      return <PodsActionDropdown pod={row.original} />;
     },
   },
 ];

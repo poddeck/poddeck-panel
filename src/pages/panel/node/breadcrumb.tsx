@@ -1,13 +1,16 @@
-import {useTranslation} from "react-i18next";
-import {Link, useSearchParams} from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { Link, useSearchParams } from "react-router-dom";
 import {
   Breadcrumb,
-  BreadcrumbItem, BreadcrumbLink,
-  BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb.tsx";
 
 export default function NodePageBreadcrumb() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const queryNode = searchParams.get("node");
   return (
@@ -24,5 +27,5 @@ export default function NodePageBreadcrumb() {
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
-  )
+  );
 }

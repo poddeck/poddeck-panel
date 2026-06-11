@@ -1,4 +1,4 @@
-export {AppSidebar} from "./app-sidebar.tsx";
+export { AppSidebar } from "./app-sidebar.tsx";
 export {
   Breadcrumb,
   BreadcrumbItem,
@@ -6,10 +6,10 @@ export {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
-export {Separator} from "@/components/ui/separator"
+} from "@/components/ui/breadcrumb";
+export { Separator } from "@/components/ui/separator";
 export {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";

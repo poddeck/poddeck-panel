@@ -1,11 +1,11 @@
-import {varBgColor, varBgKenburns, varBgPan} from "./background";
-import {varBounce} from "./bounce";
-import {varFade} from "./fade";
-import {varFlip} from "./flip";
-import {varRotate} from "./rotate";
-import {varScale} from "./scale";
-import {varSlide} from "./slide";
-import {varZoom} from "./zoom";
+import { varBgColor, varBgKenburns, varBgPan } from "./background";
+import { varBounce } from "./bounce";
+import { varFade } from "./fade";
+import { varFlip } from "./flip";
+import { varRotate } from "./rotate";
+import { varScale } from "./scale";
+import { varSlide } from "./slide";
+import { varZoom } from "./zoom";
 
 export * from "./action";
 export * from "./background";
@@ -43,11 +43,11 @@ export function getVariant(variant = "slideInUp") {
     fadeOutLeft: varFade().outLeft,
     fadeOutRight: varFade().outRight,
     // Zoom
-    zoomIn: varZoom({distance: 80}).in,
-    zoomInUp: varZoom({distance: 80}).inUp,
-    zoomInDown: varZoom({distance: 80}).inDown,
-    zoomInLeft: varZoom({distance: 240}).inLeft,
-    zoomInRight: varZoom({distance: 240}).inRight,
+    zoomIn: varZoom({ distance: 80 }).in,
+    zoomInUp: varZoom({ distance: 80 }).inUp,
+    zoomInDown: varZoom({ distance: 80 }).inDown,
+    zoomInLeft: varZoom({ distance: 240 }).inLeft,
+    zoomInRight: varZoom({ distance: 240 }).inRight,
     zoomOut: varZoom().out,
     zoomOutLeft: varZoom().outLeft,
     zoomOutRight: varZoom().outRight,
@@ -87,7 +87,7 @@ export function getVariant(variant = "slideInUp") {
     panLeft: varBgPan().left,
     panRight: varBgPan().right,
     color2x: varBgColor(),
-    color3x: varBgColor({colors: ["#19dcea", "#b22cff", "#ea2222"]}),
+    color3x: varBgColor({ colors: ["#19dcea", "#b22cff", "#ea2222"] }),
     color4x: varBgColor({
       colors: ["#19dcea", "#b22cff", "#ea2222", "#f5be10"],
     }),

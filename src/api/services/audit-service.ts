@@ -53,28 +53,29 @@ export type AuditEntry = {
   control: AuditControl;
   test: AuditTest;
   result: AuditResult;
-}
+};
 
 export type AuditPerformResponse = {
   success: boolean;
   audit: Audit;
-}
+};
 
 export type AuditFindResponse = {
   success: boolean;
   audit: Audit;
-}
+};
 
 export const AuditApi = {
   Perform: "/audit/perform/",
-  Find: "/audit/find/"
+  Find: "/audit/find/",
 } as const;
 
-const perform = () => client.get<AuditPerformResponse>({url: AuditApi.Perform});
+const perform = () =>
+  client.get<AuditPerformResponse>({ url: AuditApi.Perform });
 
-const find = () => client.get<AuditFindResponse>({url: AuditApi.Find});
+const find = () => client.get<AuditFindResponse>({ url: AuditApi.Find });
 
 export default {
   perform,
-  find
+  find,
 };

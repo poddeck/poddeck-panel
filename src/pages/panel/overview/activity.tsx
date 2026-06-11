@@ -1,17 +1,12 @@
 "use client";
 
-import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
-import {startTransition, useEffect, useState} from "react";
+import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
+import { startTransition, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Bar, BarChart, CartesianGrid, Rectangle, XAxis } from "recharts";
 import { Activity } from "lucide-react";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ChartContainer,
   ChartTooltip,
@@ -86,7 +81,7 @@ const mapEventsToChartData = (events: Event[]): ActivityData[] => {
 
   events.forEach((event) => {
     const diffHours = Math.floor(
-      (now - event.last_timestamp) / (60 * 60 * 1000)
+      (now - event.last_timestamp) / (60 * 60 * 1000),
     );
 
     if (diffHours < 0 || diffHours >= HOURS) return;
@@ -100,10 +95,7 @@ const mapEventsToChartData = (events: Event[]): ActivityData[] => {
     if (event.type.toLowerCase() === "error") eventStatus = "error";
     else if (event.type.toLowerCase() === "warning") eventStatus = "warning";
 
-    if (
-      getStatusPriority(eventStatus) >
-      getStatusPriority(bucket.status)
-    ) {
+    if (getStatusPriority(eventStatus) > getStatusPriority(bucket.status)) {
       bucket.status = eventStatus;
     }
   });
@@ -129,9 +121,7 @@ export default function OverviewActivityBox() {
           limit: 10000,
         });
 
-        const aggregated = mapEventsToChartData(
-          response.events as Event[]
-        );
+        const aggregated = mapEventsToChartData(response.events as Event[]);
 
         startTransition(() => {
           setChartData(aggregated);
@@ -186,10 +176,12 @@ export default function OverviewActivityBox() {
             data={chartData}
             margin={{ top: 10, left: 10, right: 10, bottom: 0 }}
             onMouseMove={(state) => {
-              if (state.activePayload?.length) {
-                setActiveBarStatus(
-                  state.activePayload[0].payload.status
-                );
+              const activeEntry =
+                state.isTooltipActive && state.activeIndex != null
+                  ? chartData[Number(state.activeIndex)]
+                  : undefined;
+              if (activeEntry) {
+                setActiveBarStatus(activeEntry.status);
               }
             }}
             onMouseLeave={() => setActiveBarStatus("success")}
@@ -202,9 +194,7 @@ export default function OverviewActivityBox() {
               axisLine={false}
               tickMargin={8}
               minTickGap={24}
-              tickFormatter={(value, index) =>
-                index % 4 === 0 ? value : ""
-              }
+              tickFormatter={(value, index) => (index % 4 === 0 ? value : "")}
             />
 
             <ChartTooltip

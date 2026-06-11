@@ -1,17 +1,17 @@
-import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
-import {useEffect, useState} from "react";
-import {DataTable} from "@/components/table";
+import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
+import { useEffect, useState } from "react";
+import { DataTable } from "@/components/table";
 import PanelPage from "@/layouts/panel";
-import {Button} from "@/components/ui/button.tsx";
-import {useTranslation} from "react-i18next";
-import {PlusIcon, ServerIcon, Trash2} from "lucide-react";
+import { Button } from "@/components/ui/button.tsx";
+import { useTranslation } from "react-i18next";
+import { PlusIcon, ServerIcon, Trash2 } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
-  TooltipTrigger
+  TooltipTrigger,
 } from "@/components/ui/tooltip.tsx";
-import nodeService, {type Node} from "@/api/services/node-service"
-import {columns} from "./table-columns";
+import nodeService, { type Node } from "@/api/services/node-service";
+import { columns } from "./table-columns";
 import {
   Empty,
   EmptyContent,
@@ -19,39 +19,36 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "@/components/ui/empty"
-import {useRouter} from "@/routes/hooks";
+} from "@/components/ui/empty";
+import { useRouter } from "@/routes/hooks";
 
 function NodeAddButton() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button
-          size='lg'
-          className='bg-primary'
-        >
-          <PlusIcon/>
+        <Button size="lg" className="bg-primary">
+          <PlusIcon />
           {t("panel.page.nodes.add")}
         </Button>
       </TooltipTrigger>
-      <TooltipContent className='max-w-64 text-pretty'>
-        <div className='flex items-center gap-1.5'>
+      <TooltipContent className="max-w-64 text-pretty">
+        <div className="flex items-center gap-1.5">
           <p>{t("coming.soon")}</p>
         </div>
       </TooltipContent>
     </Tooltip>
-  )
+  );
 }
 
 function NodeListEmpty() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   return (
     <PanelPage title="panel.page.nodes.title">
       <Empty>
         <EmptyHeader>
           <EmptyMedia variant="icon">
-            <ServerIcon/>
+            <ServerIcon />
           </EmptyMedia>
           <EmptyTitle>{t("panel.page.nodes.empty.title")}</EmptyTitle>
           <EmptyDescription>
@@ -59,17 +56,17 @@ function NodeListEmpty() {
           </EmptyDescription>
         </EmptyHeader>
         <EmptyContent>
-          <NodeAddButton/>
+          <NodeAddButton />
         </EmptyContent>
       </Empty>
     </PanelPage>
-  )
+  );
 }
 
 export default function NodesPage() {
   const [nodes, setNodes] = useState<Node[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const {replace} = useRouter();
+  const { replace } = useRouter();
   useEffect(() => {
     async function loadNodes() {
       try {
@@ -88,31 +85,31 @@ export default function NodesPage() {
     };
   }, []);
   if (!isLoading && nodes.length === 0) {
-    return <NodeListEmpty/>
+    return <NodeListEmpty />;
   }
   return (
     <PanelPage title="panel.page.nodes.title">
       <div className="mt-[4vh]">
         <div className="flex items-center justify-end mb-[4vh]">
-          <NodeAddButton/>
+          <NodeAddButton />
         </div>
         <DataTable<Node>
           name="nodes"
           columns={columns}
           data={nodes}
           pageSize={5}
-          initialSorting={[{id: "name", desc: false}]}
+          initialSorting={[{ id: "name", desc: false }]}
           isLoading={isLoading}
-          onClick={node => replace("/node/overview/?node=" + node.name)}
+          onClick={(node) => replace("/node/overview/?node=" + node.name)}
           bulkActions={[
             {
               name: "panel.page.nodes.action.delete",
               icon: Trash2,
-              onClick: () => {}
-            }
+              onClick: () => {},
+            },
           ]}
         />
       </div>
     </PanelPage>
-  )
+  );
 }

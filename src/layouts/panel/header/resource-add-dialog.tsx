@@ -1,39 +1,43 @@
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import * as React from "react";
 import {
   DialogClose,
-  DialogContent, DialogDescription, DialogFooter,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {Spinner} from "@/components/ui/spinner.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Spinner } from "@/components/ui/spinner.tsx";
 import * as ReactAce from "react-ace";
 import "ace-builds/src-noconflict/mode-yaml";
 
-const ReactAceModule = ReactAce as unknown as { default?: { default?: unknown } & unknown };
-const AceEditor = (ReactAceModule.default?.default ?? ReactAceModule.default ?? ReactAce) as typeof import("react-ace").default;
+const ReactAceModule = ReactAce as unknown as {
+  default?: { default?: unknown } & unknown;
+};
+const AceEditor = (ReactAceModule.default?.default ??
+  ReactAceModule.default ??
+  ReactAce) as typeof import("react-ace").default;
 import "ace-builds/src-noconflict/theme-tomorrow";
 import "ace-builds/src-noconflict/theme-tomorrow_night";
-import {useTheme} from "next-themes";
-import {useState} from "react";
-import {toast} from "sonner";
+import { useTheme } from "next-themes";
+import { useState } from "react";
+import { toast } from "sonner";
 import ResourceService from "@/api/services/resource-service.ts";
 
-export default function ResourceAddDialog(
-  {
-    setOpen
-  }: {
-    setOpen: (open: boolean) => void
-  }
-) {
-  const {t} = useTranslation();
-  const {theme} = useTheme();
+export default function ResourceAddDialog({
+  setOpen,
+}: {
+  setOpen: (open: boolean) => void;
+}) {
+  const { t } = useTranslation();
+  const { theme } = useTheme();
   const [code, setCode] = useState("");
   const [loading, setLoading] = React.useState(false);
   const handleCreateResource = async () => {
     setLoading(true);
-    const response = await ResourceService.create({raw: code});
+    const response = await ResourceService.create({ raw: code });
     setLoading(false);
     if (!response.success) {
       toast.error(t("panel.header.resources.add.dialog.failure"), {
@@ -48,10 +52,15 @@ export default function ResourceAddDialog(
     setOpen(false);
   };
   return (
-    <DialogContent className="sm:max-w-[1000px]" onClick={(e) => e.stopPropagation()}
-                   onMouseDown={(e) => e.stopPropagation()}>
+    <DialogContent
+      className="sm:max-w-[1000px]"
+      onClick={(e) => e.stopPropagation()}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
       <DialogHeader>
-        <DialogTitle>{t("panel.header.resources.add.dialog.title")}</DialogTitle>
+        <DialogTitle>
+          {t("panel.header.resources.add.dialog.title")}
+        </DialogTitle>
         <DialogDescription>
           {t("panel.header.resources.add.dialog.description")}
         </DialogDescription>
@@ -61,7 +70,9 @@ export default function ResourceAddDialog(
           mode="yaml"
           theme={theme === "light" ? "tomorrow" : "tomorrow_night"}
           value={code}
-          onChange={(newValue: React.SetStateAction<string>) => setCode(newValue)}
+          onChange={(newValue: React.SetStateAction<string>) =>
+            setCode(newValue)
+          }
           name="yaml_editor"
           editorProps={{ $blockScrolling: true }}
           width="100%"

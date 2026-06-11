@@ -23,11 +23,12 @@ const useClusterStore = create<ClusterStore>()(
       name: "cluster",
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({ clusterId: state.clusterId }),
-    }
-  )
+    },
+  ),
 );
 
 export const useClusterId = () => useClusterStore((state) => state.clusterId);
-export const useClusterActions = () => useClusterStore((state) => state.actions);
+export const useClusterActions = () =>
+  useClusterStore((state) => state.actions);
 
 export default useClusterStore;

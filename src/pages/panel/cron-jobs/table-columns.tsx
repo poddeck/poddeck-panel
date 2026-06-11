@@ -1,16 +1,16 @@
-import {type ColumnDef} from "@tanstack/react-table";
-import {type CronJob} from "@/api/services/cron-job-service"
+import { type ColumnDef } from "@tanstack/react-table";
+import { type CronJob } from "@/api/services/cron-job-service";
 import {
   CronJobsActionDropdown,
-  CronJobsSuspendStatus
+  CronJobsSuspendStatus,
 } from "./table-components.tsx";
-import {Age} from "@/components/age/age.tsx";
+import { Age } from "@/components/age/age.tsx";
 
 export const columns: ColumnDef<CronJob, unknown>[] = [
   {
     header: "panel.page.cron-jobs.column.namespace",
     accessorKey: "namespace",
-    filterFn: 'equals',
+    filterFn: "equals",
   },
   {
     header: "panel.page.cron-jobs.column.name",
@@ -27,8 +27,8 @@ export const columns: ColumnDef<CronJob, unknown>[] = [
   {
     header: "panel.page.cron-jobs.column.suspend",
     accessorKey: "suspend",
-    cell: ({row}) => {
-      return <CronJobsSuspendStatus suspend={row.original.suspend}/>
+    cell: ({ row }) => {
+      return <CronJobsSuspendStatus suspend={row.original.suspend} />;
     },
   },
   {
@@ -38,15 +38,15 @@ export const columns: ColumnDef<CronJob, unknown>[] = [
   {
     header: "panel.page.cron-jobs.column.last.schedule",
     accessorKey: "last_schedule_time",
-    cell: ({row}) => {
-      return <Age age={Date.now() - row.original.last_schedule_time}/>
+    cell: ({ row }) => {
+      return <Age age={Date.now() - row.original.last_schedule_time} />;
     },
   },
   {
     header: "panel.page.cron-jobs.column.age",
     accessorKey: "age",
-    cell: ({row}) => {
-      return <Age age={row.original.age}/>
+    cell: ({ row }) => {
+      return <Age age={row.original.age} />;
     },
   },
   {
@@ -54,8 +54,8 @@ export const columns: ColumnDef<CronJob, unknown>[] = [
     header: "",
     maxSize: 60,
     enableHiding: false,
-    cell: ({row}) => {
-      return <CronJobsActionDropdown cronJob={row.original}/>
+    cell: ({ row }) => {
+      return <CronJobsActionDropdown cronJob={row.original} />;
     },
   },
 ];

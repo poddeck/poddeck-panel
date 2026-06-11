@@ -1,35 +1,37 @@
-"use client"
+"use client";
 
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import {
   Card,
   CardContent,
   CardHeader,
-  CardTitle
+  CardTitle,
 } from "@/components/ui/card.tsx";
-import {ServerIcon, Cpu, MemoryStick, HardDrive} from "lucide-react";
-import {Badge} from "@/components/ui/badge";
-import {type Node} from "@/api/services/node-service.ts";
+import { ServerIcon, Cpu, MemoryStick, HardDrive } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { type Node } from "@/api/services/node-service.ts";
 
-export default function OverviewNodesBox({nodes}: {nodes: Node[]}) {
-  const {t} = useTranslation();
+export default function OverviewNodesBox({ nodes }: { nodes: Node[] }) {
+  const { t } = useTranslation();
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <div className="flex gap-2">
-            <ServerIcon size={18} className="-translate-y-0.5"/> {t("panel.page.overview.nodes.title")}
+            <ServerIcon size={18} className="-translate-y-0.5" />{" "}
+            {t("panel.page.overview.nodes.title")}
           </div>
-          <span>
-            {nodes.length}
-          </span>
+          <span>{nodes.length}</span>
         </CardTitle>
       </CardHeader>
       <CardContent>
         {nodes.length > 0 ? (
           <div className="flex flex-col gap-3">
             {nodes.map((node) => (
-              <div key={node.name} className="p-3 rounded-lg border hover:bg-muted transition-colors">
+              <div
+                key={node.name}
+                className="p-3 rounded-lg border hover:bg-muted transition-colors"
+              >
                 <div className="flex justify-between items-center mb-2">
                   <span className="font-semibold text-lg">{node.name}</span>
                   {node.ready ? (
@@ -46,15 +48,21 @@ export default function OverviewNodesBox({nodes}: {nodes: Node[]}) {
                 <div className="flex justify-between gap-4 text-sm text-muted-foreground mt-2">
                   <div className="flex items-center gap-1">
                     <Cpu size={14} className="text-sky-500" />
-                    <span className="font-medium">{node.cpu_cores} {t("panel.page.nodes.cores")}</span>
+                    <span className="font-medium">
+                      {node.cpu_cores} {t("panel.page.nodes.cores")}
+                    </span>
                   </div>
                   <div className="flex items-center gap-1">
                     <MemoryStick size={14} className="text-emerald-500" />
-                    <span className="font-medium">{node.total_memory.toFixed(0)} GB</span>
+                    <span className="font-medium">
+                      {node.total_memory.toFixed(0)} GB
+                    </span>
                   </div>
                   <div className="flex items-center gap-1">
                     <HardDrive size={14} className="text-fuchsia-500" />
-                    <span className="font-medium">{node.total_storage.toFixed(0)} GB</span>
+                    <span className="font-medium">
+                      {node.total_storage.toFixed(0)} GB
+                    </span>
                   </div>
                 </div>
               </div>
@@ -67,5 +75,5 @@ export default function OverviewNodesBox({nodes}: {nodes: Node[]}) {
         )}
       </CardContent>
     </Card>
-  )
+  );
 }

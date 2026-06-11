@@ -1,7 +1,7 @@
-import {POLL_INTERVAL_MS} from "@/lib/constants.ts";
-import {useSearchParams} from "react-router-dom";
-import {useEffect, useState} from "react";
-import nodeService, {type Node} from "@/api/services/node-service.ts";
+import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
+import { useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import nodeService, { type Node } from "@/api/services/node-service.ts";
 
 const nodeCache: Record<string, Node> = {};
 
@@ -27,7 +27,10 @@ export default function useNode() {
 
     loadNode();
     const interval = window.setInterval(loadNode, POLL_INTERVAL_MS);
-    return () => { isMounted = false; clearInterval(interval); };
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, [searchParams]);
 
   return node;

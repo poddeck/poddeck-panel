@@ -21,14 +21,14 @@ export type Deployment = {
   conditions: Condition[];
   events: Event[];
   raw: string;
-}
+};
 
 export type Condition = {
   type: string;
   status: string;
   reason: string;
   message: string;
-}
+};
 
 export type Event = {
   type: string;
@@ -36,12 +36,12 @@ export type Event = {
   message: string;
   timestamp: number;
   source: string;
-}
+};
 
 export type DeploymentListResponse = {
   deployments: Deployment[];
   success?: boolean;
-}
+};
 
 export interface DeploymentFindRequest {
   namespace: string;
@@ -51,7 +51,7 @@ export interface DeploymentFindRequest {
 export type DeploymentFindResponse = {
   success: boolean;
   deployment: Deployment;
-}
+};
 
 export interface DeploymentCreateRequest {
   raw: string;
@@ -61,7 +61,7 @@ export type DeploymentCreateResponse = {
   success: boolean;
   namespace: string;
   deployment: string;
-}
+};
 
 export interface DeploymentDeleteRequest {
   namespace: string;
@@ -70,7 +70,7 @@ export interface DeploymentDeleteRequest {
 
 export type DeploymentDeleteResponse = {
   success: boolean;
-}
+};
 
 export interface DeploymentScaleRequest {
   namespace: string;
@@ -80,7 +80,7 @@ export interface DeploymentScaleRequest {
 
 export type DeploymentScaleResponse = {
   success: boolean;
-}
+};
 
 export interface DeploymentRestartRequest {
   namespace: string;
@@ -89,7 +89,7 @@ export interface DeploymentRestartRequest {
 
 export type DeploymentRestartResponse = {
   success: boolean;
-}
+};
 
 export interface DeploymentEditRequest {
   namespace: string;
@@ -99,7 +99,7 @@ export interface DeploymentEditRequest {
 
 export type DeploymentEditResponse = {
   success: boolean;
-}
+};
 
 export const DeploymentApi = {
   List: "/deployments/",
@@ -111,39 +111,45 @@ export const DeploymentApi = {
   Edit: "/deployment/edit/",
 } as const;
 
-const list = () => client.get<DeploymentListResponse>({url: DeploymentApi.List});
-const listCluster = (clusterId: string) => client.get<DeploymentListResponse>(
-  {
+const list = () =>
+  client.get<DeploymentListResponse>({ url: DeploymentApi.List });
+const listCluster = (clusterId: string) =>
+  client.get<DeploymentListResponse>({
     url: DeploymentApi.List,
     headers: {
       Cluster: clusterId,
     },
-  }
-);
-const find = (data: DeploymentFindRequest) => client.post<DeploymentFindResponse>({
-  url: DeploymentApi.Find,
-  data
-});
-const create = (data: DeploymentCreateRequest) => client.post<DeploymentCreateResponse>({
-  url: DeploymentApi.Create,
-  data
-});
-const remove = (data: DeploymentDeleteRequest) => client.post<DeploymentDeleteResponse>({
-  url: DeploymentApi.Delete,
-  data
-});
-const scale = (data: DeploymentScaleRequest) => client.post<DeploymentScaleResponse>({
-  url: DeploymentApi.Scale,
-  data
-});
-const restart = (data: DeploymentRestartRequest) => client.post<DeploymentRestartResponse>({
-  url: DeploymentApi.Restart,
-  data
-});
-const edit = (data: DeploymentEditRequest) => client.post<DeploymentEditResponse>({
-  url: DeploymentApi.Edit,
-  data
-});
+  });
+const find = (data: DeploymentFindRequest) =>
+  client.post<DeploymentFindResponse>({
+    url: DeploymentApi.Find,
+    data,
+  });
+const create = (data: DeploymentCreateRequest) =>
+  client.post<DeploymentCreateResponse>({
+    url: DeploymentApi.Create,
+    data,
+  });
+const remove = (data: DeploymentDeleteRequest) =>
+  client.post<DeploymentDeleteResponse>({
+    url: DeploymentApi.Delete,
+    data,
+  });
+const scale = (data: DeploymentScaleRequest) =>
+  client.post<DeploymentScaleResponse>({
+    url: DeploymentApi.Scale,
+    data,
+  });
+const restart = (data: DeploymentRestartRequest) =>
+  client.post<DeploymentRestartResponse>({
+    url: DeploymentApi.Restart,
+    data,
+  });
+const edit = (data: DeploymentEditRequest) =>
+  client.post<DeploymentEditResponse>({
+    url: DeploymentApi.Edit,
+    data,
+  });
 
 export default {
   list,
@@ -153,5 +159,5 @@ export default {
   remove,
   scale,
   restart,
-  edit
+  edit,
 };

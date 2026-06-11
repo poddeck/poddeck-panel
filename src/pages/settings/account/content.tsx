@@ -14,14 +14,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import SettingsService from "@/api/services/settings-service.ts";
-import {useTranslation} from "react-i18next";
-import {Spinner} from "@/components/ui/spinner.tsx";
-import {toast} from "sonner";
-import {useRouter} from "@/routes/hooks";
-import {useUserActions} from "@/store/user-store.ts";
+import { useTranslation } from "react-i18next";
+import { Spinner } from "@/components/ui/spinner.tsx";
+import { toast } from "sonner";
+import { useRouter } from "@/routes/hooks";
+import { useUserActions } from "@/store/user-store.ts";
 
 export default function AccountPageContent() {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -53,7 +53,9 @@ export default function AccountPageContent() {
     <div className="space-y-6">
       <div>
         <div className="mb-4 w-full border-b border-secondary pb-2">
-          <span className="text-destructive">{t("settings.account.delete.title")}</span>
+          <span className="text-destructive">
+            {t("settings.account.delete.title")}
+          </span>
         </div>
 
         <div className="mb-6">
@@ -82,7 +84,9 @@ export default function AccountPageContent() {
               </AlertDialogHeader>
 
               <div className="space-y-2">
-                <Label htmlFor="password">{t("settings.account.delete.password")}</Label>
+                <Label htmlFor="password">
+                  {t("settings.account.delete.password")}
+                </Label>
                 <Input
                   id="password"
                   type="password"

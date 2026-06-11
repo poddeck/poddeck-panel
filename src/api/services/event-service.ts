@@ -11,7 +11,7 @@ export type Event = {
   first_timestamp: number;
   last_timestamp: number;
   count: number;
-}
+};
 
 export interface EventListRequest {
   start: number;
@@ -21,16 +21,17 @@ export interface EventListRequest {
 
 export type EventListResponse = {
   events: Event[];
-}
+};
 
 export const EventApi = {
   List: "/events/",
 } as const;
 
-const list = (data: EventListRequest) => client.post<EventListResponse>({
-  url: EventApi.List,
-  data
-});
+const list = (data: EventListRequest) =>
+  client.post<EventListResponse>({
+    url: EventApi.List,
+    data,
+  });
 
 export default {
   list,
