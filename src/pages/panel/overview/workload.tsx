@@ -17,7 +17,7 @@ import {
   ChartContainer,
   type ChartConfig,
 } from "@/components/ui/chart"
-import {useTranslation} from "react-i18next";
+import { useTranslation } from "react-i18next";
 import {
   Cpu,
   Gauge,
@@ -25,7 +25,7 @@ import {
   HardDrive,
   type LucideIcon
 } from "lucide-react";
-import {type Node} from "@/api/services/node-service.ts";
+import { type Node } from "@/api/services/node-service.ts";
 
 const CPU_COLOR = "#38bdf8";
 const MEMORY_COLOR = "#34d399";
@@ -58,7 +58,7 @@ export function WorkloadRadialChart(
   const clampedPercentage = Math.min(100, Math.max(0, percentage));
 
   const foregroundData = [
-    {name: "usage", value: clampedPercentage, fill: color},
+    { name: "usage", value: clampedPercentage, fill: color },
   ];
 
   const endAngle = 90 - (360 * (clampedPercentage / 100));
@@ -86,16 +86,14 @@ export function WorkloadRadialChart(
 
           <RadialBar
             dataKey="value"
-            data={foregroundData}
             fill={color}
             opacity={0.9}
-            endAngle={endAngle}
             cornerRadius={10}
           />
 
           <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
             <Label
-              content={({viewBox}) => {
+              content={({ viewBox }) => {
                 if (viewBox && "cx" in viewBox && "cy" in viewBox) {
                   return (
                     <text
@@ -121,15 +119,15 @@ export function WorkloadRadialChart(
       </ChartContainer>
       <span
         className="mt-2 text-sm font-medium text-muted-foreground flex items-center gap-2">
-        <Icon size={16} className="inline"/>
+        <Icon size={16} className="inline" />
         {label}
       </span>
     </div>
   )
 }
 
-export default function OverviewWorkloadBox({nodes}: { nodes: Node[] }) {
-  const {t} = useTranslation();
+export default function OverviewWorkloadBox({ nodes }: { nodes: Node[] }) {
+  const { t } = useTranslation();
   const totalNodes = nodes.length;
   const avgCpuRatio =
     totalNodes > 0 ? nodes.reduce((s, n) => s + n.cpu_ratio, 0) / totalNodes : 0;
@@ -148,7 +146,7 @@ export default function OverviewWorkloadBox({nodes}: { nodes: Node[] }) {
       <CardHeader>
         <CardTitle className="flex gap-2 items-center">
           <Gauge size={18}
-                 className="-translate-y-0.5"/> {t("panel.page.overview.workload.title")}
+            className="-translate-y-0.5" /> {t("panel.page.overview.workload.title")}
         </CardTitle>
       </CardHeader>
       <CardContent className="w-full -mt-3">

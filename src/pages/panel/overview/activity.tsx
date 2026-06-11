@@ -186,10 +186,12 @@ export default function OverviewActivityBox() {
             data={chartData}
             margin={{ top: 10, left: 10, right: 10, bottom: 0 }}
             onMouseMove={(state) => {
-              if (state.activePayload?.length) {
-                setActiveBarStatus(
-                  state.activePayload[0].payload.status
-                );
+              const activeEntry =
+                state.isTooltipActive && state.activeIndex != null
+                  ? chartData[Number(state.activeIndex)]
+                  : undefined;
+              if (activeEntry) {
+                setActiveBarStatus(activeEntry.status);
               }
             }}
             onMouseLeave={() => setActiveBarStatus("success")}
