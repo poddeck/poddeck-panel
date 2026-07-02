@@ -1,5 +1,4 @@
-import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { DataTable } from "@/components/table";
 import PanelPage from "@/layouts/panel";
 import { useTranslation } from "react-i18next";
@@ -8,6 +7,10 @@ import serviceService from "@/api/services/service-service";
 import ServiceService, { type Service } from "@/api/services/service-service";
 import { columns } from "./table-columns";
 import {
+  useAgentQuery,
+  useInvalidateAgentQuery,
+} from "@/hooks/use-agent-query";
+import {
   Empty,
   EmptyContent,
   EmptyDescription,
@@ -15,9 +18,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from "@/components/ui/empty";
-import namespaceService, {
-  type Namespace,
-} from "@/api/services/namespace-service.ts";
+import namespaceService from "@/api/services/namespace-service.ts";
 import { Button } from "@/components/ui/button.tsx";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog.tsx";
 import ServiceAddDialog from "@/pages/panel/services/add-dialog.tsx";
@@ -61,36 +62,16 @@ function ServiceListEmpty() {
 }
 
 export default function ServicesPage() {
-  const [services, setServices] = useState<Service[]>([]);
-  const [namespaces, setNamespaces] = useState<Namespace[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  useEffect(() => {
-    async function loadServices() {
-      try {
-        const response = await serviceService.list();
-        if (response.success != false) {
-          setServices(response.services);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    async function loadNamespaces() {
-      const response = await namespaceService.list();
-      if (response.success !== false) {
-        setNamespaces(response.namespaces);
-      }
-    }
-
-    loadServices();
-    loadNamespaces();
-    const interval = window.setInterval(loadServices, POLL_INTERVAL_MS);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-  if (!isLoading && services.length === 0) {
+  const servicesQuery = useAgentQuery(["services"], serviceService.list);
+  const namespacesQuery = useAgentQuery(["namespaces"], namespaceService.list);
+  const invalidate = useInvalidateAgentQuery();
+  const services = servicesQuery.data?.services ?? [];
+  const namespaces = namespacesQuery.data?.namespaces ?? [];
+  if (
+    !servicesQuery.isLoading &&
+    !servicesQuery.isError &&
+    services.length === 0
+  ) {
     return <ServiceListEmpty />;
   }
   return (
@@ -105,7 +86,10 @@ export default function ServicesPage() {
           data={services}
           pageSize={5}
           initialSorting={[{ id: "namespace", desc: false }]}
-          isLoading={isLoading}
+          isLoading={servicesQuery.isLoading}
+          isFetching={servicesQuery.isFetching}
+          isError={servicesQuery.isError}
+          onRetry={() => servicesQuery.refetch()}
           visibilityState={{ node: false, ip: false }}
           filters={[
             {
@@ -118,12 +102,14 @@ export default function ServicesPage() {
               name: "panel.page.services.action.delete",
               icon: Trash2,
               onClick: (entries) => {
-                entries.forEach((entry) => {
-                  ServiceService.remove({
-                    namespace: entry.namespace,
-                    service: entry.name,
-                  });
-                });
+                Promise.allSettled(
+                  entries.map((entry) =>
+                    ServiceService.remove({
+                      namespace: entry.namespace,
+                      service: entry.name,
+                    }),
+                  ),
+                ).then(() => invalidate(["services"]));
               },
             },
           ]}

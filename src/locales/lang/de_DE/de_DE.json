@@ -32,6 +32,13 @@
     "empty": "Keine Ergebnisse.",
     "bottom.bar": {
       "selected": "AUSGEWÄHLT"
+    },
+    "refreshing": "Wird aktualisiert…",
+    "error": {
+      "title": "Cluster-Agent nicht erreichbar",
+      "description": "Die Anfrage wurde nicht abgeschlossen. Der Agent ist möglicherweise ausgelastet oder nicht erreichbar.",
+      "retry": "Erneut versuchen",
+      "stale": "Aktualisierung fehlgeschlagen — ältere Daten"
     }
   },
   "authentication": {
@@ -403,6 +410,19 @@
           "name": "Name",
           "cancel": "Abbrechen",
           "submit": "Löschen"
+        },
+        "delete.bulk": {
+          "title_one": "Diesen Pod löschen?",
+          "title_other": "{{count}} Pods löschen?",
+          "description": "Gelöschte Pods werden sofort entfernt. Pods, die zu einem Workload gehören, werden von ihrem Controller neu erstellt.",
+          "cancel": "Abbrechen",
+          "submit": "Löschen",
+          "toast": {
+            "success_one": "Pod gelöscht",
+            "success_other": "{{count}} Pods gelöscht",
+            "error_one": "Der Pod konnte nicht gelöscht werden",
+            "error_other": "{{count}} Pods konnten nicht gelöscht werden"
+          }
         }
       },
       "pod": {

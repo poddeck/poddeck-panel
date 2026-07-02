@@ -4,6 +4,20 @@ import { Toaster } from "@/components/ui/sonner";
 import { MotionLazy } from "./components/animate/motion-lazy";
 import { RouteLoading } from "./components/loading";
 import { ThemeProvider } from "next-themes";
+import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
+
+// Module-level singleton: creating the client inside the component would
+// discard the whole cache on every App re-render.
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: POLL_INTERVAL_MS,
+      refetchOnWindowFocus: true,
+      refetchIntervalInBackground: false,
+      retry: 1,
+    },
+  },
+});
 
 if (import.meta.env.DEV) {
   import("react-scan").then(({ scan }) => {
@@ -18,7 +32,7 @@ if (import.meta.env.DEV) {
 
 function App({ children }: { children: React.ReactNode }) {
   return (
-    <QueryClientProvider client={new QueryClient()}>
+    <QueryClientProvider client={queryClient}>
       <ThemeProvider
         attribute="class"
         defaultTheme="system"

@@ -1,41 +1,15 @@
-import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
 import { useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import podService, { type Pod } from "@/api/services/pod-service.ts";
-
-const podCache: Record<string, Pod> = {};
+import podService from "@/api/services/pod-service.ts";
+import { useAgentQuery } from "@/hooks/use-agent-query.ts";
 
 export default function usePod() {
-  const [pod, setPod] = useState<Pod | null>(null);
   const [searchParams] = useSearchParams();
-
-  useEffect(() => {
-    let isMounted = true;
-    const queryPod = searchParams.get("pod") || "";
-    const queryNamespace = searchParams.get("namespace") || "";
-    const cacheKey = `${queryNamespace}:${queryPod}`;
-
-    async function loadPod() {
-      if (podCache[cacheKey]) {
-        setPod(podCache[cacheKey]);
-      }
-      const response = await podService.find({
-        namespace: queryNamespace,
-        pod: queryPod,
-      });
-      if (response.success && isMounted) {
-        podCache[cacheKey] = response.pod;
-        setPod(response.pod);
-      }
-    }
-
-    loadPod();
-    const interval = window.setInterval(loadPod, POLL_INTERVAL_MS);
-    return () => {
-      isMounted = false;
-      clearInterval(interval);
-    };
-  }, [searchParams]);
-
-  return pod;
+  const queryPod = searchParams.get("pod") || "";
+  const queryNamespace = searchParams.get("namespace") || "";
+  const { data } = useAgentQuery(
+    ["pod", queryNamespace, queryPod],
+    () => podService.find({ namespace: queryNamespace, pod: queryPod }),
+    { enabled: queryPod !== "" },
+  );
+  return data?.pod ?? null;
 }

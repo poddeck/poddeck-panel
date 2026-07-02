@@ -1,10 +1,10 @@
-import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
 import { AppHeader } from "@/layouts/panel/header";
 import { SidebarProvider } from "@/components/ui/sidebar.tsx";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ClusterService, {
   type Cluster,
 } from "@/api/services/cluster-service.ts";
+import { useAgentQuery } from "@/hooks/use-agent-query";
 import useClusterStore, { useClusterActions } from "@/store/cluster-store.ts";
 import { useRouter } from "@/routes/hooks";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog.tsx";
@@ -40,8 +40,6 @@ export type ExtendedCluster = Cluster & {
 
 export default function ClusterPage() {
   const { t } = useTranslation();
-  const [clusters, setClusters] = useState<ExtendedCluster[]>([]);
-  const [loading, setLoading] = useState(true);
   const [dialogMode, setDialogMode] = React.useState("add");
   const [clickedCluster, setClickedCluster] = React.useState<Cluster | null>(
     null,
@@ -49,71 +47,75 @@ export default function ClusterPage() {
   const [open, setOpen] = React.useState(false);
   const { setClusterId } = useClusterActions();
   const currentClusterId = useClusterStore((state) => state.clusterId);
-  const { replace } = useRouter();
+  const { push, replace } = useRouter();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const clusterRes = await ClusterService.list();
-        const rawClusters = clusterRes.clusters;
+  // The full per-cluster fan-out (pods, deployments, namespaces, ...) is
+  // fetched once; only the node lists are polled, matching the previous
+  // behavior of this page.
+  const clustersQuery = useAgentQuery(
+    ["clusters", "extended"],
+    async () => {
+      const clusterRes = await ClusterService.list();
+      const rawClusters = clusterRes.clusters;
 
-        const extended = await Promise.all(
-          rawClusters.map(async (cluster) => {
-            const nodeResponse = await NodeService.listCluster(cluster.id);
-            const podResponse = await PodService.listCluster(cluster.id);
-            const deployResponse = await DeploymentService.listCluster(
-              cluster.id,
-            );
-            const namespaceResponse = await NamespaceService.listCluster(
-              cluster.id,
-            );
-            const notificationResponse =
-              await NotificationService.listSpecificCluster(cluster.id);
-            const serviceResponse = await ServiceService.listCluster(
-              cluster.id,
-            );
-            return {
-              ...cluster,
-              nodes: nodeResponse.nodes ?? [],
-              pods: podResponse.pods ?? [],
-              deployments: deployResponse.deployments ?? [],
-              namespaces: namespaceResponse.namespaces ?? [],
-              notifications:
-                notificationResponse.notifications.filter(
-                  (n) => n.state !== "SEEN",
-                ) ?? [],
-              services: serviceResponse.services ?? [],
-            };
-          }),
-        );
-
-        setClusters(extended);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    if (clusters.length === 0) {
-      return;
-    }
-    const interval = setInterval(async () => {
-      const updatedClusters = await Promise.all(
-        clusters.map(async (cluster) => {
+      const extended = await Promise.all(
+        rawClusters.map(async (cluster) => {
           const nodeResponse = await NodeService.listCluster(cluster.id);
+          const podResponse = await PodService.listCluster(cluster.id);
+          const deployResponse = await DeploymentService.listCluster(
+            cluster.id,
+          );
+          const namespaceResponse = await NamespaceService.listCluster(
+            cluster.id,
+          );
+          const notificationResponse =
+            await NotificationService.listSpecificCluster(cluster.id);
+          const serviceResponse = await ServiceService.listCluster(cluster.id);
           return {
             ...cluster,
-            nodes: nodeResponse.nodes ?? cluster.nodes,
+            nodes: nodeResponse.nodes ?? [],
+            pods: podResponse.pods ?? [],
+            deployments: deployResponse.deployments ?? [],
+            namespaces: namespaceResponse.namespaces ?? [],
+            notifications:
+              notificationResponse.notifications.filter(
+                (n) => n.state !== "SEEN",
+              ) ?? [],
+            services: serviceResponse.services ?? [],
           };
         }),
       );
-      setClusters(updatedClusters);
-    }, POLL_INTERVAL_MS);
 
-    return () => clearInterval(interval);
-  }, [clusters]);
+      return { clusters: extended satisfies ExtendedCluster[] };
+    },
+    { pollInterval: false },
+  );
+
+  const clusterIds = (clustersQuery.data?.clusters ?? []).map(
+    (cluster) => cluster.id,
+  );
+  const nodesQuery = useAgentQuery(
+    ["clusters", "nodes", clusterIds],
+    async () => {
+      const entries = await Promise.all(
+        clusterIds.map(async (id) => {
+          const nodeResponse = await NodeService.listCluster(id);
+          return [id, nodeResponse.nodes] as const;
+        }),
+      );
+      return { nodesByCluster: Object.fromEntries(entries) };
+    },
+    { enabled: clusterIds.length > 0 },
+  );
+
+  const loading = clustersQuery.isLoading;
+  const clusters = React.useMemo(() => {
+    const nodesByCluster = nodesQuery.data?.nodesByCluster;
+    return (clustersQuery.data?.clusters ?? []).map((cluster) => ({
+      ...cluster,
+      nodes: nodesByCluster?.[cluster.id] ?? cluster.nodes,
+    }));
+  }, [clustersQuery.data, nodesQuery.data]);
 
   const sortedClusters = React.useMemo(() => {
     if (!currentClusterId) return clusters;
@@ -127,7 +129,7 @@ export default function ClusterPage() {
 
   function clickCluster(cluster: Cluster) {
     setClusterId(cluster.id);
-    replace("/overview/");
+    push("/overview/");
   }
 
   const handleClusterCreation = () => {

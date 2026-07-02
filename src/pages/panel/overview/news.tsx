@@ -1,7 +1,6 @@
 "use client";
 
-import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
-import { startTransition, useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import {
@@ -21,6 +20,7 @@ import NotificationService, {
   type Notification,
 } from "@/api/services/notification-service.ts";
 import { Age } from "@/components/age/age.tsx";
+import { useAgentQuery } from "@/hooks/use-agent-query";
 
 const getNotificationIconAndColor = (type: Notification["type"]) => {
   switch (type) {
@@ -37,23 +37,13 @@ const getNotificationIconAndColor = (type: Notification["type"]) => {
 
 export default function OverviewNewsBox() {
   const { t } = useTranslation();
-  const [notifications, setNotifications] = useState<Notification[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      const result = await NotificationService.listCluster();
-      if (result.notifications) {
-        startTransition(() => {
-          setNotifications(result.notifications);
-        });
-      }
-    };
-
-    fetchNotifications();
-    const interval = setInterval(fetchNotifications, POLL_INTERVAL_MS);
-    return () => clearInterval(interval);
-  }, []);
+  const notificationsQuery = useAgentQuery(
+    ["notifications"],
+    NotificationService.listCluster,
+  );
+  const notifications = notificationsQuery.data?.notifications ?? [];
 
   const virtualizer = useVirtualizer({
     count: notifications.length,

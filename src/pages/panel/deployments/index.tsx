@@ -1,5 +1,3 @@
-import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
-import { useEffect, useState } from "react";
 import { DataTable } from "@/components/table";
 import PanelPage from "@/layouts/panel";
 import { useTranslation } from "react-i18next";
@@ -17,10 +15,12 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { useRouter } from "@/routes/hooks";
-import namespaceService, {
-  type Namespace,
-} from "@/api/services/namespace-service.ts";
+import namespaceService from "@/api/services/namespace-service.ts";
 import DeploymentService from "@/api/services/deployment-service";
+import {
+  useAgentQuery,
+  useInvalidateAgentQuery,
+} from "@/hooks/use-agent-query";
 import { Button } from "@/components/ui/button.tsx";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog.tsx";
 import DeploymentAddDialog from "@/pages/panel/deployments/add-dialog.tsx";
@@ -63,37 +63,13 @@ function DeploymentListEmpty() {
 }
 
 export default function DeploymentsPage() {
-  const [deployments, setDeployments] = useState<Deployment[]>([]);
-  const [namespaces, setNamespaces] = useState<Namespace[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const { replace } = useRouter();
-  useEffect(() => {
-    async function loadDeployments() {
-      try {
-        const response = await deploymentService.list();
-        if (response.success != false) {
-          setDeployments(response.deployments);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    async function loadNamespaces() {
-      const response = await namespaceService.list();
-      if (response.success !== false) {
-        setNamespaces(response.namespaces);
-      }
-    }
-
-    loadDeployments();
-    loadNamespaces();
-    const interval = window.setInterval(loadDeployments, POLL_INTERVAL_MS);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-  if (!isLoading && deployments.length === 0) {
+  const { push } = useRouter();
+  const invalidate = useInvalidateAgentQuery();
+  const query = useAgentQuery(["deployments"], deploymentService.list);
+  const namespacesQuery = useAgentQuery(["namespaces"], namespaceService.list);
+  const deployments = query.data?.deployments ?? [];
+  const namespaces = namespacesQuery.data?.namespaces ?? [];
+  if (!query.isLoading && !query.isError && deployments.length === 0) {
     return <DeploymentListEmpty />;
   }
   return (
@@ -108,7 +84,10 @@ export default function DeploymentsPage() {
           data={deployments}
           pageSize={5}
           initialSorting={[{ id: "namespace", desc: false }]}
-          isLoading={isLoading}
+          isLoading={query.isLoading}
+          isFetching={query.isFetching}
+          isError={query.isError}
+          onRetry={() => query.refetch()}
           visibilityState={{ node: false, ip: false }}
           filters={[
             {
@@ -117,7 +96,7 @@ export default function DeploymentsPage() {
             },
           ]}
           onClick={(deployment) =>
-            replace(
+            push(
               "/deployment/overview/?" +
                 "deployment=" +
                 deployment.name +
@@ -130,24 +109,28 @@ export default function DeploymentsPage() {
               name: "panel.page.deployments.action.restart",
               icon: RefreshCcw,
               onClick: (entries) => {
-                entries.forEach((entry) => {
-                  DeploymentService.restart({
-                    namespace: entry.namespace,
-                    deployment: entry.name,
-                  });
-                });
+                Promise.allSettled(
+                  entries.map((entry) =>
+                    DeploymentService.restart({
+                      namespace: entry.namespace,
+                      deployment: entry.name,
+                    }),
+                  ),
+                ).then(() => invalidate(["deployments"]));
               },
             },
             {
               name: "panel.page.deployments.action.delete",
               icon: Trash2,
               onClick: (entries) => {
-                entries.forEach((entry) => {
-                  DeploymentService.remove({
-                    namespace: entry.namespace,
-                    deployment: entry.name,
-                  });
-                });
+                Promise.allSettled(
+                  entries.map((entry) =>
+                    DeploymentService.remove({
+                      namespace: entry.namespace,
+                      deployment: entry.name,
+                    }),
+                  ),
+                ).then(() => invalidate(["deployments"]));
               },
             },
           ]}

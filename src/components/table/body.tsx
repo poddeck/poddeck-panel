@@ -8,8 +8,14 @@ import {
 import { TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { CloudOff, RotateCw } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
+
+// Cycling widths make the placeholder read as rows of real, varied content
+// instead of a uniform grid of bars.
+const SKELETON_WIDTHS = ["w-3/4", "w-1/2", "w-full", "w-2/3", "w-2/5"];
 
 function DataRow<T>({
   row,
@@ -107,18 +113,46 @@ export default function DataTableBody<T>({
   table,
   columns,
   isLoading,
+  isError,
+  onRetry,
   pagination,
   onClick,
 }: {
   table: Table<T>;
   columns: ColumnDef<T, unknown>[];
   isLoading?: boolean;
+  isError?: boolean;
+  onRetry?: () => void;
   pagination: PaginationState;
   onClick?: (entry: T) => void;
 }) {
   const { t } = useTranslation();
   const verticalSpacing = pagination.pageSize <= 5 ? 40 : 30;
   const horizontalSpacing = pagination.pageSize <= 5 ? 30 : 25;
+
+  if (isError && !isLoading) {
+    return (
+      <TableBody>
+        <TableRow className="hover:bg-transparent">
+          <TableCell colSpan={columns.length + 1} className="h-48">
+            <div className="flex flex-col items-center justify-center gap-2 text-center">
+              <CloudOff className="size-8 text-muted-foreground" />
+              <p className="font-medium">{t("table.error.title")}</p>
+              <p className="text-sm text-muted-foreground">
+                {t("table.error.description")}
+              </p>
+              {onRetry && (
+                <Button variant="outline" className="mt-2" onClick={onRetry}>
+                  <RotateCw />
+                  {t("table.error.retry")}
+                </Button>
+              )}
+            </div>
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    );
+  }
 
   if (isLoading) {
     return (
@@ -145,7 +179,9 @@ export default function DataTableBody<T>({
                   paddingRight: horizontalSpacing,
                 }}
               >
-                <Skeleton className="h-5 w-full" />
+                <Skeleton
+                  className={`h-5 ${SKELETON_WIDTHS[(rowIndex + cellIndex) % SKELETON_WIDTHS.length]}`}
+                />
               </TableCell>
             ))}
           </TableRow>

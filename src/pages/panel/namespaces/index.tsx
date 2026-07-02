@@ -1,5 +1,3 @@
-import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
-import { useEffect, useState } from "react";
 import { DataTable } from "@/components/table";
 import PanelPage from "@/layouts/panel";
 import { useTranslation } from "react-i18next";
@@ -18,6 +16,10 @@ import {
 } from "@/components/ui/empty";
 import NamespaceAddButton from "./add-button.tsx";
 import NamespaceService from "@/api/services/namespace-service";
+import {
+  useAgentQuery,
+  useInvalidateAgentQuery,
+} from "@/hooks/use-agent-query";
 
 function NamespaceListEmpty() {
   const { t } = useTranslation();
@@ -42,31 +44,17 @@ function NamespaceListEmpty() {
 }
 
 export default function NamespacesPage() {
-  const [namespaces, setNamespaces] = useState<Namespace[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const loadNamespaces = async () => {
-    try {
-      const response = await namespaceService.list();
-      if (response.success !== false) {
-        setNamespaces(response.namespaces);
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  useEffect(() => {
-    loadNamespaces();
-    const interval = window.setInterval(loadNamespaces, POLL_INTERVAL_MS);
-    return () => clearInterval(interval);
-  }, []);
-  if (!isLoading && namespaces.length === 0) {
+  const invalidate = useInvalidateAgentQuery();
+  const query = useAgentQuery(["namespaces"], namespaceService.list);
+  const namespaces = query.data?.namespaces ?? [];
+  if (!query.isLoading && !query.isError && namespaces.length === 0) {
     return <NamespaceListEmpty />;
   }
   return (
     <PanelPage title="panel.page.namespaces.title">
       <div className="mt-[4vh]">
         <div className="flex items-center justify-end mb-[4vh]">
-          <NamespaceAddButton onCreation={loadNamespaces} />
+          <NamespaceAddButton onCreation={() => invalidate(["namespaces"])} />
         </div>
         <DataTable<Namespace>
           name="namespaces"
@@ -74,17 +62,22 @@ export default function NamespacesPage() {
           data={namespaces}
           pageSize={5}
           initialSorting={[{ id: "name", desc: false }]}
-          isLoading={isLoading}
+          isLoading={query.isLoading}
+          isFetching={query.isFetching}
+          isError={query.isError}
+          onRetry={() => query.refetch()}
           bulkActions={[
             {
               name: "panel.page.namespaces.action.delete",
               icon: Trash2,
               onClick: (entries) => {
-                entries.forEach((entry) => {
-                  NamespaceService.remove({
-                    name: entry.name,
-                  });
-                });
+                Promise.allSettled(
+                  entries.map((entry) =>
+                    NamespaceService.remove({
+                      name: entry.name,
+                    }),
+                  ),
+                ).then(() => invalidate(["namespaces"]));
               },
             },
           ]}

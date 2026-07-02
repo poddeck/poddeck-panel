@@ -1,5 +1,3 @@
-import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
-import { useEffect, useState } from "react";
 import { DataTable } from "@/components/table";
 import PanelPage from "@/layouts/panel";
 import { useTranslation } from "react-i18next";
@@ -16,9 +14,11 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { useRouter } from "@/routes/hooks";
-import namespaceService, {
-  type Namespace,
-} from "@/api/services/namespace-service.ts";
+import namespaceService from "@/api/services/namespace-service.ts";
+import {
+  useAgentQuery,
+  useInvalidateAgentQuery,
+} from "@/hooks/use-agent-query";
 import { Button } from "@/components/ui/button.tsx";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog.tsx";
 import CronJobAddDialog from "@/pages/panel/cron-jobs/add-dialog.tsx";
@@ -61,37 +61,13 @@ function CronJobListEmpty() {
 }
 
 export default function CronJobsPage() {
-  const [cronJobs, setCronJobs] = useState<CronJob[]>([]);
-  const [namespaces, setNamespaces] = useState<Namespace[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const { replace } = useRouter();
-  useEffect(() => {
-    async function loadCronJobs() {
-      try {
-        const response = await cronJobService.list();
-        if (response.success != false) {
-          setCronJobs(response.cron_jobs);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    async function loadNamespaces() {
-      const response = await namespaceService.list();
-      if (response.success !== false) {
-        setNamespaces(response.namespaces);
-      }
-    }
-
-    loadCronJobs();
-    loadNamespaces();
-    const interval = window.setInterval(loadCronJobs, POLL_INTERVAL_MS);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-  if (!isLoading && cronJobs.length === 0) {
+  const { push } = useRouter();
+  const invalidate = useInvalidateAgentQuery();
+  const query = useAgentQuery(["cron-jobs"], cronJobService.list);
+  const namespacesQuery = useAgentQuery(["namespaces"], namespaceService.list);
+  const cronJobs = query.data?.cron_jobs ?? [];
+  const namespaces = namespacesQuery.data?.namespaces ?? [];
+  if (!query.isLoading && !query.isError && cronJobs.length === 0) {
     return <CronJobListEmpty />;
   }
   return (
@@ -106,7 +82,10 @@ export default function CronJobsPage() {
           data={cronJobs}
           pageSize={5}
           initialSorting={[{ id: "namespace", desc: false }]}
-          isLoading={isLoading}
+          isLoading={query.isLoading}
+          isFetching={query.isFetching}
+          isError={query.isError}
+          onRetry={() => query.refetch()}
           visibilityState={{ node: false, ip: false }}
           filters={[
             {
@@ -115,7 +94,7 @@ export default function CronJobsPage() {
             },
           ]}
           onClick={(cronJob) =>
-            replace(
+            push(
               "/cron-job/overview/?" +
                 "cron-job=" +
                 cronJob.name +
@@ -128,12 +107,14 @@ export default function CronJobsPage() {
               name: "panel.page.cron-jobs.action.delete",
               icon: Trash2,
               onClick: (entries) => {
-                entries.forEach((entry) => {
-                  CronJobService.remove({
-                    namespace: entry.namespace,
-                    cron_job: entry.name,
-                  });
-                });
+                Promise.allSettled(
+                  entries.map((entry) =>
+                    CronJobService.remove({
+                      namespace: entry.namespace,
+                      cron_job: entry.name,
+                    }),
+                  ),
+                ).then(() => invalidate(["cron-jobs"]));
               },
             },
           ]}

@@ -1,37 +1,14 @@
-import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
 import { useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import nodeService, { type Node } from "@/api/services/node-service.ts";
-
-const nodeCache: Record<string, Node> = {};
+import nodeService from "@/api/services/node-service.ts";
+import { useAgentQuery } from "@/hooks/use-agent-query.ts";
 
 export default function useNode() {
-  const [node, setNode] = useState<Node | null>(null);
   const [searchParams] = useSearchParams();
-
-  useEffect(() => {
-    let isMounted = true;
-    const queryNode = searchParams.get("node") || "";
-    const cacheKey = `${queryNode}`;
-
-    async function loadNode() {
-      if (nodeCache[cacheKey]) {
-        setNode(nodeCache[cacheKey]);
-      }
-      const response = await nodeService.find({ name: queryNode });
-      if (response.success && isMounted) {
-        nodeCache[cacheKey] = response.node;
-        setNode(response.node);
-      }
-    }
-
-    loadNode();
-    const interval = window.setInterval(loadNode, POLL_INTERVAL_MS);
-    return () => {
-      isMounted = false;
-      clearInterval(interval);
-    };
-  }, [searchParams]);
-
-  return node;
+  const queryNode = searchParams.get("node") || "";
+  const { data } = useAgentQuery(
+    ["node", queryNode],
+    () => nodeService.find({ name: queryNode }),
+    { enabled: queryNode !== "" },
+  );
+  return data?.node ?? null;
 }

@@ -1,7 +1,7 @@
-import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
 import PanelPage from "@/layouts/panel";
-import { useEffect, useState } from "react";
-import EventService, { type Event } from "@/api/services/event-service.ts";
+import { useState } from "react";
+import EventService from "@/api/services/event-service.ts";
+import { useAgentQuery } from "@/hooks/use-agent-query";
 import {
   CalendarClock,
   CalendarIcon,
@@ -78,8 +78,6 @@ const types: Option[] = [
 
 export default function EventsPage() {
   const { t } = useTranslation();
-  const [events, setEvents] = useState<Event[]>([]);
-  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [selectedValues, setSelectedValues] = useState<Option[]>([]);
   const [limit, setLimit] = useState("100");
@@ -88,43 +86,34 @@ export default function EventsPage() {
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
 
-  useEffect(() => {
-    async function loadEvents() {
-      try {
-        const now = Date.now();
-        const sixtyMinutesAgo = now - 24 * 60 * 60 * 1000;
-        const response = await EventService.list({
-          start: startDate?.getTime() || sixtyMinutesAgo,
-          end: endDate?.getTime() || now,
-          limit: parseInt(limit, 10),
-        });
-        const filteredEvents = response.events.filter((event) => {
-          if (
-            selectedValues.length > 0 &&
-            !selectedValues
-              .map((v) => v.value)
-              .includes(event.type.toLowerCase())
-          ) {
-            return false;
-          }
-          if (
-            search &&
-            !event.message.toLowerCase().includes(search.toLowerCase())
-          ) {
-            return false;
-          }
-          return true;
-        });
-        setEvents(filteredEvents);
-      } finally {
-        setLoading(false);
-      }
+  const eventsQuery = useAgentQuery(
+    ["events", startDate?.getTime() ?? null, endDate?.getTime() ?? null, limit],
+    () => {
+      const now = Date.now();
+      const sixtyMinutesAgo = now - 24 * 60 * 60 * 1000;
+      return EventService.list({
+        start: startDate?.getTime() || sixtyMinutesAgo,
+        end: endDate?.getTime() || now,
+        limit: parseInt(limit, 10),
+      });
+    },
+  );
+  const loading = eventsQuery.isLoading;
+  const events = (eventsQuery.data?.events ?? []).filter((event) => {
+    if (
+      selectedValues.length > 0 &&
+      !selectedValues.map((v) => v.value).includes(event.type.toLowerCase())
+    ) {
+      return false;
     }
-
-    loadEvents();
-    const interval = setInterval(loadEvents, POLL_INTERVAL_MS);
-    return () => clearInterval(interval);
-  }, [startDate, endDate, limit, selectedValues, search]);
+    if (
+      search &&
+      !event.message.toLowerCase().includes(search.toLowerCase())
+    ) {
+      return false;
+    }
+    return true;
+  });
 
   return (
     <PanelPage title="panel.page.events.title">

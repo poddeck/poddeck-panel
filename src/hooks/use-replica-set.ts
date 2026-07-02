@@ -1,43 +1,19 @@
-import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
 import { useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import replicaSetService, {
-  type ReplicaSet,
-} from "@/api/services/replica-set-service.ts";
-
-const replicaSetCache: Record<string, ReplicaSet> = {};
+import replicaSetService from "@/api/services/replica-set-service.ts";
+import { useAgentQuery } from "@/hooks/use-agent-query.ts";
 
 export default function useReplicaSet() {
-  const [replicaSet, setReplicaSet] = useState<ReplicaSet | null>(null);
   const [searchParams] = useSearchParams();
-
-  useEffect(() => {
-    let isMounted = true;
-    const queryReplicaSet = searchParams.get("replica-set") || "";
-    const queryNamespace = searchParams.get("namespace") || "";
-    const cacheKey = `${queryNamespace}:${queryReplicaSet}`;
-
-    async function loadReplicaSet() {
-      if (replicaSetCache[cacheKey]) {
-        setReplicaSet(replicaSetCache[cacheKey]);
-      }
-      const response = await replicaSetService.find({
+  const queryReplicaSet = searchParams.get("replica-set") || "";
+  const queryNamespace = searchParams.get("namespace") || "";
+  const { data } = useAgentQuery(
+    ["replica-set", queryNamespace, queryReplicaSet],
+    () =>
+      replicaSetService.find({
         namespace: queryNamespace,
         replica_set: queryReplicaSet,
-      });
-      if (response.success && isMounted) {
-        replicaSetCache[cacheKey] = response.replica_set;
-        setReplicaSet(response.replica_set);
-      }
-    }
-
-    loadReplicaSet();
-    const interval = window.setInterval(loadReplicaSet, POLL_INTERVAL_MS);
-    return () => {
-      isMounted = false;
-      clearInterval(interval);
-    };
-  }, [searchParams]);
-
-  return replicaSet;
+      }),
+    { enabled: queryReplicaSet !== "" },
+  );
+  return data?.replica_set ?? null;
 }

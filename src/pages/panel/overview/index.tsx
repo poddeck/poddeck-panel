@@ -1,4 +1,3 @@
-import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
 import PanelPage from "@/layouts/panel";
 import OverviewStatusBox from "@/pages/panel/overview/status.tsx";
 import OverviewWorkloadBox from "@/pages/panel/overview/workload.tsx";
@@ -6,27 +5,13 @@ import OverviewLocationBox from "@/pages/panel/overview/location.tsx";
 import OverviewActivityBox from "@/pages/panel/overview/activity.tsx";
 import OverviewNodesBox from "@/pages/panel/overview/nodes.tsx";
 import OverviewNewsBox from "@/pages/panel/overview/news.tsx";
-import { startTransition, useEffect, useState } from "react";
-import nodeService, { type Node } from "@/api/services/node-service.ts";
+import nodeService from "@/api/services/node-service.ts";
+import { useAgentQuery } from "@/hooks/use-agent-query";
 
 export default function OverviewPage() {
-  const [nodes, setNodes] = useState<Node[]>([]);
-
-  useEffect(() => {
-    async function loadNodes() {
-      const response = await nodeService.list();
-      if (response.success !== false) {
-        startTransition(() => {
-          setNodes(response.nodes);
-        });
-      }
-    }
-    loadNodes();
-    const interval = window.setInterval(loadNodes, POLL_INTERVAL_MS);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+  // Shares the ["nodes"] cache entry with the nodes page.
+  const nodesQuery = useAgentQuery(["nodes"], nodeService.list);
+  const nodes = nodesQuery.data?.nodes ?? [];
   return (
     <PanelPage title="panel.page.overview.title" layout={false}>
       <div className="w-[min(1800px,95%)] mx-auto flex flex-col flex-1 mt-[4vh]">

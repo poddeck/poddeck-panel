@@ -1,5 +1,3 @@
-import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
-import { useEffect, useState } from "react";
 import { DataTable } from "@/components/table";
 import PanelPage from "@/layouts/panel";
 import { useTranslation } from "react-i18next";
@@ -17,10 +15,12 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { useRouter } from "@/routes/hooks";
-import namespaceService, {
-  type Namespace,
-} from "@/api/services/namespace-service.ts";
+import namespaceService from "@/api/services/namespace-service.ts";
 import DaemonSetService from "@/api/services/daemon-set-service";
+import {
+  useAgentQuery,
+  useInvalidateAgentQuery,
+} from "@/hooks/use-agent-query";
 import { Button } from "@/components/ui/button.tsx";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog.tsx";
 import DaemonSetAddDialog from "@/pages/panel/daemon-sets/add-dialog.tsx";
@@ -63,37 +63,13 @@ function DaemonSetListEmpty() {
 }
 
 export default function DaemonSetsPage() {
-  const [daemonSets, setDaemonSets] = useState<DaemonSet[]>([]);
-  const [namespaces, setNamespaces] = useState<Namespace[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const { replace } = useRouter();
-  useEffect(() => {
-    async function loadDaemonSets() {
-      try {
-        const response = await daemonSetService.list();
-        if (response.success != false) {
-          setDaemonSets(response.daemon_sets);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    async function loadNamespaces() {
-      const response = await namespaceService.list();
-      if (response.success !== false) {
-        setNamespaces(response.namespaces);
-      }
-    }
-
-    loadDaemonSets();
-    loadNamespaces();
-    const interval = window.setInterval(loadDaemonSets, POLL_INTERVAL_MS);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-  if (!isLoading && daemonSets.length === 0) {
+  const { push } = useRouter();
+  const invalidate = useInvalidateAgentQuery();
+  const query = useAgentQuery(["daemon-sets"], daemonSetService.list);
+  const namespacesQuery = useAgentQuery(["namespaces"], namespaceService.list);
+  const daemonSets = query.data?.daemon_sets ?? [];
+  const namespaces = namespacesQuery.data?.namespaces ?? [];
+  if (!query.isLoading && !query.isError && daemonSets.length === 0) {
     return <DaemonSetListEmpty />;
   }
   return (
@@ -108,7 +84,10 @@ export default function DaemonSetsPage() {
           data={daemonSets}
           pageSize={5}
           initialSorting={[{ id: "namespace", desc: false }]}
-          isLoading={isLoading}
+          isLoading={query.isLoading}
+          isFetching={query.isFetching}
+          isError={query.isError}
+          onRetry={() => query.refetch()}
           visibilityState={{ node: false, ip: false }}
           filters={[
             {
@@ -117,7 +96,7 @@ export default function DaemonSetsPage() {
             },
           ]}
           onClick={(daemonSet) =>
-            replace(
+            push(
               "/daemon-set/overview/?" +
                 "daemon-set=" +
                 daemonSet.name +
@@ -130,24 +109,28 @@ export default function DaemonSetsPage() {
               name: "panel.page.daemon-sets.action.restart",
               icon: RefreshCcw,
               onClick: (entries) => {
-                entries.forEach((entry) => {
-                  DaemonSetService.restart({
-                    namespace: entry.namespace,
-                    daemon_set: entry.name,
-                  });
-                });
+                Promise.allSettled(
+                  entries.map((entry) =>
+                    DaemonSetService.restart({
+                      namespace: entry.namespace,
+                      daemon_set: entry.name,
+                    }),
+                  ),
+                ).then(() => invalidate(["daemon-sets"]));
               },
             },
             {
               name: "panel.page.daemon-sets.action.delete",
               icon: Trash2,
               onClick: (entries) => {
-                entries.forEach((entry) => {
-                  DaemonSetService.remove({
-                    namespace: entry.namespace,
-                    daemon_set: entry.name,
-                  });
-                });
+                Promise.allSettled(
+                  entries.map((entry) =>
+                    DaemonSetService.remove({
+                      namespace: entry.namespace,
+                      daemon_set: entry.name,
+                    }),
+                  ),
+                ).then(() => invalidate(["daemon-sets"]));
               },
             },
           ]}

@@ -1,43 +1,19 @@
-import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
 import { useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import deploymentService, {
-  type Deployment,
-} from "@/api/services/deployment-service.ts";
-
-const deploymentCache: Record<string, Deployment> = {};
+import deploymentService from "@/api/services/deployment-service.ts";
+import { useAgentQuery } from "@/hooks/use-agent-query.ts";
 
 export default function useDeployment() {
-  const [deployment, setDeployment] = useState<Deployment | null>(null);
   const [searchParams] = useSearchParams();
-
-  useEffect(() => {
-    let isMounted = true;
-    const queryDeployment = searchParams.get("deployment") || "";
-    const queryNamespace = searchParams.get("namespace") || "";
-    const cacheKey = `${queryNamespace}:${queryDeployment}`;
-
-    async function loadDeployment() {
-      if (deploymentCache[cacheKey]) {
-        setDeployment(deploymentCache[cacheKey]);
-      }
-      const response = await deploymentService.find({
+  const queryDeployment = searchParams.get("deployment") || "";
+  const queryNamespace = searchParams.get("namespace") || "";
+  const { data } = useAgentQuery(
+    ["deployment", queryNamespace, queryDeployment],
+    () =>
+      deploymentService.find({
         namespace: queryNamespace,
         deployment: queryDeployment,
-      });
-      if (response.success && isMounted) {
-        deploymentCache[cacheKey] = response.deployment;
-        setDeployment(response.deployment);
-      }
-    }
-
-    loadDeployment();
-    const interval = window.setInterval(loadDeployment, POLL_INTERVAL_MS);
-    return () => {
-      isMounted = false;
-      clearInterval(interval);
-    };
-  }, [searchParams]);
-
-  return deployment;
+      }),
+    { enabled: queryDeployment !== "" },
+  );
+  return data?.deployment ?? null;
 }

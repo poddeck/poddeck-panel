@@ -1,4 +1,3 @@
-import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
 import {
   Sheet,
   SheetContent,
@@ -13,32 +12,29 @@ import { Bell } from "lucide-react";
 import { Badge } from "@/components/ui/badge.tsx";
 import * as React from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import NotificationService, {
-  type Notification,
-} from "@/api/services/notification-service.ts";
+import NotificationService from "@/api/services/notification-service.ts";
 import { useTranslation } from "react-i18next";
 import NotificationAlert from "@/layouts/panel/header/notification/alert.tsx";
+import { useAgentQuery } from "@/hooks/use-agent-query";
 
 export default function NotificationSheet({ cluster }: { cluster: boolean }) {
   const { t } = useTranslation();
-  const [notifications, setNotifications] = React.useState<Notification[]>([]);
+  // Notifications marked as seen locally, so the badge updates immediately
+  // without waiting for the next poll to reflect the server-side state.
+  const [seenIds, setSeenIds] = React.useState<ReadonlySet<string>>(
+    () => new Set(),
+  );
   const scrollRef = React.useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
-    const fetchNotifications = () => {
-      const result = cluster
-        ? NotificationService.listCluster()
-        : NotificationService.listAll();
-
-      result.then(({ notifications }) => {
-        setNotifications(notifications ?? []);
-      });
-    };
-
-    fetchNotifications();
-    const interval = setInterval(fetchNotifications, POLL_INTERVAL_MS);
-    return () => clearInterval(interval);
-  }, [cluster]);
+  // Polls even while the sheet is closed: the unseen-count badge on the
+  // trigger has to stay up to date.
+  const notificationsQuery = useAgentQuery(
+    cluster ? ["notifications"] : ["notifications", "all"],
+    cluster ? NotificationService.listCluster : NotificationService.listAll,
+  );
+  const notifications = (notificationsQuery.data?.notifications ?? []).map(
+    (n) => (seenIds.has(n.id) ? { ...n, state: "SEEN" as const } : n),
+  );
 
   const virtualizer = useVirtualizer({
     count: notifications.length,
@@ -48,9 +44,7 @@ export default function NotificationSheet({ cluster }: { cluster: boolean }) {
   });
 
   const handleSeen = React.useCallback((id: string) => {
-    setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, state: "SEEN" } : n)),
-    );
+    setSeenIds((prev) => new Set(prev).add(id));
   }, []);
 
   const unseenCount = notifications.filter((n) => n.state !== "SEEN").length;

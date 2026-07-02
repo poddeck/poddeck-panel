@@ -1,5 +1,3 @@
-import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
-import { useEffect, useState } from "react";
 import { DataTable } from "@/components/table";
 import PanelPage from "@/layouts/panel";
 import { Button } from "@/components/ui/button.tsx";
@@ -21,6 +19,7 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { useRouter } from "@/routes/hooks";
+import { useAgentQuery } from "@/hooks/use-agent-query";
 
 function NodeAddButton() {
   const { t } = useTranslation();
@@ -64,27 +63,10 @@ function NodeListEmpty() {
 }
 
 export default function NodesPage() {
-  const [nodes, setNodes] = useState<Node[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const { replace } = useRouter();
-  useEffect(() => {
-    async function loadNodes() {
-      try {
-        const response = await nodeService.list();
-        if (response.success != false) {
-          setNodes(response.nodes);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    loadNodes();
-    const interval = window.setInterval(loadNodes, POLL_INTERVAL_MS);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-  if (!isLoading && nodes.length === 0) {
+  const { push } = useRouter();
+  const query = useAgentQuery(["nodes"], nodeService.list);
+  const nodes = query.data?.nodes ?? [];
+  if (!query.isLoading && !query.isError && nodes.length === 0) {
     return <NodeListEmpty />;
   }
   return (
@@ -99,8 +81,11 @@ export default function NodesPage() {
           data={nodes}
           pageSize={5}
           initialSorting={[{ id: "name", desc: false }]}
-          isLoading={isLoading}
-          onClick={(node) => replace("/node/overview/?node=" + node.name)}
+          isLoading={query.isLoading}
+          isFetching={query.isFetching}
+          isError={query.isError}
+          onRetry={() => query.refetch()}
+          onClick={(node) => push("/node/overview/?node=" + node.name)}
           bulkActions={[
             {
               name: "panel.page.nodes.action.delete",

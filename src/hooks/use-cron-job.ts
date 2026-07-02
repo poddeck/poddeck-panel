@@ -1,43 +1,19 @@
-import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
 import { useSearchParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import cronJobService, {
-  type CronJob,
-} from "@/api/services/cron-job-service.ts";
-
-const cronJobCache: Record<string, CronJob> = {};
+import cronJobService from "@/api/services/cron-job-service.ts";
+import { useAgentQuery } from "@/hooks/use-agent-query.ts";
 
 export default function useCronJob() {
-  const [cronJob, setCronJob] = useState<CronJob | null>(null);
   const [searchParams] = useSearchParams();
-
-  useEffect(() => {
-    let isMounted = true;
-    const queryCronJob = searchParams.get("cron-job") || "";
-    const queryNamespace = searchParams.get("namespace") || "";
-    const cacheKey = `${queryNamespace}:${queryCronJob}`;
-
-    async function loadCronJob() {
-      if (cronJobCache[cacheKey]) {
-        setCronJob(cronJobCache[cacheKey]);
-      }
-      const response = await cronJobService.find({
+  const queryCronJob = searchParams.get("cron-job") || "";
+  const queryNamespace = searchParams.get("namespace") || "";
+  const { data } = useAgentQuery(
+    ["cron-job", queryNamespace, queryCronJob],
+    () =>
+      cronJobService.find({
         namespace: queryNamespace,
         cron_job: queryCronJob,
-      });
-      if (response.success && isMounted) {
-        cronJobCache[cacheKey] = response.cron_job;
-        setCronJob(response.cron_job);
-      }
-    }
-
-    loadCronJob();
-    const interval = window.setInterval(loadCronJob, POLL_INTERVAL_MS);
-    return () => {
-      isMounted = false;
-      clearInterval(interval);
-    };
-  }, [searchParams]);
-
-  return cronJob;
+      }),
+    { enabled: queryCronJob !== "" },
+  );
+  return data?.cron_job ?? null;
 }

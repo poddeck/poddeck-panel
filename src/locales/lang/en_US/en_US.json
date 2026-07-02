@@ -32,6 +32,13 @@
     "empty": "No results.",
     "bottom.bar": {
       "selected": "SELECTED"
+    },
+    "refreshing": "Refreshing…",
+    "error": {
+      "title": "Couldn't reach the cluster agent",
+      "description": "The request didn't complete. The agent may be busy or unreachable.",
+      "retry": "Try again",
+      "stale": "Couldn't refresh — showing older data"
     }
   },
   "authentication": {
@@ -403,6 +410,19 @@
           "name": "Name",
           "cancel": "Cancel",
           "submit": "Delete"
+        },
+        "delete.bulk": {
+          "title_one": "Delete this pod?",
+          "title_other": "Delete {{count}} pods?",
+          "description": "Deleted pods are removed immediately. Pods managed by a workload will be recreated by their controller.",
+          "cancel": "Cancel",
+          "submit": "Delete",
+          "toast": {
+            "success_one": "Pod deleted",
+            "success_other": "{{count}} pods deleted",
+            "error_one": "The pod could not be deleted",
+            "error_other": "{{count}} pods could not be deleted"
+          }
         }
       },
       "pod": {

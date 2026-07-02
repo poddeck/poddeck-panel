@@ -20,8 +20,10 @@ import DataTableHeader from "./header.tsx";
 import DataTableBody from "./body.tsx";
 import DataTablePagination from "./pagination.tsx";
 import { Input } from "@/components/ui/input.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { Spinner } from "@/components/ui/spinner.tsx";
 import { useTranslation } from "react-i18next";
-import { Search } from "lucide-react";
+import { RotateCw, Search, TriangleAlert } from "lucide-react";
 import {
   type DataTableFilterOption,
   DataTableFilters,
@@ -37,11 +39,32 @@ interface DataTableProps<T> {
   data: T[];
   pageSize?: number;
   isLoading?: boolean;
+  /** True while a background refresh is in flight; shows a subtle spinner. */
+  isFetching?: boolean;
+  /** True when the latest fetch failed. With data present a stale-data warning
+   * is shown; without data the body renders a full error state. */
+  isError?: boolean;
+  onRetry?: () => void;
   visibilityState?: VisibilityState;
   filters?: DataTableFilterOption[];
   defaultFilters?: Record<string, string>;
   onClick?: (entry: T) => void;
   bulkActions?: DataTableBottomBarAction<T>[];
+}
+
+// Only surface the refresh spinner once a fetch has been in flight for a
+// moment — fast polls shouldn't strobe the toolbar every few seconds.
+function useDelayedFlag(active: boolean, delayMs = 400) {
+  const [shown, setShown] = useState(false);
+  if (!active && shown) {
+    setShown(false);
+  }
+  useEffect(() => {
+    if (!active) return;
+    const timer = window.setTimeout(() => setShown(true), delayMs);
+    return () => window.clearTimeout(timer);
+  }, [active, delayMs]);
+  return shown;
 }
 
 export function DataTable<T>({
@@ -51,6 +74,9 @@ export function DataTable<T>({
   data,
   pageSize = 10,
   isLoading,
+  isFetching,
+  isError,
+  onRetry,
   visibilityState,
   filters,
   defaultFilters = {},
@@ -122,19 +148,53 @@ export function DataTable<T>({
     autoResetPageIndex: false,
   });
 
+  const showRefreshing = useDelayedFlag(
+    Boolean(isFetching && !isLoading && !isError),
+  );
+  const showStaleWarning = Boolean(isError && data.length > 0);
+
   return (
     <div className="space-y-4 mb-4">
       <div className="flex justify-between items-center">
-        <div className="relative">
-          <div className="text-muted-foreground pointer-events-none absolute inset-y-0 left-0 flex items-center justify-center pl-3 peer-disabled:opacity-50">
-            <Search className="size-4" />
+        <div className="flex items-center gap-3">
+          <div className="relative">
+            <div className="text-muted-foreground pointer-events-none absolute inset-y-0 left-0 flex items-center justify-center pl-3 peer-disabled:opacity-50">
+              <Search className="size-4" />
+            </div>
+            <Input
+              placeholder={t("table.search")}
+              value={globalFilter}
+              onChange={(e) => setGlobalFilter(String(e.target.value))}
+              className="max-w-sm peer pl-9"
+            />
           </div>
-          <Input
-            placeholder={t("table.search")}
-            value={globalFilter}
-            onChange={(e) => setGlobalFilter(String(e.target.value))}
-            className="max-w-sm peer pl-9"
-          />
+          {showStaleWarning ? (
+            <div className="flex items-center gap-1.5 text-sm text-amber-600 dark:text-amber-500">
+              <TriangleAlert className="size-4 shrink-0" />
+              <span className="max-md:hidden">{t("table.error.stale")}</span>
+              {onRetry && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-7"
+                  onClick={onRetry}
+                  aria-label={t("table.error.retry")}
+                >
+                  <RotateCw />
+                </Button>
+              )}
+            </div>
+          ) : (
+            showRefreshing && (
+              <div
+                role="status"
+                aria-label={t("table.refreshing")}
+                className="text-muted-foreground"
+              >
+                <Spinner className="size-4" />
+              </div>
+            )
+          )}
         </div>
         <div>
           {filters && (
@@ -166,6 +226,8 @@ export function DataTable<T>({
             table={table}
             columns={columns}
             isLoading={isLoading}
+            isError={isError && data.length === 0}
+            onRetry={onRetry}
             pagination={pagination}
             onClick={onClick}
           />
@@ -176,9 +238,13 @@ export function DataTable<T>({
         </Table>
       </div>
 
-      {!isLoading && (
-        <DataTablePagination table={table} pagination={pagination} />
-      )}
+      {/* Reserve the pagination row's height while loading so the layout
+          doesn't jump when data arrives. */}
+      <div className="min-h-9">
+        {!isLoading && !(isError && data.length === 0) && (
+          <DataTablePagination table={table} pagination={pagination} />
+        )}
+      </div>
     </div>
   );
 }

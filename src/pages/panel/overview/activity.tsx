@@ -1,7 +1,6 @@
 "use client";
 
-import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
-import { startTransition, useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Bar, BarChart, CartesianGrid, Rectangle, XAxis } from "recharts";
 import { Activity } from "lucide-react";
@@ -14,6 +13,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart";
 import EventService, { type Event } from "@/api/services/event-service.ts";
+import { useAgentQuery } from "@/hooks/use-agent-query";
 
 type ActivityStatus = "success" | "warning" | "error";
 
@@ -105,37 +105,25 @@ const mapEventsToChartData = (events: Event[]): ActivityData[] => {
 
 export default function OverviewActivityBox() {
   const { t } = useTranslation();
-  const [chartData, setChartData] = useState<ActivityData[]>([]);
   const [activeBarStatus, setActiveBarStatus] =
     useState<ActivityStatus>("success");
 
-  useEffect(() => {
-    async function loadEvents() {
-      const now = Date.now();
-      const last24h = now - 24 * 60 * 60 * 1000;
-
-      try {
-        const response = await EventService.list({
-          start: last24h,
-          end: now,
-          limit: 10000,
-        });
-
-        const aggregated = mapEventsToChartData(response.events as Event[]);
-
-        startTransition(() => {
-          setChartData(aggregated);
-        });
-      } catch (err) {
-        console.error("Failed to load events", err);
-      }
-    }
-
-    loadEvents();
-
-    const interval = setInterval(loadEvents, POLL_INTERVAL_MS);
-    return () => clearInterval(interval);
-  }, []);
+  const eventsQuery = useAgentQuery(["events", "last-24h"], () => {
+    const now = Date.now();
+    const last24h = now - 24 * 60 * 60 * 1000;
+    return EventService.list({
+      start: last24h,
+      end: now,
+      limit: 10000,
+    });
+  });
+  const chartData = useMemo(
+    () =>
+      eventsQuery.data
+        ? mapEventsToChartData(eventsQuery.data.events as Event[])
+        : [],
+    [eventsQuery.data],
+  );
 
   const getBarFillColor = (data: ActivityData) =>
     chartConfig[data.status].color;

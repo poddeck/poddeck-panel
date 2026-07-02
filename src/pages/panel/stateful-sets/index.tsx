@@ -1,5 +1,3 @@
-import { POLL_INTERVAL_MS } from "@/lib/constants.ts";
-import { useEffect, useState } from "react";
 import { DataTable } from "@/components/table";
 import PanelPage from "@/layouts/panel";
 import { useTranslation } from "react-i18next";
@@ -17,10 +15,12 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { useRouter } from "@/routes/hooks";
-import namespaceService, {
-  type Namespace,
-} from "@/api/services/namespace-service.ts";
+import namespaceService from "@/api/services/namespace-service.ts";
 import StatefulSetService from "@/api/services/stateful-set-service";
+import {
+  useAgentQuery,
+  useInvalidateAgentQuery,
+} from "@/hooks/use-agent-query";
 import { Button } from "@/components/ui/button.tsx";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog.tsx";
 import StatefulSetAddDialog from "@/pages/panel/stateful-sets/add-dialog.tsx";
@@ -63,37 +63,13 @@ function StatefulSetListEmpty() {
 }
 
 export default function StatefulSetsPage() {
-  const [statefulSets, setStatefulSets] = useState<StatefulSet[]>([]);
-  const [namespaces, setNamespaces] = useState<Namespace[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const { replace } = useRouter();
-  useEffect(() => {
-    async function loadStatefulSets() {
-      try {
-        const response = await statefulSetService.list();
-        if (response.success != false) {
-          setStatefulSets(response.stateful_sets);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    async function loadNamespaces() {
-      const response = await namespaceService.list();
-      if (response.success !== false) {
-        setNamespaces(response.namespaces);
-      }
-    }
-
-    loadStatefulSets();
-    loadNamespaces();
-    const interval = window.setInterval(loadStatefulSets, POLL_INTERVAL_MS);
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-  if (!isLoading && statefulSets.length === 0) {
+  const { push } = useRouter();
+  const invalidate = useInvalidateAgentQuery();
+  const query = useAgentQuery(["stateful-sets"], statefulSetService.list);
+  const namespacesQuery = useAgentQuery(["namespaces"], namespaceService.list);
+  const statefulSets = query.data?.stateful_sets ?? [];
+  const namespaces = namespacesQuery.data?.namespaces ?? [];
+  if (!query.isLoading && !query.isError && statefulSets.length === 0) {
     return <StatefulSetListEmpty />;
   }
   return (
@@ -108,7 +84,10 @@ export default function StatefulSetsPage() {
           data={statefulSets}
           pageSize={5}
           initialSorting={[{ id: "namespace", desc: false }]}
-          isLoading={isLoading}
+          isLoading={query.isLoading}
+          isFetching={query.isFetching}
+          isError={query.isError}
+          onRetry={() => query.refetch()}
           visibilityState={{ node: false, ip: false }}
           filters={[
             {
@@ -117,7 +96,7 @@ export default function StatefulSetsPage() {
             },
           ]}
           onClick={(statefulSet) =>
-            replace(
+            push(
               "/stateful-set/overview/?" +
                 "stateful-set=" +
                 statefulSet.name +
@@ -130,24 +109,28 @@ export default function StatefulSetsPage() {
               name: "panel.page.stateful-sets.action.restart",
               icon: RefreshCcw,
               onClick: (entries) => {
-                entries.forEach((entry) => {
-                  StatefulSetService.restart({
-                    namespace: entry.namespace,
-                    stateful_set: entry.name,
-                  });
-                });
+                Promise.allSettled(
+                  entries.map((entry) =>
+                    StatefulSetService.restart({
+                      namespace: entry.namespace,
+                      stateful_set: entry.name,
+                    }),
+                  ),
+                ).then(() => invalidate(["stateful-sets"]));
               },
             },
             {
               name: "panel.page.stateful-sets.action.delete",
               icon: Trash2,
               onClick: (entries) => {
-                entries.forEach((entry) => {
-                  StatefulSetService.remove({
-                    namespace: entry.namespace,
-                    stateful_set: entry.name,
-                  });
-                });
+                Promise.allSettled(
+                  entries.map((entry) =>
+                    StatefulSetService.remove({
+                      namespace: entry.namespace,
+                      stateful_set: entry.name,
+                    }),
+                  ),
+                ).then(() => invalidate(["stateful-sets"]));
               },
             },
           ]}
