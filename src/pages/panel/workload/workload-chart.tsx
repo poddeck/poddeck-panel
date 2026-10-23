@@ -118,7 +118,7 @@ export function WorkloadChart({
               content={
                 <ChartTooltipContent
                   labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString(language, {
+                    return new Date(value as string | number).toLocaleDateString(language, {
                       month: "numeric",
                       day: "numeric",
                       hour: "numeric",
