@@ -82,7 +82,7 @@
     "typescript-cookie": "^1.0.6",
     "vaul": "^1.1.2",
     "zod": "^4.4.3",
-    "zustand": "^5.0.14"
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
