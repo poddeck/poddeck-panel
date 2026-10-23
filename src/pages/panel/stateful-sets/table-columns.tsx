@@ -1,9 +1,10 @@
 import { type ColumnDef } from "@tanstack/react-table";
+import type { DataTableFeatures } from "@/components/table/features.ts";
 import { type StatefulSet } from "@/api/services/stateful-set-service";
 import { StatefulSetsActionDropdown } from "./table-components.tsx";
 import { Age } from "@/components/age/age.tsx";
 
-export const columns: ColumnDef<StatefulSet, unknown>[] = [
+export const columns: ColumnDef<DataTableFeatures, StatefulSet, unknown>[] = [
   {
     header: "panel.page.stateful-sets.column.namespace",
     accessorKey: "namespace",

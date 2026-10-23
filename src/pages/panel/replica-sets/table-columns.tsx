@@ -1,9 +1,10 @@
 import { type ColumnDef } from "@tanstack/react-table";
+import type { DataTableFeatures } from "@/components/table/features.ts";
 import { type ReplicaSet } from "@/api/services/replica-set-service";
 import { ReplicaSetsActionDropdown } from "./table-components.tsx";
 import { Age } from "@/components/age/age.tsx";
 
-export const columns: ColumnDef<ReplicaSet, unknown>[] = [
+export const columns: ColumnDef<DataTableFeatures, ReplicaSet, unknown>[] = [
   {
     header: "panel.page.replica-sets.column.namespace",
     accessorKey: "namespace",

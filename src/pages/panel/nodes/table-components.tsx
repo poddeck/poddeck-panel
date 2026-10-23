@@ -1,4 +1,5 @@
 import { type Row } from "@tanstack/react-table";
+import type { DataTableFeatures } from "@/components/table/features.ts";
 import { Button } from "@/components/ui/button.tsx";
 import {
   Gauge,
@@ -27,7 +28,11 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar.tsx";
 import React from "react";
 
-export function NodesActionDropdown({ row }: { row: Row<Node> }) {
+export function NodesActionDropdown({
+  row,
+}: {
+  row: Row<DataTableFeatures, Node>;
+}) {
   const { replace } = useRouter();
   return (
     <div className="flex justify-end">

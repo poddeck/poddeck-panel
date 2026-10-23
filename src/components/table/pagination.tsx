@@ -17,18 +17,19 @@ import {
 } from "@/components/ui/select";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import type { PaginationState, Table } from "@tanstack/react-table";
+import type { PaginationState, Table, RowData } from "@tanstack/react-table";
+import type { DataTableFeatures } from "@/components/table/features.ts";
 
-export default function DataTablePagination<T>({
+export default function DataTablePagination<T extends RowData>({
   table,
   pagination,
 }: {
-  table: Table<T>;
+  table: Table<DataTableFeatures, T>;
   pagination: PaginationState;
 }) {
   const { t } = useTranslation();
   const { pages, showLeftEllipsis, showRightEllipsis } = usePagination({
-    currentPage: table.getState().pagination.pageIndex + 1,
+    currentPage: pagination.pageIndex + 1,
     totalPages: table.getPageCount(),
     paginationItemsToDisplay: 5,
   });
@@ -40,9 +41,7 @@ export default function DataTablePagination<T>({
         aria-live="polite"
       >
         {t("table.page")}{" "}
-        <span className="text-foreground">
-          {table.getState().pagination.pageIndex + 1}
-        </span>{" "}
+        <span className="text-foreground">{pagination.pageIndex + 1}</span>{" "}
         {t("table.of")}{" "}
         <span className="text-foreground">{table.getPageCount()}</span>
       </p>

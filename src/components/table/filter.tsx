@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { type Table } from "@tanstack/react-table";
+import { type Table, type RowData } from "@tanstack/react-table";
+import type { DataTableFeatures } from "@/components/table/features.ts";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -23,14 +24,14 @@ export interface DataTableFilterOption {
   options: string[];
 }
 
-interface DataTableFiltersProps<T> {
-  table: Table<T>;
+interface DataTableFiltersProps<T extends RowData> {
+  table: Table<DataTableFeatures, T>;
   name: string;
   filters: DataTableFilterOption[];
   defaultFilters?: Record<string, string>;
 }
 
-export function DataTableFilters<T>({
+export function DataTableFilters<T extends RowData>({
   table,
   name,
   filters,

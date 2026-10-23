@@ -1,8 +1,9 @@
 import { type ColumnDef } from "@tanstack/react-table";
+import type { DataTableFeatures } from "@/components/table/features.ts";
 import type { AuditEntry } from "@/api/services/audit-service.ts";
 import { AuditStatus } from "@/pages/panel/audits/table-components.tsx";
 
-export const columns: ColumnDef<AuditEntry, unknown>[] = [
+export const columns: ColumnDef<DataTableFeatures, AuditEntry, unknown>[] = [
   {
     header: "panel.page.audits.column.number",
     accessorKey: "result.test_number",

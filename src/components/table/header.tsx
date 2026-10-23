@@ -4,7 +4,9 @@ import {
   flexRender,
   type PaginationState,
   type Table,
+  type RowData,
 } from "@tanstack/react-table";
+import type { DataTableFeatures } from "@/components/table/features.ts";
 
 import { TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import {
@@ -16,7 +18,11 @@ import { useTranslation } from "react-i18next";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useEffect, useRef } from "react";
 
-function DataTableSelectAll<T>({ table }: { table: Table<T> }) {
+function DataTableSelectAll<T extends RowData>({
+  table,
+}: {
+  table: Table<DataTableFeatures, T>;
+}) {
   const ref = useRef<HTMLInputElement>(null);
   const isSome = table.getIsSomePageRowsSelected();
   const isAll = table.getIsAllPageRowsSelected();
@@ -37,11 +43,11 @@ function DataTableSelectAll<T>({ table }: { table: Table<T> }) {
   );
 }
 
-export default function DataTableHeader<T>({
+export default function DataTableHeader<T extends RowData>({
   table,
   pagination,
 }: {
-  table: Table<T>;
+  table: Table<DataTableFeatures, T>;
   pagination: PaginationState;
 }) {
   const { t } = useTranslation();

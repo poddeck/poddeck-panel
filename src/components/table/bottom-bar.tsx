@@ -1,4 +1,5 @@
-import type { Table } from "@tanstack/react-table";
+import type { Table, RowData } from "@tanstack/react-table";
+import type { DataTableFeatures } from "@/components/table/features.ts";
 import { useSidebar } from "@/components/ui/sidebar.tsx";
 import { useTranslation } from "react-i18next";
 import type { LucideIcon } from "lucide-react";
@@ -9,11 +10,11 @@ export interface DataTableBottomBarAction<T> {
   onClick?: (entries: T[]) => void;
 }
 
-export default function DataTableBottomBar<T>({
+export default function DataTableBottomBar<T extends RowData>({
   table,
   actions,
 }: {
-  table: Table<T>;
+  table: Table<DataTableFeatures, T>;
   actions: DataTableBottomBarAction<T>[];
 }) {
   const selectedRows = table.getSelectedRowModel().rows;

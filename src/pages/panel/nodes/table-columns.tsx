@@ -1,4 +1,5 @@
 import { type ColumnDef } from "@tanstack/react-table";
+import type { DataTableFeatures } from "@/components/table/features.ts";
 import { Badge } from "@/components/ui/badge";
 import { Cpu, HardDrive, MemoryStick } from "lucide-react";
 import { type Node } from "@/api/services/node-service";
@@ -8,7 +9,7 @@ import {
   NodesActionDropdown,
 } from "./table-components.tsx";
 
-export const columns: ColumnDef<Node, unknown>[] = [
+export const columns: ColumnDef<DataTableFeatures, Node, unknown>[] = [
   {
     header: "panel.page.nodes.column.name",
     accessorKey: "name",
