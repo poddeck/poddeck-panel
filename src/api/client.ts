@@ -147,7 +147,7 @@ class APIClient {
   }
 
   request<T = unknown>(config: AxiosRequestConfig): Promise<T> {
-    return axiosInstance.request<never, T>(config);
+    return axiosInstance.request<never, T>(config) as Promise<T>;
   }
 }
 
