@@ -4,15 +4,16 @@ import { useEffect, useState } from "react";
 import {
   type ColumnDef,
   type ColumnSort,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
   type PaginationState,
   type SortingState,
-  useReactTable,
-  type VisibilityState,
+  useTable,
+  type ColumnVisibilityState,
+  type RowData,
 } from "@tanstack/react-table";
+import {
+  dataTableFeatures,
+  type DataTableFeatures,
+} from "@/components/table/features.ts";
 
 import { Table } from "@/components/ui/table";
 import DataTableColumnSelection from "./column-selection.tsx";
@@ -30,21 +31,21 @@ import DataTableBottomBar, {
   type DataTableBottomBarAction,
 } from "@/components/table/bottom-bar.tsx";
 
-interface DataTableProps<T> {
+interface DataTableProps<T extends RowData> {
   name: string;
-  columns: ColumnDef<T, unknown>[];
+  columns: ColumnDef<DataTableFeatures, T, unknown>[];
   initialSorting?: ColumnSort[];
   data: T[];
   pageSize?: number;
   isLoading?: boolean;
-  visibilityState?: VisibilityState;
+  visibilityState?: ColumnVisibilityState;
   filters?: DataTableFilterOption[];
   defaultFilters?: Record<string, string>;
   onClick?: (entry: T) => void;
   bulkActions?: DataTableBottomBarAction<T>[];
 }
 
-export function DataTable<T>({
+export function DataTable<T extends RowData>({
   name,
   columns,
   initialSorting,
@@ -80,7 +81,7 @@ export function DataTable<T>({
     }
   }, [name, pagination.pageSize]);
   const [sorting, setSorting] = useState<SortingState>(initialSorting ?? []);
-  const loadColumnVisibility = (): VisibilityState => {
+  const loadColumnVisibility = (): ColumnVisibilityState => {
     if (typeof window === "undefined") return visibilityState ?? {};
     try {
       const stored = localStorage.getItem(
@@ -91,9 +92,8 @@ export function DataTable<T>({
       return visibilityState ?? {};
     }
   };
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
-    () => loadColumnVisibility(),
-  );
+  const [columnVisibility, setColumnVisibility] =
+    useState<ColumnVisibilityState>(() => loadColumnVisibility());
   useEffect(() => {
     if (typeof window !== "undefined") {
       localStorage.setItem(
@@ -104,13 +104,10 @@ export function DataTable<T>({
   }, [name, columnVisibility]);
   const [globalFilter, setGlobalFilter] = useState("");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const table = useReactTable({
+  const table = useTable({
+    features: dataTableFeatures,
     data,
     columns,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
     enableSortingRemoval: false,
     columnResizeMode: "onChange",
     enableColumnResizing: true,

@@ -4,23 +4,25 @@ import {
   type PaginationState,
   type Row,
   type Table,
+  type RowData,
 } from "@tanstack/react-table";
+import type { DataTableFeatures } from "@/components/table/features.ts";
 import { TableBody, TableCell, TableRow } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 
-function DataRow<T>({
+function DataRow<T extends RowData>({
   row,
   verticalSpacing,
   horizontalSpacing,
   onClick,
 }: {
-  row: Row<T>;
+  row: Row<DataTableFeatures, T>;
   verticalSpacing: number;
   horizontalSpacing: number;
-  onClick?: (row: Row<T>) => void;
+  onClick?: (row: Row<DataTableFeatures, T>) => void;
 }) {
   const [disableGroup, setDisableGroup] = useState(false);
   const selected = row.getIsSelected();
@@ -103,15 +105,15 @@ function DataRow<T>({
   );
 }
 
-export default function DataTableBody<T>({
+export default function DataTableBody<T extends RowData>({
   table,
   columns,
   isLoading,
   pagination,
   onClick,
 }: {
-  table: Table<T>;
-  columns: ColumnDef<T, unknown>[];
+  table: Table<DataTableFeatures, T>;
+  columns: ColumnDef<DataTableFeatures, T, unknown>[];
   isLoading?: boolean;
   pagination: PaginationState;
   onClick?: (entry: T) => void;

@@ -1,4 +1,5 @@
 import { type ColumnDef } from "@tanstack/react-table";
+import type { DataTableFeatures } from "@/components/table/features.ts";
 import { type CronJob } from "@/api/services/cron-job-service";
 import {
   CronJobsActionDropdown,
@@ -6,7 +7,7 @@ import {
 } from "./table-components.tsx";
 import { Age } from "@/components/age/age.tsx";
 
-export const columns: ColumnDef<CronJob, unknown>[] = [
+export const columns: ColumnDef<DataTableFeatures, CronJob, unknown>[] = [
   {
     header: "panel.page.cron-jobs.column.namespace",
     accessorKey: "namespace",

@@ -1,4 +1,5 @@
 import { type Row } from "@tanstack/react-table";
+import type { DataTableFeatures } from "@/components/table/features.ts";
 import { Button } from "@/components/ui/button.tsx";
 import { MoreHorizontal, Trash2 } from "lucide-react";
 import {
@@ -13,7 +14,11 @@ import NamespaceDeleteDialog from "./delete-dialog.tsx";
 import * as React from "react";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog.tsx";
 
-export function NamespacesActionDropdown({ row }: { row: Row<Namespace> }) {
+export function NamespacesActionDropdown({
+  row,
+}: {
+  row: Row<DataTableFeatures, Namespace>;
+}) {
   const [open, setOpen] = React.useState(false);
   return (
     <div className="flex justify-end">

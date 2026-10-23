@@ -1,9 +1,10 @@
 import { type ColumnDef } from "@tanstack/react-table";
+import type { DataTableFeatures } from "@/components/table/features.ts";
 import { type DaemonSet } from "@/api/services/daemon-set-service";
 import { DaemonSetsActionDropdown } from "./table-components.tsx";
 import { Age } from "@/components/age/age.tsx";
 
-export const columns: ColumnDef<DaemonSet, unknown>[] = [
+export const columns: ColumnDef<DataTableFeatures, DaemonSet, unknown>[] = [
   {
     header: "panel.page.daemon-sets.column.namespace",
     accessorKey: "namespace",

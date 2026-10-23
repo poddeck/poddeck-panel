@@ -1,9 +1,10 @@
 import { type ColumnDef } from "@tanstack/react-table";
+import type { DataTableFeatures } from "@/components/table/features.ts";
 import { type Deployment } from "@/api/services/deployment-service";
 import { DeploymentsActionDropdown } from "./table-components.tsx";
 import { Age } from "@/components/age/age.tsx";
 
-export const columns: ColumnDef<Deployment, unknown>[] = [
+export const columns: ColumnDef<DataTableFeatures, Deployment, unknown>[] = [
   {
     header: "panel.page.deployments.column.namespace",
     accessorKey: "namespace",

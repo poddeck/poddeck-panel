@@ -19,18 +19,23 @@ import {
 import { Input } from "@/components/ui/input.tsx";
 import { useTranslation } from "react-i18next";
 import { type Dispatch, type SetStateAction, useState } from "react";
-import type { Table, VisibilityState } from "@tanstack/react-table";
+import type {
+  Table,
+  ColumnVisibilityState,
+  RowData,
+} from "@tanstack/react-table";
+import type { DataTableFeatures } from "@/components/table/features.ts";
 
-export default function DataTableColumnSelection<T>({
+export default function DataTableColumnSelection<T extends RowData>({
   table,
   searchQuery,
   setSearchQuery,
   visibilityState,
 }: {
-  table: Table<T>;
+  table: Table<DataTableFeatures, T>;
   searchQuery: string;
   setSearchQuery: Dispatch<SetStateAction<string>>;
-  visibilityState?: VisibilityState;
+  visibilityState?: ColumnVisibilityState;
 }) {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);

@@ -1,11 +1,12 @@
 import { type ColumnDef } from "@tanstack/react-table";
+import type { DataTableFeatures } from "@/components/table/features.ts";
 import { Badge } from "@/components/ui/badge";
 import { type Namespace } from "@/api/services/namespace-service";
 import { t } from "@/locales/i18n";
 import { NamespacesActionDropdown } from "./table-components.tsx";
 import { Age } from "@/components/age/age.tsx";
 
-export const columns: ColumnDef<Namespace, unknown>[] = [
+export const columns: ColumnDef<DataTableFeatures, Namespace, unknown>[] = [
   {
     header: "panel.page.namespaces.column.name",
     accessorKey: "name",

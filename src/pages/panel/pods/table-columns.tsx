@@ -1,9 +1,10 @@
 import { type ColumnDef } from "@tanstack/react-table";
+import type { DataTableFeatures } from "@/components/table/features.ts";
 import { type Pod } from "@/api/services/pod-service";
 import { PodsStatus, PodsActionDropdown } from "./table-components.tsx";
 import { Age } from "@/components/age/age.tsx";
 
-export const columns: ColumnDef<Pod, unknown>[] = [
+export const columns: ColumnDef<DataTableFeatures, Pod, unknown>[] = [
   {
     header: "panel.page.pods.column.namespace",
     accessorKey: "namespace",
